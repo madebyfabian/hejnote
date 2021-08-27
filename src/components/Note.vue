@@ -1,6 +1,6 @@
 <template>
 	<article class="Note" @click.self="handleNoteEdit">
-		<div @click="handleNoteEdit">
+		<div @click="handleNoteEdit" class="select-none">
 			<h3 v-if="note.title" v-text="note.title" class="mb-3" />
 			<RichtextEditor v-model="props.note.content" isReadonly />
 		</div>
