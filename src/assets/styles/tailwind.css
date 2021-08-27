@@ -1,0 +1,35 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+@layer base {
+	:root {
+		color-scheme: dark;
+	}
+
+	body {
+		@apply bg-gray-900 text-gray-400 text-100 overflow-y-scroll;
+	}
+
+	h1 {
+		@apply text-200 font-bold text-gray-300;
+	}
+
+	h2 {
+		@apply uppercase text-050 text-gray-500 select-none;
+	}
+
+	h3 {
+		@apply text-150 font-semibold text-gray-300;
+	}
+}
+
+.transition-fade-100 {
+	&-enter-active, &-leave-active {
+		@apply transition-opacity duration-150;
+	}
+
+	&-enter-from, &-leave-to {
+		@apply opacity-0;
+	}
+}
