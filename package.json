@@ -18,6 +18,7 @@
     "dayjs": "^1.10.6",
     "focus-trap": "^6.6.1",
     "focus-trap-vue": "^3.2.1",
+    "muuri": "^0.9.5",
     "vue": "^3.2.4",
     "vue-debounce": "^3.0.1",
     "vue-router": "^4.0.11"

@@ -40,6 +40,7 @@ export const store = {
     const { data, error } = await supabase
       .from('notes')
       .select('*')
+      .order('sort_key')
 
     if (error) 
       console.error(error)
@@ -51,7 +52,7 @@ export const store = {
     // First fetch from database
     const { data: rowsArr, error } = await supabase
       .from('notes')
-      .select(`*`)
+      .select('*')
       .eq('id', noteId)
     if (error) throw error
 
@@ -82,21 +83,44 @@ export const store = {
     return rowsArr[0]
   },
 
-  async notesUpdateSingle({ noteId, newVal, updateState = true }) {
+  async notesUpdateSingle({ noteId, newVal, updateDB = true, updateState = true }) {
     try {
-      // Delete id column because it's not needed and supabase throws an error.
-      newVal = { ...newVal }
-      delete newVal?.id
+      if (updateDB) {
+        // Delete id column because it's not needed and supabase throws an error.
+        newVal = { ...newVal }
+        delete newVal?.id
 
-      // Update database
-      const { error } = await supabase.from('notes').update(newVal).eq('id', noteId)
-      if (error) throw error
+        // Update database
+        const { error } = await supabase.from('notes').update(newVal).eq('id', noteId)
+        if (error) throw error
+      }
 
       // Update local state
       if (updateState) {
         const index = this.notesFindIndex({ noteId })
         this.state.notes[index] = { ...this.state.notes[index], ...newVal }
       }
+    } catch (error) {
+      this._handleError(error)
+    }
+  },
+
+  async notesUpsert({ newVals, updateState = true }) {
+    try {
+      if (newVals.length === 0) return
+
+      const { data, error } = await supabase
+        .from('notes')
+        .upsert(newVals.map(newVal => ({
+          ...newVal,
+          owner_id: this.state.user.id
+        })))
+      if (error) throw error
+
+      data.forEach(note => {
+        this.notesUpdateSingle({ noteId: note.id, newVal: note, updateDB: false })
+      })
+
     } catch (error) {
       this._handleError(error)
     }
@@ -144,7 +168,7 @@ export const store = {
     }
   },
 
-  notesFilter({ noteId = null, collectionId = null, showDeleted = false }) {
+  notesFilter({ noteId = null, collectionId = null, showDeleted = false } = {}) {
     let notes = this.state.notes.filter(note => note !== undefined)
 
     // If noteId is set, return only that note.
