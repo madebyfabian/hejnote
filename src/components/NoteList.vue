@@ -11,14 +11,12 @@
 		<template v-if="pinnedNotes.length || otherNotes.length">
 			<section v-if="pinnedNotes.length">
 				<h2 class="NoteList-sectionTitle">Pinned</h2>
-				<!--<NoteList-Grid :notes="pinnedNotes" id="NoteList-pinnedNotes" showIsPinned />-->
-				<NoteList-GridV2 />
+				<NoteList-Grid :notes="pinnedNotes" />
 			</section>
 
 			<section v-if="otherNotes.length">
 				<h2 v-if="pinnedNotes.length" class="NoteList-sectionTitle">Others</h2>
-				<!--<NoteList-Grid :notes="otherNotes" id="NoteList-otherNotes" /> -->
-				<!--<NoteList-GridV2 />-->
+				<NoteList-Grid :notes="otherNotes" />
 			</section>
 		</template>	
 
@@ -33,7 +31,7 @@
 	import useIsHiddenMode from '@/hooks/useIsHiddenMode'
 	import useCurrentCollection from '@/hooks/useCurrentCollection'
 	import Badge from '@/components/Badge.vue'
-	import NoteListGridV2 from '@/components/NoteList-GridV2.vue'
+	import NoteListGrid from '@/components/NoteList-Grid.vue'
 	
 	const dayjs = useDayjs()
 

@@ -1,6 +1,11 @@
 <template>
-	<section class="grid -m-3 relative">
-		<Note :note="note" dragHandlerClass="item-dragHandler" />
+	<section class="grid gap-6 grid-cols-3">
+		<Note 
+			v-for="note of notes"
+			:key="note.id" 
+			:note="note"
+			dragHandlerClass="item-dragHandler" 
+		/>
 	</section>
 </template>
 
