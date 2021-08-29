@@ -105,7 +105,7 @@
 			}
 			
 			p {
-				&:empty {
+				&:empty:not(:last-child):not(:first-child) {
 					@apply h-3
 				}
 			}
