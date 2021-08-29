@@ -1,6 +1,6 @@
 <template>
 	<transition name="transition-modalSlideIn">
-    <div class="Modal" v-if="isOpened" @click.self="$emit('close')">
+    <div class="Modal" v-if="isOpened" @mousedown.self="$emit('close')">
       <focus-trap :active="isOpened">
         <div 
 					class="Modal-container"
