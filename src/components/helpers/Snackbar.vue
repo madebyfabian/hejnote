@@ -55,11 +55,11 @@
 	}
 
 	.Snackbar-inner {
-		@apply relative pt-4 text-white overflow-hidden cursor-pointer z-10 flex;
+		@apply relative pt-4 text-white overflow-hidden cursor-pointer z-1 flex;
 		will-change: transform, opacity, max-height;
 
 		.Snackbar-content {
-			@apply block px-4 py-3 relative z-10 pointer-events-none flex-1;
+			@apply block px-4 py-3 relative z-1 pointer-events-none flex-1;
 		}
 	}
 </style>
