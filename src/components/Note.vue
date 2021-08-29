@@ -2,7 +2,6 @@
 	<article class="Note" @click="handleNoteEdit">
 		<div class="select-none">
 			<h3 v-if="note.title" v-text="note.title" @click="handleNoteEdit" class="mb-3" />
-			<div class="text-green-400">updated_at: {{ new Date(note.updated_at).toLocaleTimeString() }}</div>
 			<RichtextEditor v-model="props.note.content" isReadonly />
 		</div>
 		
