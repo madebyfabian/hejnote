@@ -20,6 +20,7 @@
     "focus-trap-vue": "^3.2.1",
     "vue": "^3.2.4",
     "vue-debounce": "^3.0.1",
+    "vue-next-masonry": "^1.1.3",
     "vue-router": "^4.0.11"
   },
   "devDependencies": {

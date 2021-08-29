@@ -1,11 +1,13 @@
 <template>
-	<section class="grid gap-6 grid-cols-3">
-		<Note 
-			v-for="note of notes"
-			:key="note.id" 
-			:note="note"
-			dragHandlerClass="item-dragHandler" 
-		/>
+	<section class="NoteList-Grid">
+		<masonry :cols="3" :gutter="24">
+			<Note 
+				v-for="note of notes"
+				:key="note.id" 
+				:note="note"
+				dragHandlerClass="item-dragHandler" 
+			/>
+		</masonry>
 	</section>
 </template>
 

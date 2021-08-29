@@ -40,7 +40,6 @@ export const store = {
     const { data, error } = await supabase
       .from('notes')
       .select('*')
-      .order('sort_key')
 
     if (error) 
       console.error(error)
@@ -91,14 +90,16 @@ export const store = {
         delete newVal?.id
 
         // Update database
-        const { error } = await supabase.from('notes').update(newVal).eq('id', noteId)
+        const { data, error } = await supabase.from('notes').update(newVal).eq('id', noteId)
         if (error) throw error
+        newVal = data[0]
       }
 
       // Update local state
       if (updateState) {
         const index = this.notesFindIndex({ noteId })
-        this.state.notes[index] = { ...this.state.notes[index], ...newVal }
+        const newData = { ...this.state.notes[index], ...newVal }
+        this.state.notes[index] = newData
       }
     } catch (error) {
       this._handleError(error)

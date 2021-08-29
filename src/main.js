@@ -16,4 +16,8 @@ app.use(router)
 import { FocusTrap } from 'focus-trap-vue'
 app.component('FocusTrap', FocusTrap)
 
+// Masonry grid
+import masonry from 'vue-next-masonry'
+app.use(masonry)
+
 app.mount('#app')

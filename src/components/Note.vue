@@ -1,38 +1,38 @@
 <template>
-	<article class="Note" @click.self="handleNoteEdit">
+	<article class="Note" @click="handleNoteEdit">
 		<div class="select-none">
-			<div class="flex justify-end">
-				<h3 v-if="note.title" v-text="note.title" class="mb-3 flex-1" @click="handleNoteEdit" />
-				<div class="-mr-2 -mt-2">
-					<Button isIconOnly buttonType="secondary" hideBorder :class="dragHandlerClass">
-						<IconDrag />
-					</Button>
-				</div>
-			</div>
+			<h3 v-if="note.title" v-text="note.title" @click="handleNoteEdit" class="mb-3" />
+			<div class="text-green-400">updated_at: {{ new Date(note.updated_at).toLocaleTimeString() }}</div>
 			<RichtextEditor v-model="props.note.content" isReadonly />
 		</div>
 		
-		<div class="flex justify-end mt-3 -mb-2 -mr-2">
-			<NoteActionBar :note="note" />
+		<div class="flex justify-end mt-3 -mb-2 -mr-2" >
+			<div ref="noteActionBarEl">
+				<NoteActionBar :note="note" />
+			</div>
 		</div>
 	</article>
 </template>
 
 <script setup>
-	import { nextTick } from 'vue'
+	import { nextTick, ref } from 'vue'
 	import { store } from '@/store'
 	import RichtextEditor from '@/components/RichtextEditor.vue'
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
 	import Button from '@/components/Button.vue'
-	import { IconDrag } from '@/components/icons'
 	
 	const props = defineProps({
 		note: 						{ required: true },
-		dragHandlerClass: { type: String, default: 'dragHandler' },
 		isBeingDragged: 	{ type: Boolean, default: false },
 	})
+	
+	const noteActionBarEl = ref(null)
 
-	const handleNoteEdit = () => {
+	const handleNoteEdit = e => {
+		// If user clicked icon on the action bar, don't fire the edit stuff.
+		if (e.path.includes(noteActionBarEl?.value))
+			return 
+
 		store.state.editNoteId = props.note.id
 		nextTick(() => {
 			store.state.editNoteModalVisible = true
@@ -42,6 +42,6 @@
 
 <style lang="postcss" scoped>
 	.Note {
-		@apply bg-gray-800 rounded-2xl p-4 cursor-default transition duration-150;
+		@apply bg-gray-800 rounded-2xl p-4 cursor-default transition duration-150 mb-6;
 	}
 </style>
