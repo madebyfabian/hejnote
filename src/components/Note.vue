@@ -1,8 +1,8 @@
 <template>
-	<article @click="handleNoteEdit" tabindex="0" class="Note group">
+	<article @click="handleNoteEdit" tabindex="0" class="Note group" :aria-label="noteTitleLabel">
 	
 		<h3 v-if="note.title" v-text="note.title" @click="handleNoteEdit" class="mb-3" />
-		<RichtextEditor v-if="!noteContentIsEmpty" v-model="props.note.content" isReadonly class="mb-3" />
+		<RichtextEditor v-if="!noteContentIsEmpty" v-model="note.content" isReadonly class="mb-3" />
 	
 		<div class="
 			w-fit ml-auto -mb-2 -mr-2
@@ -28,6 +28,7 @@
 	})
 
 	const noteContentIsEmpty = computed(() => JSON.stringify(noteEditorContentDefault) === JSON.stringify(props.note.content))
+	const noteTitleLabel = computed(() => `Note with title "${ props.note.title }"`)
 	const noteActionBarEl = ref(null)
 
 	const handleNoteEdit = e => {
