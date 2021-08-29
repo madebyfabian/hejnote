@@ -19,6 +19,7 @@
 	import { ref, reactive, watch, onUnmounted, nextTick } from 'vue'
 	import { debounce } from 'vue-debounce'
 	import { store } from '@/store'
+	import { noteEditorContentDefault } from '@/utils/constants'
 	import RichtextEditor from '@/components/RichtextEditor.vue'
 	import Button from '@/components/Button.vue'
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
@@ -32,7 +33,7 @@
 	const note = reactive({
 		id: 				props.note?.id || null,
 		title: 			props.note?.title || '',
-		content: 		props.note?.content || { type: 'doc', content: [{ type: 'paragraph' }] },
+		content: 		props.note?.content || noteEditorContentDefault,
 		is_pinned: 	props.note?.is_pinned || false,
 		is_hidden: 	props.note?.is_hidden || false,
 	})

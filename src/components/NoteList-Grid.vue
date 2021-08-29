@@ -5,7 +5,6 @@
 				v-for="note of notes"
 				:key="note.id" 
 				:note="note"
-				dragHandlerClass="item-dragHandler" 
 			/>
 		</masonry>
 	</section>

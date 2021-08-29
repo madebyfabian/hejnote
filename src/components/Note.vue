@@ -1,34 +1,41 @@
 <template>
-	<article class="Note" @click="handleNoteEdit">
-		<div class="select-none">
-			<h3 v-if="note.title" v-text="note.title" @click="handleNoteEdit" class="mb-3" />
-			<RichtextEditor v-model="props.note.content" isReadonly />
-		</div>
-		
-		<div class="flex justify-end mt-3 -mb-2 -mr-2" >
-			<div ref="noteActionBarEl">
-				<NoteActionBar :note="note" />
-			</div>
+	<article @click="handleNoteEdit" tabindex="0" class="Note group">
+	
+		<h3 v-if="note.title" v-text="note.title" @click="handleNoteEdit" class="mb-3" />
+		<RichtextEditor v-if="!noteContentIsEmpty" v-model="props.note.content" isReadonly class="mb-3" />
+	
+		<div class="
+			w-fit ml-auto -mb-2 -mr-2
+			transition opacity-0 group-focus:opacity-100 group-focus-within:opacity-100 group-hover:opacity-100"
+			ref="noteActionBarEl">
+	
+			<NoteActionBar :note="note" />
 		</div>
 	</article>
 </template>
 
 <script setup>
-	import { nextTick, ref } from 'vue'
+	import { computed, nextTick, ref, watch } from 'vue'
 	import { store } from '@/store'
+	import { noteEditorContentDefault } from '@/utils/constants'
 	import RichtextEditor from '@/components/RichtextEditor.vue'
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
 	import Button from '@/components/Button.vue'
+	import NoteEditor from '@/components/NoteEditor.vue'
 	
 	const props = defineProps({
 		note: { required: true },
 	})
-	
+
+	const noteContentIsEmpty = computed(() => JSON.stringify(noteEditorContentDefault) === JSON.stringify(props.note.content))
 	const noteActionBarEl = ref(null)
 
 	const handleNoteEdit = e => {
-		// If user clicked icon on the action bar, don't fire the edit stuff.
-		if (e.path.includes(noteActionBarEl?.value))
+		const clickedActionBar = e.path.includes(noteActionBarEl?.value),
+					selectedSomething = window.getSelection().type === 'Range',
+					clickedLink = e.target.tagName === 'A'
+
+		if (clickedActionBar || selectedSomething || clickedLink)
 			return 
 
 		store.state.editNoteId = props.note.id

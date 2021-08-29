@@ -1,0 +1,1 @@
+export const noteEditorContentDefault = { type: 'doc', content: [{ type: 'paragraph' }] }
