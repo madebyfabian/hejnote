@@ -21,8 +21,7 @@
 	import Button from '@/components/Button.vue'
 	
 	const props = defineProps({
-		note: 						{ required: true },
-		isBeingDragged: 	{ type: Boolean, default: false },
+		note: { required: true },
 	})
 	
 	const noteActionBarEl = ref(null)
