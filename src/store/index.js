@@ -1,8 +1,10 @@
 import { reactive } from 'vue'
-import { snackbarStore } from '@/store/snackbarStore' 
 import { generalStore } from '@/store/generalStore'
+
+import useSnackbar from '@/hooks/useSnackbar'
 import useSupabase from '@/hooks/useSupabase'
 import useIsHiddenMode from '@/hooks/useIsHiddenMode'
+
 import handleError from '@/utils/handleError'
 
 const supabase = useSupabase(),
@@ -133,7 +135,7 @@ export const store = {
       // Notify
       const index = this._findIndexById({ id: noteId, data: this.state.notes })
       const noteData = this.state.notes[index]
-      snackbarStore.createSnackbar({ 
+      useSnackbar().createSnackbar({ 
         message: `Moved note ${ noteData.title && `<b>"${ noteData.title }"</b>` } ${ deleted_at == null ? 'out of the' : 'to the' } Trash.`,
         buttonText: 'Undo',
         onButtonClick: () => {
@@ -158,7 +160,7 @@ export const store = {
       const noteData = this.state.notes[index]
       delete this.state.notes[index]
 
-      snackbarStore.createSnackbar({ message: `Deleted note ${ noteData.title && `<b>"${ noteData.title }"</b>` }` })
+      useSnackbar().createSnackbar({ message: `Deleted note ${ noteData.title && `<b>"${ noteData.title }"</b>` }` })
     
     } catch (error) {
       handleError(error)

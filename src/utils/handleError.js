@@ -1,6 +1,6 @@
-import { snackbarStore } from '@/store/snackbarStore'
+import useSnackbar from '@/hooks/useSnackbar'
 
 export default ( error ) => {
-	snackbarStore.createSnackbar({ message: error.message })
+	useSnackbar().createSnackbar({ message: error.message })
 	console.error(error)
 }
