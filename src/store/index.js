@@ -6,27 +6,24 @@ import useIsHiddenMode from '@/hooks/useIsHiddenMode'
 const supabase = useSupabase(),
       isHiddenMode = useIsHiddenMode()
 
-const _initialConfirmState = {
-  isVisible: false,
-  question: null,
-  title: null,
-  answer: null,
-}
 
 export const store = {
   /**
    * Default State
    */
   state: reactive({
-    user: undefined,
-    isAppLoading: true,
+    // Data
     notes: [],
     links: [],
     collections: [],
     joinNotesCollections: [],
     joinNotesLinks: [],
+
+    // UI
+    user: undefined,
+    isAppLoading: true,
     editNoteId: null,
-    editNoteModalVisible: false
+    editNoteModalVisible: false,
   }),
 
   _handleError(error) {
@@ -378,14 +375,4 @@ export const store = {
     // Remove deleted links from state
     this.state.links = this.state.links.filter(link => !urlArray.includes(link.url))
   },
-
-
-  /**
-   * Confirm Dialog State
-   */
-  confirmState: reactive({ ..._initialConfirmState }),
-
-  resetConfirmState(){
-    Object.assign(this.confirmState, _initialConfirmState)
-  }
 }

@@ -1,17 +1,17 @@
 import { watch } from 'vue'
-import { store } from '@/store' 
+import { storeConfirm } from '@/store/confirm' 
 
 
 export default function useConfirm() {
 	const confirm = ({ question, title }) => new Promise(resolve => {
-		store.confirmState.isVisible = true
-		store.confirmState.question = question
-		store.confirmState.title = title
+		storeConfirm.state.isVisible = true
+		storeConfirm.state.question = question
+		storeConfirm.state.title = title
 
-		const stopWatcher = watch(() => store.confirmState.answer, ( newAnswer ) => {
+		const stopWatcher = watch(() => storeConfirm.state.answer, ( newAnswer ) => {
 			if (newAnswer !== null) {
 				const answer = newAnswer
-				store.resetConfirmState()
+				storeConfirm.reset()
 				stopWatcher()
 				resolve(answer)
 			}	
@@ -19,12 +19,11 @@ export default function useConfirm() {
 	})
 
 	const answer = answer => {
-		store.confirmState.answer = answer
+		storeConfirm.state.answer = answer
 	}
 
 	return {
 		confirm,
-		answer,
-		confirmState: store.confirmState
+		answer
 	}
 }

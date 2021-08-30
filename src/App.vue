@@ -1,8 +1,8 @@
 <template>
   <SnackbarContainer />
 
-  <Modal :isOpened="confirmState.isVisible" @close="() => answer(false)" :title="confirmState.title || ''">
-    <div v-html="confirmState.question" />
+  <Modal :isOpened="storeConfirm.state.isVisible" @close="() => answer(false)" :title="storeConfirm.state.title || ''">
+    <div v-html="storeConfirm.state.question" />
 
     <template #bottomBar>
       <Button @click="() => answer(false)" buttonType="secondary">Cancel</Button>
@@ -14,9 +14,11 @@
 </template>
 
 <script setup>
+  import { storeConfirm } from '@/store/confirm'
+
   // Confirm
   import useConfirm from '@/hooks/useConfirm'
-  const { confirmState, answer } = useConfirm()
+  const { answer } = useConfirm()
 
   // Modal
   import Modal from '@/components/Modal.vue'
