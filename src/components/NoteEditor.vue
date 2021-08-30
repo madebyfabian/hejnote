@@ -22,7 +22,7 @@
 <script setup>
 	import { ref, reactive, watch, onUnmounted, nextTick, computed } from 'vue'
 	import { debounce } from 'vue-debounce'
-	import { store } from '@/store'
+	import { linksStore } from '@/store/linksStore'
 	import { notesStore } from '@/store/notesStore'
 	import { generalStore } from '@/store/generalStore'
 	import { noteEditorContentDefault } from '@/utils/constants'
@@ -46,7 +46,7 @@
 	})
 
 	const lastLinkSet = reactive(new Set(
-		store._findLinksByNoteId({ noteId: note.id }).map(link => link.url)
+		linksStore._findLinksByNoteId({ noteId: note.id }).map(link => link.url)
 	))
 
 	const shouldHandleFormSaveOnNextChange = ref(false)
@@ -98,11 +98,11 @@
 
 		const linksToAdd = newVal.filter(link => !oldVal.includes(link))
 		if (linksToAdd.length) 
-			store.linksInsert({ urlArray: linksToAdd, noteId: note.id })
+			linksStore.linksInsert({ urlArray: linksToAdd, noteId: note.id })
 
 		const linksToDelete = oldVal.filter(link => !newVal.includes(link))
 		if (linksToDelete.length)
-			store.linksDelete({ urlArray: linksToDelete, noteId: note.id })
+			linksStore.linksDelete({ urlArray: linksToDelete, noteId: note.id })
 
 		lastLinkSet.clear()
 		links.forEach(setValue => lastLinkSet.add(setValue))

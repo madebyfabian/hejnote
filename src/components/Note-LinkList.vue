@@ -24,13 +24,13 @@
 
 <script setup>
 	import { computed } from 'vue'
-	import { store } from '@/store'
+	import { linksStore } from '@/store/linksStore'
 
 	const props = defineProps({
 		noteId: { type: String, required: true },
 	})
 
-	const noteLinks = computed(() => store._findLinksByNoteId({ noteId: props.noteId }))
+	const noteLinks = computed(() => linksStore._findLinksByNoteId({ noteId: props.noteId }))
 
 	const generateUrlTitle = ( url ) => {
 		let title

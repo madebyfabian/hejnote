@@ -26,7 +26,6 @@
 
 <script setup>
 	import { computed, watchEffect, ref } from 'vue'
-	import { store } from '@/store'
 	import useDayjs from '@/hooks/useDayjs'
 	import useIsHiddenMode from '@/hooks/useIsHiddenMode'
 	import useCurrentCollection from '@/hooks/useCurrentCollection'

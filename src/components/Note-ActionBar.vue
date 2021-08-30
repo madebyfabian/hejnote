@@ -31,7 +31,6 @@
 	import { IconEyeOff, IconEyeOffSolid, IconPin, IconPinSolid, IconTrash, IconTrashDelete, IconTrashUndo } from '@/components/icons'
 	import { nextTick } from 'vue'
 	import useConfirm from '@/hooks/useConfirm'
-	import { store } from '@/store'
 	import { notesStore } from '@/store/notesStore' 
 	import useSupabase from '@/hooks/useSupabase'
 	import RichtextEditor from '@/components/RichtextEditor.vue'

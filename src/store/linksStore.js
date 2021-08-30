@@ -1,91 +1,18 @@
 import { reactive } from 'vue'
 import { generalStore } from '@/store/generalStore'
+import { notesStore } from '@/store/notesStore'
 
 import useSupabase from '@/hooks/useSupabase'
 
 const supabase = useSupabase()
 
-export const store = {
-  /**
-   * Default State
-   */
+export const linksStore = {
   state: reactive({
     links: [],
-    joinNotesCollections: [],
-    joinNotesLinks: [],
   }),
 
-
-  /**
-   * Join Notes Collections
-   */
-  async joinNotesCollectionsFetch() {
-    const { data, error } = await supabase
-      .from('join_notes_collections')
-      .select('*')
-
-    if (error)
-      console.error(error)
-
-    this.state.joinNotesCollections = data
-  },
-
-
-  /**
-   * Join Notes Links
-   */
-  async joinNotesLinksFetch() {
-    const { data, error } = await supabase
-      .from('join_notes_links')
-      .select('*')
-
-    if (error)
-      console.error(error)
-
-    this.state.joinNotesLinks = data
-  },
-
-  async joinNotesLinksInsert({ newVals }) {
-    await this.joinNotesLinksFetch()
-
-    // Filter out duplicates
-    newVals = newVals.filter(newVal => !this.state.joinNotesLinks.find(join => join.note_id === newVal.note_id && join.link_id === newVal.link_id))
-
-    const { data, error } = await supabase
-      .from('join_notes_links')
-      .insert(newVals.map(newVal => ({
-        ...newVal,
-        owner_id: generalStore.state.user.id
-      })))
-
-    if (error)
-      console.error(error)
-
-    this.state.joinNotesLinks.push(...data)
-  },
-
-  async joinNotesLinksDelete({ urlArray, noteId }) {
-    // Get all link.id's for this note
-    const linkIds = urlArray.map(url => (this.state.links.find(link => link.url === url)).id)
-
-    // Delete all joins for this note
-    const { error } = await supabase
-      .from('join_notes_links')
-      .delete()
-      .eq('note_id', noteId)
-      .in('link_id', linkIds)
-    if (error) console.error(error)
-
-    // Remove deleted joins from state
-    this.state.joinNotesLinks = this.state.joinNotesLinks.filter(join => !linkIds.includes(join.link_id))
-  },
-
-
-  /**
-   * Links
-   */
   _findLinksByNoteId({ noteId }) {
-    const joins = this.state.joinNotesLinks.filter(join => join.note_id === noteId)
+    const joins = notesStore.state.joinNotesLinks.filter(join => join.note_id === noteId)
     return joins.map(join => {
       return this.state.links.find(link => link.id === join.link_id)
     })
@@ -151,14 +78,14 @@ export const store = {
       preparedJoins.push(...data.map(link => ({ note_id: noteId, link_id: link.id })))
     }
 
-    // Then, if there are some new joins to insert, do this.
+    // Then, if there are some new joins to insert, do it.
     if (preparedJoins.length !== 0) {
-      this.joinNotesLinksInsert({ newVals: preparedJoins })
+      notesStore.joinNotesLinksInsert({ newVals: preparedJoins })
     }
   },
 
   async linksDelete({ urlArray, noteId }) {
-    await this.joinNotesLinksDelete({ urlArray, noteId })
+    await notesStore.joinNotesLinksDelete({ urlArray, noteId })
 
     // Delete all joins for this note
     const { error } = await supabase
