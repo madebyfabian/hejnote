@@ -1,6 +1,6 @@
 import { reactive } from 'vue'
 
-export const storeSnackbar = {
+export const snackbarStore = {
 	state: reactive({
 		snackbarInstances: [],
 		snackbarTimeout: 6000

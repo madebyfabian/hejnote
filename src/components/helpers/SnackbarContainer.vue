@@ -2,9 +2,9 @@
 	<div class="SnackbarContainer">
 		<transition-group name="transition-snackbar" tag="div">
 			<Snackbar 
-				v-for="snackbar of storeSnackbar.state.snackbarInstances" :key="snackbar.id"
+				v-for="snackbar of snackbarStore.state.snackbarInstances" :key="snackbar.id"
 				:snackbar="snackbar"
-				@removeSnackbar="storeSnackbar.removeSnackbar({ id: snackbar.id })"
+				@removeSnackbar="snackbarStore.removeSnackbar({ id: snackbar.id })"
 			/>
 		</transition-group>
 	</div>
@@ -12,7 +12,7 @@
 
 <script setup>
 	import Snackbar from '@/components/helpers/Snackbar.vue'
-	import { storeSnackbar } from '@/store/snackbar'
+	import { snackbarStore } from '@/store/snackbarStore'
 </script>
 
 <style lang="postcss" scoped>
