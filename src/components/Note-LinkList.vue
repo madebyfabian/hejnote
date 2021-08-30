@@ -1,15 +1,20 @@
 <template>
 	<ul class="Note-LinkList rounded-lg overflow-hidden">
 		<li v-for="link in noteLinks" :key="link.id" class="mb-0.5 last:mb-0">
-			<a :href="link.url" class="flex bg-gray-700 cursor-pointer" target="_blank" rel="noopener noreferrer nofollow">
+			<a 
+				:href="link.url"
+				:title="link.title"
+				class="flex bg-gray-700 cursor-pointer" 
+				target="_blank" 
+				rel="noopener noreferrer nofollow">
+
 				<div
 					class="w-16 bg-gray-600 bg-cover bg-center flex-shrink-0"
 					:style="generateBannerStyle(link?.banner_url)">
-					
 				</div>
 
-				<div class="p-3">
-					<h4>{{ link.title }}</h4>
+				<div class="p-3 overflow-hidden">
+					<h4 class="line-clamp-1">{{ link.title }}</h4>
 					<p class="text-050 uppercase text-gray-500">{{ generateUrlTitle(link.url) }}</p>
 				</div>
 			</a>
@@ -28,12 +33,15 @@
 	const noteLinks = computed(() => store._findLinksByNoteId({ noteId: props.noteId }))
 
 	const generateUrlTitle = ( url ) => {
+		let title
 		try {
 			const urlInstance = new URL(url)
-			return urlInstance?.host || url
+			title = urlInstance?.host || url
 		} catch (error) {
-			return url
+			title = url
 		}
+		title = title.replace('www.', '')
+		return title
 	}
 
 	const generateBannerStyle = ( banner_url ) => {

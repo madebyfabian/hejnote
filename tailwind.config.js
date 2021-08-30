@@ -1,5 +1,6 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
 const plugin = require('tailwindcss/plugin')
+const lineClamp = require('@tailwindcss/line-clamp')
 
 
 // Rotate X utilities
@@ -77,5 +78,6 @@ module.exports = {
 
   plugins: [
     rotateX,
+    lineClamp
   ],
 }
