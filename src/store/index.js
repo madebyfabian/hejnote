@@ -27,13 +27,6 @@ export const store = {
     return data.findIndex(obj => obj !== undefined && obj.id === id)
   },
 
-  _findLinksByNoteId({ noteId }) {
-    const joins = this.state.joinNotesLinks.filter(join => join.note_id === noteId)
-    return joins.map(join => {
-      return this.state.links.find(link => link.id === join.link_id)
-    })
-  },
-
 
   /**
    * Notes
@@ -288,6 +281,13 @@ export const store = {
   /**
    * Links
    */
+  _findLinksByNoteId({ noteId }) {
+    const joins = this.state.joinNotesLinks.filter(join => join.note_id === noteId)
+    return joins.map(join => {
+      return this.state.links.find(link => link.id === join.link_id)
+    })
+  },
+
   async linksFetch() {
     const { data, error } = await supabase
       .from('links')
