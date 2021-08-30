@@ -8,7 +8,7 @@ const _initialState = {
   answer: null,
 }
 
-export const storeConfirm = {
+export const confirmStore = {
 	state: reactive({ ..._initialState }),
 
 	reset() {
