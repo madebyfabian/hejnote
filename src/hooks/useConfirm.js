@@ -1,29 +1,48 @@
-import { watch } from 'vue'
-import { confirmStore } from '@/store/confirmStore' 
+import { computed, reactive, watch } from 'vue'
 
+const _initalState = {
+	isVisible: false,
+  question: null,
+  title: null,
+  answer: null,
+}
+
+const state = reactive({..._initalState})
 
 export default function useConfirm() {
-	const confirm = ({ question, title }) => new Promise(resolve => {
-		confirmStore.state.isVisible = true
-		confirmStore.state.question = question
-		confirmStore.state.title = title
+	const doConfirm = ({ question, title }) => new Promise(resolve => {
+		state.isVisible = true
+		state.question = question
+		state.title = title
 
-		const stopWatcher = watch(() => confirmStore.state.answer, ( newAnswer ) => {
+		const stopWatcher = watch(() => state.answer, ( newAnswer ) => {
 			if (newAnswer !== null) {
 				const answer = newAnswer
-				confirmStore.reset()
+				_reset()
 				stopWatcher()
 				resolve(answer)
 			}	
 		})
 	})
 
-	const answer = answer => {
-		confirmStore.state.answer = answer
+	const doAnswer = answer => {
+		state.answer = answer
 	}
 
+	const _reset = () => {
+		Object.assign(state, _initalState)
+	}
+
+
 	return {
-		confirm,
-		answer
+		// State
+		isVisible: 	computed(() => state.isVisible),
+		question: 	computed(() => state.question),
+		title: 			computed(() => state.title),
+		answer: 		computed(() => state.answer),
+
+		// Methods
+		doConfirm,
+		doAnswer
 	}
 }

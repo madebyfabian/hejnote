@@ -46,7 +46,7 @@
 	}
 
 	const handleNoteHideAction = async () => {
-		const answer = await useConfirm().confirm({ 
+		const answer = await useConfirm().doConfirm({ 
 			title: `${ props.note.is_hidden ? 'Make this note visible again' : 'Hide this note' }?`,
 			question: 'You can always undo this at anytime.' 
 		})
@@ -64,7 +64,7 @@
 	}
 
 	const handleNoteFullyDelete = async () => {
-		const answer = await useConfirm().confirm({ 
+		const answer = await useConfirm().doConfirm({ 
 			title: 'Delete this note permanently?',
 			question: 'Do you want to delete this note permanently?<br>You can\'t undo this.' 
 		})

@@ -5,7 +5,7 @@ export default async ( to, from, next ) => {
 				toIsHidden = to.params.isHiddenMode === 'hidden'
 
 	if (!fromIsHidden && toIsHidden) {
-		const answer = await useConfirm().confirm({ 
+		const answer = await useConfirm().doConfirm({ 
 			title: 'Open the hidden Collections?',
 			question: 'This will give you access to all your hidden collections until you refresh the page.' 
 		})
