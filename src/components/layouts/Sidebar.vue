@@ -6,11 +6,11 @@
 				All Notes
 			</SidebarItem>
 
-			<template v-if="store.state.collections.length">
+			<template v-if="collectionsStore.state.collections.length">
 				<SidebarSubheadline>{{ isHiddenMode ? 'Hidden ' : null }}Collections</SidebarSubheadline>
 
 				<SidebarItem 
-					v-for="collection of store.state.collections" :key="collection.id"
+					v-for="collection of collectionsStore.state.collections" :key="collection.id"
 					:to="{ name: 'App-Collection', params: { ...params, collectionId: collection.id } }">
 
 					{{ collection.title }}
@@ -49,7 +49,7 @@
 
 <script setup>
 	import { computed } from 'vue'
-	import { store } from '@/store'
+	import { collectionsStore } from '@/store/collectionsStore'
 	import { useRoute, useRouter } from 'vue-router'
 	import useIsHiddenMode from '@/hooks/useIsHiddenMode'
 	import Switch from '@/components/Switch.vue'

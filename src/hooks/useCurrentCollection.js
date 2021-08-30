@@ -1,10 +1,10 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { store } from '@/store'
+import { collectionsStore } from '@/store/collectionsStore' 
 
 export default function useCurrentCollection() {
 	return computed(() => {
 		const collectionId = useRoute().params.collectionId
-		return store.collectionFindById({ collectionId })
+		return collectionsStore.collectionFindById({ collectionId })
 	})
 }

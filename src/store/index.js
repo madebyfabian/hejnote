@@ -11,29 +11,9 @@ export const store = {
    */
   state: reactive({
     links: [],
-    collections: [],
     joinNotesCollections: [],
     joinNotesLinks: [],
   }),
-
-
-  /**
-   * Collections
-   */
-  async collectionsFetch() {
-    const { data, error } = await supabase
-      .from('collections')
-      .select('*')
-
-    if (error) 
-      console.error(error)
-
-    this.state.collections = data
-  },
-
-  collectionFindById({ collectionId }) {
-    return this.state.collections.find(collection => collection.id === collectionId)
-  },
 
 
   /**

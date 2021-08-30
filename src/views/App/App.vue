@@ -19,6 +19,7 @@
 	import { store } from '@/store'
 	import { notesStore } from '@/store/notesStore'
 	import { generalStore } from '@/store/generalStore'
+	import { collectionsStore } from '@/store/collectionsStore'
 
 	// Components
 	import Header from '@/components/layouts/Header.vue'
@@ -46,7 +47,7 @@
 		// Load all app data
 		await Promise.all([
 			notesStore.notesFetch(),
-			store.collectionsFetch(),
+			collectionsStore.collectionsFetch(),
 			store.joinNotesCollectionsFetch(),
 			store.joinNotesLinksFetch(),
 			store.linksFetch(),
