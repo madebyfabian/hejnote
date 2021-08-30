@@ -23,6 +23,7 @@
 	import { ref, reactive, watch, onUnmounted, nextTick, computed } from 'vue'
 	import { debounce } from 'vue-debounce'
 	import { store } from '@/store'
+	import { storeGeneral } from '@/store/general'
 	import { noteEditorContentDefault } from '@/utils/constants'
 	import RichtextEditor from '@/components/RichtextEditor.vue'
 	import Button from '@/components/Button.vue'
@@ -122,6 +123,6 @@
 	}
 
 	onUnmounted(() => {
-		store.state.editNoteId = null
+		storeGeneral.closeNoteEditor()
 	})
 </script>

@@ -19,6 +19,7 @@
 <script setup>
 	import { computed, nextTick, ref, watch } from 'vue'
 	import { store } from '@/store'
+	import { storeGeneral } from '@/store/general'
 	import { noteEditorContentDefault } from '@/utils/constants'
 	import RichtextEditor from '@/components/RichtextEditor.vue'
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
@@ -44,10 +45,7 @@
 		if (clickedActionBar || clickedLinkListEl || selectedSomething || clickedLink)
 			return 
 
-		store.state.editNoteId = props.note.id
-		nextTick(() => {
-			store.state.editNoteModalVisible = true
-		})
+		storeGeneral.openNoteEditor({ editNoteId: props.note.id })
 	}
 </script>
 

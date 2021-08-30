@@ -1,5 +1,6 @@
 import { computed, reactive } from 'vue'
 import { storeSnackbar } from '@/store/snackbar' 
+import { storeGeneral } from '@/store/general'
 import useSupabase from '@/hooks/useSupabase'
 import useIsHiddenMode from '@/hooks/useIsHiddenMode'
 
@@ -12,18 +13,11 @@ export const store = {
    * Default State
    */
   state: reactive({
-    // Data
     notes: [],
     links: [],
     collections: [],
     joinNotesCollections: [],
     joinNotesLinks: [],
-
-    // UI
-    user: undefined,
-    isAppLoading: true,
-    editNoteId: null,
-    editNoteModalVisible: false,
   }),
 
   _handleError(error) {
@@ -80,7 +74,7 @@ export const store = {
 
     const { data: rowsArr, error } = await supabase
       .from('notes')
-      .insert([{ ...newVal, owner_id: this.state.user.id }])
+      .insert([{ ...newVal, owner_id: storeGeneral.state.user.id }])
     if (error) console.error(error)
     
     // Update local store
@@ -122,7 +116,7 @@ export const store = {
         .from('notes')
         .upsert(newVals.map(newVal => ({
           ...newVal,
-          owner_id: this.state.user.id
+          owner_id: storeGeneral.state.user.id
         })))
       if (error) throw error
 
@@ -140,7 +134,7 @@ export const store = {
       // Set deleted_at to now in database
       await this.notesUpdateSingle({ noteId, newVal: { deleted_at } })
 
-      // Notify user
+      // Notify
       const index = this._findIndexById({ id: noteId, data: this.state.notes })
       const noteData = this.state.notes[index]
       storeSnackbar.createSnackbar({ 
@@ -267,7 +261,7 @@ export const store = {
       .from('join_notes_links')
       .insert(newVals.map(newVal => ({
         ...newVal,
-        owner_id: this.state.user.id
+        owner_id: storeGeneral.state.user.id
       })))
 
     if (error)
@@ -337,7 +331,7 @@ export const store = {
         url: newVal,
         title: metadata?.title || null,
         banner_url: metadata?.banner || null,
-        owner_id: this.state.user.id
+        owner_id: storeGeneral.state.user.id
       })
     }
 

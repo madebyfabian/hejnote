@@ -1,7 +1,7 @@
 <template>
 	<router-view v-slot="{ Component }">
 		<transition name="transition-fade-100">
-			<div v-if="!store.state.isAppLoading">
+			<div v-if="!storeGeneral.state.isAppLoading">
 				<Header />
 				<Sidebar />
 				<main class="container">
@@ -17,6 +17,7 @@
 	import { useRouter, useRoute } from 'vue-router'
 	import useSupabase from '@/hooks/useSupabase'
 	import { store } from '@/store'
+	import { storeGeneral } from '@/store/general'
 
 	// Components
 	import Header from '@/components/layouts/Header.vue'
@@ -31,12 +32,12 @@
 	const router = useRouter()
 
 	onMounted(async () => {
-		store.state.user = useSupabase().auth.user()
+		storeGeneral.updateUser({ user: useSupabase().auth.user() })
 
 		// React to auth state changes
 		useSupabase().auth.onAuthStateChange((_, session) => {
       if (session?.user) 
-        store.state.user = session.user
+				storeGeneral.updateUser({ user: session.user })
       else
         return router.push({ name: 'Auth' })
     })
@@ -50,6 +51,6 @@
 			store.linksFetch(),
 		])
 
-		store.state.isAppLoading = false
+		storeGeneral.updateIsAppLoading(false)
 	})
 </script>
