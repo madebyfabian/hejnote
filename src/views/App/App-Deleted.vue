@@ -4,10 +4,10 @@
 
 <script setup>
   import { computed } from 'vue'
-  import { store } from '@/store'
+  import { notesStore } from '@/store/notesStore'
   import NoteList from '@/components/NoteList.vue'
 
 	const notes = computed(() => {
-		return store.notesFilter({ showDeleted: true })
+		return notesStore.notesFilter({ showDeleted: true })
 	})
 </script>

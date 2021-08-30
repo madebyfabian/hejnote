@@ -17,6 +17,7 @@
 	import { useRouter, useRoute } from 'vue-router'
 	import useSupabase from '@/hooks/useSupabase'
 	import { store } from '@/store'
+	import { notesStore } from '@/store/notesStore'
 	import { generalStore } from '@/store/generalStore'
 
 	// Components
@@ -44,7 +45,7 @@
 
 		// Load all app data
 		await Promise.all([
-			store.notesFetch(),
+			notesStore.notesFetch(),
 			store.collectionsFetch(),
 			store.joinNotesCollectionsFetch(),
 			store.joinNotesLinksFetch(),

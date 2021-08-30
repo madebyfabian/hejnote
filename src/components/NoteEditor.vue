@@ -23,6 +23,7 @@
 	import { ref, reactive, watch, onUnmounted, nextTick, computed } from 'vue'
 	import { debounce } from 'vue-debounce'
 	import { store } from '@/store'
+	import { notesStore } from '@/store/notesStore'
 	import { generalStore } from '@/store/generalStore'
 	import { noteEditorContentDefault } from '@/utils/constants'
 	import RichtextEditor from '@/components/RichtextEditor.vue'
@@ -53,10 +54,10 @@
 	const _handleDataChange = async () => {
 		if (note.id) {
 			// When existing note data is being updated
-			store.notesUpdateSingle({ noteId: note.id, newVal: note, updateState: false })
+			notesStore.notesUpdateSingle({ noteId: note.id, newVal: note, updateState: false })
 		} else {
 			// When note is being freshly created right at this moment
-			const noteData = await store.notesInsertSingle({ newVal: note, updateState: false })
+			const noteData = await notesStore.notesInsertSingle({ newVal: note, updateState: false })
 			note.id = noteData.id
 		}
 
@@ -78,7 +79,7 @@
 
 		// Fetch the final row and add it to store
 		try {
-			await store.notesFetchSingle({ noteId: note.id })
+			await notesStore.notesFetchSingle({ noteId: note.id })
 
 			// Close the modal
 			emit('isFinished')

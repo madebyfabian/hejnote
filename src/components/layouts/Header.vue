@@ -48,7 +48,7 @@
 
 <script setup>
 	import { computed, ref } from 'vue'
-	import { store } from '@/store'
+	import { notesStore } from '@/store/notesStore'
 	import { generalStore } from '@/store/generalStore'
 
 	// Import Components
@@ -63,6 +63,6 @@
 	})
 
 	const editNote = computed(() => {
-		return store.notesFilter({ noteId: generalStore.state.editNoteId })
+		return notesStore.notesFilter({ noteId: generalStore.state.editNoteId })
 	})
 </script>

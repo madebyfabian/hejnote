@@ -32,6 +32,7 @@
 	import { nextTick } from 'vue'
 	import useConfirm from '@/hooks/useConfirm'
 	import { store } from '@/store'
+	import { notesStore } from '@/store/notesStore' 
 	import useSupabase from '@/hooks/useSupabase'
 	import RichtextEditor from '@/components/RichtextEditor.vue'
 	
@@ -42,7 +43,7 @@
 	})
 
 	const handleNotePinAction = () => {
-		store.notesUpdateSingle({ noteId: props.note.id, newVal: { is_pinned: !props.note.is_pinned } })
+		notesStore.notesUpdateSingle({ noteId: props.note.id, newVal: { is_pinned: !props.note.is_pinned } })
 	}
 
 	const handleNoteHideAction = async () => {
@@ -52,15 +53,15 @@
 		})
 
 		if (answer == true)
-			store.notesUpdateSingle({ noteId: props.note.id, newVal: { is_hidden: !props.note.is_hidden } })
+			notesStore.notesUpdateSingle({ noteId: props.note.id, newVal: { is_hidden: !props.note.is_hidden } })
 	}
 
 	const handleNoteMoveToDeleted = () => {
-		store.notesUpdateSingleDeletedState({ noteId: props.note.id, deleted_at: new Date() })
+		notesStore.notesUpdateSingleDeletedState({ noteId: props.note.id, deleted_at: new Date() })
 	}
 
 	const handleNoteMoveOutOfDeleted = () => {
-		store.notesUpdateSingleDeletedState({ noteId: props.note.id, deleted_at: null })
+		notesStore.notesUpdateSingleDeletedState({ noteId: props.note.id, deleted_at: null })
 	}
 
 	const handleNoteFullyDelete = async () => {
@@ -70,6 +71,6 @@
 		})
 
 		if (answer == true) 
-			store.notesDeleteSingle({ noteId: props.note.id })
+			notesStore.notesDeleteSingle({ noteId: props.note.id })
 	}
 </script>
