@@ -22,9 +22,7 @@
 <script setup>
 	import { ref, reactive, watch, onUnmounted, nextTick, computed } from 'vue'
 	import { debounce } from 'vue-debounce'
-	import { linksStore } from '@/store/linksStore'
-	import { notesStore } from '@/store/notesStore'
-	import { generalStore } from '@/store/generalStore'
+	import { generalStore, linksStore, notesStore } from '@/store'
 	import { noteEditorContentDefault } from '@/utils/constants'
 	import RichtextEditor from '@/components/RichtextEditor.vue'
 	import Button from '@/components/Button.vue'

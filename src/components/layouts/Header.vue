@@ -48,8 +48,7 @@
 
 <script setup>
 	import { computed, ref } from 'vue'
-	import { notesStore } from '@/store/notesStore'
-	import { generalStore } from '@/store/generalStore'
+	import { notesStore, generalStore } from '@/store'
 
 	// Import Components
 	import Avatar from '@/components/Avatar.vue'

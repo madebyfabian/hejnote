@@ -4,7 +4,7 @@
 
 <script setup>
   import { computed } from 'vue'
-  import { notesStore } from '@/store/notesStore'
+  import { notesStore } from '@/store'
   import NoteList from '@/components/NoteList.vue'
 
 	const notes = computed(() => {

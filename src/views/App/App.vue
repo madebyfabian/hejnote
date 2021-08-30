@@ -17,12 +17,14 @@
 	import { useRouter, useRoute } from 'vue-router'
 	import useSupabase from '@/hooks/useSupabase'
 
-	import { notesStore } from '@/store/notesStore'
-	import { generalStore } from '@/store/generalStore'
-	import { collectionsStore } from '@/store/collectionsStore'
-	import { linksStore } from '@/store/linksStore'
-	import { joinNotesCollectionsStore } from '@/store/joinNotesCollectionsStore'
-	import { joinNotesLinksStore } from '@/store/joinNotesLinksStore'
+	import { 
+		notesStore, 
+		generalStore, 
+		collectionsStore, 
+		linksStore, 
+		joinNotesCollectionsStore, 
+		joinNotesLinksStore 
+	} from '@/store'
 
 	// Components
 	import Header from '@/components/layouts/Header.vue'

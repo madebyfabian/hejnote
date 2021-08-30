@@ -1,6 +1,6 @@
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
-import { collectionsStore } from '@/store/collectionsStore' 
+import { collectionsStore } from '@/store' 
 
 export default function useCurrentCollection() {
 	return computed(() => {

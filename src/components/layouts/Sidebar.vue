@@ -49,7 +49,7 @@
 
 <script setup>
 	import { computed } from 'vue'
-	import { collectionsStore } from '@/store/collectionsStore'
+	import { collectionsStore } from '@/store'
 	import { useRoute, useRouter } from 'vue-router'
 	import useIsHiddenMode from '@/hooks/useIsHiddenMode'
 	import Switch from '@/components/Switch.vue'

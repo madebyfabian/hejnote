@@ -24,7 +24,7 @@
 
 <script setup>
 	import { computed } from 'vue'
-	import { linksStore } from '@/store/linksStore'
+	import { linksStore } from '@/store'
 
 	const props = defineProps({
 		noteId: { type: String, required: true },

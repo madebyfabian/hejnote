@@ -18,7 +18,7 @@
 
 <script setup>
 	import { computed, nextTick, ref, watch } from 'vue'
-	import { generalStore } from '@/store/generalStore'
+	import { generalStore } from '@/store'
 	import { noteEditorContentDefault } from '@/utils/constants'
 	import RichtextEditor from '@/components/RichtextEditor.vue'
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
