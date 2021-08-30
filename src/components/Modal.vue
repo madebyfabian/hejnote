@@ -1,7 +1,7 @@
 <template>
 	<transition name="transition-modalSlideIn">
 		<CFocusLock v-if="isOpened">
-			<div class="Modal" @mousedown.self="$emit('close')">
+			<div class="Modal" @mousedown.self="emit('close')">
 				<div 
 					class="Modal-container"
 					:class="{ hasPadding }"
@@ -9,7 +9,7 @@
 					aria-modal="true">
 					
 					<div class="absolute right-5 top-5">
-						<Button @click="$emit('close')" isIconOnly buttonType="secondary">
+						<Button @click="emit('close')" isIconOnly buttonType="secondary">
 							<IconClose />
 						</Button>
 					</div>
@@ -35,6 +35,8 @@
 	import { IconClose } from '@/components/icons'
 	import { CFocusLock } from '@chakra-ui/c-focus-lock'
 
+	const emit = defineEmits([ 'close' ])
+
 	const slots = useSlots()
 	const hasBottomBar = ref(false)
 	if (slots.bottomBar)
@@ -48,7 +50,8 @@
 	})
 
 	const handler = (e) => {
-		console.log(e)
+		if (e.key.toUpperCase() === 'ESCAPE')
+			emit('close')
 	}
 
 	document.addEventListener('keydown', handler)
