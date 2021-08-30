@@ -1,8 +1,8 @@
 <template>
 	<transition name="transition-modalSlideIn">
-    <div class="Modal" v-if="isOpened" @mousedown.self="$emit('close')">
-      <focus-trap :active="isOpened">
-        <div 
+		<CFocusLock v-if="isOpened">
+			<div class="Modal" @mousedown.self="$emit('close')">
+				<div 
 					class="Modal-container"
 					:class="{ hasPadding }"
 					role="dialog"
@@ -23,16 +23,17 @@
 					<div class="Modal-bottomBar" v-if="hasBottomBar" >
 						<slot name="bottomBar" />
 					</div>
-        </div>
-      </focus-trap>
-    </div>
+				</div>
+			</div>
+		</CFocusLock>
   </transition>
 </template>
 
 <script setup>
-	import { useSlots, ref } from 'vue'
+	import { useSlots, ref, onUnmounted } from 'vue'
 	import Button from '@/components/Button.vue'
 	import { IconClose } from '@/components/icons'
+	import { CFocusLock } from '@chakra-ui/c-focus-lock'
 
 	const slots = useSlots()
 	const hasBottomBar = ref(false)
@@ -44,6 +45,15 @@
 		hasPadding: { type: Boolean, default: true },
 		title: { type: String, required: true },
 		displayTitle: { type: Boolean, default: true },
+	})
+
+	const handler = (e) => {
+		console.log(e)
+	}
+
+	document.addEventListener('keydown', handler)
+	onUnmounted(() => {
+		document.removeEventListener('keydown', handler)
 	})
 </script>
 

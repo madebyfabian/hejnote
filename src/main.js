@@ -12,10 +12,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 const router = createRouter({ history: createWebHistory(), routes })
 app.use(router)
 
-// Focus-Trap
-import { FocusTrap } from 'focus-trap-vue'
-app.component('FocusTrap', FocusTrap)
-
 // Masonry grid
 import masonry from 'vue-next-masonry'
 app.use(masonry)

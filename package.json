@@ -7,6 +7,7 @@
     "serve": "vite preview"
   },
   "dependencies": {
+    "@chakra-ui/c-focus-lock": "^0.1.0-alpha.4",
     "@supabase/supabase-js": "^1.22.2",
     "@tiptap/extension-bullet-list": "^2.0.0-beta.15",
     "@tiptap/extension-link": "^2.0.0-beta.19",
@@ -16,8 +17,6 @@
     "@tiptap/starter-kit": "^2.0.0-beta.98",
     "@tiptap/vue-3": "^2.0.0-beta.53",
     "dayjs": "^1.10.6",
-    "focus-trap": "^6.6.1",
-    "focus-trap-vue": "^3.2.1",
     "vue": "^3.2.4",
     "vue-debounce": "^3.0.1",
     "vue-next-masonry": "^1.1.3",
