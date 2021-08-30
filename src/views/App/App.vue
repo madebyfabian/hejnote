@@ -16,10 +16,13 @@
 	import { onMounted } from 'vue'
 	import { useRouter, useRoute } from 'vue-router'
 	import useSupabase from '@/hooks/useSupabase'
+
 	import { notesStore } from '@/store/notesStore'
 	import { generalStore } from '@/store/generalStore'
 	import { collectionsStore } from '@/store/collectionsStore'
 	import { linksStore } from '@/store/linksStore'
+	import { joinNotesCollectionsStore } from '@/store/joinNotesCollectionsStore'
+	import { joinNotesLinksStore } from '@/store/joinNotesLinksStore'
 
 	// Components
 	import Header from '@/components/layouts/Header.vue'
@@ -47,8 +50,8 @@
 		// Load all app data
 		await Promise.all([
 			notesStore.notesFetch(),
-			notesStore.joinNotesCollectionsFetch(),
-			notesStore.joinNotesLinksFetch(),
+			joinNotesCollectionsStore.joinNotesCollectionsFetch(),
+			joinNotesLinksStore.joinNotesLinksFetch(),
 			collectionsStore.collectionsFetch(),
 			linksStore.linksFetch(),
 		])

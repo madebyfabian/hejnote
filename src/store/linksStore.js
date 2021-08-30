@@ -1,8 +1,8 @@
 import { reactive } from 'vue'
-import { generalStore } from '@/store/generalStore'
-import { notesStore } from '@/store/notesStore'
-
 import useSupabase from '@/hooks/useSupabase'
+
+import { generalStore } from '@/store/generalStore'
+import { joinNotesLinksStore } from '@/store/joinNotesLinksStore'
 
 const supabase = useSupabase()
 
@@ -12,7 +12,7 @@ export const linksStore = {
   }),
 
   _findLinksByNoteId({ noteId }) {
-    const joins = notesStore.state.joinNotesLinks.filter(join => join.note_id === noteId)
+    const joins = joinNotesLinksStore.state.joinNotesLinks.filter(join => join.note_id === noteId)
     return joins.map(join => {
       return this.state.links.find(link => link.id === join.link_id)
     })
@@ -80,12 +80,12 @@ export const linksStore = {
 
     // Then, if there are some new joins to insert, do it.
     if (preparedJoins.length !== 0) {
-      notesStore.joinNotesLinksInsert({ newVals: preparedJoins })
+      joinNotesLinksStore.joinNotesLinksInsert({ newVals: preparedJoins })
     }
   },
 
   async linksDelete({ urlArray, noteId }) {
-    await notesStore.joinNotesLinksDelete({ urlArray, noteId })
+    await joinNotesLinksStore.joinNotesLinksDelete({ urlArray, noteId })
 
     // Delete all joins for this note
     const { error } = await supabase
