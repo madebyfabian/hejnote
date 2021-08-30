@@ -54,6 +54,11 @@
 
 		&-container {
 			@apply bg-gray-800 relative flex flex-col w-full overflow-hidden max-w-sm rounded-2xl z-0 overflow-y-auto;
+
+			/* Golden Ratio */
+			@apply absolute;
+			top: 23.6%; 
+			
 			max-height: calc(100% - 5rem - 5rem);
 			-webkit-overflow-scrolling: touch;
 

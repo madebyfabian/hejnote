@@ -43,7 +43,7 @@
 
 <style lang="postcss" scoped>
 	.Sidebar {
-		@apply absolute left-0 flex flex-col justify-between h-96;
+		@apply fixed left-0 flex flex-col justify-between h-96;
 	}
 </style>
 
