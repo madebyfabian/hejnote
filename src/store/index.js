@@ -1,4 +1,4 @@
-import { computed, reactive } from 'vue'
+import { reactive } from 'vue'
 import { snackbarStore } from '@/store/snackbarStore' 
 import { generalStore } from '@/store/generalStore'
 import useSupabase from '@/hooks/useSupabase'
