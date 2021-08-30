@@ -101,9 +101,9 @@ export const linksStore = {
       .from('links')
       .delete()
       .in('id', linkIdsToDelete)
-    if (error) console.error(error)
+    if (error) return console.error(error)
 
     // Remove deleted links from state
-    this.state.links = this.state.links.filter(link => !urlArray.includes(link.url))
+    this.state.links = this.state.links.filter(link => !linkIdsToDelete.includes(link.id))
   },
 }
