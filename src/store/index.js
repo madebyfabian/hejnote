@@ -3,6 +3,7 @@ import { storeSnackbar } from '@/store/snackbar'
 import { storeGeneral } from '@/store/general'
 import useSupabase from '@/hooks/useSupabase'
 import useIsHiddenMode from '@/hooks/useIsHiddenMode'
+import handleError from '@/utils/handleError'
 
 const supabase = useSupabase(),
       isHiddenMode = useIsHiddenMode()
@@ -19,11 +20,6 @@ export const store = {
     joinNotesCollections: [],
     joinNotesLinks: [],
   }),
-
-  _handleError(error) {
-    storeSnackbar.createSnackbar({ message: error.message })
-    console.error(error)
-  },
 
   _findIndexById({ data, id }) {
     return data.findIndex(obj => obj !== undefined && obj.id === id)
@@ -104,7 +100,7 @@ export const store = {
         this.state.notes[index] = newData
       }
     } catch (error) {
-      this._handleError(error)
+      handleError(error)
     }
   },
 
@@ -125,7 +121,7 @@ export const store = {
       })
 
     } catch (error) {
-      this._handleError(error)
+      handleError(error)
     }
   },
 
@@ -147,7 +143,7 @@ export const store = {
       })
       
     } catch (error) {
-      this._handleError(error)
+      handleError(error)
     }
   },
 
@@ -165,7 +161,7 @@ export const store = {
       storeSnackbar.createSnackbar({ message: `Deleted note ${ noteData.title && `<b>"${ noteData.title }"</b>` }` })
     
     } catch (error) {
-      this._handleError(error)
+      handleError(error)
     }
   },
 
