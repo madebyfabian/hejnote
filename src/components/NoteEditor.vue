@@ -23,7 +23,7 @@
 	import { ref, reactive, watch, onUnmounted, nextTick, computed } from 'vue'
 	import { debounce } from 'vue-debounce'
 	import { store } from '@/store'
-	import { storeGeneral } from '@/store/general'
+	import { generalStore } from '@/store/generalStore'
 	import { noteEditorContentDefault } from '@/utils/constants'
 	import RichtextEditor from '@/components/RichtextEditor.vue'
 	import Button from '@/components/Button.vue'
@@ -123,6 +123,6 @@
 	}
 
 	onUnmounted(() => {
-		storeGeneral.closeNoteEditor()
+		generalStore.closeNoteEditor()
 	})
 </script>

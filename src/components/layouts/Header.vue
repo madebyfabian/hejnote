@@ -33,14 +33,14 @@
 	</Modal>
 
 	<Modal 
-		:isOpened="storeGeneral.state.editNoteModalVisible" 
-		@close="() => storeGeneral.closeNoteEditor()" 
+		:isOpened="generalStore.state.editNoteModalVisible" 
+		@close="() => generalStore.closeNoteEditor()" 
 		:hasPadding="false" 
 		title="Edit note" 
 		:displayTitle="false">
 
 		<NoteEditor 
-			@isFinished="() => storeGeneral.closeNoteEditor()" 
+			@isFinished="() => generalStore.closeNoteEditor()" 
 			:note="editNote" 
 		/>
 	</Modal>
@@ -49,7 +49,7 @@
 <script setup>
 	import { computed, ref } from 'vue'
 	import { store } from '@/store'
-	import { storeGeneral } from '@/store/general'
+	import { generalStore } from '@/store/generalStore'
 
 	// Import Components
 	import Avatar from '@/components/Avatar.vue'
@@ -59,10 +59,10 @@
 	const isAddNoteModalOpened = ref(false)
 
 	const userName = computed(() => {
-		return storeGeneral.state.user?.user_metadata?.name || storeGeneral.state.user?.email;
+		return generalStore.state.user?.user_metadata?.name || generalStore.state.user?.email;
 	})
 
 	const editNote = computed(() => {
-		return store.notesFilter({ noteId: storeGeneral.state.editNoteId })
+		return store.notesFilter({ noteId: generalStore.state.editNoteId })
 	})
 </script>

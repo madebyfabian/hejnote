@@ -1,6 +1,6 @@
 import { computed, reactive } from 'vue'
 import { snackbarStore } from '@/store/snackbarStore' 
-import { storeGeneral } from '@/store/general'
+import { generalStore } from '@/store/generalStore'
 import useSupabase from '@/hooks/useSupabase'
 import useIsHiddenMode from '@/hooks/useIsHiddenMode'
 import handleError from '@/utils/handleError'
@@ -70,7 +70,7 @@ export const store = {
 
     const { data: rowsArr, error } = await supabase
       .from('notes')
-      .insert([{ ...newVal, owner_id: storeGeneral.state.user.id }])
+      .insert([{ ...newVal, owner_id: generalStore.state.user.id }])
     if (error) console.error(error)
     
     // Update local store
@@ -112,7 +112,7 @@ export const store = {
         .from('notes')
         .upsert(newVals.map(newVal => ({
           ...newVal,
-          owner_id: storeGeneral.state.user.id
+          owner_id: generalStore.state.user.id
         })))
       if (error) throw error
 
@@ -257,7 +257,7 @@ export const store = {
       .from('join_notes_links')
       .insert(newVals.map(newVal => ({
         ...newVal,
-        owner_id: storeGeneral.state.user.id
+        owner_id: generalStore.state.user.id
       })))
 
     if (error)
@@ -327,7 +327,7 @@ export const store = {
         url: newVal,
         title: metadata?.title || null,
         banner_url: metadata?.banner || null,
-        owner_id: storeGeneral.state.user.id
+        owner_id: generalStore.state.user.id
       })
     }
 

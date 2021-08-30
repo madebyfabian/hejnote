@@ -19,7 +19,7 @@
 <script setup>
 	import { computed, nextTick, ref, watch } from 'vue'
 	import { store } from '@/store'
-	import { storeGeneral } from '@/store/general'
+	import { generalStore } from '@/store/generalStore'
 	import { noteEditorContentDefault } from '@/utils/constants'
 	import RichtextEditor from '@/components/RichtextEditor.vue'
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
@@ -45,7 +45,7 @@
 		if (clickedActionBar || clickedLinkListEl || selectedSomething || clickedLink)
 			return 
 
-		storeGeneral.openNoteEditor({ editNoteId: props.note.id })
+		generalStore.openNoteEditor({ editNoteId: props.note.id })
 	}
 </script>
 
