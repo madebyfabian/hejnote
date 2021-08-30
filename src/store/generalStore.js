@@ -1,6 +1,6 @@
 import { reactive, nextTick } from 'vue'
 
-export const generalStore = {
+export default {
 	state: reactive({
 		user: undefined,
     isAppLoading: true,

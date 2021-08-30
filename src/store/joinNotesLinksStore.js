@@ -1,10 +1,11 @@
 import { reactive } from 'vue'
-import { generalStore } from '@/store/generalStore'
 import useSupabase from '@/hooks/useSupabase'
+
+import generalStore from '@/store/generalStore'
 
 const supabase = useSupabase()
 
-export const joinNotesLinksStore = {
+export default {
   state: reactive({
     joinNotesLinks: [],
   }),

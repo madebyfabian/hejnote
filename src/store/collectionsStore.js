@@ -3,7 +3,7 @@ import useSupabase from '@/hooks/useSupabase'
 
 const supabase = useSupabase()
 
-export const collectionsStore = {
+export default {
 	state: reactive({
 		collections: [],
 	}),

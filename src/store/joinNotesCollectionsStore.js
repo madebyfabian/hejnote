@@ -3,7 +3,7 @@ import useSupabase from '@/hooks/useSupabase'
 
 const supabase = useSupabase()
 
-export const joinNotesCollectionsStore = {
+export default {
   state: reactive({
     joinNotesCollections: [],
   }),
