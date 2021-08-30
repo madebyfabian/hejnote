@@ -5,7 +5,8 @@ import useIsHiddenMode from '@/hooks/useIsHiddenMode'
 import handleError from '@/utils/handleError'
 
 import { generalStore } from '@/store/generalStore'
-import { joinNotesCollectionsStore } from './joinNotesCollectionsStore'
+import { joinNotesCollectionsStore } from '@/store/joinNotesCollectionsStore'
+import { linksStore } from '@/store/linksStore'
 
 const supabase = useSupabase(),
 			isHiddenMode = useIsHiddenMode()
@@ -129,6 +130,9 @@ export const notesStore = {
 
   async notesDeleteSingle({ noteId }) {
     try {
+      // Delete link joins and their links first.
+      await linksStore.linksDelete({ noteId })
+      
       // Delete from database
       const { error } = await supabase.from('notes').delete().eq('id', noteId)
       if (error) throw error

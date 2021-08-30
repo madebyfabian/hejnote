@@ -85,13 +85,22 @@ export const linksStore = {
   },
 
   async linksDelete({ urlArray, noteId }) {
-    await joinNotesLinksStore.joinNotesLinksDelete({ urlArray, noteId })
+    let linkIdsToDelete = await joinNotesLinksStore.joinNotesLinksDelete({ urlArray, noteId })
 
-    // Delete all joins for this note
+    // Now we have to delete the links from the DB.
+    // To avoid some supabase errors, we need to check if they are used by other joinNotesLinks.
+    const linkIdsNotToDelete = joinNotesLinksStore.state.joinNotesLinks
+      .filter(join => linkIdsToDelete.includes(join.link_id))
+      .map(join => join.link_id)
+
+    // Then filter the links to delete with the ones that are not to be deleted.
+    linkIdsToDelete = linkIdsToDelete.filter(linkId => !linkIdsNotToDelete.includes(linkId))
+    
+    // Delete the joins from the DB
     const { error } = await supabase
       .from('links')
       .delete()
-      .in('url', urlArray)
+      .in('id', linkIdsToDelete)
     if (error) console.error(error)
 
     // Remove deleted links from state

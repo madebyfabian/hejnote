@@ -39,23 +39,50 @@ export const joinNotesLinksStore = {
   },
 
   async joinNotesLinksDelete({ urlArray, noteId }) {
-    // Get all link.id's for this note
-    const linksRes = await supabase
-      .from('links')
-      .select()
-      .in('url', urlArray)
-    if (linksRes.error) return console.error(linksRes.error)
-    const linkIds = linksRes.data.map(dataItem => dataItem.id)
+    let linkIdsToDelete = []
 
-    // Delete all joins for this note
-    const { error } = await supabase
-      .from('join_notes_links')
-      .delete()
-      .eq('note_id', noteId)
-      .in('link_id', linkIds)
-    if (error) console.error(error)
+    // If urlArray is defined, only delete those for noteId. If not, delete all.
+    if (urlArray) {
+      // Get all link.id's for this note
+      const linksRes = await supabase
+        .from('links')
+        .select()
+        .in('url', urlArray)
+
+      if (linksRes.error) 
+        return console.error(linksRes.error)
+
+      linkIdsToDelete = linksRes.data.map(dataItem => dataItem.id)
+
+      // Delete all joins for this note that contain these link.id's
+      const { error } = await supabase
+        .from('join_notes_links')
+        .delete()
+        .eq('note_id', noteId)
+        .in('link_id', linkIdsToDelete)
+
+      if (error) 
+        return console.error(error)
+
+    } else {
+      // Delete all joins for this note.
+      const { data, error } = await supabase
+        .from('join_notes_links')
+        .delete()
+        .eq('note_id', noteId)
+
+      if (error) 
+        return console.error(error)
+
+      linkIdsToDelete = data.map(dataItem => dataItem.link_id)
+    }
 
     // Remove deleted joins from state
-    this.state.joinNotesLinks = this.state.joinNotesLinks.filter(join => !linkIds.includes(join.link_id))
+    this.state.joinNotesLinks.forEach(( join, index ) => {
+      if (join.note_id === noteId && linkIdsToDelete.includes(join.link_id))
+        this.state.joinNotesLinks.splice(index, 1)
+    })
+
+    return linkIdsToDelete
   },
 }
