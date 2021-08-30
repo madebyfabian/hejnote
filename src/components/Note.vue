@@ -10,7 +10,7 @@
 			<Note-ActionBar :note="note" />
 		</div>
 
-		<div ref="noteLinkListEl" class="mt-4 -m-2">
+		<div v-if="noteLinks.length" ref="noteLinkListEl" class="mt-4 -m-2">
 			<Note-LinkList :noteId="note.id" />
 		</div>
 	</article>
@@ -18,7 +18,7 @@
 
 <script setup>
 	import { computed, nextTick, ref, watch } from 'vue'
-	import { generalStore } from '@/store'
+	import { generalStore, linksStore } from '@/store'
 	import { noteEditorContentDefault } from '@/utils/constants'
 	import RichtextEditor from '@/components/RichtextEditor.vue'
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
@@ -32,6 +32,7 @@
 
 	const noteContentIsEmpty = computed(() => JSON.stringify(noteEditorContentDefault) === JSON.stringify(props.note.content))
 	const noteTitleLabel = computed(() => `Note with title "${ props.note.title }"`)
+	const noteLinks = computed(() => linksStore._findLinksByNoteId({ noteId: props.note.id }))
 	const noteActionBarEl = ref(null),
 				noteLinkListEl = ref(null)
 

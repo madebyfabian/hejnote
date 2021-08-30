@@ -12,7 +12,7 @@
 				<Button type="submit">Save</Button>
 			</div>
 
-			<div class="m-2">
+			<div v-if="noteLinks.length" class="m-2">
 				<Note-LinkList :noteId="note.id" />
 			</div>
 		</form>
@@ -47,6 +47,7 @@
 		linksStore._findLinksByNoteId({ noteId: note.id }).map(link => link.url)
 	))
 
+	const noteLinks = computed(() => linksStore._findLinksByNoteId({ noteId: props.noteId }))
 	const shouldHandleFormSaveOnNextChange = ref(false)
 
 	const _handleDataChange = async () => {
