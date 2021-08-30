@@ -277,12 +277,22 @@ export const store = {
       console.error(error)
 
     this.state.joinNotesLinks.push(...data)
-
-    console.log('joinNotesLinksInsert success', data);
   },
 
-  async joinNotesLinksDeleteById({ joinNotesLinksIdArray }) {
-    console.log('joinNotesLinksDeleteById');
+  async joinNotesLinksDelete({ urlArray, noteId }) {
+    // Get all link.id's for this note
+    const linkIds = urlArray.map(url => (this.state.links.find(link => link.url === url)).id)
+
+    // Delete all joins for this note
+    const { error } = await supabase
+      .from('join_notes_links')
+      .delete()
+      .eq('note_id', noteId)
+      .in('link_id', linkIds)
+    if (error) console.error(error)
+
+    // Remove deleted joins from state
+    this.state.joinNotesLinks = this.state.joinNotesLinks.filter(join => !linkIds.includes(join.link_id))
   },
 
 
@@ -300,17 +310,14 @@ export const store = {
     this.state.links = data
   },
 
-  /**
-   * @param {array<string>} newVals Array of strings with new links 
-   */
-  async linksInsert({ newVals, noteId = null }) {
+  async linksInsert({ urlArray = [], noteId = null }) {
     // Update existing links
     await this.linksFetch()
 
     // Prepare new links
     const preparedData = [],
           preparedJoins = []
-    for (const newVal of newVals) {
+    for (const newVal of urlArray) {
       const existingLink = this.state.links.find(link => link.url === newVal)
       if (existingLink) {
         preparedJoins.push({ note_id: noteId, link_id: existingLink.id })
@@ -358,12 +365,18 @@ export const store = {
     }
   },
 
-  /**
-   * @param {array<string>} vals Array of strings with links to delete from note.
-   * @param {string} noteId Note ID to delete links from.
-   */
-  async linksDelete({ vals, noteId }) {
-    console.log('linksDelete', { vals, noteId });
+  async linksDelete({ urlArray, noteId }) {
+    await this.joinNotesLinksDelete({ urlArray, noteId })
+
+    // Delete all joins for this note
+    const { error } = await supabase
+      .from('links')
+      .delete()
+      .in('url', urlArray)
+    if (error) console.error(error)
+
+    // Remove deleted links from state
+    this.state.links = this.state.links.filter(link => !urlArray.includes(link.url))
   },
 
 

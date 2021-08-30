@@ -43,19 +43,11 @@
 		is_hidden: 	props.note?.is_hidden || false,
 	})
 
-	const links = reactive(new Set())
-	const _links_cloned = computed(() => JSON.parse(JSON.stringify([ ...links ]))) // Deep clone for watcher to work.
+	const lastLinkSet = reactive(new Set(
+		store._findLinksByNoteId({ noteId: note.id }).map(link => link.url)
+	))
+
 	const shouldHandleFormSaveOnNextChange = ref(false)
-
-	watch(_links_cloned, async ( newVal, oldVal ) => {
-		const linksToAdd = newVal.filter(link => !oldVal.includes(link))
-		if (linksToAdd.length) 
-			store.linksInsert({ newVals: linksToAdd, noteId: note.id })
-
-		const linksToDelete = oldVal.filter(link => !newVal.includes(link))
-		if (linksToDelete.length)
-			store.linksDelete({ vals: linksToDelete, noteId: note.id })
-	})
 
 	const _handleDataChange = async () => {
 		if (note.id) {
@@ -67,12 +59,7 @@
 			note.id = noteData.id
 		}
 
-		// Search for links
-		// First, clear the links set
-		links.clear()
-
-		// Then, search for links recursively and add them to the set
-		buildSetOfLinks(note.content?.content)
+		updateLinks()
 
 		if (shouldHandleFormSaveOnNextChange.value) 
 			handleFormSave()
@@ -100,17 +87,38 @@
 		}
 	}
 
+	const updateLinks = () => {
+		// Search for links
+		let links = buildSetOfLinks(note.content?.content)
+
+		const newVal = [...links],
+					oldVal = [...lastLinkSet]
+
+		const linksToAdd = newVal.filter(link => !oldVal.includes(link))
+		if (linksToAdd.length) 
+			store.linksInsert({ urlArray: linksToAdd, noteId: note.id })
+
+		const linksToDelete = oldVal.filter(link => !newVal.includes(link))
+		if (linksToDelete.length)
+			store.linksDelete({ urlArray: linksToDelete, noteId: note.id })
+
+		lastLinkSet.clear()
+		links.forEach(setValue => lastLinkSet.add(setValue))
+	}
+
 	const buildSetOfLinks = content => {
+		let linkSet = new Set()
 		for (const obj of content) {
 			if (obj?.type === 'text') {
 				const linkMark = obj?.marks?.find(mark => mark?.type === 'link')
 				if (linkMark) 
-					links.add(linkMark.attrs.href)
+					linkSet.add(linkMark.attrs.href)
 			}
 
-			if (obj?.content)
-				buildSetOfLinks(obj?.content)
+			if (obj?.content) 
+				buildSetOfLinks(obj?.content).forEach(setValue => linkSet.add(setValue))
 		}
+		return linkSet
 	}
 
 	onUnmounted(() => {
