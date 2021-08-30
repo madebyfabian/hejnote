@@ -33,6 +33,7 @@
 	onMounted(async () => {
 		store.state.user = useSupabase().auth.user()
 
+		// React to auth state changes
 		useSupabase().auth.onAuthStateChange((_, session) => {
       if (session?.user) 
         store.state.user = session.user
@@ -40,10 +41,13 @@
         return router.push({ name: 'Auth' })
     })
 
+		// Load all app data
 		await Promise.all([
 			store.notesFetch(),
 			store.collectionsFetch(),
-			store.joinNotesCollectionsFetch()
+			store.joinNotesCollectionsFetch(),
+			store.joinNotesLinksFetch(),
+			store.linksFetch(),
 		])
 
 		store.state.isAppLoading = false

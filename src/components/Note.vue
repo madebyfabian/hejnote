@@ -1,15 +1,17 @@
 <template>
 	<article @click="handleNoteEdit" tabindex="0" class="Note group" :aria-label="noteTitleLabel">
-	
 		<h3 v-if="note.title" v-text="note.title" @click="handleNoteEdit" class="mb-3" />
 		<RichtextEditor v-if="!noteContentIsEmpty" v-model="note.content" isReadonly class="mb-3" />
 	
-		<div class="
+		<div ref="noteActionBarEl" class="
 			w-fit ml-auto -mb-2 -mr-2
-			transition opacity-0 group-focus:opacity-100 group-focus-within:opacity-100 group-hover:opacity-100"
-			ref="noteActionBarEl">
+			transition opacity-0 group-focus:opacity-100 group-focus-within:opacity-100 group-hover:opacity-100">
 	
-			<NoteActionBar :note="note" />
+			<Note-ActionBar :note="note" />
+		</div>
+
+		<div ref="noteLinkListEl" class="mt-4 -m-2">
+			<Note-LinkList :noteId="note.id" />
 		</div>
 	</article>
 </template>
@@ -22,6 +24,7 @@
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
 	import Button from '@/components/Button.vue'
 	import NoteEditor from '@/components/NoteEditor.vue'
+	import NoteLinkList from '@/components/Note-LinkList.vue'
 	
 	const props = defineProps({
 		note: { required: true },
@@ -29,14 +32,16 @@
 
 	const noteContentIsEmpty = computed(() => JSON.stringify(noteEditorContentDefault) === JSON.stringify(props.note.content))
 	const noteTitleLabel = computed(() => `Note with title "${ props.note.title }"`)
-	const noteActionBarEl = ref(null)
+	const noteActionBarEl = ref(null),
+				noteLinkListEl = ref(null)
 
 	const handleNoteEdit = e => {
 		const clickedActionBar = e.path.includes(noteActionBarEl?.value),
+					clickedLinkListEl = e.path.includes(noteLinkListEl?.value),
 					selectedSomething = window.getSelection().type === 'Range',
 					clickedLink = e.target.tagName === 'A'
 
-		if (clickedActionBar || selectedSomething || clickedLink)
+		if (clickedActionBar || clickedLinkListEl || selectedSomething || clickedLink)
 			return 
 
 		store.state.editNoteId = props.note.id

@@ -21,8 +21,10 @@ export const store = {
     user: undefined,
     isAppLoading: true,
     notes: [],
+    links: [],
     collections: [],
     joinNotesCollections: [],
+    joinNotesLinks: [],
     editNoteId: null,
     editNoteModalVisible: false
   }),
@@ -30,6 +32,17 @@ export const store = {
   _handleError(error) {
     storeSnackbar.createSnackbar({ message: error.message })
     console.error(error)
+  },
+
+  _findIndexById({ data, id }) {
+    return data.findIndex(obj => obj !== undefined && obj.id === id)
+  },
+
+  _findLinksByNoteId({ noteId }) {
+    const joins = this.state.joinNotesLinks.filter(join => join.note_id === noteId)
+    return joins.map(join => {
+      return this.state.links.find(link => link.id === join.link_id)
+    })
   },
 
 
@@ -47,7 +60,7 @@ export const store = {
     this.state.notes = data
   },
 
-  async notesFetchSingle({ noteId, updateState = true }) {
+  async notesFetchSingle({ noteId }) {
     // First fetch from database
     const { data: rowsArr, error } = await supabase
       .from('notes')
@@ -56,13 +69,11 @@ export const store = {
     if (error) throw error
 
     // Update local state, Check if already in state
-    if (updateState) {
-      const index = this.notesFindIndex({ noteId })
-      if (index > -1)
-        this.notesUpdateSingle({ noteId, newVal: rowsArr[0] })
-      else
-        this.state.notes.push(rowsArr[0])
-    }
+    const index = this._findIndexById({ id: noteId, data: this.state.notes })
+    if (index > -1)
+      this.notesUpdateSingle({ noteId, newVal: rowsArr[0] })
+    else
+      this.state.notes.push(rowsArr[0])
   },
 
   async notesInsertSingle({ newVal, updateState = true }) {
@@ -97,7 +108,7 @@ export const store = {
 
       // Update local state
       if (updateState) {
-        const index = this.notesFindIndex({ noteId })
+        const index = this._findIndexById({ id: noteId, data: this.state.notes })
         const newData = { ...this.state.notes[index], ...newVal }
         this.state.notes[index] = newData
       }
@@ -106,7 +117,7 @@ export const store = {
     }
   },
 
-  async notesUpsert({ newVals, updateState = true }) {
+  async notesUpsert({ newVals }) {
     try {
       if (newVals.length === 0) return
 
@@ -127,43 +138,41 @@ export const store = {
     }
   },
 
-  async notesUpdateSingleDeletedState({ noteId, deleted_at = new Date(), updateState = true }) {
+  async notesUpdateSingleDeletedState({ noteId, deleted_at = new Date() }) {
     try {
       // Set deleted_at to now in database
-      await this.notesUpdateSingle({ noteId, newVal: { deleted_at }, updateState })
+      await this.notesUpdateSingle({ noteId, newVal: { deleted_at } })
 
       // Notify user
-      if (updateState) {
-        const index = this.notesFindIndex({ noteId })
-        const noteData = this.state.notes[index]
-        storeSnackbar.createSnackbar({ 
-          message: `Moved note ${ noteData.title && `<b>"${ noteData.title }"</b>` } ${ deleted_at == null ? 'out of the' : 'to the' } Trash.`,
-          buttonText: 'Undo',
-          onButtonClick: () => {
-            const newVal = { deleted_at: (deleted_at == null) ? new Date() : null }
-            this.notesUpdateSingle({ noteId, newVal })
-          }
-        })
-      }
+      const index = this._findIndexById({ id: noteId, data: this.state.notes })
+      const noteData = this.state.notes[index]
+      storeSnackbar.createSnackbar({ 
+        message: `Moved note ${ noteData.title && `<b>"${ noteData.title }"</b>` } ${ deleted_at == null ? 'out of the' : 'to the' } Trash.`,
+        buttonText: 'Undo',
+        onButtonClick: () => {
+          const newVal = { deleted_at: (deleted_at == null) ? new Date() : null }
+          this.notesUpdateSingle({ noteId, newVal })
+        }
+      })
+      
     } catch (error) {
       this._handleError(error)
     }
   },
 
-  async notesDeleteSingle({ noteId, updateState = true }) {
+  async notesDeleteSingle({ noteId }) {
     try {
       // Delete from database
       const { error } = await supabase.from('notes').delete().eq('id', noteId)
       if (error) throw error
 
       // Delete from state
-      if (updateState) {
-        const index = this.notesFindIndex({ noteId })
-        const noteData = this.state.notes[index]
-        delete this.state.notes[index]
+      const index = this._findIndexById({ id: noteId, data: this.state.notes })
+      const noteData = this.state.notes[index]
+      delete this.state.notes[index]
 
-        storeSnackbar.createSnackbar({ message: `Deleted note ${ noteData.title && `<b>"${ noteData.title }"</b>` }` })
-      }
+      storeSnackbar.createSnackbar({ message: `Deleted note ${ noteData.title && `<b>"${ noteData.title }"</b>` }` })
+    
     } catch (error) {
       this._handleError(error)
     }
@@ -200,9 +209,7 @@ export const store = {
     return notes
   },
 
-  notesFindIndex({ noteId }) {
-    return this.state.notes.findIndex(note => note !== undefined && note.id === noteId)
-  },
+  
 
 
   /**
@@ -236,6 +243,127 @@ export const store = {
       console.error(error)
 
     this.state.joinNotesCollections = data
+  },
+
+
+  /**
+   * Join Notes Links
+   */
+  async joinNotesLinksFetch() {
+    const { data, error } = await supabase
+      .from('join_notes_links')
+      .select('*')
+
+    if (error)
+      console.error(error)
+
+    this.state.joinNotesLinks = data
+  },
+
+  async joinNotesLinksInsert({ newVals }) {
+    await this.joinNotesLinksFetch()
+
+    // Filter out duplicates
+    newVals = newVals.filter(newVal => !this.state.joinNotesLinks.find(join => join.note_id === newVal.note_id && join.link_id === newVal.link_id))
+
+    const { data, error } = await supabase
+      .from('join_notes_links')
+      .insert(newVals.map(newVal => ({
+        ...newVal,
+        owner_id: this.state.user.id
+      })))
+
+    if (error)
+      console.error(error)
+
+    this.state.joinNotesLinks.push(...data)
+
+    console.log('joinNotesLinksInsert success', data);
+  },
+
+  async joinNotesLinksDeleteById({ joinNotesLinksIdArray }) {
+    console.log('joinNotesLinksDeleteById');
+  },
+
+
+  /**
+   * Links
+   */
+  async linksFetch() {
+    const { data, error } = await supabase
+      .from('links')
+      .select('*')
+
+    if (error)
+      console.error(error)
+
+    this.state.links = data
+  },
+
+  /**
+   * @param {array<string>} newVals Array of strings with new links 
+   */
+  async linksInsert({ newVals, noteId = null }) {
+    // Update existing links
+    await this.linksFetch()
+
+    // Prepare new links
+    const preparedData = [],
+          preparedJoins = []
+    for (const newVal of newVals) {
+      const existingLink = this.state.links.find(link => link.url === newVal)
+      if (existingLink) {
+        preparedJoins.push({ note_id: noteId, link_id: existingLink.id })
+        continue
+      }
+      
+      // Fetch metadata
+      let metadata
+      try {
+        const metadataAPIUrl = 'https://netlify-functions-madebyfabian.netlify.app/.netlify/functions/meta-fetcher?url=' + newVal
+        const metadataRes = await fetch(metadataAPIUrl)
+        const json = await metadataRes.json()
+        metadata = json?.metadata
+
+      } catch (error) {
+        console.error(error)
+      }
+
+      preparedData.push({
+        url: newVal,
+        title: metadata?.title || null,
+        banner_url: metadata?.banner || null,
+        owner_id: this.state.user.id
+      })
+    }
+
+    // If there are new links to insert into the DB, do this first.
+    if (preparedData.length !== 0) {
+      // Insert into database
+      const { data, error } = await supabase
+        .from('links')
+        .insert(preparedData)
+      if (error) console.error(error)
+
+      // Update local state
+      this.state.links.push(...data)
+
+      // Update joins
+      preparedJoins.push(...data.map(link => ({ note_id: noteId, link_id: link.id })))
+    }
+
+    // Then, if there are some new joins to insert, do this.
+    if (preparedJoins.length !== 0) {
+      this.joinNotesLinksInsert({ newVals: preparedJoins })
+    }
+  },
+
+  /**
+   * @param {array<string>} vals Array of strings with links to delete from note.
+   * @param {string} noteId Note ID to delete links from.
+   */
+  async linksDelete({ vals, noteId }) {
+    console.log('linksDelete', { vals, noteId });
   },
 
 
