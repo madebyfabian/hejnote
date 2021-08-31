@@ -14,7 +14,7 @@
 				</div>
 
 				<div class="p-3 overflow-hidden">
-					<h4 class="line-clamp-1">{{ link.title }}</h4>
+					<h4 class="line-clamp-2">{{ link.title }}</h4>
 					<p class="text-050 uppercase text-gray-500">{{ generateUrlTitle(link.url) }}</p>
 				</div>
 			</a>
