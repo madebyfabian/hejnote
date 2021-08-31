@@ -106,4 +106,26 @@ export default {
     // Remove deleted links from state
     this.state.links = this.state.links.filter(link => !linkIdsToDelete.includes(link.id))
   },
+
+  async linksDeleteV2({ noteIds }) {
+    // First, get all the joins that will be deleted.
+    const joinsToDelete = joinNotesLinksStore.state.joinNotesLinks.filter(join => noteIds.includes(join.note_id))
+    
+    // Then, get all the links that should be deleted.
+    const linksToDelete = this.state.links.filter(link => joinsToDelete.some(join => join.link_id === link.id))
+    const linkIdsNotToDelete = joinNotesLinksStore.state.joinNotesLinks
+      .filter(join => !noteIds.includes(join.note_id))
+      .map(join => join.link_id)
+    const linkIdsToDelete = linksToDelete.filter(link => !linkIdsNotToDelete.includes(link.id)).map(link => link.id)
+
+    // Delete all joins
+    await joinNotesLinksStore.joinNotesLinksDeleteV2({ joinsToDelete }) 
+
+    // Delete all links
+    const { error } = await supabase
+      .from('links')
+      .delete()
+      .in('id', linkIdsToDelete)
+    if (error) console.error(error)
+  },
 }

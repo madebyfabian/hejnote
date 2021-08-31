@@ -1,11 +1,18 @@
 <template>
 	<div class="NoteList">
 		<div class="NoteList-heading">
-			<h1 v-text="title" />
-			<Badge v-if="isHiddenMode || collection?.id">
-				{{ isHiddenMode ? 'Hidden' : null }}
-				{{ collection?.id ? 'Collection' : null }}
-			</Badge>
+			<div class="flex items-center">
+				<h1 v-text="title" />
+				<Badge v-if="isHiddenMode || collection?.id">
+					{{ isHiddenMode ? 'Hidden' : null }}
+					{{ collection?.id ? 'Collection' : null }}
+				</Badge>
+				<slot name="heading-left" />
+			</div>
+
+			<div>
+				<slot name="heading-right" />
+			</div>
 		</div>
 
 		<template v-if="pinnedNotes.length || otherNotes.length">
@@ -69,7 +76,7 @@
 		@apply px-5;
 
 		&-heading {
-			@apply flex items-center mb-8;
+			@apply flex items-center justify-between mb-8;
 
 			:deep(h1) {
 				@apply mr-3;

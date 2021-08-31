@@ -6,6 +6,7 @@
 		isIconOnly && 'isIconOnly',
 		hideBorder && 'hideBorder',
 		fitToArea && 'fitToArea',
+		noPadding && 'noPadding',
 		noRoundedBorder && 'noRoundedBorder',
 	]">
 
@@ -20,6 +21,7 @@
 		hideBorder:				{ type: Boolean, default: false },
 		noRoundedBorder: 	{ type: Boolean, default: false },
 		fitToArea: 				{ type: Boolean, default: false },
+		noPadding: 				{ type: Boolean, default: false },
 	})
 </script>
 
@@ -72,6 +74,10 @@
 
 		&.noRoundedBorder {
 			@apply rounded-none;
+		}
+
+		&.noPadding {
+			@apply p-0;
 		}
 	}
 </style>

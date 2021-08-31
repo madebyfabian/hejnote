@@ -86,4 +86,17 @@ export default {
 
     return linkIdsToDelete
   },
+
+  async joinNotesLinksDeleteV2({ joinsToDelete }) {
+    const joinIdsToDelete = joinsToDelete.map(join => join.id)
+
+    // Delete all defined joins.
+    const { data, error } = await supabase
+      .from('join_notes_links')
+      .delete()
+      .in('id', joinIdsToDelete)
+    if (error) return console.error(error)
+
+    this.state.joinNotesLinks = this.state.joinNotesLinks.filter(join => !joinIdsToDelete.includes(join.id))
+  }
 }

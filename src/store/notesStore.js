@@ -149,6 +149,25 @@ export default {
     }
   },
 
+  async deleteNotesV2({ noteIds }) {
+    try {
+      // Delete link joins and their links first.
+      await linksStore.linksDeleteV2({ noteIds })
+
+      // Delete from database
+      const { error } = await supabase.from('notes').delete().in('id', noteIds)
+      if (error) throw error
+
+      // Delete from state
+      this.state.notes = this.state.notes.filter(note => !noteIds.includes(note.id))
+
+      useSnackbar().createSnackbar({ message: `Deleted ${ noteIds.length } note${ noteIds.length === 1 ? '' : 's' }` })
+    
+    } catch (error) {
+      handleError(error)
+    }
+  },
+
   notesFilter({ noteId = null, collectionId = null, showDeleted = false } = {}) {
     let notes = this.state.notes.filter(note => note !== undefined)
 
