@@ -66,10 +66,10 @@
 
 <style lang="postcss" scoped>
 	.NoteList {
-		@apply px-4;
+		@apply px-5;
 
 		&-heading {
-			@apply flex items-center mx-4 mb-8;
+			@apply flex items-center mb-8;
 
 			:deep(h1) {
 				@apply mr-3;
@@ -77,11 +77,11 @@
 		}
 
 		&-sectionTitle {
-			@apply m-4 mt-8;
+			@apply my-4 mt-8;
 		}
 
 		&-emptyState {
-			@apply text-gray-500 text-150 select-none mx-4;
+			@apply text-gray-500 text-150 select-none;
 		}
 	}
 </style>
