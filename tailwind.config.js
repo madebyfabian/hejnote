@@ -48,6 +48,7 @@ module.exports = {
       },
       transitionProperty: {
         'transform-bg': 'transform, background-color',
+        'max-height': 'max-height',
       },
       transitionDuration: {
         '225': '225ms',
@@ -66,6 +67,9 @@ module.exports = {
       },
       width: {
         'fit': 'fit-content',
+      },
+      maxHeight: {
+        'none': 'none',
       }
     },
   },

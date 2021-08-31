@@ -1,26 +1,46 @@
 <template>
-	<article>
-		<form @submit.prevent="shouldHandleFormSaveOnNextChange = true">
-			<input 
-				v-model="note.title" type="text" placeholder="New note" 
-				class="p-6 pr-20 pb-2 text-150 text-gray-300 font-semibold bg-transparent w-full placeholder-gray-500 outline-none"
-			/>
+	<div ref="NoteEditor" v-click-outside="handleClickOutside">
+		<article 
+			class="transition-transform duration-150" 
+			:class="{ 'transform-gpu -translate-y-12 delay-100': displayMinimized }">
 
-			<RichtextEditor v-model="note.content" />
+			<form @submit.prevent="shouldHandleFormSaveOnNextChange = true">
+				<div class="transition-opacity duration-300 opacity-0" :class="{ 'opacity-100': !displayMinimized }">
+					<input 
+						v-model="note.title" type="text" placeholder="New note" 
+						class="p-5 pr-20 pb-2 text-150 text-gray-300 font-semibold bg-transparent w-full placeholder-gray-500 outline-none"
+					/>
+				</div>
 
-			<div class="flex justify-end p-4 pt-0">
-				<Button type="submit">Save</Button>
+				<RichtextEditor 
+					v-model="note.content" 
+					@editorFocus="val => emit('editorFocus', val)"
+					:key="richtextEditorKey"
+				/>
+
+				<div v-if="displayInModal" class="flex justify-end p-4 pt-0">
+					<Button type="submit" buttonType="secondary">Create Note</Button>
+				</div>
+
+				<div v-if="noteLinks.length" class="m-2">
+					<Note-LinkList :noteId="note.id" />
+				</div>
+			</form>
+		</article>
+
+		<div v-if="!displayInModal" class="h-14">
+			<div 
+				class="flex justify-end pt-0 p-3 opacity-0 transition transform-gpu" 
+				:class="displayMinimized ? 'duration-300 opacity-0 -translate-y-3' : 'duration-500 opacity-100 -translate-y-0'">
+
+				<Button buttonType="secondary">Close</Button>
 			</div>
-
-			<div v-if="noteLinks.length" class="m-2">
-				<Note-LinkList :noteId="note.id" />
-			</div>
-		</form>
-	</article>
+		</div>
+	</div>
 </template>
 
 <script setup>
-	import { ref, reactive, watch, onUnmounted, nextTick, computed } from 'vue'
+	import { ref, reactive, watch, onUnmounted, computed } from 'vue'
 	import { debounce } from 'vue-debounce'
 	import { generalStore, linksStore, notesStore } from '@/store'
 	import { noteEditorContentDefault } from '@/utils/constants'
@@ -29,19 +49,23 @@
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
 	import NoteLinkList from '@/components/Note-LinkList.vue'
 
-	const emit = defineEmits(['isFinished'])
+	const emit = defineEmits([ 'isFinished', 'editorFocus' ])
 
 	const props = defineProps({
-		note: { type: [ Object ], default: {} }
+		note: 						{ type: [ Object ], default: {} },
+		displayMinimized: { type: Boolean, default: false },
+		displayInModal: 	{ type: Boolean, default: false },	
 	})
-
-	const note = reactive({
+	
+	const _note_defaults = {
 		id: 				props.note?.id || null,
 		title: 			props.note?.title || '',
 		content: 		props.note?.content || noteEditorContentDefault,
 		is_pinned: 	props.note?.is_pinned || false,
 		is_hidden: 	props.note?.is_hidden || false,
-	})
+	}
+
+	const note = reactive({ ..._note_defaults })
 
 	const lastLinkSet = reactive(new Set(
 		linksStore._findLinksByNoteId({ noteId: note.id }).map(link => link.url)
@@ -49,8 +73,10 @@
 
 	const noteLinks = computed(() => linksStore._findLinksByNoteId({ noteId: props.noteId }))
 	const shouldHandleFormSaveOnNextChange = ref(false)
+	const richtextEditorKey = ref(0)
 
 	const _handleDataChange = async () => {
+		console.log('_handleDataChange', note);
 		if (note.id) {
 			// When existing note data is being updated
 			notesStore.notesUpdateSingle({ noteId: note.id, newVal: note, updateState: false })
@@ -76,12 +102,19 @@
 	const handleFormSave = async () => {
 		shouldHandleFormSaveOnNextChange.value = false
 
-		// Fetch the final row and add it to store
 		try {
-			await notesStore.notesFetchSingle({ noteId: note.id })
+			// Fetch the final row and add it to store
+			if (note.id)
+				await notesStore.notesFetchSingle({ noteId: note.id })
 
 			// Close the modal
 			emit('isFinished')
+
+			// Reset note store
+			Object.assign(note, _note_defaults)
+
+			// Re-mount richtext editor component
+			richtextEditorKey.value++
 
 		} catch (error) {
 			console.error('error caused by notesFetchSingle', error)
@@ -120,6 +153,11 @@
 				buildSetOfLinks(obj?.content).forEach(setValue => linkSet.add(setValue))
 		}
 		return linkSet
+	}
+	
+	const handleClickOutside = () => {
+		if (!props.displayMinimized)
+			handleFormSave()
 	}
 
 	onUnmounted(() => {

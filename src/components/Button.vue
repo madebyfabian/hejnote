@@ -6,6 +6,7 @@
 		isIconOnly && 'isIconOnly',
 		hideBorder && 'hideBorder',
 		fitToArea && 'fitToArea',
+		noRoundedBorder && 'noRoundedBorder',
 	]">
 
 		<slot />
@@ -14,10 +15,11 @@
 
 <script setup>
 	defineProps({
-		buttonType:	{ type: String, default: 'primary', validate: val => [ 'primary', 'secondary', 'tertiary' ].includes(val) },
-		isIconOnly:	{ type: Boolean, default: false },
-		hideBorder:	{ type: Boolean, default: false },
-		fitToArea: 	{ type: Boolean, default: false },
+		buttonType:				{ type: String, default: 'primary', validate: val => [ 'primary', 'secondary', 'tertiary' ].includes(val) },
+		isIconOnly:				{ type: Boolean, default: false },
+		hideBorder:				{ type: Boolean, default: false },
+		noRoundedBorder: 	{ type: Boolean, default: false },
+		fitToArea: 				{ type: Boolean, default: false },
 	})
 </script>
 
@@ -66,6 +68,10 @@
 
 		&.fitToArea {
 			@apply h-auto px-3;
+		}
+
+		&.noRoundedBorder {
+			@apply rounded-none;
 		}
 	}
 </style>

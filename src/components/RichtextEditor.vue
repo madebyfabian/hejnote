@@ -18,16 +18,22 @@
 	import Link from '@tiptap/extension-link'
 
 	const props = defineProps({
-		modelValue: { type: [ String, Object ], default: '' },
-		isReadonly: { type: Boolean, default: false },
+		modelValue:	{ type: [ String, Object ], default: '' },
+		isReadonly:	{ type: Boolean, default: false },
 	})
 
-	const emit = defineEmits([ 'update:modelValue' ])
+	const emit = defineEmits([ 'update:modelValue', 'editorFocus' ])
 
 	const editor = useEditor({
 		content: props.modelValue,
 		onUpdate: () => {
 			emit('update:modelValue', editor.value.getJSON())
+		},
+		onFocus: () => {
+			emit('editorFocus', false)
+		},
+		onBlur: () => {
+			emit('editorFocus', true)
 		},
 		extensions: [
 			StarterKit,
@@ -62,7 +68,7 @@
 
 		:deep(&-content) {
 			[contenteditable] {
-        @apply p-6 pt-2 pb-8 outline-none;
+        @apply p-5 py-3 pb-8 outline-none;
         overflow-wrap: break-word;
         word-wrap: break-word;
         word-break: break-word;
