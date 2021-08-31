@@ -9,7 +9,7 @@
 				rel="noopener noreferrer nofollow">
 
 				<div
-					class="w-16 bg-gray-600 bg-cover bg-center flex-shrink-0"
+					class="w-20 bg-gray-600 bg-cover bg-center flex-shrink-0"
 					:style="generateBannerStyle(link?.banner_url)">
 				</div>
 

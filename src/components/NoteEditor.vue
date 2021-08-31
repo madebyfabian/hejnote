@@ -80,7 +80,6 @@
 	 * Methods
 	 */
 	const _handleDataChange = async () => {
-		console.log('_handleDataChange', note);
 		if (note.id) {
 			// When existing note data is being updated
 			notesStore.notesUpdateSingle({ noteId: note.id, newVal: note, updateState: false })
