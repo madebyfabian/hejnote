@@ -1,5 +1,5 @@
 <template>
-	<div ref="NoteEditor" v-click-outside="handleClickOutside">
+	<div class="NoteEditor z-50" v-click-outside="handleClickOutside">
 		<article 
 			class="transition-transform duration-150" 
 			:class="{ 'transform-gpu -translate-y-12 delay-100': displayMinimized }">
@@ -19,7 +19,7 @@
 				/>
 
 				<div v-if="displayInModal" class="flex justify-end p-4 pt-0">
-					<Button type="submit" buttonType="secondary">Create Note</Button>
+					<Button type="submit" buttonType="secondary">Save</Button>
 				</div>
 
 				<div v-if="noteLinks.length" class="m-2">
@@ -33,14 +33,14 @@
 				class="flex justify-end pt-0 p-3 opacity-0 transition transform-gpu" 
 				:class="displayMinimized ? 'duration-300 opacity-0 -translate-y-3' : 'duration-500 opacity-100 -translate-y-0'">
 
-				<Button buttonType="secondary">Close</Button>
+				<Button buttonType="secondary" @click="handleClickOutside">Close</Button>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup>
-	import { ref, reactive, watch, onUnmounted, computed } from 'vue'
+	import { ref, reactive, watch, onUnmounted, computed, watchEffect } from 'vue'
 	import { debounce } from 'vue-debounce'
 	import { generalStore, linksStore, notesStore } from '@/store'
 	import { noteEditorContentDefault } from '@/utils/constants'
@@ -56,7 +56,8 @@
 		displayMinimized: { type: Boolean, default: false },
 		displayInModal: 	{ type: Boolean, default: false },	
 	})
-	
+
+	// Setup note data
 	const _note_defaults = {
 		id: 				props.note?.id || null,
 		title: 			props.note?.title || '',
@@ -64,17 +65,20 @@
 		is_pinned: 	props.note?.is_pinned || false,
 		is_hidden: 	props.note?.is_hidden || false,
 	}
-
 	const note = reactive({ ..._note_defaults })
 
-	const lastLinkSet = reactive(new Set(
-		linksStore._findLinksByNoteId({ noteId: note.id }).map(link => link.url)
-	))
-
-	const noteLinks = computed(() => linksStore._findLinksByNoteId({ noteId: props.noteId }))
+	// Setup note links
+	const noteLinks = computed(() => linksStore._findLinksByNoteId({ noteId: note.id }))
+	const lastLinkSet = reactive(new Set(noteLinks.value.map(link => link.url)))
+	
+	// Other refs
 	const shouldHandleFormSaveOnNextChange = ref(false)
 	const richtextEditorKey = ref(0)
 
+
+	/** 
+	 * Methods
+	 */
 	const _handleDataChange = async () => {
 		console.log('_handleDataChange', note);
 		if (note.id) {
@@ -93,7 +97,7 @@
 	}
 
 	// Watch for form data changes
-	watch(
+	let stopWatcher = watch(
 		[ note, shouldHandleFormSaveOnNextChange ], 
 		debounce(_handleDataChange, 300),
 		{ deep: true }
@@ -110,8 +114,18 @@
 			// Close the modal
 			emit('isFinished')
 
+	    // Stop watcher
+			stopWatcher()
+
 			// Reset note store
 			Object.assign(note, _note_defaults)
+
+			// Start watcher again
+			stopWatcher = watch(
+				[ note, shouldHandleFormSaveOnNextChange ], 
+				debounce(_handleDataChange, 300),
+				{ deep: true }
+			)
 
 			// Re-mount richtext editor component
 			richtextEditorKey.value++
@@ -119,6 +133,11 @@
 		} catch (error) {
 			console.error('error caused by notesFetchSingle', error)
 		}
+	}
+
+	const handleClickOutside = () => {
+		if (!props.displayMinimized)
+			handleFormSave()
 	}
 
 	const updateLinks = () => {
@@ -153,11 +172,6 @@
 				buildSetOfLinks(obj?.content).forEach(setValue => linkSet.add(setValue))
 		}
 		return linkSet
-	}
-	
-	const handleClickOutside = () => {
-		if (!props.displayMinimized)
-			handleFormSave()
 	}
 
 	onUnmounted(() => {

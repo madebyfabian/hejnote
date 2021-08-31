@@ -37,19 +37,6 @@
 	</header>
 
 	<Modal 
-		:isOpened="isAddNoteModalOpened"
-		@close="isAddNoteModalOpened = false" 
-		:hasPadding="false" 
-		title="New note" 
-		:displayTitle="false">
-
-		<NoteEditor 
-			displayInModal
-			@isFinished="isAddNoteModalOpened = false" 
-		/>
-	</Modal>
-
-	<Modal 
 		:isOpened="generalStore.state.editNoteModalVisible" 
 		@close="() => generalStore.closeNoteEditor()" 
 		:hasPadding="false" 
@@ -73,8 +60,7 @@
 	import Modal from '@/components/Modal.vue'
 	import NoteEditor from '@/components/NoteEditor.vue'
 
-	const isAddNoteModalOpened = ref(false),
-				displayMinimized = ref(true),
+	const displayMinimized = ref(true),
 				noteEditorEl = ref(null),
 				noteBarMaxHeight = ref(44)
 
