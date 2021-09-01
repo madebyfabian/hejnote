@@ -80,6 +80,7 @@
 	 * Methods
 	 */
 	const _handleDataChange = async () => {
+		console.log('_handleDataChange', note);
 		if (note.id) {
 			// When existing note data is being updated
 			notesStore.notesUpdateSingle({ noteId: note.id, newVal: note, updateState: false })
@@ -103,18 +104,19 @@
 	)
 
 	const handleFormSave = async () => {
+		console.log('handleFormSave');
 		shouldHandleFormSaveOnNextChange.value = false
 
 		try {
+			// Stop watcher
+			stopWatcher()
+
 			// Fetch the final row and add it to store
 			if (note.id)
 				await notesStore.notesFetchSingle({ noteId: note.id })
 
 			// Close the modal
 			emit('isFinished')
-
-	    // Stop watcher
-			stopWatcher()
 
 			// Reset note store
 			Object.assign(note, _note_defaults)
@@ -146,13 +148,15 @@
 		const newVal = [...links],
 					oldVal = [...lastLinkSet]
 
-		const linksToAdd = newVal.filter(link => !oldVal.includes(link))
-		if (linksToAdd.length) 
-			linksStore.linksInsert({ urlArray: linksToAdd, noteId: note.id })
+		const urlsToAdd = newVal.filter(url => !oldVal.includes(url))
+		if (urlsToAdd.length) {
+			linksStore.linksInsert({ urlArray: urlsToAdd, noteId: note.id })
+		}
 
-		const linksToDelete = oldVal.filter(link => !newVal.includes(link))
-		if (linksToDelete.length)
-			linksStore.linksDelete({ urlArray: linksToDelete, noteId: note.id })
+		const urlsToDelete = oldVal.filter(url => !newVal.includes(url))
+		if (urlsToDelete.length) {
+			linksStore.linksDeleteV2({ urlArray: urlsToDelete, noteIds: [ note.id ] })
+		}
 
 		lastLinkSet.clear()
 		links.forEach(setValue => lastLinkSet.add(setValue))

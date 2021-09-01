@@ -91,7 +91,7 @@ export default {
     const joinIdsToDelete = joinsToDelete.map(join => join.id)
 
     // Delete all defined joins.
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('join_notes_links')
       .delete()
       .in('id', joinIdsToDelete)

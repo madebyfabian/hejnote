@@ -27,7 +27,7 @@
 
 		if (answer == true) {
       const noteIds = notes.value?.map(note => note.id)
-      notesStore.deleteNotesV2({ noteIds })
+      notesStore.notesDeleteV2({ noteIds })
     }
   }
 </script>

@@ -18,6 +18,13 @@ export default {
     })
   },
 
+  _findLinksByNoteIdsV2({ noteIds }) {
+    const joins = joinNotesLinksStore.state.joinNotesLinks.filter(join => noteIds.includes(join.note_id))
+    return joins.map(join => {
+      return this.state.links.find(link => link.id === join.link_id)
+    })
+  },
+
   async linksFetch() {
     const { data, error } = await supabase
       .from('links')
@@ -107,25 +114,36 @@ export default {
     this.state.links = this.state.links.filter(link => !linkIdsToDelete.includes(link.id))
   },
 
-  async linksDeleteV2({ noteIds }) {
-    // First, get all the joins that will be deleted.
-    const joinsToDelete = joinNotesLinksStore.state.joinNotesLinks.filter(join => noteIds.includes(join.note_id))
-    
-    // Then, get all the links that should be deleted.
-    const linksToDelete = this.state.links.filter(link => joinsToDelete.some(join => join.link_id === link.id))
+  async linksDeleteV2({ urlArray, noteIds }) {
+    // First get all links of the notes
+    // if urlArray is defined, inlcude only those.
+    let linkIdsToDelete = this._findLinksByNoteIdsV2({ noteIds })
+      .filter(link => urlArray ? urlArray.includes(link.url) : true)
+      .map(link => link.id)
+
+    // Then find the joins to delete, only if the joins are
+    // - included in the noteIds array
+    // - and the urls are included in the urlArray
+    const joinsToDelete = joinNotesLinksStore.state.joinNotesLinks
+      .filter(join => noteIds.includes(join.note_id) && linkIdsToDelete.includes(join.link_id))
+
+    // Then, get all the links that should be deleted and are not used by other notes.
+    const linksToDelete = linkIdsToDelete.filter(linkId => joinsToDelete.some(join => join.link_id === linkId))
     const linkIdsNotToDelete = joinNotesLinksStore.state.joinNotesLinks
       .filter(join => !noteIds.includes(join.note_id))
       .map(join => join.link_id)
-    const linkIdsToDelete = linksToDelete.filter(link => !linkIdsNotToDelete.includes(link.id)).map(link => link.id)
+    linkIdsToDelete = linksToDelete.filter(linkId => !linkIdsNotToDelete.includes(linkId)).map(linkId => linkId)
 
     // Delete all joins
     await joinNotesLinksStore.joinNotesLinksDeleteV2({ joinsToDelete }) 
 
     // Delete all links
-    const { error } = await supabase
-      .from('links')
-      .delete()
-      .in('id', linkIdsToDelete)
-    if (error) console.error(error)
+    if (linkIdsToDelete.length) {
+      const { error } = await supabase
+        .from('links')
+        .delete()
+        .in('id', linkIdsToDelete)
+      if (error) console.error(error)
+    }
   },
 }

@@ -12,6 +12,7 @@
 							@editorFocus="() => toggleDisplayMinimized(false)"
 							@isFinished="() => toggleDisplayMinimized(true)"
 							v-bind="{ displayMinimized }"
+							:key="noteEditorKey"
 						/>
 					</div>
 				</div>
@@ -26,10 +27,16 @@
 
 	const displayMinimized = ref(true),
 				noteEditorEl = ref(null),
-				noteBarMaxHeight = ref(44)
+				noteBarMaxHeight = ref(44),
+				noteEditorKey = ref(0)
 
 	const toggleDisplayMinimized = (value) => {
 		const isMinimized = displayMinimized.value
+
+		// Remount component
+		if (isMinimized)
+			noteEditorKey.value++
+
 		noteBarMaxHeight.value = isMinimized ? 167 : noteEditorEl.value.scrollHeight - 1
 		displayMinimized.value = value
 	}

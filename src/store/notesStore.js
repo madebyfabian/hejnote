@@ -149,7 +149,7 @@ export default {
     }
   },
 
-  async deleteNotesV2({ noteIds }) {
+  async notesDeleteV2({ noteIds }) {
     try {
       // Delete link joins and their links first.
       await linksStore.linksDeleteV2({ noteIds })
