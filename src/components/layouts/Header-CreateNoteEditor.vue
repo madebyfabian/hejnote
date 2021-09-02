@@ -4,12 +4,12 @@
 			<div 
 				class="NoteBar absolute top-0 left-0 w-full bg-gray-800 rounded-xl border border-gray-700 overflow-hidden" 
 				:style="{ '--noteBar-max-height': `${ noteBarMaxHeight }px` }"
-				:class="{ displayMinimized }">
+				:class="{ displayMinimized }"
+				@click="toggleDisplayMinimized(false)">
 
 				<div class="-m-0.5">
 					<div ref="noteEditorEl">
 						<NoteEditor 
-							@editorFocus="() => toggleDisplayMinimized(false)"
 							@isFinished="() => toggleDisplayMinimized(true)"
 							v-bind="{ displayMinimized }"
 							:key="noteEditorKey"
@@ -31,10 +31,11 @@
 				noteEditorKey = ref(0)
 
 	const toggleDisplayMinimized = (value) => {
+		console.log('toggleDisplayMinimized');
 		const isMinimized = displayMinimized.value
 
 		// Remount component
-		if (isMinimized)
+		if (!isMinimized)
 			noteEditorKey.value++
 
 		noteBarMaxHeight.value = isMinimized ? 167 : noteEditorEl.value.scrollHeight - 1

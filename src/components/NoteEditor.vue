@@ -15,7 +15,6 @@
 				<RichtextEditor 
 					v-model="note.content" 
 					@editorFocus="val => emit('editorFocus', val)"
-					:key="richtextEditorKey"
 				/>
 
 				<div v-if="displayInModal" class="flex justify-end p-4 pt-0">
@@ -49,6 +48,8 @@
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
 	import NoteLinkList from '@/components/Note-LinkList.vue'
 
+	console.log('mounted NoteEditor.vue')
+
 	const emit = defineEmits([ 'isFinished', 'editorFocus' ])
 
 	const props = defineProps({
@@ -73,14 +74,12 @@
 	
 	// Other refs
 	const shouldHandleFormSaveOnNextChange = ref(false)
-	const richtextEditorKey = ref(0)
 
 
 	/** 
 	 * Methods
 	 */
 	const _handleDataChange = async () => {
-		console.log('_handleDataChange', note);
 		if (note.id) {
 			// When existing note data is being updated
 			notesStore.notesUpdateSingle({ noteId: note.id, newVal: note, updateState: false })
@@ -97,39 +96,21 @@
 	}
 
 	// Watch for form data changes
-	let stopWatcher = watch(
+	watch(
 		[ note, shouldHandleFormSaveOnNextChange ], 
 		debounce(_handleDataChange, 300),
 		{ deep: true }
 	)
 
 	const handleFormSave = async () => {
-		console.log('handleFormSave');
 		shouldHandleFormSaveOnNextChange.value = false
 
 		try {
-			// Stop watcher
-			stopWatcher()
-
 			// Fetch the final row and add it to store
 			if (note.id)
 				await notesStore.notesFetchSingle({ noteId: note.id })
 
-			// Close the modal
 			emit('isFinished')
-
-			// Reset note store
-			Object.assign(note, _note_defaults)
-
-			// Start watcher again
-			stopWatcher = watch(
-				[ note, shouldHandleFormSaveOnNextChange ], 
-				debounce(_handleDataChange, 300),
-				{ deep: true }
-			)
-
-			// Re-mount richtext editor component
-			richtextEditorKey.value++
 
 		} catch (error) {
 			console.error('error caused by notesFetchSingle', error)
@@ -178,6 +159,7 @@
 	}
 
 	onUnmounted(() => {
+		console.log('unmounted NoteEditor.vue');
 		generalStore.closeNoteEditor()
 	})
 </script>
