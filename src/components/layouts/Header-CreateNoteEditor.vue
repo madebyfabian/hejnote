@@ -5,7 +5,7 @@
 				class="NoteBar absolute top-0 left-0 w-full bg-gray-800 rounded-xl border border-gray-700 overflow-hidden" 
 				:style="{ '--noteBar-max-height': `${ noteBarMaxHeight }px` }"
 				:class="{ displayMinimized }"
-				@click="toggleDisplayMinimized(false)">
+				@click="handleOpenNoteEditor">
 
 				<div class="-m-0.5">
 					<div ref="noteEditorEl">
@@ -31,7 +31,6 @@
 				noteEditorKey = ref(0)
 
 	const toggleDisplayMinimized = (value) => {
-		console.log('toggleDisplayMinimized');
 		const isMinimized = displayMinimized.value
 
 		// Remount component
@@ -40,6 +39,13 @@
 
 		noteBarMaxHeight.value = isMinimized ? 167 : noteEditorEl.value.scrollHeight - 1
 		displayMinimized.value = value
+	}
+
+	const handleOpenNoteEditor = () => {
+		if (!displayMinimized.value)
+			return
+
+		toggleDisplayMinimized(false)
 	}
 </script>
 

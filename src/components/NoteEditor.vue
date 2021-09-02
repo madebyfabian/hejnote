@@ -12,10 +12,7 @@
 					/>
 				</div>
 
-				<RichtextEditor 
-					v-model="note.content" 
-					@editorFocus="val => emit('editorFocus', val)"
-				/>
+				<RichtextEditor v-model="note.content" />
 
 				<div v-if="displayInModal" class="flex justify-end p-4 pt-0">
 					<Button type="submit" buttonType="secondary">Save</Button>
@@ -48,9 +45,7 @@
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
 	import NoteLinkList from '@/components/Note-LinkList.vue'
 
-	console.log('mounted NoteEditor.vue')
-
-	const emit = defineEmits([ 'isFinished', 'editorFocus' ])
+	const emit = defineEmits([ 'isFinished' ])
 
 	const props = defineProps({
 		note: 						{ type: [ Object ], default: {} },
@@ -159,7 +154,6 @@
 	}
 
 	onUnmounted(() => {
-		console.log('unmounted NoteEditor.vue');
 		generalStore.closeNoteEditor()
 	})
 </script>

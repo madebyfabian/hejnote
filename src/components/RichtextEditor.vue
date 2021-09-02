@@ -22,18 +22,12 @@
 		isReadonly:	{ type: Boolean, default: false },
 	})
 
-	const emit = defineEmits([ 'update:modelValue', 'editorFocus' ])
+	const emit = defineEmits([ 'update:modelValue' ])
 
 	const editor = useEditor({
 		content: props.modelValue,
 		onUpdate: () => {
 			emit('update:modelValue', editor.value.getJSON())
-		},
-		onFocus: () => {
-			emit('editorFocus', false)
-		},
-		onBlur: () => {
-			emit('editorFocus', true)
 		},
 		extensions: [
 			StarterKit,
