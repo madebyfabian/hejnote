@@ -31,7 +31,7 @@
 <script setup>
 	import { useSlots, ref, onUnmounted, computed } from 'vue'
 	import Button from '@/components/Button.vue'
-	import { IconClose } from '@/components/icons'
+	import { IconClose } from '@/assets/icons'
 	import { CFocusLock } from '@chakra-ui/c-focus-lock'
 
 	const emit = defineEmits([ 'close' ])

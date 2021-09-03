@@ -35,7 +35,7 @@
 	import Button from '@/components/Button.vue'
 	import { 
 		IconEyeOff, IconEyeOffSolid, IconPin, IconPinSolid, IconTrash, IconTrashDelete, IconTrashUndo, IconArchiveSolid 
-	} from '@/components/icons'
+	} from '@/assets/icons'
 
 	import { IconArchive } from '@/assets/icons'
 

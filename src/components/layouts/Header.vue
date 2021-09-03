@@ -4,7 +4,7 @@
 			:to="{ name: 'App-Home' }" 
 			class="flex-1 select-none">
 
-			<img src="@/assets/images/logo.svg" alt="Logo" class="ml-5">
+			<LogoIcon alt="Logo" class="ml-5" />
 		</router-link>
 
 		<Header-CreateNoteEditor />
@@ -36,6 +36,7 @@
 <script setup>
 	import { computed } from 'vue'
 	import { notesStore, generalStore } from '@/store'
+	import LogoIcon from '@/assets/images/logo.svg'
 
 	// Import Components
 	import Avatar from '@/components/Avatar.vue'

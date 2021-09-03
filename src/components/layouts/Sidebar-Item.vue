@@ -11,7 +11,7 @@
 </template>
 
 <script>
-	import { IconChevron } from '@/components/icons'
+	import { IconChevron } from '@/assets/icons'
 
 	export default {
 		props: {
