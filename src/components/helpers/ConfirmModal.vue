@@ -1,5 +1,9 @@
 <template>
-	<Modal :isOpened="isVisible" @close="() => doAnswer(false)" :title="title || ''">
+	<Modal 
+    :isOpened="isVisible" 
+    @close="() => doAnswer(false)" :title="title || ''"
+    :displayCloseButton="false">
+
     <div v-html="question" />
 
     <template #bottomBar>

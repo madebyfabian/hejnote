@@ -6,17 +6,17 @@
 				:class="{ hasPadding }"
 				role="dialog"
 				aria-modal="true">
-				
-				<div class="absolute right-5 top-5">
-					<Button @click="emit('close')" isIconOnly buttonType="secondary">
-						<IconClose />
-					</Button>
-				</div>
 
 				<div class="Modal-header" v-if="displayTitle" v-text="title" />
 				
 				<div class="Modal-content">
 					<slot />
+				</div>
+
+				<div v-if="displayCloseButton" class="absolute right-5 top-5">
+					<Button @click="emit('close')" isIconOnly buttonType="secondary">
+						<IconClose />
+					</Button>
 				</div>
 
 				<div class="Modal-bottomBar" v-if="hasBottomBar" >
@@ -41,10 +41,11 @@
 		hasBottomBar.value = true
 
 	defineProps({
-		isOpened: { type: Boolean, required: true },
-		hasPadding: { type: Boolean, default: true },
-		title: { type: String, required: true },
-		displayTitle: { type: Boolean, default: true },
+		isOpened: 					{ type: Boolean, required: true },
+		hasPadding: 				{ type: Boolean, default: true },
+		title: 							{ type: String, required: true },
+		displayTitle: 			{ type: Boolean, default: true },
+		displayCloseButton: { type: Boolean, default: true },
 	})
 
 	const handler = (e) => {
