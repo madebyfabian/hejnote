@@ -46,6 +46,16 @@
 	}
 }
 
+@layer utilities {
+	.checkbox {
+		@apply bg-transparent border border-gray-600 rounded w-4 h-4 transition-colors duration-100;
+	}
+
+	.checkbox-checked {
+		@apply bg-gray-600 border-transparent;
+	}
+} 
+
 .transition-fade-100 {
 	&-enter-active, &-leave-active {
 		@apply transition-opacity duration-150;

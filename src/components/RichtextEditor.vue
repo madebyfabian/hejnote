@@ -1,7 +1,7 @@
 <template>
   <div class="RichtextEditor">
 		<div class="RichtextEditor-content">
-			<EditorContent v-if="!isReadonly" :editor="editor" />
+			<editor-content v-if="!isReadonly" :editor="editor" />
 			<div v-else v-html="readonlyHTML" />
 		</div>
 	</div>
@@ -15,6 +15,8 @@
 	import BulletList from '@tiptap/extension-bullet-list'
 	import OrderedList from '@tiptap/extension-ordered-list'
 	import Placeholder from '@tiptap/extension-placeholder'
+	import TaskList from '@tiptap/extension-task-list'
+	import TaskItem from '@tiptap/extension-task-item'
 	import Link from '@tiptap/extension-link'
 
 	const props = defineProps({
@@ -39,7 +41,9 @@
 			}),
 			Link.configure({
 				openOnClick: false
-			})
+			}),
+			TaskList,
+			TaskItem,
 		]
 	})
 
@@ -61,17 +65,17 @@
 		@apply relative;
 
 		:deep(&-content) {
-			[contenteditable] {
+			.ProseMirror {
         @apply p-5 py-3 pb-8 outline-none;
         overflow-wrap: break-word;
         word-wrap: break-word;
         word-break: break-word;
-      }
 
-			.ProseMirror p.is-editor-empty:first-child::before {
-				@apply float-left text-gray-500 pointer-events-none h-0;
-				content: attr(data-placeholder);
-			}
+				p.is-editor-empty:first-child::before {
+					@apply float-left text-gray-500 pointer-events-none h-0;
+					content: attr(data-placeholder);
+				}
+      }
 
       * {
         @apply caret-current;
@@ -79,11 +83,47 @@
 
       ul,
       ol {
-        @apply m-0 pl-4;
+        @apply m-0 pl-6;
+
+				li {
+					@apply my-1;
+				}
       }
 
       ul {
         @apply list-disc;
+
+				&[data-type="taskList"] {
+					li {
+						@apply flex relative;
+
+						/* after is for displaying the checkbox, label is the action in the edit-mode. */
+						&::after, > label {
+							@apply absolute -left-6 top-0.5 w-4 h-4 cursor-pointer;
+						}
+
+						&::after {
+							@apply checkbox pointer-events-none;
+							content: '';
+						}
+
+						> label > input {
+							@apply sr-only;
+						}
+
+						&[data-checked="true"] {
+							@apply line-through;
+
+							&::after {
+								@apply checkbox-checked;
+							}
+						}
+
+						> div {
+							@apply flex-1;
+						}
+					}
+				}
       }
 
       ol {
