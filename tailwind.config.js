@@ -12,6 +12,8 @@ const rotateX = plugin(function ({ addUtilities }) {
   })
 })
 
+const defaultBorderWidth = '1.5px'
+
 
 
 /** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig } */
@@ -32,7 +34,7 @@ module.exports = {
     },
 
     borderWidth: {
-      DEFAULT: '1.5px'
+      DEFAULT: defaultBorderWidth
     },
 
     fontSize: {
@@ -82,6 +84,39 @@ module.exports = {
 
   plugins: [
     rotateX,
-    lineClamp
+    lineClamp,
+    plugin(({ addUtilities }) => {
+      addUtilities({
+        '.checkbox': {
+          border: `${ defaultBorderWidth } solid ${ defaultTheme.colors.gray[600] }`,
+          borderRadius: defaultTheme.borderRadius.DEFAULT,
+          height: '1rem',
+          width: '1rem',
+          transitionDuration: '100ms',
+          transitionProperty: 'border-color, background-color',
+        },
+
+        '.checkbox-hoverable-el': {
+          borderRadius: defaultTheme.borderRadius.DEFAULT,
+          transitionDuration: '100ms',
+          transitionProperty: 'background-color',
+
+          '&:hover': {
+            background: defaultTheme.colors.gray[700]
+          }
+        },
+
+        '.checkbox-checked': {
+          background: defaultTheme.colors.gray[600],
+          borderColor: 'transparent'
+        },
+
+        '.checkbox-checked-icon': {
+          background: defaultTheme.colors.gray[400], // Icon color
+          mask: `url('@/assets/icons/special/check.svg') no-repeat center center`,
+          '-webkit-mask': `url('@/assets/icons/special/check.svg') no-repeat center center`,
+        }
+      })
+    })
   ],
 }

@@ -34,8 +34,11 @@
 <script setup>
 	import Button from '@/components/Button.vue'
 	import { 
-		IconEyeOff, IconEyeOffSolid, IconPin, IconPinSolid, IconTrash, IconTrashDelete, IconTrashUndo, IconArchive, IconArchiveSolid 
+		IconEyeOff, IconEyeOffSolid, IconPin, IconPinSolid, IconTrash, IconTrashDelete, IconTrashUndo, IconArchiveSolid 
 	} from '@/components/icons'
+
+	import { IconArchive } from '@/assets/icons'
+
 	import { nextTick } from 'vue'
 	import useConfirm from '@/hooks/useConfirm'
 	import { notesStore } from '@/store' 

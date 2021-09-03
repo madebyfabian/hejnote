@@ -83,11 +83,7 @@
 
       ul,
       ol {
-        @apply m-0 pl-6;
-
-				li {
-					@apply my-1;
-				}
+        @apply m-0 pl-6 pb-2;
       }
 
       ul {
@@ -97,31 +93,31 @@
 					li {
 						@apply flex relative;
 
-						/* after is for displaying the checkbox, label is the action in the edit-mode. */
-						&::after, > label {
-							@apply absolute -left-6 top-0.5 w-4 h-4 cursor-pointer;
-						}
-
-						&::after {
-							@apply checkbox pointer-events-none;
+						/* after/before is for displaying the checkbox, label is the action in the edit-mode. */
+						&::after, &::before, > label {
+							@apply absolute -left-6 top-1.5 w-4 h-4 cursor-pointer;
 							content: '';
 						}
 
-						> label > input {
-							@apply sr-only;
+						&::after, &::before { @apply pointer-events-none; }
+
+						&::after { @apply checkbox; }
+						&::before { @apply z-10; }
+
+						> label {
+							@apply checkbox-hoverable-el;
+							> input { @apply sr-only; }
 						}
 
 						&[data-checked="true"] {
 							@apply line-through;
 
-							&::after {
-								@apply checkbox-checked;
-							}
+							&::after { @apply checkbox-checked; }
+							&::before { @apply checkbox-checked-icon; }
 						}
 
-						> div {
-							@apply flex-1;
-						}
+						/* content */
+						> div { @apply flex-1; }
 					}
 				}
       }
@@ -130,11 +126,12 @@
         @apply list-decimal;
       }
 
-      li > p,
-      li > ol,
-      li > ul {
-        @apply my-0.5;
+      li, p {
+        @apply py-1;
       }
+			li p {
+				@apply p-0;
+			}
 
       hr {
         @apply bg-gray-200 h-0.5 my-2 border-none rounded-sm;
