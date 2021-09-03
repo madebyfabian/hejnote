@@ -16,7 +16,6 @@
 				<div v-if="displayCloseButton" class="absolute right-5 top-5">
 					<Button @click="emit('close')" isIconOnly buttonType="secondary">
 						<IconClose />
-						<span class="sr-only">Edit note</span>
 					</Button>
 				</div>
 
