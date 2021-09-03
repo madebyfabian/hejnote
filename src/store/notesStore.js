@@ -206,7 +206,7 @@ export default {
     const joins = joinNotesCollectionsStore.state.joinNotesCollections.filter(join => join.collection_id === collectionId)
     const noteIds = joins.map(join => join.note_id)
 
-    return notes.filter(note => !noteIds.includes(note.id))
+    return notes.filter(note => noteIds.includes(note.id))
   },
 
   notesFilterForTrash() {
