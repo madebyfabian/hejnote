@@ -10,15 +10,20 @@
 			<IconPinSolid v-else />
 		</Button>
 
+		<!-- Archive -->
+		<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteArchiveAction">
+			<IconArchive v-if="!note.is_archived" />
+			<IconArchiveSolid v-else />
+		</Button>
+
+		<!-- Trash -->
 		<Button v-if="!note.deleted_at" isIconOnly buttonType="secondary" hideBorder @click="handleNoteMoveToDeleted">
 			<IconTrash />
 		</Button>
-
 	  <template v-else>
 			<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteMoveOutOfDeleted">
 				<IconTrashUndo />
 			</Button>
-
 			<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteFullyDelete">
 				<IconTrashDelete />
 			</Button>
@@ -28,7 +33,9 @@
 
 <script setup>
 	import Button from '@/components/Button.vue'
-	import { IconEyeOff, IconEyeOffSolid, IconPin, IconPinSolid, IconTrash, IconTrashDelete, IconTrashUndo } from '@/components/icons'
+	import { 
+		IconEyeOff, IconEyeOffSolid, IconPin, IconPinSolid, IconTrash, IconTrashDelete, IconTrashUndo, IconArchive, IconArchiveSolid 
+	} from '@/components/icons'
 	import { nextTick } from 'vue'
 	import useConfirm from '@/hooks/useConfirm'
 	import { notesStore } from '@/store' 
@@ -43,6 +50,10 @@
 
 	const handleNotePinAction = () => {
 		notesStore.notesUpdateSingle({ noteId: props.note.id, newVal: { is_pinned: !props.note.is_pinned } })
+	}
+
+	const handleNoteArchiveAction = () => {
+		notesStore.notesUpdateSingle({ noteId: props.note.id, newVal: { is_archived: !props.note.is_archived } })
 	}
 
 	const handleNoteHideAction = async () => {

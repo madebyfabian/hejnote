@@ -55,11 +55,12 @@
 
 	// Setup note data
 	const _note_defaults = {
-		id: 				props.note?.id || null,
-		title: 			props.note?.title || '',
-		content: 		props.note?.content || noteEditorContentDefault,
-		is_pinned: 	props.note?.is_pinned || false,
-		is_hidden: 	props.note?.is_hidden || false,
+		id: 					props.note?.id || null,
+		title: 				props.note?.title || '',
+		content: 			props.note?.content || noteEditorContentDefault,
+		is_pinned: 		props.note?.is_pinned || false,
+		is_hidden: 		props.note?.is_hidden || false,
+		is_archived: 	props.note?.is_archived || false,
 	}
 	const note = reactive({ ..._note_defaults })
 

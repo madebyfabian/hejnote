@@ -7,6 +7,8 @@ import IconPinSolid from '@/components/icons/IconPinSolid.vue'
 import IconTrash from '@/components/icons/IconTrash.vue'
 import IconTrashDelete from '@/components/icons/IconTrashDelete.vue'
 import IconTrashUndo from '@/components/icons/IconTrashUndo.vue'
+import IconArchive from '@/components/icons/IconArchive.vue'
+import IconArchiveSolid from '@/components/icons/IconArchiveSolid.vue'
 
 export {
   IconChevron,
@@ -17,5 +19,7 @@ export {
   IconPinSolid,
   IconTrash,
   IconTrashDelete,
-  IconTrashUndo
+  IconTrashUndo,
+  IconArchive,
+  IconArchiveSolid
 }

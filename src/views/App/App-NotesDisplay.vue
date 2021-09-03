@@ -12,6 +12,6 @@
 	const collection = useCurrentCollection()
 
 	const notes = computed(() => {
-		return notesStore.notesFilter({ collectionId: collection.value?.id || null })
+		return notesStore.notesFilterByCollection({ collectionId: collection.value?.id || null })
 	})
 </script>

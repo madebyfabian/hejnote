@@ -168,34 +168,52 @@ export default {
     }
   },
 
-  notesFilter({ noteId = null, collectionId = null, showDeleted = false } = {}) {
-    let notes = this.state.notes.filter(note => note !== undefined)
+  /**
+   * Filters out basic things and 
+   * @returns {Array} of Notes
+   */
+  getNotes({ includeDeleted = true, includeArchived = true } = {}) {
+    return this.state.notes.filter(note => {
+      if (note === undefined) return false
 
-    // If noteId is set, return only that note.
-    if (noteId)
-      return notes.find(note => note.id === noteId)
+      // Hidden mode
+      if (!isHiddenMode.value && note.is_hidden) return false
+      if (isHiddenMode.value && !note.is_hidden) return false
 
-    // Collections
+      // Deleted
+      if (!includeDeleted && note.deleted_at) return false
+
+      // Archived
+      if (!includeArchived && note.is_archived) return false
+
+      return true
+    })
+  },
+
+  /**
+   * Returns a single note, or undefined if not found.
+   * @returns {Object} note
+   */
+  noteFindById({ noteId }) {
+    return this.getNotes().find(note => note.id === noteId)
+  },
+
+  notesFilterByCollection({ collectionId }) {
+    const notes = this.getNotes({ includeArchived: false, includeDeleted: false })
+    if (!collectionId) return notes
+
+    // Get all notes that have a join to the collection
     const joins = joinNotesCollectionsStore.state.joinNotesCollections.filter(join => join.collection_id === collectionId)
     const noteIds = joins.map(join => join.note_id)
 
-    notes = notes.filter(note => {
-      if (collectionId !== null && !noteIds.includes(note.id)) return false
-      return true
-    })
-
-    notes = notes.filter(note => {
-      if (!showDeleted && note.deleted_at) return false
-      if (showDeleted && !note.deleted_at) return false
-      return true
-    })
-
-    notes = notes.filter(note => {
-      if (!isHiddenMode.value && note.is_hidden) return false
-      if (isHiddenMode.value && !note.is_hidden) return false
-      return true
-    })
-
-    return notes
+    return notes.filter(note => !noteIds.includes(note.id))
   },
+
+  notesFilterForTrash() {
+    return this.getNotes().filter(note => note.deleted_at !== null)
+  },
+
+  notesFilterForArchive() {
+    return this.getNotes({ includeDeleted: false }).filter(note => note.is_archived)
+  }
 }

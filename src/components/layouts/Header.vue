@@ -48,7 +48,7 @@
 	})
 
 	const editNote = computed(() => {
-		return notesStore.notesFilter({ noteId: generalStore.state.editNoteId })
+		return notesStore.noteFindById({ noteId: generalStore.state.editNoteId })
 	})
 </script>
 

@@ -14,7 +14,7 @@
   import Button from '@/components/Button.vue'
 
 	const notes = computed(() => {
-		return notesStore.notesFilter({ showDeleted: true })
+		return notesStore.notesFilterForTrash()
 	})
 
   const handleDeleteAllNotesInTrash = async () => {
