@@ -66,7 +66,7 @@
 
 		:deep(&-content) {
 			.ProseMirror {
-        @apply p-5 py-3 pb-8 outline-none;
+        @apply p-5 pt-2 pb-7 outline-none;
         overflow-wrap: break-word;
         word-wrap: break-word;
         word-break: break-word;
