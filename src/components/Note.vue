@@ -2,9 +2,10 @@
 	<article 
 		@click="handleNoteEdit"
 		@keypress.enter="handleNoteEdit"
+		:aria-label="noteTitleLabel"
+		:class="{ isNoteBeingEdited }"
 		tabindex="0" 
-		class="Note group" 
-		:aria-label="noteTitleLabel">
+		class="Note group">
 		
 		<h3 v-if="note.title" v-text="note.title" @click="handleNoteEdit" class="mb-2" />
 		<RichtextEditor v-if="!noteContentIsEmpty" v-model="note.content" isReadonly class="mb-2" />
@@ -39,12 +40,13 @@
 	const noteContentIsEmpty = computed(() => JSON.stringify(noteEditorContentDefault) === JSON.stringify(props.note.content))
 	const noteTitleLabel = computed(() => `Edit note "${ props.note.title }"`)
 	const noteLinks = computed(() => linksStore._findLinksByNoteId({ noteId: props.note.id }))
+	const isNoteBeingEdited = computed(() => generalStore.state.editNoteId === props.note.id)
 	const noteActionBarEl = ref(null),
 				noteLinkListEl = ref(null)
 
 	const handleNoteEdit = e => {
-		const clickedActionBar = e.path.includes(noteActionBarEl?.value),
-					clickedLinkListEl = e.path.includes(noteLinkListEl?.value),
+		const clickedActionBar = e.composedPath().includes(noteActionBarEl?.value),
+					clickedLinkListEl = e.composedPath().includes(noteLinkListEl?.value),
 					selectedSomething = window.getSelection().type === 'Range',
 					clickedLink = e.target.tagName === 'A'
 
@@ -57,6 +59,10 @@
 
 <style lang="postcss" scoped>
 	.Note {
-		@apply bg-gray-800 rounded-2xl p-4 cursor-default transition duration-150 mb-6;
+		@apply bg-gray-800 rounded-2xl p-4 cursor-default transition duration-225 mb-6;
+
+		&.isNoteBeingEdited {
+			@apply blur-md;
+		}
 	}
 </style>
