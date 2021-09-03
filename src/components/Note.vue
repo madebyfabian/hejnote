@@ -1,7 +1,7 @@
 <template>
 	<article @click="handleNoteEdit" tabindex="0" class="Note group" :aria-label="noteTitleLabel">
-		<h3 v-if="note.title" v-text="note.title" @click="handleNoteEdit" class="mb-3" />
-		<RichtextEditor v-if="!noteContentIsEmpty" v-model="note.content" isReadonly class="mb-3" />
+		<h3 v-if="note.title" v-text="note.title" @click="handleNoteEdit" class="mb-2" />
+		<RichtextEditor v-if="!noteContentIsEmpty" v-model="note.content" isReadonly class="mb-2" />
 	
 		<div ref="noteActionBarEl" class="
 			w-fit ml-auto -mb-2 -mr-2

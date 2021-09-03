@@ -83,7 +83,11 @@
 
       ul,
       ol {
-        @apply m-0 pl-6 pb-2;
+        @apply m-0 pl-6;
+
+				&:not(:last-child) {
+					@apply pb-2;
+				}
       }
 
       ul {
