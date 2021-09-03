@@ -51,6 +51,7 @@ module.exports = {
       transitionProperty: {
         'transform-bg': 'transform, background-color',
         'max-height': 'max-height',
+        'colors': 'background-color, border-color, color, fill, stroke, text-decoration-color'
       },
       transitionDuration: {
         '225': '225ms',
@@ -86,6 +87,11 @@ module.exports = {
     rotateX,
     lineClamp,
     plugin(({ addUtilities }) => {
+      /**
+       * Adds utilties to style checkboxes. This is needed, since our Richtext editor tiptap will not add <input type="checkbox">
+       * to the readonly mode HTML. so we have to use ::before and ::after to style the checkbox.
+       * These styles will then also be used for a component like Checkbox.vue 
+       */
       addUtilities({
         '.checkbox': {
           border: `${ defaultBorderWidth } solid ${ defaultTheme.colors.gray[600] }`,

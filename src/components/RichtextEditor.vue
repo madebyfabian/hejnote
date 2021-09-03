@@ -91,7 +91,8 @@
 
 				&[data-type="taskList"] {
 					li {
-						@apply flex relative;
+						@apply flex relative transition-colors duration-100 line-through;
+						text-decoration-color: transparent;
 
 						/* after/before is for displaying the checkbox, label is the action in the edit-mode. */
 						&::after, &::before, > label {
@@ -110,7 +111,8 @@
 						}
 
 						&[data-checked="true"] {
-							@apply line-through;
+							@apply text-gray-500;
+							text-decoration-color: theme('colors.gray.500');
 
 							&::after { @apply checkbox-checked; }
 							&::before { @apply checkbox-checked-icon; }
