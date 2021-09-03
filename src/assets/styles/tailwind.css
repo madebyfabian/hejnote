@@ -55,7 +55,3 @@
 		@apply opacity-0;
 	}
 }
-
-:root {
-	--icon-archive: url('@/assets/icons/archive.svg')
-}
