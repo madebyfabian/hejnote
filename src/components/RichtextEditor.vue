@@ -91,7 +91,15 @@
       }
 
       ul {
-        @apply list-disc;
+        &:not([data-type="taskList"]) {
+					li {
+						@apply relative;
+
+						&::after {
+							@apply marker content absolute -left-5 top-2.5;
+						}
+					}
+				}
 
 				&[data-type="taskList"] {
 					li {
@@ -100,8 +108,7 @@
 
 						/* after/before is for displaying the checkbox, label is the action in the edit-mode. */
 						&::after, &::before, > label {
-							@apply absolute -left-6 top-1.5 w-4 h-4 cursor-pointer;
-							content: '';
+							@apply absolute -left-6 top-1.5 w-4 h-4 cursor-pointer content;
 						}
 
 						&::after, &::before { @apply pointer-events-none; }

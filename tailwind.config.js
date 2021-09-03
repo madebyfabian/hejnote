@@ -87,12 +87,16 @@ module.exports = {
     rotateX,
     lineClamp,
     plugin(({ addUtilities }) => {
-      /**
-       * Adds utilties to style checkboxes. This is needed, since our Richtext editor tiptap will not add <input type="checkbox">
-       * to the readonly mode HTML. so we have to use ::before and ::after to style the checkbox.
-       * These styles will then also be used for a component like Checkbox.vue 
-       */
       addUtilities({
+        '.content': {
+          content: 'attr(data-content)',
+        },
+
+        /**
+         * Add utilties to style checkboxes. This is needed, since our Richtext editor tiptap will not add <input type="checkbox">
+         * to the readonly mode HTML. so we have to use ::before and ::after to style the checkbox.
+         * These styles will then also be used for a component like Checkbox.vue 
+         */
         '.checkbox': {
           border: `${ defaultBorderWidth } solid ${ defaultTheme.colors.gray[600] }`,
           borderRadius: defaultTheme.borderRadius.DEFAULT,
@@ -101,7 +105,6 @@ module.exports = {
           transitionDuration: '100ms',
           transitionProperty: 'border-color, background-color',
         },
-
         '.checkbox-hoverable-el': {
           borderRadius: defaultTheme.borderRadius.DEFAULT,
           transitionDuration: '100ms',
@@ -111,16 +114,25 @@ module.exports = {
             background: defaultTheme.colors.gray[700]
           }
         },
-
         '.checkbox-checked': {
           background: defaultTheme.colors.gray[600],
           borderColor: 'transparent'
         },
-
         '.checkbox-checked-icon': {
           background: defaultTheme.colors.gray[400], // Icon color
           mask: `url('@/assets/icons/special/check.svg') no-repeat center center`,
           '-webkit-mask': `url('@/assets/icons/special/check.svg') no-repeat center center`,
+        },
+
+        /**
+         * Add utilities to style Marker element. This is needed (see above).
+         * This style will then also be used for a component like Marker.vue
+         */
+        '.marker': {
+          height: '0.5rem',
+          width: '0.5rem',
+          borderRadius: '100%',
+          border: `${ defaultBorderWidth } solid ${ defaultTheme.colors.gray[600] }`,
         }
       })
     })
