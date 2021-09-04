@@ -47,6 +47,11 @@ export const routes = [
         path: 'archive',
         name: 'App-Archive',
         component: () => import('./views/App/App-Archive.vue'),
+      },
+      {
+        path: 'test',
+        name: 'App-Test',
+        component: () => import('./views/App/App-Test.vue'),
       }
     ] 
   },
