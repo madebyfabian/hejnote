@@ -25,7 +25,7 @@
 
 <script setup>
 	import { computed, nextTick, ref, watch } from 'vue'
-	import { generalStore, linksStore } from '@/store'
+	import { linksStore, notesStore } from '@/store'
 	import { noteEditorContentDefault } from '@/utils/constants'
 	import RichtextEditor from '@/components/RichtextEditor.vue'
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
@@ -40,7 +40,7 @@
 	const noteContentIsEmpty = computed(() => JSON.stringify(noteEditorContentDefault) === JSON.stringify(props.note.content))
 	const noteTitleLabel = computed(() => `Edit note "${ props.note.title }"`)
 	const noteLinks = computed(() => linksStore._findLinksByNoteId({ noteId: props.note.id }))
-	const isNoteBeingEdited = computed(() => generalStore.state.editNoteId === props.note.id)
+	const isNoteBeingEdited = computed(() => notesStore.state.editNoteId === props.note.id)
 	const noteActionBarEl = ref(null),
 				noteLinkListEl = ref(null)
 
@@ -53,7 +53,7 @@
 		if (clickedActionBar || clickedLinkListEl || selectedSomething || clickedLink)
 			return 
 
-		generalStore.openNoteEditor({ editNoteId: props.note.id })
+		notesStore.openNoteEditor({ editNoteId: props.note.id })
 	}
 </script>
 

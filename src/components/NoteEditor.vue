@@ -1,27 +1,21 @@
 <template>
-	<div class="NoteEditor z-50" v-click-outside="handleClickOutside">
+	<div class="NoteEditor z-50" v-click-outside="() => closeEditor({ displayMinimizedPrevent: true })">
 		<article 
 			class="transition-transform duration-150" 
 			:class="{ 'transform-gpu -translate-y-12 delay-100': displayMinimized }">
 
-			<form @submit.prevent="shouldHandleFormSaveOnNextChange = true">
-				<div class="transition-opacity duration-300 opacity-0" :class="{ 'opacity-100': !displayMinimized }">
-					<input 
-						v-model="note.title" type="text" placeholder="New note" 
-						class="p-5 pr-20 pb-2 text-150 text-gray-300 font-semibold bg-transparent w-full placeholder-gray-500 outline-none"
-					/>
-				</div>
+			<div class="transition-opacity duration-300 opacity-0" :class="{ 'opacity-100': !displayMinimized }">
+				<input 
+					v-model="note.title" type="text" placeholder="New note" 
+					class="p-5 pr-20 pb-2 text-150 text-gray-300 font-semibold bg-transparent w-full placeholder-gray-500 outline-none"
+				/>
+			</div>
 
-				<RichtextEditor v-model="note.content" />
+			<RichtextEditor v-model="note.content" />
 
-				<div v-if="displayInModal" class="flex justify-end p-4 pt-0">
-					<Button type="submit" buttonType="secondary">Save</Button>
-				</div>
-
-				<div v-if="noteLinks.length" class="m-2">
-					<Note-LinkList :noteId="note.id" />
-				</div>
-			</form>
+			<div v-if="noteLinks.length" class="m-2">
+				<Note-LinkList :noteId="note.id" />
+			</div>
 		</article>
 
 		<div v-if="!displayInModal" class="h-14">
@@ -29,17 +23,16 @@
 				class="flex justify-end pt-0 p-3 opacity-0 transition transform-gpu" 
 				:class="displayMinimized ? 'duration-300 opacity-0 -translate-y-3' : 'duration-500 opacity-100 -translate-y-0'">
 
-				<Button buttonType="secondary" @click="handleClickOutside">Close</Button>
+				<Button buttonType="secondary" @click="closeEditor">Close</Button>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup>
-	import { ref, reactive, watch, onUnmounted, computed, watchEffect } from 'vue'
-	import { debounce } from 'vue-debounce'
-	import { generalStore, linksStore, notesStore } from '@/store'
-	import { noteEditorContentDefault } from '@/utils/constants'
+	import { ref, reactive, watch, computed } from 'vue'
+	import { throttle } from 'throttle-debounce'
+	import { linksStore, notesStore } from '@/store'
 	import RichtextEditor from '@/components/RichtextEditor.vue'
 	import Button from '@/components/Button.vue'
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
@@ -54,68 +47,40 @@
 	})
 
 	// Setup note data
-	const _note_defaults = {
-		id: 					props.note?.id || null,
-		title: 				props.note?.title || '',
-		content: 			props.note?.content || noteEditorContentDefault,
-		is_pinned: 		props.note?.is_pinned || false,
-		is_hidden: 		props.note?.is_hidden || false,
-		is_archived: 	props.note?.is_archived || false,
-	}
-	const note = reactive({ ..._note_defaults })
+	const note = reactive({ 
+		...notesStore.getNoteDefaultDataObject({ note: props.note }) 
+	})
 
 	// Setup note links
 	const noteLinks = computed(() => linksStore._findLinksByNoteId({ noteId: note.id }))
 	const lastLinkSet = reactive(new Set(noteLinks.value.map(link => link.url)))
 	
-	// Other refs
-	const shouldHandleFormSaveOnNextChange = ref(false)
-
 
 	/** 
 	 * Methods
 	 */
-	const _handleDataChange = async () => {
-		if (note.id) {
-			// When existing note data is being updated
-			notesStore.notesUpdateSingle({ noteId: note.id, newVal: note, updateState: false })
-		} else {
-			// When note is being freshly created right at this moment
-			const noteData = await notesStore.notesInsertSingle({ newVal: note, updateState: false })
-			note.id = noteData.id
-		}
-
+	const _handleDataChange = async ({ updateState = false } = {}) => {
+		const data = await notesStore.notesUpsertSingle({ newVal: note, updateState })
+		if (!note?.id && data?.id)
+			note.id = data.id
 		updateLinks()
-
-		if (shouldHandleFormSaveOnNextChange.value) 
-			handleFormSave()
 	}
 
 	// Watch for form data changes
 	watch(
-		[ note, shouldHandleFormSaveOnNextChange ], 
-		debounce(_handleDataChange, 300),
+		[ note ], 
+		throttle(1000, false, _handleDataChange),
 		{ deep: true }
 	)
 
-	const handleFormSave = async () => {
-		shouldHandleFormSaveOnNextChange.value = false
+	const closeEditor = ({ displayMinimizedPrevent = false } = {}) => {
+		if (displayMinimizedPrevent && props.displayMinimized)
+			return
 
-		try {
-			// Fetch the final row and add it to store
-			if (note.id)
-				await notesStore.notesFetchSingle({ noteId: note.id })
+		emit('isFinished')
 
-			emit('isFinished')
-
-		} catch (error) {
-			console.error('error caused by notesFetchSingle', error)
-		}
-	}
-
-	const handleClickOutside = () => {
-		if (!props.displayMinimized)
-			handleFormSave()
+		_handleDataChange({ updateState: true })
+		notesStore.closeNoteEditor()
 	}
 
 	const updateLinks = () => {
@@ -153,8 +118,4 @@
 		}
 		return linkSet
 	}
-
-	onUnmounted(() => {
-		generalStore.closeNoteEditor()
-	})
 </script>

@@ -1,8 +1,9 @@
-import { reactive } from 'vue'
+import { reactive, nextTick } from 'vue'
 import useSnackbar from '@/hooks/useSnackbar'
 import useSupabase from '@/hooks/useSupabase'
 import useIsHiddenMode from '@/hooks/useIsHiddenMode'
 import handleError from '@/utils/handleError'
+import { noteEditorContentDefault } from '@/utils/constants'
 
 import generalStore from '@/store/generalStore'
 import joinNotesCollectionsStore from '@/store/joinNotesCollectionsStore'
@@ -14,7 +15,43 @@ const supabase = useSupabase(),
 export default {
 	state: reactive({
 		notes: [],
+    editNoteId: null,
+    editNoteModalVisible: false,
 	}),
+
+  getNoteDefaultDataObject({ note } = {}) { return {
+    id: 				  note?.id || undefined,
+		title: 			  note?.title || '',
+		content: 		  note?.content || noteEditorContentDefault,
+		is_pinned: 	  note?.is_pinned || false,
+		is_hidden: 	  note?.is_hidden || false,
+		is_archived:  note?.is_archived || false,
+  }},
+
+  noteObjectHasChanges({ compareToNoteId, newVal } = {}) {
+    let oldVal = !compareToNoteId
+      ? this.getNoteDefaultDataObject()
+      : this.state.notes.find(note => note.id === compareToNoteId)
+
+    const oldAndNew = { ...oldVal, ...newVal }
+    return JSON.stringify(oldVal) !== JSON.stringify(oldAndNew)
+  },
+
+  openNoteEditor({ editNoteId }) {
+		this.state.editNoteId = editNoteId
+
+		nextTick(() => {
+			this.state.editNoteModalVisible = true
+		})
+	},
+
+	closeNoteEditor() {
+    this.state.editNoteId = null
+
+		nextTick(() => {
+      this.state.editNoteModalVisible = false
+		})
+	},
 
 	_findIndexById({ data, id }) {
     return data.findIndex(obj => obj !== undefined && obj.id === id)
@@ -44,26 +81,36 @@ export default {
       this.state.notes.push(rowsArr[0])
   },
 
-  async notesInsertSingle({ newVal, updateState = true }) {
-    // Delete id column because it's not needed and supabase throws an error.
-    newVal = { ...newVal }
-    delete newVal?.id
+  async notesInsertSingle({ newVal, updateDB = true, updateState = true }) {
+    let res
+    if (updateDB) {
+      if (!this.noteObjectHasChanges({ newVal }))
+        return
 
-    const { data: rowsArr, error } = await supabase
-      .from('notes')
-      .insert([{ ...newVal, owner_id: generalStore.state.user.id }])
-    if (error) console.error(error)
+      // Delete id column because it's not needed and supabase throws an error.
+      newVal = { ...newVal }
+      delete newVal?.id
+
+      res = await supabase
+        .from('notes')
+        .insert([{ ...newVal, owner_id: generalStore.state.user.id }])
+      if (res.error) console.error(res.error)
+    } 
     
-    // Update local store
+    // Update local store, either from db -received data or from prop.
+    const newData = res?.data?.[0] || newVal
     if (updateState) 
-      this.state.notes.push(rowsArr[0])
+      this.state.notes.push(newData)
 
-    return rowsArr[0]
+    return newData
   },
 
   async notesUpdateSingle({ noteId, newVal, updateDB = true, updateState = true }) {
     try {
       if (updateDB) {
+        if (!this.noteObjectHasChanges({ compareToNoteId: noteId, newVal }))
+          return
+
         // Delete id column because it's not needed and supabase throws an error.
         newVal = { ...newVal }
         delete newVal?.id
@@ -85,22 +132,26 @@ export default {
     }
   },
 
-  async notesUpsert({ newVals }) {
+  async notesUpsertSingle({ newVal, updateDB = true, updateState = true }) {
     try {
-      if (newVals.length === 0) return
+      const hasChanges = this.noteObjectHasChanges({ compareToNoteId: newVal?.id, newVal })
+      let res
+      if (updateDB && hasChanges) {
+        res = await supabase.from('notes').upsert([{ ...newVal, owner_id: generalStore.state.user.id }])
+        if (res.error) throw res.error
+      }
 
-      const { data, error } = await supabase
-        .from('notes')
-        .upsert(newVals.map(newVal => ({
-          ...newVal,
-          owner_id: generalStore.state.user.id
-        })))
-      if (error) throw error
+      const newData = res?.data?.[0] || newVal
+      const isEmpty = (!newVal?.id && !hasChanges)
+      if (updateState && !isEmpty) {
+        const index = this._findIndexById({ id: newData?.id, data: this.state.notes })
+        if (index > -1)
+          this.state.notes[index] = { ...this.state.notes[index], ...newData }
+        else
+          this.state.notes.push(newData)
+      }
 
-      data.forEach(note => {
-        this.notesUpdateSingle({ noteId: note.id, newVal: note, updateDB: false })
-      })
-
+      return newData
     } catch (error) {
       handleError(error)
     }

@@ -19,15 +19,13 @@
 	</header>
 
 	<Modal 
-		:isOpened="generalStore.state.editNoteModalVisible" 
-		@close="() => generalStore.closeNoteEditor()" 
+		:isOpened="notesStore.state.editNoteModalVisible" 
 		:hasPadding="false" 
 		title="Edit note" 
 		:displayTitle="false">
 
 		<NoteEditor 
 			displayInModal
-			@isFinished="() => generalStore.closeNoteEditor()" 
 			:note="editNote" 
 		/>
 	</Modal>
@@ -49,7 +47,7 @@
 	})
 
 	const editNote = computed(() => {
-		return notesStore.noteFindById({ noteId: generalStore.state.editNoteId })
+		return notesStore.noteFindById({ noteId: notesStore.state.editNoteId })
 	})
 </script>
 

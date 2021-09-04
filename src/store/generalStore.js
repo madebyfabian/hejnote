@@ -1,11 +1,9 @@
-import { reactive, nextTick } from 'vue'
+import { reactive } from 'vue'
 
 export default {
 	state: reactive({
 		user: undefined,
     isAppLoading: true,
-    editNoteId: null,
-    editNoteModalVisible: false,
 	}),
 
 	updateUser({ user }) {
@@ -14,21 +12,5 @@ export default {
 
 	updateIsAppLoading({ isAppLoading }) {
 		this.state.isAppLoading = isAppLoading
-	},
-
-	openNoteEditor({ editNoteId }) {
-		this.state.editNoteId = editNoteId
-
-		nextTick(() => {
-			this.state.editNoteModalVisible = true
-		})
-	},
-
-	closeNoteEditor() {
-		this.state.editNoteModalVisible = false
-
-		nextTick(() => {
-			this.state.editNoteId = null
-		})
 	}
 }
