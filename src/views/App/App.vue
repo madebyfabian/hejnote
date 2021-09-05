@@ -3,10 +3,13 @@
 		<transition name="transition-fade-100">
 			<div v-if="!generalStore.state.isAppLoading">
 				<Header />
-				<Sidebar />
-				<main class="container">
-					<component :is="Component" />
-				</main>
+				
+				<div class="mt-24">
+					<Sidebar />
+					<main class="container">
+						<component :is="Component" />
+					</main>
+				</div>
 			</div>
 		</transition>
 	</router-view>

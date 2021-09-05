@@ -1,5 +1,5 @@
 <template>
-	<header class="header flex items-center pt-5 mb-8">
+	<header class="Header">
 		<router-link 
 			:to="{ name: 'App-Home' }" 
 			class="flex-1 select-none">
@@ -10,6 +10,8 @@
 		<div class="container h-11">
 			<div class="relative">
 				<Header-CreateNoteEditor />
+				<div class="Header-bgGradient isTop"></div>
+				<div class="Header-bgGradient isBottom"></div>
 			</div>
 		</div>
 
@@ -56,3 +58,20 @@
 	})
 </script>
 
+<style lang="postcss" scoped>
+	.Header {
+		@apply fixed top-0 left-0 w-full z-40 flex items-center pt-5;
+
+		&-bgGradient {
+			@apply absolute left-0 w-full -z-1 pointer-events-none;
+
+			&.isTop {
+				@apply -top-5 h-8 backdrop-blur-xl bg-gray-900 bg-opacity-75;
+			}
+
+			&.isBottom {
+				@apply top-8 h-10 bg-gradient-to-b from-gray-900 to-transparent;
+			}
+		}
+	}
+</style>
