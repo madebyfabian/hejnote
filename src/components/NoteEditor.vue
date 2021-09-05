@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-	import { ref, reactive, watch, computed, onUnmounted, onUpdated } from 'vue'
+	import { ref, reactive, watch, computed, onUnmounted, onUpdated, onBeforeUnmount } from 'vue'
 	import { throttle } from 'throttle-debounce'
 	import { linksStore, notesStore } from '@/store'
 	import RichtextEditor from '@/components/RichtextEditor.vue'
@@ -128,6 +128,11 @@
 		}
 		return linkSet
 	}
+
+	onBeforeUnmount(() => {
+		// Give the editor a fixed height so that on modal scroll, it doesn't "jump" away.
+		noteEditorEl.value.style.height = `${ noteEditorEl.value?.scrollHeight }px`
+	})
 
 	onUnmounted(() => {
 		document.removeEventListener('mousedown', clickEventHandler)
