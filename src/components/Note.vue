@@ -5,7 +5,7 @@
 		:aria-label="noteTitleLabel"
 		:class="{ isNoteBeingEdited }"
 		tabindex="0" 
-		class="Note group">
+		class="Note group ring-0">
 		
 		<h3 v-if="note.title" v-text="note.title" @click="handleNoteEdit" class="mb-2" />
 		<RichtextEditor v-if="!noteContentIsEmpty" v-model="note.content" isReadonly class="mb-2" />
