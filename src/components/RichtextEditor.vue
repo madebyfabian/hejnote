@@ -1,6 +1,6 @@
 <template>
   <div class="RichtextEditor">
-		<div class="RichtextEditor-content">
+		<div class="RichtextEditor-content" :class="{ isReadonly }">
 			<editor-content v-if="!isReadonly" :editor="editor" />
 			<div v-else v-html="readonlyHTML" />
 		</div>
@@ -9,6 +9,9 @@
 
 <script setup>
 	import { computed, watch } from 'vue'
+	import useGetUrlHost from '@/hooks/useGetUrlHost'
+
+	// Import tiptap and tiptap utils.
 	import { useEditor, EditorContent } from '@tiptap/vue-3'
 	import StarterKit from '@tiptap/starter-kit'
 	import ListItem from '@tiptap/extension-list-item'
@@ -47,8 +50,34 @@
 		]
 	})
 
+	const _replaceLinkTextWithHost = data => {
+		data.content = data.content.map(obj => {
+			if (obj?.type === 'text') {
+				const linkMarkIndex = obj?.marks?.findIndex(mark => mark?.type === 'link')
+				if (linkMarkIndex > -1) 
+					obj.text = useGetUrlHost(obj?.marks?.[0]?.attrs?.href)
+			}
+
+			return obj?.content ? _replaceLinkTextWithHost(obj) : obj
+		})
+		return data
+	}
+
 	const readonlyHTML = computed(() => {
-		return editor?.value?.getHTML() || ''
+		if (!editor?.value)
+			return ''
+
+		// First, transform links
+		const data = editor.value.getJSON()
+		const transformedData = _replaceLinkTextWithHost(data)
+
+		// Then, update the content of the readonly editor.
+		editor.value.commands.setContent(transformedData)
+
+		// Then, transform the data to HTML
+		const html = editor.value.getHTML()
+
+		return html
 	})
 
 	watch(() => props.modelValue, newValue => {
@@ -67,6 +96,7 @@
 		:deep(&-content) {
 			.ProseMirror {
         @apply p-5 pt-2 pb-7 outline-none;
+				@apply ring-0;
         overflow-wrap: break-word;
         word-wrap: break-word;
         word-break: break-word;
@@ -119,6 +149,10 @@
 						> label {
 							@apply checkbox-hoverable-el;
 							> input { @apply sr-only; }
+
+							&:focus-within {
+								@apply outline-none ring-2 ring-green-400 transition-shadow duration-100;
+							}
 						}
 
 						&[data-checked="true"] {
@@ -157,6 +191,18 @@
 			p {
 				&:empty:not(:last-child):not(:first-child) {
 					@apply h-3
+				}
+			}
+
+			&.isReadonly {
+				a {
+					@apply inline-flex items-center bg-gray-700 px-1.5 rounded-lg no-underline text-050 max-h-5 overflow-hidden;
+					@apply -mt-1 transform translate-y-1;
+
+					&::before {
+						@apply content block flex-shrink-0 h-4 w-4 -ml-0.5 mr-0.5;
+						@apply icon-link;
+					}
 				}
 			}
 		}

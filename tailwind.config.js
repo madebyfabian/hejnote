@@ -23,6 +23,11 @@ module.exports = {
 
   darkMode: false,
 
+  corePlugins: {
+    letterSpacing: false,
+    lineHeight: false
+  },
+
   theme: {
     container: {
       center: true,
@@ -41,7 +46,8 @@ module.exports = {
       '200': [ '1.25rem', { lineHeight: '1.75rem', letterSpacing: '-0.01em' } ],
       '150': [ '1rem', { lineHeight: '1.25rem', letterSpacing: '-0.02em' } ],
       '100': [ '0.875rem', { lineHeight: '1.25rem', letterSpacing: '-0.02em' } ],
-      '050': [ '0.75rem', { lineHeight: '1.25rem', letterSpacing: '0.02em' } ],
+      '050': [ '0.75rem', { lineHeight: '1.25rem', letterSpacing: '-0.02em' } ],
+      '025': [ '0.75rem', { lineHeight: '1.25rem', letterSpacing: '0.02em' } ],
     },
 
     extend: {
@@ -86,7 +92,7 @@ module.exports = {
   plugins: [
     rotateX,
     lineClamp,
-    plugin(({ addUtilities }) => {
+    plugin(({ addUtilities, theme }) => {
       addUtilities({
         '.content': {
           content: 'attr(data-content)',
@@ -133,7 +139,20 @@ module.exports = {
           width: '0.5rem',
           borderRadius: '100%',
           border: `${ defaultBorderWidth } solid ${ defaultTheme.colors.gray[600] }`,
-        }
+        },
+
+        '.focus-visible': {
+          outline: 'none',
+        },
+
+        /**
+         * Icons
+         */
+        '.icon-link': {
+          background: defaultTheme.colors.gray[400], // Icon color
+          mask: `url('@/assets/icons/special/link.svg') no-repeat center center / 0.75rem`,
+          '-webkit-mask': `url('@/assets/icons/special/link.svg') no-repeat center center / 0.75rem`,
+        },
       })
     })
   ],

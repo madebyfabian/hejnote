@@ -38,11 +38,19 @@
 	}
 
 	h2 {
-		@apply uppercase text-050 text-gray-500 select-none;
+		@apply uppercase text-025 text-gray-500 select-none;
 	}
 
 	h3 {
 		@apply text-150 font-semibold text-gray-300;
+	}
+
+	:focus {
+		@apply outline-none ring-2 ring-green-400 transition-shadow duration-100;
+	}
+
+	:focus:not(:focus-visible) {
+		@apply ring-opacity-0;
 	}
 }
 

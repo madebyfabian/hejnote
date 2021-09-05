@@ -15,7 +15,7 @@
 
 				<div class="p-3 overflow-hidden">
 					<h4 class="line-clamp-2">{{ link.title }}</h4>
-					<p class="text-050 uppercase text-gray-500">{{ generateUrlTitle(link.url) }}</p>
+					<p class="text-050 text-gray-500">{{ useGetUrlHost(link.url) }}</p>
 				</div>
 			</a>
 		</li>
@@ -25,24 +25,13 @@
 <script setup>
 	import { computed } from 'vue'
 	import { linksStore } from '@/store'
+	import useGetUrlHost from '@/hooks/useGetUrlHost'
 
 	const props = defineProps({
 		noteId: { type: String, required: true },
 	})
 
 	const noteLinks = computed(() => linksStore._findLinksByNoteId({ noteId: props.noteId }))
-
-	const generateUrlTitle = ( url ) => {
-		let title
-		try {
-			const urlInstance = new URL(url)
-			title = urlInstance?.host || url
-		} catch (error) {
-			title = url
-		}
-		title = title.replace('www.', '')
-		return title
-	}
 
 	const generateBannerStyle = ( banner_url ) => {
 		return banner_url 
