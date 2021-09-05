@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-	import { ref, reactive, watch, computed } from 'vue'
+	import { ref, reactive, watch, computed, onUnmounted, onUpdated } from 'vue'
 	import { throttle } from 'throttle-debounce'
 	import { linksStore, notesStore } from '@/store'
 	import RichtextEditor from '@/components/RichtextEditor.vue'
@@ -73,13 +73,16 @@
 		{ deep: true }
 	)
 
+	const prepareEditorClose = () => {
+		emit('isFinished')
+		_handleDataChange({ updateState: true })
+	}
+
 	const closeEditor = ({ displayMinimizedPrevent = false } = {}) => {
 		if (displayMinimizedPrevent && props.displayMinimized)
 			return
 
-		emit('isFinished')
-
-		_handleDataChange({ updateState: true })
+		prepareEditorClose()
 		notesStore.closeNoteEditor()
 	}
 
@@ -118,4 +121,6 @@
 		}
 		return linkSet
 	}
+
+	onUnmounted(prepareEditorClose)
 </script>

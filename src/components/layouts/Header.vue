@@ -21,8 +21,9 @@
 	<Modal 
 		:isOpened="notesStore.state.editNoteModalVisible" 
 		:hasPadding="false" 
-		title="Edit note" 
-		:displayTitle="false">
+		:displayTitle="false"
+		@close="() => notesStore.closeNoteEditor()"
+		title="Edit note" >
 
 		<NoteEditor 
 			displayInModal
