@@ -1,28 +1,24 @@
 <template>
-	<div class="container h-11">
-		<div class="relative">
-			<div 
-				class="NoteBar absolute top-0 left-0 w-full bg-gray-800 rounded-xl border border-gray-700 overflow-hidden" 
-				:style="{ '--noteBar-max-height': `${ noteBarMaxHeight }px` }"
-				:class="{ displayMinimized }"
-				@click="handleOpenNoteEditor">
+	<div 
+		class="NoteBar absolute top-0 left-0 w-full bg-gray-800 rounded-xl border border-gray-700 overflow-hidden" 
+		:style="{ '--noteBar-max-height': `${ noteBarMaxHeight }px` }"
+		:class="{ displayMinimized }"
+		@click="handleOpenNoteEditor">
 
-				<div class="-m-0.5">
-					<div ref="noteEditorEl">
-						<NoteEditor 
-							@isFinished="() => toggleDisplayMinimized(true)"
-							v-bind="{ displayMinimized }"
-							:key="noteEditorKey"
-						/>
-					</div>
-				</div>
+		<div class="-m-0.5">
+			<div ref="noteEditorEl">
+				<NoteEditor 
+					@isFinished="() => toggleDisplayMinimized(true)"
+					v-bind="{ displayMinimized }"
+					:key="noteEditorKey"
+				/>
 			</div>
 		</div>
 	</div>
 </template>
 
 <script setup>
-	import { ref } from 'vue'
+	import { ref, watch } from 'vue'
 	import NoteEditor from '@/components/NoteEditor.vue'
 
 	const displayMinimized = ref(true),
@@ -37,7 +33,7 @@
 		if (!isMinimized)
 			noteEditorKey.value++
 
-		noteBarMaxHeight.value = isMinimized ? 167 : noteEditorEl.value.scrollHeight - 1
+		noteBarMaxHeight.value = isMinimized ? 167 : (noteEditorEl?.value?.scrollHeight || 1) - 1
 		displayMinimized.value = value
 	}
 

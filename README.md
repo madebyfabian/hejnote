@@ -20,3 +20,6 @@ npm start
 ```
 npm run build
 ```
+
+## Useful packages
+Outside click: https://www.npmjs.com/package/click-outside-vue3

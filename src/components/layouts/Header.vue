@@ -7,7 +7,11 @@
 			<LogoIcon alt="Logo" class="ml-5" />
 		</router-link>
 
-		<Header-CreateNoteEditor />
+		<div class="container h-11">
+			<div class="relative">
+				<Header-CreateNoteEditor />
+			</div>
+		</div>
 
 		<div class="flex-1 flex justify-end items-center select-none">
 			<router-link :to="{ name: 'App-Account' }" class="mr-6 flex items-center">

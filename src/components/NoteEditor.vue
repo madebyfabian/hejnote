@@ -1,5 +1,5 @@
 <template>
-	<div class="NoteEditor z-50" v-click-outside="() => closeEditor({ displayMinimizedPrevent: true })">
+	<div class="NoteEditor z-50" ref="noteEditorEl">
 		<article 
 			class="transition-transform duration-150" 
 			:class="{ 'transform-gpu -translate-y-12 delay-100': displayMinimized }">
@@ -46,6 +46,16 @@
 		displayInModal: 	{ type: Boolean, default: false },	
 	})
 
+	// Setup outsideclick
+	const noteEditorEl = ref(null)
+	let clickEventHandler = e => {
+		const clickedOutside = !e.composedPath()?.includes(noteEditorEl.value)
+		if (clickedOutside && !props.displayMinimized)
+			closeEditor()
+	}
+	if (!props.displayInModal) 
+		document.addEventListener('mousedown', clickEventHandler)
+
 	// Setup note data
 	const note = reactive({ 
 		...notesStore.getNoteDefaultDataObject({ note: props.note }) 
@@ -78,10 +88,7 @@
 		_handleDataChange({ updateState: true })
 	}
 
-	const closeEditor = ({ displayMinimizedPrevent = false } = {}) => {
-		if (displayMinimizedPrevent && props.displayMinimized)
-			return
-
+	const closeEditor = () => {
 		prepareEditorClose()
 		notesStore.closeNoteEditor()
 	}
@@ -122,5 +129,8 @@
 		return linkSet
 	}
 
-	onUnmounted(prepareEditorClose)
+	onUnmounted(() => {
+		document.removeEventListener('mousedown', clickEventHandler)
+		prepareEditorClose()
+	})
 </script>

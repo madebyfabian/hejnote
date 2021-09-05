@@ -16,8 +16,4 @@ app.use(router)
 import masonry from 'vue-next-masonry'
 app.use(masonry)
 
-// Outside click
-import vClickOutside from 'click-outside-vue3'
-app.use(vClickOutside)
-
 app.mount('#app')
