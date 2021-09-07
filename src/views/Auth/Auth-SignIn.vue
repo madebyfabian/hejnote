@@ -1,18 +1,20 @@
 <template>
 	<div class="container">
-		<h1>Sign in</h1>
-		<input type="text" v-model="formData.email" placeholder="Email" required>
-		<input type="password" v-model="formData.password" placeholder="Password" required>
+		<div class="mx-auto max-w-sm mt-14">
+			<h1 class="text-center mb-4">Sign in</h1>
+			<input class="w-full bg-gray-700 border-none" type="text" v-model="formData.email" placeholder="Email" required>
+			<input class="w-full bg-gray-700 border-none" type="password" v-model="formData.password" placeholder="Password" required>
 
-		<button 
-			class="text-white bg-gray-700 p-4" 
-			@click="doAuthenticate">
-			
-			Authenticate
-		</button>
+			<button 
+				class="text-white bg-gray-700 p-4 w-full mt-4 block" 
+				@click="doAuthenticate">
+				
+				Authenticate
+			</button>
 
-		<div v-if="error" class="mt-20 p-8 bg-red-100">{{ error }}</div>
-		<div v-if="success" class="mt-20 p-8 bg-green-100">{{ success }}</div>
+			<div v-if="error" class="mt-20 p-8 bg-red-100">{{ error }}</div>
+			<div v-if="success" class="mt-20 p-8 bg-green-100">{{ success }}</div>
+		</div>
 	</div>
 </template>
 

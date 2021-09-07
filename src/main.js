@@ -10,6 +10,11 @@ const app = createApp(App)
 import { routes } from './routes.js'
 import { createRouter, createWebHistory } from 'vue-router'
 const router = createRouter({ history: createWebHistory(), routes })
+
+// Router beforeEach
+import routeBeforeEach from '@/utils/routeBeforeEach'
+router.beforeEach(routeBeforeEach)
+
 app.use(router)
 
 // Masonry grid
