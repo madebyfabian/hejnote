@@ -9,12 +9,13 @@
 		
 		<h3 v-if="note.title" v-text="note.title" @click="handleNoteEdit" class="mb-2" />
 		<RichtextEditor v-if="!noteContentIsEmpty" v-model="note.content" isReadonly class="mb-2" />
-	
-		<div ref="noteActionBarEl" class="
-			w-fit ml-auto -mb-2 -mr-2
-			transition opacity-0 group-focus:opacity-100 group-focus-within:opacity-100 group-hover:opacity-100">
-	
-			<Note-ActionBar :note="note" />
+
+		<div ref="noteActionBarEl" class="-m-2 mt-0 flex items-center justify-between" >
+			<Note-CollectionBar :note="note" />
+
+			<div class="transition opacity-0 group-focus:opacity-100 group-focus-within:opacity-100 group-hover:opacity-100">
+				<Note-ActionBar :note="note" />
+			</div>
 		</div>
 
 		<div v-if="noteLinks.length" ref="noteLinkListEl" class="mt-4 -m-2">
@@ -32,6 +33,7 @@
 	import Button from '@/components/Button.vue'
 	import NoteEditor from '@/components/NoteEditor.vue'
 	import NoteLinkList from '@/components/Note-LinkList.vue'
+	import NoteCollectionBar from '@/components/Note-CollectionBar.vue'
 	
 	const props = defineProps({
 		note: { required: true },

@@ -56,8 +56,8 @@
 
 	const notesSortGiven = ( notes ) => {
     return (notes || []).sort(( a, b ) => {
-      return dayjs(b.updated_at).valueOf() 
-           - dayjs(a.updated_at).valueOf()
+      return dayjs(b.created_at).valueOf() 
+           - dayjs(a.created_at).valueOf()
     })
   }
 

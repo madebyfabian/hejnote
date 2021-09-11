@@ -131,6 +131,14 @@ export default {
     }
   },
 
+  async notesUpdateSingleCollectionId({ noteId, collectionId = null }) {
+    await this.notesUpdateSingle({ noteId, newVal: { collection_id: collectionId } })
+
+    useSnackbar().createSnackbar({ 
+      message: collectionId ? 'Moved Note to collection' : 'Moved Note out of collection'
+    })
+  },
+
   async notesUpsertSingle({ newVal, updateDB = true, updateState = true }) {
     try {
       const hasChanges = this.noteObjectHasChanges({ compareToNoteId: newVal?.id, newVal })

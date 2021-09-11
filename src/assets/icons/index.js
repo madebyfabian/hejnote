@@ -10,6 +10,7 @@ import IconTrashUndo from './trashUndo.svg'
 import IconArchive from './archive.svg'
 import IconArchiveSolid from './archiveSolid.svg'
 import IconSearch from './search.svg'
+import IconCollectionMove from './collectionMove.svg'
 
 export {
   IconChevron,
@@ -24,4 +25,5 @@ export {
   IconArchive,
   IconArchiveSolid,
   IconSearch,
+  IconCollectionMove
 }
