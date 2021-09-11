@@ -1,8 +1,30 @@
 <template>
 	<div class="Note-CollectionBar">
-		<Button v-if="!collection" isIconOnly buttonType="secondary" hideBorder @click="handleAddCollection">
-			<IconCollectionMove />
-		</Button>
+		<div v-if="!collection">
+			<ContextMenu 
+				:isOpened="isOpened" 
+				@toggleIsOpened="newVal => isOpened = newVal"
+				:buttonProps="{ isIconOnly: true, buttonType: 'secondary', hideBorder: true }">
+
+				<template #button>
+					<IconCollectionMove />
+				</template>
+
+				<li v-for="collection of allCollections" :key="collection.id">
+					<Cell isClickable @click="() => handleAddCollection({ collectionId: collection.id })">
+						{{ collection.title }}
+					</Cell>
+				</li>
+
+				<li><ContextMenu-Seperator /></li>
+
+				<li>
+					<Cell isClickable>
+						Add new Collection...
+					</Cell>
+				</li>
+			</ContextMenu>
+		</div>
 
 		<div v-else class="Note-CollectionBar-badgeGroup">
 			<Badge>{{ collection.title }}</Badge>
@@ -20,8 +42,11 @@
 </template>
 
 <script setup>
-	import { computed } from 'vue'
+	import { computed, ref } from 'vue'
 	import Button from '@/components/Button.vue'
+	import Cell from '@/components/Cell.vue'
+	import ContextMenu from '@/components/ContextMenu.vue'
+	import ContextMenuSeperator from '@/components/ContextMenu-Seperator.vue'
 	import { IconCollectionMove, IconClose } from '@/assets/icons'
 	import { collectionsStore, notesStore } from '@/store'
 	import Badge from '@/components/Badge.vue'
@@ -30,14 +55,18 @@
 		note: { type: [ Object, null ], required: true }
 	})
 
+	const isOpened = ref(false)
+
 	const collection = computed(() => collectionsStore.collectionFindById({ collectionId: props.note.collection_id }))
+	const allCollections = computed(() => collectionsStore.state.collections)
 
 	const handleRemoveCollection = () => {
 		notesStore.notesUpdateSingleCollectionId({ noteId: props.note.id, collectionId: null })
 	}
 
-	const handleAddCollection = () => {
-		notesStore.notesUpdateSingleCollectionId({ noteId: props.note.id, collectionId: 'd5857d82-bce8-45da-83c6-4a3f54d3deeb' })
+	const handleAddCollection = ({ collectionId }) => {
+		isOpened.value = false
+		notesStore.notesUpdateSingleCollectionId({ noteId: props.note.id, collectionId })
 	}
 </script>
 
