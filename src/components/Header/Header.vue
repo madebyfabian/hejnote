@@ -50,7 +50,7 @@
 	import LogoIcon from '@/assets/images/logo.svg'
 
 	// Import Components
-	import Avatar from '@/components/ui/Avatar.vue'
+	import { Avatar } from '@/components/ui'
 	import Modal from '@/components/Modal.vue'
 	import NoteEditor from '@/components/NoteEditor.vue'
 	import { HeaderCreateNoteEditor, HeaderSearchNotesBar } from '@/components/Header'

@@ -40,7 +40,7 @@
 	import useDayjs from '@/hooks/useDayjs'
 	import useIsHiddenMode from '@/hooks/useIsHiddenMode'
 	import useCurrentCollection from '@/hooks/useCurrentCollection'
-	import Badge from '@/components/ui/Badge.vue'
+	import { Badge } from '@/components/ui'
 	import NoteListGrid from '@/components/NoteList-Grid.vue'
 	
 	const dayjs = useDayjs()

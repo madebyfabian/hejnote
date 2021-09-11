@@ -56,7 +56,7 @@
 	import { collectionsStore } from '@/store'
 	import { useRoute, useRouter } from 'vue-router'
 	import useIsHiddenMode from '@/hooks/useIsHiddenMode'
-	import Switch from '@/components/ui/Switch.vue'
+	import { Switch } from '@/components/ui'
 	import { SidebarItem, SidebarSubheadline, SidebarHiddenModeBanner } from '@/components/Sidebar'
 
 	const isHiddenMode = useIsHiddenMode()

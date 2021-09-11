@@ -27,7 +27,7 @@
 
 <script setup>
 	import ContextMenuContent from '@/components/ContextMenu-Content.vue'
-	import Button from '@/components/ui/Button.vue'
+	import { Button } from '@/components/ui'
 	import generateRandomId from '@/utils/generateRandomId'
 
 	const emit = defineEmits([ 'toggleIsOpened' ])

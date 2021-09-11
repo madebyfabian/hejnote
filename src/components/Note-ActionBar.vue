@@ -31,20 +31,17 @@
 	</div>
 </template>
 
-<script setup>
-	import Button from '@/components/ui/Button.vue'
+<script setup>	
+	import { nextTick } from 'vue'
+	import { IconArchive } from '@/assets/icons'
+	import useConfirm from '@/hooks/useConfirm'
+	import { notesStore } from '@/store' 
+	import useSupabase from '@/hooks/useSupabase'
+	import { Button, RichtextEditor } from '@/components/ui'
 	import { 
 		IconEyeOff, IconEyeOffSolid, IconPin, IconPinSolid, IconTrash, IconTrashDelete, IconTrashUndo, IconArchiveSolid 
 	} from '@/assets/icons'
 
-	import { IconArchive } from '@/assets/icons'
-
-	import { nextTick } from 'vue'
-	import useConfirm from '@/hooks/useConfirm'
-	import { notesStore } from '@/store' 
-	import useSupabase from '@/hooks/useSupabase'
-	import RichtextEditor from '@/components/ui/RichtextEditor.vue'
-	
 	const supabase = useSupabase()
 
 	const props = defineProps({
