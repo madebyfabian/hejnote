@@ -23,7 +23,6 @@
 		generalStore, 
 		collectionsStore, 
 		linksStore, 
-		joinNotesCollectionsStore, 
 		joinNotesLinksStore 
 	} from '@/store'
 
@@ -35,7 +34,6 @@
 		// Load all app data
 		await Promise.all([
 			notesStore.notesFetch(),
-			joinNotesCollectionsStore.joinNotesCollectionsFetch(),
 			joinNotesLinksStore.joinNotesLinksFetch(),
 			collectionsStore.collectionsFetch(),
 			linksStore.linksFetch(),

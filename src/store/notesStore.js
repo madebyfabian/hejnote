@@ -6,7 +6,6 @@ import handleError from '@/utils/handleError'
 import { noteEditorContentDefault } from '@/utils/constants'
 
 import generalStore from '@/store/generalStore'
-import joinNotesCollectionsStore from '@/store/joinNotesCollectionsStore'
 import linksStore from '@/store/linksStore'
 
 const supabase = useSupabase(),
@@ -251,13 +250,10 @@ export default {
 
   notesFilterByCollection({ collectionId }) {
     const notes = this.getNotes({ includeArchived: false, includeDeleted: false })
-    if (!collectionId) return notes
+    if (!collectionId) 
+      return notes
 
-    // Get all notes that have a join to the collection
-    const joins = joinNotesCollectionsStore.state.joinNotesCollections.filter(join => join.collection_id === collectionId)
-    const noteIds = joins.map(join => join.note_id)
-
-    return notes.filter(note => noteIds.includes(note.id))
+    return notes.filter(note => note.collection_id === collectionId)
   },
 
   notesFilterForTrash() {
