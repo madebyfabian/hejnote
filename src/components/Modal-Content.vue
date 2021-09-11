@@ -61,7 +61,7 @@
 
 <style lang="postcss" scoped>
 	.Modal {
-		@apply fixed h-full w-full top-0 left-0 z-40;
+		@apply fixed h-full w-full top-0 left-0 z-50;
 		@apply bg-gray-900 bg-opacity-75 flex justify-center items-center;
 
 		&-container {
