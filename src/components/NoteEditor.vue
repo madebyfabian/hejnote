@@ -18,13 +18,12 @@
 			</div>
 		</article>
 
-		<div v-if="!displayInModal" class="h-14">
-			<div 
-				class="flex justify-end pt-0 p-3 opacity-0 transition transform-gpu" 
-				:class="displayMinimized ? 'duration-300 opacity-0 -translate-y-3' : 'duration-500 opacity-100 -translate-y-0'">
+		<div 
+			v-if="!displayInModal"
+			class="h-14 flex justify-end pt-0 p-3 opacity-0 transition transform-gpu" 
+			:class="displayMinimized ? 'duration-300 opacity-0 -translate-y-3' : 'duration-500 opacity-100 -translate-y-0'">
 
-				<Button buttonType="secondary" @click="closeEditor">Close</Button>
-			</div>
+			<Button buttonType="secondary" @click.stop="closeEditor">Close</Button>
 		</div>
 	</div>
 </template>
@@ -49,8 +48,14 @@
 	// Setup outsideclick
 	const noteEditorEl = ref(null)
 	let clickEventHandler = e => {
-		const clickedOutside = !e.composedPath()?.includes(noteEditorEl.value)
-		if (clickedOutside && !props.displayMinimized)
+		// Do not execute if the editor is minimized.
+		if (props.displayMinimized)
+			return 
+
+		const path = e.composedPath()
+
+		const clickedOutside = !path?.includes(noteEditorEl.value)
+		if (clickedOutside)
 			closeEditor()
 	}
 	if (!props.displayInModal) 
