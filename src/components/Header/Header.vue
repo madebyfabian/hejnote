@@ -53,8 +53,7 @@
 	import Avatar from '@/components/ui/Avatar.vue'
 	import Modal from '@/components/Modal.vue'
 	import NoteEditor from '@/components/NoteEditor.vue'
-	import HeaderCreateNoteEditor from '@/components/layouts/Header/Header-CreateNoteEditor.vue'
-	import HeaderSearchNotesBar from '@/components/layouts/Header/Header-SearchNotesBar.vue'
+	import { HeaderCreateNoteEditor, HeaderSearchNotesBar } from '@/components/Header'
 
 	const userName = computed(() => {
 		return generalStore.state.user?.user_metadata?.name || generalStore.state.user?.email;
