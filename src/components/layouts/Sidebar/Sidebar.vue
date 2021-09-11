@@ -57,9 +57,9 @@
 	import { useRoute, useRouter } from 'vue-router'
 	import useIsHiddenMode from '@/hooks/useIsHiddenMode'
 	import Switch from '@/components/ui/Switch.vue'
-	import SidebarItem from '@/components/layouts/Sidebar-Item.vue'
-	import SidebarSubheadline from '@/components/layouts/Sidebar-Subheadline.vue'
-	import SidebarHiddenModeBanner from '@/components/layouts/Sidebar-HiddenModeBanner.vue'
+	import SidebarItem from '@/components/layouts/Sidebar/Sidebar-Item.vue'
+	import SidebarSubheadline from '@/components/layouts/Sidebar/Sidebar-Subheadline.vue'
+	import SidebarHiddenModeBanner from '@/components/layouts/Sidebar/Sidebar-HiddenModeBanner.vue'
 
 	const isHiddenMode = useIsHiddenMode()
 	const route = useRoute()

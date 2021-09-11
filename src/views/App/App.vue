@@ -27,8 +27,8 @@
 	} from '@/store'
 
 	// Components
-	import Header from '@/components/layouts/Header.vue'
-	import Sidebar from '@/components/layouts/Sidebar.vue'
+	import Header from '@/components/layouts/Header/Header.vue'
+	import Sidebar from '@/components/layouts/Sidebar/Sidebar.vue'
 
 	onMounted(async () => {
 		// Load all app data
