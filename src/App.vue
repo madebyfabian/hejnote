@@ -1,6 +1,6 @@
 <template>
   <SnackbarContainer />
-  <ConfirmModal />
+  <ModalConfirm />
   
   <router-view/>
 </template>
@@ -12,8 +12,8 @@
 	import { generalStore } from '@/store'
 	import { getRequiredAuthRedirect } from '@/utils/routeBeforeEach'
 
-	import SnackbarContainer from '@/components/helpers/SnackbarContainer.vue'
-	import ConfirmModal from '@/components/helpers/ConfirmModal.vue'
+	import SnackbarContainer from '@/components/SnackbarContainer.vue'
+	import ModalConfirm from '@/components/ModalConfirm.vue'
 
 	const route = useRoute(),
 				router = useRouter()
