@@ -47,13 +47,13 @@
 
 <script setup>
 	import { computed, ref } from 'vue'
-	import Button from '@/components/Button.vue'
-	import Cell from '@/components/Cell.vue'
+	import Button from '@/components/ui/Button.vue'
+	import Cell from '@/components/ui/Cell.vue'
 	import ContextMenu from '@/components/ContextMenu.vue'
 	import ContextMenuSeperator from '@/components/ContextMenu-Seperator.vue'
 	import { IconCollectionMove, IconClose } from '@/assets/icons'
 	import { collectionsStore, notesStore } from '@/store'
-	import Badge from '@/components/Badge.vue'
+	import Badge from '@/components/ui/Badge.vue'
 
 	const props = defineProps({
 		note: { type: [ Object, null ], required: true }

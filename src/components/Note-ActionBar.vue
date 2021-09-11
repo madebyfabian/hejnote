@@ -32,7 +32,7 @@
 </template>
 
 <script setup>
-	import Button from '@/components/Button.vue'
+	import Button from '@/components/ui/Button.vue'
 	import { 
 		IconEyeOff, IconEyeOffSolid, IconPin, IconPinSolid, IconTrash, IconTrashDelete, IconTrashUndo, IconArchiveSolid 
 	} from '@/assets/icons'
@@ -43,7 +43,7 @@
 	import useConfirm from '@/hooks/useConfirm'
 	import { notesStore } from '@/store' 
 	import useSupabase from '@/hooks/useSupabase'
-	import RichtextEditor from '@/components/RichtextEditor.vue'
+	import RichtextEditor from '@/components/ui/RichtextEditor.vue'
 	
 	const supabase = useSupabase()
 

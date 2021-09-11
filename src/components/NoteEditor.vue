@@ -32,8 +32,8 @@
 	import { ref, reactive, watch, computed, onUnmounted, onUpdated, onBeforeUnmount } from 'vue'
 	import { throttle } from 'throttle-debounce'
 	import { linksStore, notesStore } from '@/store'
-	import RichtextEditor from '@/components/RichtextEditor.vue'
-	import Button from '@/components/Button.vue'
+	import RichtextEditor from '@/components/ui/RichtextEditor.vue'
+	import Button from '@/components/ui/Button.vue'
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
 	import NoteLinkList from '@/components/Note-LinkList.vue'
 

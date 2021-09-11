@@ -17,5 +17,5 @@
 	import useConfirm from '@/hooks/useConfirm'
   const { isVisible, title, question, doAnswer } = useConfirm()
   import Modal from '@/components/Modal.vue'
-  import Button from '@/components/Button.vue'
+  import Button from '@/components/ui/Button.vue'
 </script>

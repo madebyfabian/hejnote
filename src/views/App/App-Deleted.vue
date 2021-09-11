@@ -11,7 +11,7 @@
   import { notesStore } from '@/store'
   import useConfirm from '@/hooks/useConfirm'
   import NoteList from '@/components/NoteList.vue'
-  import Button from '@/components/Button.vue'
+  import Button from '@/components/ui/Button.vue'
 
 	const notes = computed(() => {
 		return notesStore.notesFilterForTrash()

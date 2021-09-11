@@ -26,7 +26,7 @@
 
 <script setup>
 	import { ref, computed } from 'vue'
-	import Button from '@/components/Button.vue'
+	import Button from '@/components/ui/Button.vue'
 
 	const snackbarRef = ref(null)
 	const snackbarMaxHeight = computed(() => snackbarRef?.value?.scrollHeight)

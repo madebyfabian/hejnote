@@ -12,5 +12,5 @@
 	import { useRouter } from 'vue-router'
 	const router = useRouter()
 
-	import Button from '@/components/Button.vue'
+	import Button from '@/components/ui/Button.vue'
 </script>

@@ -32,7 +32,7 @@
 
 <script setup>
 	import { ref } from 'vue'
-	import Cell from '@/components/Cell.vue'
+	import Cell from '@/components/ui/Cell.vue'
 	import ContextMenu from '@/components/ContextMenu.vue'
 	import ContextMenuSeperator from '@/components/ContextMenu-Seperator.vue'
 	import { IconTrash } from '@/assets/icons'

@@ -29,7 +29,7 @@
 
 <script setup>
 	import { useSlots, ref, onUnmounted, computed } from 'vue'
-	import Button from '@/components/Button.vue'
+	import Button from '@/components/ui/Button.vue'
 	import { IconClose } from '@/assets/icons'
 	import { CFocusLock } from '@chakra-ui/c-focus-lock'
 
