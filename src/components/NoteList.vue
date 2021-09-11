@@ -27,7 +27,11 @@
 			</section>
 		</template>	
 
-		<p v-else class="NoteList-emptyState">There are no notes yet.</p>
+		<p v-else class="NoteList-emptyState">
+			<slot name="empty-state">
+				There are no notes yet.
+			</slot>
+		</p>
 	</div>
 </template>
 
@@ -88,7 +92,7 @@
 		}
 
 		&-emptyState {
-			@apply text-gray-500 text-150 select-none;
+			@apply text-gray-500 select-none -mt-5;
 		}
 	}
 </style>

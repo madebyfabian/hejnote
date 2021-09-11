@@ -7,11 +7,16 @@
 			<LogoIcon alt="Logo" class="ml-5" />
 		</router-link>
 
-		<div class="container h-11">
-			<div class="relative">
-				<Header-CreateNoteEditor />
+		<div class="flex container h-11">
+			<div class="relative flex-1">
+				<transition name="transition-fade-100">
+					<Header-CreateNoteEditor v-show="!isSearchFocussed" />
+				</transition>
 				<div class="Header-bgGradient isTop"></div>
 				<div class="Header-bgGradient isBottom"></div>
+			</div>
+		  <div class="ml-4">
+				<Header-SearchNotesBar v-bind="{ isSearchFocussed }" />
 			</div>
 		</div>
 
@@ -41,6 +46,7 @@
 <script setup>
 	import { computed } from 'vue'
 	import { notesStore, generalStore } from '@/store'
+	import { useRoute } from 'vue-router'
 	import LogoIcon from '@/assets/images/logo.svg'
 
 	// Import Components
@@ -48,6 +54,7 @@
 	import Modal from '@/components/Modal.vue'
 	import NoteEditor from '@/components/NoteEditor.vue'
 	import HeaderCreateNoteEditor from '@/components/layouts/Header-CreateNoteEditor.vue'
+	import HeaderSearchNotesBar from '@/components/layouts/Header-SearchNotesBar.vue'
 
 	const userName = computed(() => {
 		return generalStore.state.user?.user_metadata?.name || generalStore.state.user?.email;
@@ -56,6 +63,9 @@
 	const editNote = computed(() => {
 		return notesStore.noteFindById({ noteId: notesStore.state.editNoteId })
 	})
+
+	const route = useRoute()
+	const isSearchFocussed = computed(() => route.name === 'App-Search')
 </script>
 
 <style lang="postcss" scoped>

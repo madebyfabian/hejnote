@@ -65,11 +65,17 @@ export const routes = [
         component: () => import('./views/App/App-Archive.vue'),
       },
       {
+        path: 'search',
+        name: 'App-Search',
+        meta: { requiresAuth: true }, 
+        component: () => import('./views/App/App-Search.vue'),
+      },
+      {
         path: 'test',
         name: 'App-Test',
         meta: { requiresAuth: true }, 
         component: () => import('./views/App/App-Test.vue'),
-      }
+      },
     ] 
   },
   {
