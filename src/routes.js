@@ -46,6 +46,12 @@ export const routes = [
         meta: { requiresAuth: true }, 
         component: () => import('./views/App/App-NotesDisplay.vue'),
       },
+      { 
+        path: 'uncategorized', 
+        name: 'App-Uncategorized',
+        meta: { requiresAuth: true }, 
+        component: () => import('./views/App/App-NotesDisplay.vue'),
+      },
       {
         path: 'collection/:collectionId',
         name: 'App-Collection',

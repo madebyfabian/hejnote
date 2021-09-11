@@ -264,6 +264,11 @@ export default {
     return notes.filter(note => note.collection_id === collectionId)
   },
 
+  notesFilterOnlyWithoutCollection() {
+    const notes = this.getNotes({ includeArchived: false, includeDeleted: false })
+    return notes.filter(note => !note.collection_id)
+  },
+
   notesFilterForTrash() {
     return this.getNotes().filter(note => note.deleted_at !== null)
   },

@@ -6,6 +6,10 @@
 				All Notes
 			</SidebarItem>
 
+			<SidebarItem :to="{ name: 'App-Uncategorized', params }">
+				Uncategorized
+			</SidebarItem>
+
 			<template v-if="collectionsStore.state.collections.length">
 				<SidebarSubheadline>{{ isHiddenMode ? 'Hidden ' : null }}Collections</SidebarSubheadline>
 
