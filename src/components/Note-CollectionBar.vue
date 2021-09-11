@@ -16,6 +16,8 @@
 					</Cell>
 				</li>
 
+				<!--
+
 				<li><ContextMenu-Seperator /></li>
 
 				<li>
@@ -23,6 +25,8 @@
 						Add new Collection...
 					</Cell>
 				</li>
+
+				-->
 			</ContextMenu>
 		</div>
 
