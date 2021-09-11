@@ -59,7 +59,7 @@
 			return 
 		}
 
-		const elWidth = 400,
+		const elWidth = 480,
 					elLeft = inputWrapEl.value.offsetLeft,
 					windowWidth = window.innerWidth
 

@@ -31,9 +31,9 @@
 
 	// Setup fuse.js
 	const fuse = new Fuse(originalData.value, { keys: [
-		{ name: 'title', weight: 2 },
-		{ name: 'content', weight: 1 },
-		{ name: 'id', weight: 0.5 }
+		{ name: 'title', weight: 1 },
+		{ name: 'content', weight: 0.8 },
+		{ name: 'id', weight: 1 }
 	] })
 
 	const searchNotesString = computed(() => route.query?.q || '')
