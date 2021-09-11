@@ -2,12 +2,12 @@
 	<CFocusLock>
 		<ul
 			ref="contentEl" 
+			role="menu"
 			class="
 				ContextMenu-Content py-2 rounded-xl bg-gray-800 border border-gray-700 w-[200px] 
 				absolute left-0 top-0 z-40
 			"
-			role="menu"
-			aria-haspopup="true"
+			:id="id"
 			:aria-hidden="isOpened ? 'false' : 'true'">
 
 			<slot />
@@ -21,6 +21,7 @@
 
 	defineProps({
 		isOpened: { type: Boolean, required: true },
+		id: 			{ type: String, required: true },
 	})
 	const emit = defineEmits([ 'toggleIsOpened' ])
 
