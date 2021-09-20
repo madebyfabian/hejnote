@@ -16,7 +16,7 @@
     "@tiptap/extension-placeholder": "^2.0.0-beta.28",
     "@tiptap/extension-task-item": "^2.0.0-beta.17",
     "@tiptap/extension-task-list": "^2.0.0-beta.17",
-    "@tiptap/starter-kit": "^2.0.0-beta.101",
+    "@tiptap/starter-kit": "^2.0.0-beta.106",
     "@tiptap/vue-3": "^2.0.0-beta.56",
     "click-outside-vue3": "^4.0.1",
     "dayjs": "^1.10.6",
