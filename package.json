@@ -30,7 +30,7 @@
     "@tailwindcss/line-clamp": "^0.2.1",
     "@types/tailwindcss": "^2.2.1",
     "@vitejs/plugin-vue": "^1.6.0",
-    "@vue/compiler-sfc": "^3.2.7",
+    "@vue/compiler-sfc": "^3.2.13",
     "autoprefixer": "^10.3.3",
     "postcss-nested": "^5.0.6",
     "tailwindcss": "^2.2.9",
