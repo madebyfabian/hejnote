@@ -1,15 +1,75 @@
 import useSupabase from '@/hooks/useSupabase'
 const supabase = useSupabase()
 
+// Import routes
+import AppRoute from '@/views/App/App.vue'
+import AppNotesDisplay from '@/views/App/App-NotesDisplay.vue'
+import AppDeleted from '@/views/App/App-Deleted.vue'
+import AppArchive from '@/views/App/App-Archive.vue'
+import AppSearch from '@/views/App/App-Search.vue'
+import AppAccount from '@/views/App/App-Account.vue'
+
 /** @type {import('vue-router').RouterOptions['routes']} */
 export const routes = [
-  { 
-    path: '/',
-    meta: { requiresAuth: false }, 
-    redirect: { name: 'App-Home' } 
+  /**
+   * App
+   */
+  {
+    path: '/app/:isHiddenMode(hidden)?',
+    name: 'App',
+    component: AppRoute,
+    redirect: { name: 'App-Home' },
+    meta: { requiresAuth: true }, 
+    children: [
+      { 
+        path: 'home', 
+        name: 'App-Home',
+        meta: { requiresAuth: true }, 
+        component: AppNotesDisplay,
+      },
+      { 
+        path: 'uncategorized', 
+        name: 'App-Uncategorized',
+        meta: { requiresAuth: true }, 
+        component: AppNotesDisplay,
+      },
+      {
+        path: 'collection/:collectionId',
+        name: 'App-Collection',
+        meta: { requiresAuth: true }, 
+        component: AppNotesDisplay
+      },
+      {
+        path: 'deleted',
+        name: 'App-Deleted',
+        meta: { requiresAuth: true }, 
+        component: AppDeleted,
+      },
+      {
+        path: 'archive',
+        name: 'App-Archive',
+        meta: { requiresAuth: true }, 
+        component: AppArchive,
+      },
+      {
+        path: 'search',
+        name: 'App-Search',
+        meta: { requiresAuth: true }, 
+        component: AppSearch,
+      },
+      {
+        path: 'account',
+        name: 'App-Account',
+        meta: { requiresAuth: true }, 
+        component: AppAccount,
+      }
+    ] 
   },
 
-  {
+  /**
+   * Auth
+   */
+   {
     path: '/auth',
     name: 'Auth',
     component: () => import('./views/Auth/Auth.vue'),
@@ -36,72 +96,6 @@ export const routes = [
           supabase.auth.signOut()
           return next({ name: 'Auth' })
         },
-      }
-    ]
-  },
-  {
-    path: '/notes/:isHiddenMode(hidden)?',
-    name: 'App',
-    component: () => import('./views/App/App.vue'),
-    redirect: { name: 'App-Home' },
-    meta: { requiresAuth: true }, 
-    children: [
-      { 
-        path: 'home', 
-        name: 'App-Home',
-        meta: { requiresAuth: true }, 
-        component: () => import('./views/App/App-NotesDisplay.vue'),
-      },
-      { 
-        path: 'uncategorized', 
-        name: 'App-Uncategorized',
-        meta: { requiresAuth: true }, 
-        component: () => import('./views/App/App-NotesDisplay.vue'),
-      },
-      {
-        path: 'collection/:collectionId',
-        name: 'App-Collection',
-        meta: { requiresAuth: true }, 
-        component: () => import('./views/App/App-NotesDisplay.vue')
-      },
-      {
-        path: 'deleted',
-        name: 'App-Deleted',
-        meta: { requiresAuth: true }, 
-        component: () => import('./views/App/App-Deleted.vue'),
-      },
-      {
-        path: 'archive',
-        name: 'App-Archive',
-        meta: { requiresAuth: true }, 
-        component: () => import('./views/App/App-Archive.vue'),
-      },
-      {
-        path: 'search',
-        name: 'App-Search',
-        meta: { requiresAuth: true }, 
-        component: () => import('./views/App/App-Search.vue'),
-      },
-      {
-        path: 'test',
-        name: 'App-Test',
-        meta: { requiresAuth: true }, 
-        component: () => import('./views/App/App-Test.vue'),
-      },
-    ] 
-  },
-  {
-    path: '/account',
-    name: 'App-Account-Wrapper',
-    component: () => import('./views/App/App.vue'),
-    redirect: { name: 'App-Account' },
-    meta: { requiresAuth: true }, 
-    children: [
-      {
-        path: '',
-        name: 'App-Account',
-        meta: { requiresAuth: true }, 
-        component: () => import('./views/App/App-Account.vue'),
       }
     ]
   },
