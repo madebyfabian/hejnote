@@ -15,7 +15,7 @@ export const routes = [
    * Notes
    */
   {
-    path: '/notes/:isHiddenMode(hidden)?',
+    path: '/app/:isHiddenMode(hidden)?',
     name: 'App',
     component: AppRoute,
     redirect: { name: 'App-Home' },
@@ -64,7 +64,7 @@ export const routes = [
    * Account
    */
   {
-    path: '/account',
+    path: '/app/account',
     component: AppRoute,
     redirect: { name: 'App-Account' },
     meta: { requiresAuth: true }, 
