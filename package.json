@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@chakra-ui/c-focus-lock": "^0.1.0-alpha.4",
-    "@supabase/supabase-js": "^1.22.4",
+    "@supabase/supabase-js": "^1.23.0",
     "@tiptap/extension-bullet-list": "^2.0.0-beta.15",
     "@tiptap/extension-link": "^2.0.0-beta.19",
     "@tiptap/extension-list-item": "^2.0.0-beta.14",
