@@ -79,7 +79,10 @@ module.exports = {
       },
       maxHeight: {
         'none': 'none',
-      }
+      },
+      spacing: {
+        'safe-area-bottom': 'env(safe-area-inset-bottom)',
+      },
     },
   },
 

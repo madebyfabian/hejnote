@@ -2,13 +2,21 @@
 	<router-view v-slot="{ Component }">
 		<transition name="transition-fade-100">
 			<div v-if="!generalStore.state.isAppLoading">
-				<Header />
+				<div class="hidden desktop:block">
+					<Header />
+				</div>
 				
-				<div class="mt-24">
-					<Sidebar />
+				<div class="mt-4 desktop:mt-24">
+					<div class="hidden desktop:block">
+						<Sidebar />
+					</div>
 					<main class="container">
 						<component :is="Component" />
 					</main>
+				</div>
+
+				<div class="fixed bottom-0 left-0 w-full desktop:hidden">
+					<TabNav />
 				</div>
 			</div>
 		</transition>
@@ -29,6 +37,7 @@
 	// Components
 	import Header from '@/components/Header'
 	import Sidebar from '@/components/Sidebar'
+	import TabNav from '@/components/TabNav/TabNav.vue'
 
 	onMounted(async () => {
 		// Load all app data
