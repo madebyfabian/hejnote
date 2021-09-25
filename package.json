@@ -14,7 +14,7 @@
     "@tiptap/extension-list-item": "^2.0.0-beta.14",
     "@tiptap/extension-ordered-list": "^2.0.0-beta.15",
     "@tiptap/extension-placeholder": "^2.0.0-beta.28",
-    "@tiptap/extension-task-item": "^2.0.0-beta.17",
+    "@tiptap/extension-task-item": "^2.0.0-beta.18",
     "@tiptap/extension-task-list": "^2.0.0-beta.17",
     "@tiptap/starter-kit": "^2.0.0-beta.101",
     "@tiptap/vue-3": "^2.0.0-beta.56",
