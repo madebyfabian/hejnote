@@ -3,19 +3,19 @@ const supabase = useSupabase()
 
 // Import routes
 import AppRoute from '@/views/App/App.vue'
-import AppNotesDisplay from '@/views/App/App-NotesDisplay.vue'
-import AppDeleted from '@/views/App/App-Deleted.vue'
-import AppArchive from '@/views/App/App-Archive.vue'
-import AppSearch from '@/views/App/App-Search.vue'
-import AppAccount from '@/views/App/App-Account.vue'
+import AppNotesDisplayRoute from '@/views/App/App-NotesDisplay.vue'
+import AppDeletedRoute from '@/views/App/App-Deleted.vue'
+import AppArchiveRoute from '@/views/App/App-Archive.vue'
+import AppSearchRoute from '@/views/App/App-Search.vue'
+import AppAccountRoute from '@/views/App/App-Account.vue'
 
 /** @type {import('vue-router').RouterOptions['routes']} */
 export const routes = [
   /**
-   * App
+   * Notes
    */
   {
-    path: '/app/:isHiddenMode(hidden)?',
+    path: '/notes/:isHiddenMode(hidden)?',
     name: 'App',
     component: AppRoute,
     redirect: { name: 'App-Home' },
@@ -25,45 +25,57 @@ export const routes = [
         path: 'home', 
         name: 'App-Home',
         meta: { requiresAuth: true }, 
-        component: AppNotesDisplay,
+        component: AppNotesDisplayRoute,
       },
       { 
         path: 'uncategorized', 
         name: 'App-Uncategorized',
         meta: { requiresAuth: true }, 
-        component: AppNotesDisplay,
+        component: AppNotesDisplayRoute,
       },
       {
         path: 'collection/:collectionId',
         name: 'App-Collection',
         meta: { requiresAuth: true }, 
-        component: AppNotesDisplay
+        component: AppNotesDisplayRoute
       },
       {
         path: 'deleted',
         name: 'App-Deleted',
         meta: { requiresAuth: true }, 
-        component: AppDeleted,
+        component: AppDeletedRoute,
       },
       {
         path: 'archive',
         name: 'App-Archive',
         meta: { requiresAuth: true }, 
-        component: AppArchive,
+        component: AppArchiveRoute,
       },
       {
         path: 'search',
         name: 'App-Search',
         meta: { requiresAuth: true }, 
-        component: AppSearch,
-      },
-      {
-        path: 'account',
-        name: 'App-Account',
-        meta: { requiresAuth: true }, 
-        component: AppAccount,
+        component: AppSearchRoute,
       }
     ] 
+  },
+
+  /**
+   * Account
+   */
+  {
+    path: '/account',
+    component: AppRoute,
+    redirect: { name: 'App-Account' },
+    meta: { requiresAuth: true }, 
+    children: [
+      {
+        path: '',
+        name: 'App-Account',
+        meta: { requiresAuth: true }, 
+        component: () => AppAccountRoute,
+      }
+    ]
   },
 
   /**
