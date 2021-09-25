@@ -73,7 +73,7 @@ export const routes = [
         path: '',
         name: 'App-Account',
         meta: { requiresAuth: true }, 
-        component: () => AppAccountRoute,
+        component: AppAccountRoute,
       }
     ]
   },
