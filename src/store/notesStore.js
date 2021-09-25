@@ -11,6 +11,11 @@ import linksStore from '@/store/linksStore'
 const supabase = useSupabase(),
 			isHiddenMode = useIsHiddenMode()
 
+// Helper
+const findIndexById = ({ data, id }) => {
+  return data.findIndex(obj => obj !== undefined && obj.id === id)
+}
+
 export default {
 	state: reactive({
 		notes: [],
@@ -52,12 +57,8 @@ export default {
 		})
 	},
 
-	_findIndexById({ data, id }) {
-    return data.findIndex(obj => obj !== undefined && obj.id === id)
-  },
-
-	async notesFetch() {
-    const { data, error } = await supabase.from('notes').select('*')
+	async notesFetch({ fetchHidden = false } = {}) {
+    const { data, error } = await supabase.from('notes').select('*').eq('is_hidden', fetchHidden)
     if (error) 
       return console.error(error)
 
@@ -73,7 +74,7 @@ export default {
     if (error) throw error
 
     // Update local state, Check if already in state
-    const index = this._findIndexById({ id: noteId, data: this.state.notes })
+    const index = findIndexById({ id: noteId, data: this.state.notes })
     if (index > -1)
       this.notesUpdateSingle({ noteId, newVal: rowsArr[0] })
     else
@@ -98,7 +99,7 @@ export default {
 
       // Update local state
       if (updateState) {
-        const index = this._findIndexById({ id: noteId, data: this.state.notes })
+        const index = findIndexById({ id: noteId, data: this.state.notes })
         const newData = { ...this.state.notes[index], ...newVal }
         this.state.notes[index] = newData
       }
@@ -120,7 +121,7 @@ export default {
       const hasChanges = this.noteObjectHasChanges({ compareToNoteId: newVal?.id, newVal })
 
       // If we are in hidden mode, the new val should also have this prop.
-      newVal.is_hidden = isHiddenMode
+      newVal.is_hidden = isHiddenMode.value
 
       let res
       if (updateDB && hasChanges) {
@@ -131,7 +132,7 @@ export default {
       const newData = res?.data?.[0] || newVal
       const isEmpty = (!newVal?.id && !hasChanges)
       if (updateState && !isEmpty) {
-        const index = this._findIndexById({ id: newData?.id, data: this.state.notes })
+        const index = findIndexById({ id: newData?.id, data: this.state.notes })
         if (index > -1)
           this.state.notes[index] = { ...this.state.notes[index], ...newData }
         else
@@ -150,7 +151,7 @@ export default {
       await this.notesUpdateSingle({ noteId, newVal: { deleted_at } })
 
       // Notify
-      const index = this._findIndexById({ id: noteId, data: this.state.notes })
+      const index = findIndexById({ id: noteId, data: this.state.notes })
       const noteData = this.state.notes[index]
       useSnackbar().createSnackbar({ 
         message: `Moved note ${ noteData.title && `<b>"${ noteData.title }"</b>` } ${ deleted_at == null ? 'out of the' : 'to the' } Trash.`,

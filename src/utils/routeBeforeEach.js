@@ -1,5 +1,6 @@
 import useConfirm from '@/hooks/useConfirm'
 import useSupabase from '@/hooks/useSupabase'
+import { notesStore } from '@/store'
 
 export const getRequiredAuthRedirect = ({ user, requiresAuth }) => {
 	if (requiresAuth && !user)
@@ -28,14 +29,21 @@ export default async ( to, from, next ) => {
 			question: 'This will give you access to all your hidden collections until you refresh the page.' 
 		})
 
-		return answer ? next() : next({ 
-			name: to.name, 
-			query: to.query, 
-			params: { 
-				...to.params, 
-				isHiddenMode: answer ? 'hidden' : null 
-			} 
-		})
+		if (!answer) {
+			return next({ 
+				name: to.name, 
+				query: to.query, 
+				params: { 
+					...to.params, 
+					isHiddenMode: answer ? 'hidden' : null 
+				} 
+			})
+		}
+	}
+
+	// If the hidden mode changes in any direction (hidden -> not hidden; or not hidden -> hidden)
+	if (fromIsHidden !== toIsHidden) {
+		await notesStore.notesFetch({ fetchHidden: toIsHidden })
 	}
 
 	next()

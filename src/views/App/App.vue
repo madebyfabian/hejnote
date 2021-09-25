@@ -25,6 +25,7 @@
 
 <script setup>
 	import { onMounted } from 'vue'
+	import useIsHiddenMode from '@/hooks/useIsHiddenMode'
 
 	import { 
 		notesStore, 
@@ -40,9 +41,11 @@
 	import TabNav from '@/components/TabNav/TabNav.vue'
 
 	onMounted(async () => {
+		const isHiddenMode = useIsHiddenMode()
+
 		// Load all app data
 		await Promise.all([
-			notesStore.notesFetch(),
+			notesStore.notesFetch({ fetchHidden: isHiddenMode.value }),
 			joinNotesLinksStore.joinNotesLinksFetch(),
 			collectionsStore.collectionsFetch(),
 			linksStore.linksFetch(),
