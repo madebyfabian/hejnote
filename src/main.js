@@ -23,6 +23,8 @@ app.use(masonry)
 
 // Click Outside Directive
 import vClickOutside from 'click-outside-vue3'
+
+import './registerServiceWorker'
 app.use(vClickOutside)
 
 app.mount('#app')
