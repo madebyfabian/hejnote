@@ -45,6 +45,9 @@ export default defineConfig({
     },
   },
   server: {
-    open: false
+    open: false,
+    fs: {
+      strict: true,
+    },
   },
 })
