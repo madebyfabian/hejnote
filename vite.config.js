@@ -10,7 +10,34 @@ export default defineConfig({
   plugins: [
     vue(),
     svgLoader(),
-    VitePWA()
+    VitePWA({
+      includeAssets: [ 
+        'favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png' 
+      ],  
+      manifest: {
+        name: 'noter',
+        description: 'noter app',
+        theme_color: '#111827',
+        icons: [
+          {
+            src: 'pwa-192x192.png',
+            sizes: '192x192',
+            type: 'image/png',
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+          },
+          {
+            src: 'pwa-512x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'any maskable',
+          }
+        ]
+      }
+    })
   ],
   resolve: {
     alias: {
