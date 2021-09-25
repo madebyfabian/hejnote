@@ -81,6 +81,6 @@
 		})
 
 		if (answer == true) 
-			notesStore.notesDeleteSingle({ noteId: props.note.id })
+			notesStore.notesDeleteV2({ noteIds: [ props.note.id ] })
 	}
 </script>

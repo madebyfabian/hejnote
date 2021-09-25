@@ -80,30 +80,6 @@ export default {
       this.state.notes.push(rowsArr[0])
   },
 
-  async notesInsertSingle({ newVal, updateDB = true, updateState = true }) {
-    let res
-    if (updateDB) {
-      if (!this.noteObjectHasChanges({ newVal }))
-        return
-
-      // Delete id column because it's not needed and supabase throws an error.
-      newVal = { ...newVal }
-      delete newVal?.id
-
-      res = await supabase
-        .from('notes')
-        .insert([{ ...newVal, owner_id: generalStore.state.user.id }])
-      if (res.error) console.error(res.error)
-    } 
-    
-    // Update local store, either from db -received data or from prop.
-    const newData = res?.data?.[0] || newVal
-    if (updateState) 
-      this.state.notes.push(newData)
-
-    return newData
-  },
-
   async notesUpdateSingle({ noteId, newVal, updateDB = true, updateState = true }) {
     try {
       if (updateDB) {
@@ -142,6 +118,10 @@ export default {
   async notesUpsertSingle({ newVal, updateDB = true, updateState = true }) {
     try {
       const hasChanges = this.noteObjectHasChanges({ compareToNoteId: newVal?.id, newVal })
+
+      // If we are in hidden mode, the new val should also have this prop.
+      newVal.is_hidden = isHiddenMode
+
       let res
       if (updateDB && hasChanges) {
         res = await supabase.from('notes').upsert([{ ...newVal, owner_id: generalStore.state.user.id }])
@@ -181,27 +161,6 @@ export default {
         }
       })
       
-    } catch (error) {
-      handleError(error)
-    }
-  },
-
-  async notesDeleteSingle({ noteId }) {
-    try {
-      // Delete link joins and their links first.
-      await linksStore.linksDelete({ noteId })
-      
-      // Delete from database
-      const { error } = await supabase.from('notes').delete().eq('id', noteId)
-      if (error) throw error
-
-      // Delete from state
-      const index = this._findIndexById({ id: noteId, data: this.state.notes })
-      const noteData = this.state.notes[index]
-      delete this.state.notes[index]
-
-      useSnackbar().createSnackbar({ message: `Deleted note ${ noteData.title && `<b>"${ noteData.title }"</b>` }` })
-    
     } catch (error) {
       handleError(error)
     }
