@@ -1,23 +1,23 @@
 <template>
 	<div class="container">
 		<div class="mx-auto max-w-sm mt-14">
-			<h1 class="text-center mb-4">Sign in</h1>
+			<h1 class="text-center mb-4">Sign up</h1>
 			<input class="w-full bg-gray-700 border-none" type="text" v-model="formData.email" placeholder="Email" required>
 			<input class="w-full bg-gray-700 border-none" type="password" v-model="formData.password" placeholder="Password" required>
 
 			<button 
 				class="text-white bg-gray-700 p-4 w-full mt-4 block" 
-				@click="doAuthenticate">
+				@click="doSignUp">
 				
-				Authenticate
+				Sign up
 			</button>
 
 			<div v-if="error" class="mt-20 p-8 bg-red-100">{{ error }}</div>
 			<div v-if="success" class="mt-20 p-8 bg-green-100">{{ success }}</div>
 
 			<div class="mt-16 text-center">
-				Need an account?
-				<router-link :to="{ name: 'Auth-SignUp' }">Sign up</router-link>
+				Already have an Account?
+				<router-link :to="{ name: 'Auth-SignIn' }">Sign in</router-link>
 			</div>
 		</div>
 	</div>
@@ -39,14 +39,14 @@
 	const error = ref(null),
 				success = ref(null)
 
-	const _signIn = () => {
-		return supabase.auth.signIn({
+	const _signUp = () => {
+		return supabase.auth.signUp({
 			email: formData.email,
 			password: formData.password
 		})
 	}
 
-	const doAuthenticate = async () => {
+	const doSignUp = async () => {
 		try {
 			success.value = false
 			error.value = null
@@ -55,7 +55,7 @@
 				throw new Error('email or password not defined')
 
 			// Actually sign in
-			const { data: signInUser, error: signInError } = await _signIn()
+			const { data: signInUser, error: signInError } = await _signUp()
 			if (signInError)
 				throw signInError
 

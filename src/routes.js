@@ -23,6 +23,12 @@ export const routes = [
         component: () => import('./views/Auth/Auth-SignIn.vue'),
       },
       {
+        path: 'sign-up',
+        name: 'Auth-SignUp',
+        meta: { requiresAuth: false }, 
+        component: () => import('./views/Auth/Auth-SignUp.vue'),
+      },
+      {
         path: 'sign-out',
         name: 'Auth-SignOut',
         meta: { requiresAuth: true },
