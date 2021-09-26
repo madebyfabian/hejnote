@@ -1,27 +1,21 @@
 <template>
 	<li>
-		<router-link :to="to" class="Sidebar-Item h-9">
+		<AppLink :to="to" class="Sidebar-Item h-9">
 			<div class="Sidebar-Item_content flex items-center h-full">
 				<span class="block">
 					<slot />
 				</span>
 			</div>
-		</router-link>
+		</AppLink>
 	</li>
 </template>
 
-<script>
-	import { IconChevron } from '@/assets/icons'
+<script setup>
+	import { AppLink } from '@/components/ui'
 
-	export default {
-		props: {
-			to: { required: true }
-		},
-
-		components: {
-			IconChevron,
-		}
-	}
+	defineProps({
+		to: { required: true }
+	})
 </script>
 
 <style lang="postcss" scoped>

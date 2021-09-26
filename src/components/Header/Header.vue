@@ -1,11 +1,8 @@
 <template>
 	<header class="Header">
-		<router-link 
-			:to="{ name: 'App-Home' }" 
-			class="flex-1 select-none">
-
+		<AppLink :to="{ name: 'App-Home' }" class="flex-1 select-none">
 			<LogoIcon alt="Logo" class="ml-5" />
-		</router-link>
+		</AppLink>
 
 		<div class="flex container h-11">
 			<div class="relative flex-1">
@@ -21,11 +18,11 @@
 		</div>
 
 		<div class="flex-1 flex justify-end items-center select-none">
-			<router-link :to="{ name: 'App-Account' }" class="mr-6 flex items-center">
+			<AppLink :to="{ name: 'App-Account' }" class="mr-6 flex items-center">
 				Hej,&nbsp;
 				<span class="font-bold mr-3">{{ userName }}</span>
 				<Avatar :name="userName" />
-			</router-link>
+			</AppLink>
 		</div>
 	</header>
 
@@ -50,7 +47,7 @@
 	import LogoIcon from '@/assets/images/logo.svg'
 
 	// Import Components
-	import { Avatar } from '@/components/ui'
+	import { AppLink, Avatar } from '@/components/ui'
 	import Modal from '@/components/Modal.vue'
 	import NoteEditor from '@/components/NoteEditor.vue'
 	import { HeaderCreateNoteEditor, HeaderSearchNotesBar } from '@/components/Header'

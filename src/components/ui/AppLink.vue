@@ -23,6 +23,6 @@
 		if (props.ignoreHiddenMode || isExternal.value) 
 			return props.to
 
-		return generateRouterLink(props)?.value
+		return generateRouterLink(props.to)?.value
 	})
 </script>

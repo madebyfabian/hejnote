@@ -2,11 +2,11 @@
 	<aside class="Sidebar">
 		<ul>
 			<SidebarSubheadline v-if="isHiddenMode">Hidden</SidebarSubheadline>
-			<SidebarItem :to="{ name: 'App-Home', params }">
+			<SidebarItem :to="{ name: 'App-Home' }">
 				All Notes
 			</SidebarItem>
 
-			<SidebarItem :to="{ name: 'App-Uncategorized', params }">
+			<SidebarItem :to="{ name: 'App-Uncategorized' }">
 				Uncategorized
 			</SidebarItem>
 
@@ -15,17 +15,17 @@
 
 				<SidebarItem 
 					v-for="collection of collectionsStore.state.collections" :key="collection.id"
-					:to="{ name: 'App-Collection', params: { ...params, collectionId: collection.id } }">
+					:to="{ name: 'App-Collection', params: { collectionId: collection.id } }">
 
 					{{ collection.title }}
 				</SidebarItem>
 			</template>
 			
 			<SidebarSubheadline>{{ isHiddenMode ? 'Hidden ' : null }}Others</SidebarSubheadline>
-			<SidebarItem :to="{ name: 'App-Archive', params }">
+			<SidebarItem :to="{ name: 'App-Archive' }">
 				Archive
 			</SidebarItem>
-			<SidebarItem :to="{ name: 'App-Deleted', params }">
+			<SidebarItem :to="{ name: 'App-Deleted' }">
 				Trash
 			</SidebarItem>
 		</ul>
@@ -56,6 +56,7 @@
 	import { collectionsStore } from '@/store'
 	import { useRoute, useRouter } from 'vue-router'
 	import useIsHiddenMode from '@/hooks/useIsHiddenMode'
+
 	import { Switch } from '@/components/ui'
 	import { SidebarItem, SidebarSubheadline, SidebarHiddenModeBanner } from '@/components/Sidebar'
 
@@ -64,18 +65,14 @@
 	const router = useRouter()
 
 	const handleSwitchHiddenMode = () => {
-		router.push({
+		return router.push({ 
 			name: route.name,
+			query: route.query,
+			hash: route.hash,
 			params: {
-				isHiddenMode: isHiddenMode.value ? null : 'hidden'
-			}
+				...route.params, 
+				isHiddenMode: isHiddenMode.value ? null : 'hidden' 
+			} 
 		})
 	}
-
-	const params = computed(() => {
-		if (isHiddenMode.value) 
-			return Object.assign({}, { isHiddenMode: 'hidden' })
-		else
-			return Object.assign({}, {})
-	})
 </script>

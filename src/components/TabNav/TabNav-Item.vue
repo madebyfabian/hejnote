@@ -15,11 +15,12 @@
 
 <script setup>
 	import { computed } from 'vue'
+	import { AppLink } from '@/components/ui'
 
 	const props = defineProps({
 		isActive: { type: Boolean, default: false },
 		to: 			{ type: Object, default: undefined },
 	})
 
-	const tag = computed(() => props.to ? 'router-link' : 'button')
+	const tag = computed(() => props.to ? AppLink : 'button')
 </script>

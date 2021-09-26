@@ -32,6 +32,9 @@
 	import { computed, nextTick, onMounted, ref, watch } from 'vue'
 	import { IconSearch } from '@/assets/icons'
 	import { useRouter, useRoute } from 'vue-router'
+	import useGenerateRouterLink from '@/hooks/useGenerateRouterLink'
+
+	const { generateRouterLink } = useGenerateRouterLink() 
 
 	const route = useRoute()
 	const router = useRouter()
@@ -81,7 +84,7 @@
 	onMounted(handleUpdate)
 
 	const navigateToSearch = () => {
-		router.push({ name: 'App-Search' })
+		router.push(generateRouterLink({ name: 'App-Search' }))
 	}
 </script>
 
