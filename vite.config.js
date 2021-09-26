@@ -18,7 +18,7 @@ export default defineConfig({
     }),
     VitePWA({
       includeAssets: [ 
-        'favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png' 
+        'favicons/favicon.svg', 'favicon.ico', 'robots.txt', 'favicons/apple-touch-icon.png' 
       ],  
       manifest: {
         name: 'noter',
@@ -26,17 +26,17 @@ export default defineConfig({
         theme_color: '#111827',
         icons: [
           {
-            src: 'android-chrome-192x192.png',
+            src: 'favicons/android-chrome-192x192.png',
             sizes: '192x192',
             type: 'image/png',
           },
           {
-            src: 'android-chrome-512x512.png',
+            src: 'favicons/android-chrome-512x512.png',
             sizes: '512x512',
             type: 'image/png',
           },
           {
-            src: 'android-chrome-512x512.png',
+            src: 'favicons/android-chrome-512x512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable',
