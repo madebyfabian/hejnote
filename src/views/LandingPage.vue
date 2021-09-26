@@ -15,7 +15,7 @@
 						Keep your data private.<br>Open Source. Free. Join the Beta!
 					</h2>
 
-					<form name="waiting-list" method="POST" class="flex gap-3" netlify>
+					<form @submit.prevent="handleFormSubmit" class="flex gap-3">
 						<TextInput v-model="formData.email" type="email" placeholder="hej@your.email" required class="rounded-r-none" />
 						<Button type="submit" class="flex-shrink-0">Join the list!</Button>
 					</form>
@@ -63,17 +63,26 @@
 	})
 
 	const handleFormSubmit = async () => {
-		try {
+		/*try {
 			formState.isSubmitting = true
 			await supabase.from('waiting_list').insert([{ email: formData.email }])
 			formState.isSuccess = true
 
 		} catch (error) {
 			formState.isError = true
-
+			
 		} finally {
+
 			formState.isSubmitting = false
-		}
+		}*/
+
+		fetch('/', {
+			method: 'POST',
+			headers: { "Content-Type": "application/x-www-form-urlencoded" },
+			body: new URLSearchParams({ email: formData.email }).toString()
+		})
+			.then(() => console.log('Form successfully submitted'))
+			.catch((error) => alert(error))
 	}
 </script>
 
