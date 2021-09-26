@@ -54,7 +54,7 @@ export const routes = [
       {
         path: 'search',
         name: 'App-Search',
-        meta: { requiresAuth: true },
+        meta: { requiresAuth: true, title: 'Search' },
         component: AppSearchRoute,
       }
     ] 
