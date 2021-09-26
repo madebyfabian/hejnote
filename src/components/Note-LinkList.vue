@@ -9,8 +9,10 @@
 				rel="noopener noreferrer nofollow">
 
 				<div
-					class="w-20 bg-gray-600 bg-cover bg-center flex-shrink-0"
+					class="w-20 bg-gray-600 bg-cover bg-center flex-shrink-0 flex items-center justify-center text-gray-500"
 					:style="generateBannerStyle(link?.banner_url)">
+
+					<IconGlobe v-if="!link?.banner_url" />
 				</div>
 
 				<div class="p-3 overflow-hidden">
@@ -26,6 +28,7 @@
 	import { computed } from 'vue'
 	import { linksStore } from '@/store'
 	import useGetUrlHost from '@/hooks/useGetUrlHost'
+	import { IconGlobe } from '@/assets/icons'
 
 	const props = defineProps({
 		noteId: { type: String, required: true },
