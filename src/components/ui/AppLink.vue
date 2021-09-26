@@ -6,10 +6,13 @@
 <script setup>
 	import { computed } from 'vue'
 	import { RouterLink } from 'vue-router'
-	import useIsHiddenMode from '@/hooks/useIsHiddenMode'
+	import useGenerateRouterLink from '@/hooks/useGenerateRouterLink'
+
+	const { generateRouterLink } = useGenerateRouterLink()
 
 	const props = defineProps({
-		...RouterLink.props
+		...RouterLink.props,
+		ignoreHiddenMode: { type: Boolean, default: false },
 	})
 
 	const isExternal = computed(() => {
@@ -17,21 +20,9 @@
 	})
 
 	const computedTo = computed(() => {
-		const isHiddenMode = useIsHiddenMode()
-
-		if (isExternal.value) 
+		if (props.ignoreHiddenMode || isExternal.value) 
 			return props.to
 
-		const params = (isHiddenMode.value) 
-			? Object.assign({}, { ...props?.params, isHiddenMode: 'hidden' })
-			: Object.assign({}, { ...props?.params })
-
-		return {
-			...props,
-			to: {
-				...props.to,
-				params
-			}
-		}
+		return generateRouterLink(props)?.value
 	})
 </script>
