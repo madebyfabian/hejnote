@@ -77,8 +77,6 @@
 
 <style lang="postcss" scoped>
 	.NoteList {
-		@apply px-5;
-
 		&-heading {
 			@apply flex items-center justify-between mb-8;
 

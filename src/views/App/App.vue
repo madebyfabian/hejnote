@@ -10,7 +10,7 @@
 					<div class="hidden desktop:block">
 						<Sidebar />
 					</div>
-					<main class="container">
+					<main class="container px-6 desktop:px-10">
 						<component :is="Component" />
 					</main>
 				</div>
