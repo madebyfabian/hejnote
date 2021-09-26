@@ -1,6 +1,6 @@
 import useConfirm from '@/hooks/useConfirm'
 import useSupabase from '@/hooks/useSupabase'
-import { notesStore } from '@/store'
+import { generalStore, notesStore } from '@/store'
 
 export const getRequiredAuthRedirect = ({ user, requiresAuth }) => {
 	if (requiresAuth && !user)
@@ -12,13 +12,28 @@ export const getRequiredAuthRedirect = ({ user, requiresAuth }) => {
 	return false
 }
 
+const _next = ({ to, next, options }) => {
+	const hasOptions = options && typeof options === 'object' && Object.keys(options).length
+
+	const newIsHiddenModeState = options?.params?.isHiddenMode?.length
+		? !!options?.params?.isHiddenMode?.length 
+		: !!to?.params?.isHiddenMode?.length 
+
+	const oldIsHiddenModeState = generalStore.state.isHiddenMode
+
+	if (newIsHiddenModeState !== oldIsHiddenModeState)
+		generalStore.updateIsHiddenMode({ isHiddenMode: newIsHiddenModeState })
+
+	return next(hasOptions ? options : undefined)
+}
+
 export default async ( to, from, next ) => {
 	const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 	const user = useSupabase().auth.user()
 
 	const requiredRedirect = getRequiredAuthRedirect({ user, requiresAuth })
 	if (requiredRedirect) 
-		return next(requiredRedirect)
+		return _next({ to, next, options: requiredRedirect, to })
 
 	const fromIsHidden = from.params.isHiddenMode === 'hidden',
 				toIsHidden = to.params.isHiddenMode === 'hidden'
@@ -30,14 +45,15 @@ export default async ( to, from, next ) => {
 		})
 
 		if (!answer) {
-			return next({ 
+			// Go back
+			return _next({ to, next, options: {
 				name: to.name, 
 				query: to.query, 
 				params: { 
 					...to.params, 
 					isHiddenMode: answer ? 'hidden' : null 
 				} 
-			})
+			}})
 		}
 	}
 
@@ -46,5 +62,5 @@ export default async ( to, from, next ) => {
 		await notesStore.notesFetch({ fetchHidden: toIsHidden })
 	}
 
-	next()
+	_next({ to, next })
 }

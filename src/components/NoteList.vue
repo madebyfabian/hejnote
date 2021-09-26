@@ -38,7 +38,7 @@
 <script setup>
 	import { computed, watchEffect, ref } from 'vue'
 	import useDayjs from '@/hooks/useDayjs'
-	import useIsHiddenMode from '@/hooks/useIsHiddenMode'
+	import { generalStore } from '@/store'
 	import useCurrentCollection from '@/hooks/useCurrentCollection'
 	import { Badge } from '@/components/ui'
 	import NoteListGrid from '@/components/NoteList-Grid.vue'
@@ -61,7 +61,7 @@
     })
   }
 
-	const isHiddenMode = useIsHiddenMode(),
+	const isHiddenMode = computed(() => generalStore.state.isHiddenMode),
 				collection = useCurrentCollection()
 
   watchEffect(() => {

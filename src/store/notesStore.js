@@ -1,7 +1,6 @@
-import { reactive, nextTick } from 'vue'
+import { reactive, computed, nextTick } from 'vue'
 import useSnackbar from '@/hooks/useSnackbar'
 import useSupabase from '@/hooks/useSupabase'
-import useIsHiddenMode from '@/hooks/useIsHiddenMode'
 import handleError from '@/utils/handleError'
 import { noteEditorContentDefault } from '@/utils/constants'
 
@@ -9,7 +8,7 @@ import generalStore from '@/store/generalStore'
 import linksStore from '@/store/linksStore'
 
 const supabase = useSupabase(),
-			isHiddenMode = useIsHiddenMode()
+			isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 
 // Helper
 const findIndexById = ({ data, id }) => {

@@ -53,14 +53,13 @@
 
 <script setup>
 	import { computed } from 'vue'
-	import { collectionsStore } from '@/store'
+	import { generalStore, collectionsStore } from '@/store'
 	import { useRoute, useRouter } from 'vue-router'
-	import useIsHiddenMode from '@/hooks/useIsHiddenMode'
 
 	import { Switch } from '@/components/ui'
 	import { SidebarItem, SidebarSubheadline, SidebarHiddenModeBanner } from '@/components/Sidebar'
 
-	const isHiddenMode = useIsHiddenMode()
+	const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 	const route = useRoute()
 	const router = useRouter()
 
