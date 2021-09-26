@@ -117,9 +117,12 @@ export const routes = [
     component: () => import('./views/404.vue')
   },
 
+  /**
+   * Landing Page
+   */
   { 
     path: '/',
-    meta: { requiresAuth: false }, 
-    redirect: { name: 'App-Home' } 
+    meta: { requiresAuth: false, title: 'Join the list!' }, 
+    component: () => import('./views/LandingPage.vue')
   }
 ]

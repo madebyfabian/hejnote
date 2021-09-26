@@ -42,17 +42,17 @@ module.exports = {
       DEFAULT: defaultBorderWidth
     },
 
-    fontSize: {
-      '200': [ '1.25rem', { lineHeight: '1.75rem', letterSpacing: '-0.01em' } ],
-      '150': [ '1rem', { lineHeight: '1.25rem', letterSpacing: '-0.02em' } ],
-      '100': [ '0.875rem', { lineHeight: '1.25rem', letterSpacing: '-0.02em' } ],
-      '050': [ '0.75rem', { lineHeight: '1.25rem', letterSpacing: '-0.02em' } ],
-      '025': [ '0.75rem', { lineHeight: '1.25rem', letterSpacing: '0.02em' } ],
-    },
-
     extend: {
       fontFamily: {
-        sans: ['"Inter var"', ...defaultTheme.fontFamily.sans],
+        sans:         ['"Inter var"', ...defaultTheme.fontFamily.sans],
+        landingPage:  ['"Geomanist"', ...defaultTheme.fontFamily.sans],
+      },
+      fontSize: {
+        '200': [ '1.25rem', { lineHeight: '1.75rem', letterSpacing: '-0.01em' } ],
+        '150': [ '1rem', { lineHeight: '1.25rem', letterSpacing: '-0.02em' } ],
+        '100': [ '0.875rem', { lineHeight: '1.25rem', letterSpacing: '-0.02em' } ],
+        '050': [ '0.75rem', { lineHeight: '1.25rem', letterSpacing: '-0.02em' } ],
+        '025': [ '0.75rem', { lineHeight: '1.25rem', letterSpacing: '0.02em' } ],
       },
       transitionProperty: {
         'transform-bg': 'transform, background-color',
