@@ -46,8 +46,6 @@
 			@apply bg-green-400;
 		}
 
-		
-
 		&.router-link-active  &_content::after {
 			@apply -translate-x-0 opacity-100;
 		}
