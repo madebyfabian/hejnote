@@ -24,37 +24,37 @@ export const routes = [
       { 
         path: 'home', 
         name: 'App-Home',
-        meta: { requiresAuth: true }, 
+        meta: { requiresAuth: true, title: 'All Notes' }, 
         component: AppNotesDisplayRoute,
       },
       { 
         path: 'uncategorized', 
         name: 'App-Uncategorized',
-        meta: { requiresAuth: true }, 
+        meta: { requiresAuth: true, title: 'Uncategorized' }, 
         component: AppNotesDisplayRoute,
       },
       {
         path: 'collection/:collectionId',
         name: 'App-Collection',
-        meta: { requiresAuth: true }, 
+        meta: { requiresAuth: true, title: 'Collection' }, 
         component: AppNotesDisplayRoute
       },
       {
         path: 'deleted',
         name: 'App-Deleted',
-        meta: { requiresAuth: true }, 
+        meta: { requiresAuth: true, title: 'Trash' }, 
         component: AppDeletedRoute,
       },
       {
         path: 'archive',
         name: 'App-Archive',
-        meta: { requiresAuth: true }, 
+        meta: { requiresAuth: true, title: 'Archive' }, 
         component: AppArchiveRoute,
       },
       {
         path: 'search',
         name: 'App-Search',
-        meta: { requiresAuth: true }, 
+        meta: { requiresAuth: true },
         component: AppSearchRoute,
       }
     ] 
@@ -72,7 +72,7 @@ export const routes = [
       {
         path: '',
         name: 'App-Account',
-        meta: { requiresAuth: true }, 
+        meta: { requiresAuth: true, title: 'Account' }, 
         component: AppAccountRoute,
       }
     ]
@@ -91,13 +91,13 @@ export const routes = [
       {
         path: 'sign-in',
         name: 'Auth-SignIn',
-        meta: { requiresAuth: false }, 
+        meta: { requiresAuth: false, title: 'Sign In' }, 
         component: () => import('./views/Auth/Auth-SignIn.vue'),
       },
       {
         path: 'sign-up',
         name: 'Auth-SignUp',
-        meta: { requiresAuth: false }, 
+        meta: { requiresAuth: false, title: 'Sign Up' }, 
         component: () => import('./views/Auth/Auth-SignUp.vue'),
       },
       {
@@ -116,4 +116,10 @@ export const routes = [
     path: '/:path(.*)', 
     component: () => import('./views/404.vue')
   },
+
+  { 
+    path: '/',
+    meta: { requiresAuth: false }, 
+    redirect: { name: 'App-Home' } 
+  }
 ]

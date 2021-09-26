@@ -24,6 +24,11 @@ const _next = ({ to, next, options }) => {
 	if (newIsHiddenModeState !== oldIsHiddenModeState)
 		generalStore.updateIsHiddenMode({ isHiddenMode: newIsHiddenModeState })
 
+	// Update title
+	const titleDevPrefix = import.meta.env.DEV ? '⚙️ ' : '',
+				title = to?.meta?.title ? `${ to?.meta?.title } – ` : ''
+	document.title = titleDevPrefix + title + 'noter'
+
 	return next(hasOptions ? options : undefined)
 }
 
