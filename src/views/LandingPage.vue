@@ -15,7 +15,7 @@
 						Keep your data private.<br>Open Source. Free. Join the Beta!
 					</h2>
 
-					<form class="flex gap-3" netlify>
+					<form name="waiting-list" method="POST" class="flex gap-3" netlify>
 						<TextInput v-model="formData.email" type="email" placeholder="hej@your.email" required class="rounded-r-none" />
 						<Button type="submit" class="flex-shrink-0">Join the list!</Button>
 					</form>
