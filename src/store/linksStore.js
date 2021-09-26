@@ -73,7 +73,7 @@ export default {
 
       if (metadata?.banner) {
         try {
-          await loadImage(metadata.banner)
+          await loadImage({ url: metadata.banner })
         } catch (error) {
           metadata.banner = null
         }
