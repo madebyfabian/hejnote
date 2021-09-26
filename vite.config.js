@@ -9,7 +9,13 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
   plugins: [
     vue(),
-    svgLoader(),
+    svgLoader({
+      svgoConfig: {
+        plugins: [
+          { name: 'removeViewBox', active: false },
+        ],
+      }
+    }),
     VitePWA({
       includeAssets: [ 
         'favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png' 
