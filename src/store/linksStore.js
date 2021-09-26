@@ -6,6 +6,15 @@ import joinNotesLinksStore from '@/store/joinNotesLinksStore'
 
 const supabase = useSupabase()
 
+const loadImage = ({ url }) => {
+  return new Promise((resolve, reject) => {
+    let img = new Image()
+    img.onload = () => resolve(img)
+    img.onerror = reject
+    img.src = url
+  })
+}
+
 export default {
   state: reactive({
     links: [],
@@ -60,6 +69,14 @@ export default {
 
       } catch (error) {
         console.error(error)
+      }
+
+      if (metadata?.banner) {
+        try {
+          await loadImage(metadata.banner)
+        } catch (error) {
+          metadata.banner = null
+        }
       }
 
       preparedData.push({
