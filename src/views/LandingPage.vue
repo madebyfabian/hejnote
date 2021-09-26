@@ -79,7 +79,10 @@
 		fetch('/', {
 			method: 'POST',
 			headers: { "Content-Type": "application/x-www-form-urlencoded" },
-			body: new URLSearchParams({ email: formData.email }).toString()
+			body: new URLSearchParams({ 
+				'email': formData.email,
+				'form-name': 'waiting-list'
+			}).toString()
 		})
 			.then(() => console.log('Form successfully submitted'))
 			.catch((error) => alert(error))
