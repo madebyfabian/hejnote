@@ -9,25 +9,37 @@
 		noPadding && 'noPadding',
 		noRoundedBorder && 'noRoundedBorder',
 	]">
-
 		<slot />
+
+		<div
+			v-if="displayAsDropdown" 
+			aria-hidden="true"
+			class="transition-transform" :class="{ 'transform-gpu rotate-x-180': displayAsDropdownOpened }"
+			style="-webkit-backface-visibility: initial">
+
+			<IconChevron />
+		</div>
 	</button>
 </template>
 
 <script setup>
+	import { IconChevron } from '@/assets/icons'
+
 	defineProps({
-		buttonType:				{ type: String, default: 'primary', validate: val => [ 'primary', 'secondary', 'tertiary' ].includes(val) },
-		isIconOnly:				{ type: Boolean, default: false },
-		hideBorder:				{ type: Boolean, default: false },
-		noRoundedBorder: 	{ type: Boolean, default: false },
-		fitToArea: 				{ type: Boolean, default: false },
-		noPadding: 				{ type: Boolean, default: false },
+		buttonType:								{ type: String, default: 'primary', validate: val => [ 'primary', 'secondary', 'tertiary' ].includes(val) },
+		isIconOnly:								{ type: Boolean, default: false },
+		hideBorder:								{ type: Boolean, default: false },
+		noRoundedBorder: 					{ type: Boolean, default: false },
+		fitToArea: 								{ type: Boolean, default: false },
+		noPadding: 								{ type: Boolean, default: false },
+		displayAsDropdown: 				{	type: Boolean, default: false },
+		displayAsDropdownOpened: 	{ type: Boolean, default: false },
 	})
 </script>
 
 <style lang="postcss" scoped>
 	.Button {
-		@apply h-11 px-4 rounded-xl border font-bold text-100 transition duration-100;
+		@apply inline-flex items-center gap-1 h-11 px-4 rounded-xl border font-bold text-100 transition duration-100;
 		
 		/**
 		 * Types
@@ -49,10 +61,10 @@
 		}
 
 		&.isTertiary {
-			@apply border-none bg-transparent h-auto text-green-400;
+			@apply border-none bg-transparent h-auto text-gray-300;
 
 			&:hover {
-				@apply text-green-500;
+				@apply text-gray-400;
 			}
 		}
 
