@@ -20,7 +20,7 @@
 			</div>
 			<span 
 				aria-hidden="true" 
-				class="pointer-events-none absolute left-0 bottom-0 z-10 w-full h-10 bg-gradient-to-t from-gray-800 transition"
+				class="pointer-events-none absolute left-0 bottom-0 z-10 w-full h-10 bg-gradient-to-t from-gray-800"
 				:class="{ 'opacity-0 invisible': !richtextEditorIsTruncated }"
 			/>
 		</div>
