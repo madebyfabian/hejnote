@@ -35,7 +35,7 @@
 	const wrapperId = 'TabNav-wrapper'
 
 	const tabNavItems = [
-		{ name: 'All Notes', route: 'App-Home', icon: IconPin, },
+		{ name: 'Notes', route: 'App-Home', icon: IconPin, },
 		{ name: 'Collections', route: undefined, icon: IconCollectionMove, },
 		{ name: 'Archive', route: 'App-Archive', icon: IconCollectionMove, },
 		{ name: 'Fabian', route: 'App-Account', icon: IconCollectionMove, },

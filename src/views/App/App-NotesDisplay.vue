@@ -1,5 +1,9 @@
 <template>
-  <NoteList :notes="notes" title="All Notes" />
+  <NoteList :notes="notes" title="Notes">
+		<template v-if="!collectionId" #empty-state>
+			There are no notes which aren't inside a collection.
+		</template>
+	</NoteList>
 </template>
 
 <script setup>
@@ -13,12 +17,13 @@
 	import useCurrentCollection from '@/hooks/useCurrentCollection'
 	import NoteList from '@/components/NoteList.vue'
 
-	const collection = useCurrentCollection()
+	const collection = useCurrentCollection(),
+				collectionId = computed(() => collection.value?.id)
 
 	const notes = computed(() => {
-		if (routeName.value === 'App-Uncategorized')
+		if (!collectionId.value)
 			return notesStore.notesFilterOnlyWithoutCollection()
 		else
-			return notesStore.notesFilterByCollection({ collectionId: collection.value?.id || null })
+			return notesStore.notesFilterByCollection({ collectionId: collectionId.value })
 	})
 </script>

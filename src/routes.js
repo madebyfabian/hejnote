@@ -24,13 +24,7 @@ export const routes = [
       { 
         path: 'home', 
         name: 'App-Home',
-        meta: { requiresAuth: true, title: 'All Notes' }, 
-        component: AppNotesDisplayRoute,
-      },
-      { 
-        path: 'uncategorized', 
-        name: 'App-Uncategorized',
-        meta: { requiresAuth: true, title: 'Uncategorized' }, 
+        meta: { requiresAuth: true, title: 'Notes' }, 
         component: AppNotesDisplayRoute,
       },
       {

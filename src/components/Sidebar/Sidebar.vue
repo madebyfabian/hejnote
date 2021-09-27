@@ -3,11 +3,7 @@
 		<ul>
 			<SidebarSubheadline v-if="isHiddenMode">Hidden</SidebarSubheadline>
 			<SidebarItem :to="{ name: 'App-Home' }">
-				All Notes
-			</SidebarItem>
-
-			<SidebarItem :to="{ name: 'App-Uncategorized' }">
-				Uncategorized
+				Notes
 			</SidebarItem>
 
 			<template v-if="collectionsStore.state.collections.length">
