@@ -1,5 +1,5 @@
 <template>
-	<div class="ContextMenu w-min relative">
+	<div class="ContextMenu relative">
 		<Button 
 			@click.passive="emit('toggleIsOpened', !isOpened)" 
 			aria-haspopup="true" 
@@ -15,7 +15,7 @@
 				<ContextMenu-Content 
 					v-if="isOpened" 
 					v-click-outside="clickOutsideConfig" 
-					v-bind="{ isOpened, id }" 
+					v-bind="{ isOpened, id, align }" 
 					@toggleIsOpened="v => emit('toggleIsOpened', v)">
 
 					<slot />
@@ -34,6 +34,7 @@
 	const props = defineProps({
 		isOpened: 		{ type: Boolean, required: true },
 		buttonProps: 	{ type: Object, default: () => ({}) },
+		align: 				{ type: String, default: 'left', validator: v => [ 'left', 'right' ].includes(v) },
 	})
 
 	const id = generateRandomId()

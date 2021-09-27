@@ -4,9 +4,13 @@
 			ref="contentEl" 
 			role="menu"
 			class="
-				ContextMenu-Content py-2 rounded-xl bg-gray-800 border border-gray-700 w-[200px] 
-				absolute left-0 top-0 z-40
+				ContextMenu-Content py-2 rounded-xl bg-gray-800 border border-gray-700 min-w-[200px] 
+				absolute top-1 z-40
 			"
+			:class="{ 
+				'left-0': align === 'left', 
+				'right-0': align === 'right' 
+			}"
 			:id="id"
 			:aria-hidden="isOpened ? 'false' : 'true'">
 
@@ -20,7 +24,11 @@
 	import { CFocusLock } from '@chakra-ui/c-focus-lock'
 
 	defineProps({
+		// Inherit from parent props
 		isOpened: { type: Boolean, required: true },
+		align: 		{ type: String },
+
+		// Own props
 		id: 			{ type: String, required: true },
 	})
 	const emit = defineEmits([ 'toggleIsOpened' ])
