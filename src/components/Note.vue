@@ -8,7 +8,22 @@
 		class="Note group ring-0">
 		
 		<h3 v-if="note.title" v-text="note.title" @click="handleNoteEdit" class="mb-2" />
-		<RichtextEditor v-if="!noteContentIsEmpty" v-model="note.content" isReadonly class="mb-2" />
+		<div class="relative max-h-80 overflow-hidden">
+			<div ref="richtextEditorWrapEl">
+				<RichtextEditor 
+					v-if="!noteContentIsEmpty" 
+					v-model="note.content" 
+					@editorCreated="createRichtextEditorHeightObserver"
+					isReadonly 
+					class="mb-2" 
+				/>
+			</div>
+			<span 
+				aria-hidden="true" 
+				class="pointer-events-none absolute left-0 bottom-0 z-10 w-full h-10 bg-gradient-to-t from-gray-800 transition"
+				:class="{ 'opacity-0 invisible': !richtextEditorIsTruncated }"
+			/>
+		</div>
 
 		<div ref="noteActionBarEl" class="-m-2 mt-0 flex items-center justify-between" >
 			<Note-CollectionBar :note="note" />
@@ -25,7 +40,7 @@
 </template>
 
 <script setup>
-	import { computed, nextTick, ref, watch } from 'vue'
+	import { computed, onBeforeUnmount, ref, watch } from 'vue'
 	import { linksStore, notesStore } from '@/store'
 	import { noteEditorContentDefault } from '@/utils/constants'
 	import { Button, RichtextEditor } from '@/components/ui'
@@ -43,7 +58,10 @@
 	const noteLinks = computed(() => linksStore._findLinksByNoteId({ noteId: props.note.id }))
 	const isNoteBeingEdited = computed(() => notesStore.state.editNoteId === props.note.id)
 	const noteActionBarEl = ref(null),
-				noteLinkListEl = ref(null)
+				noteLinkListEl = ref(null),
+				richtextEditorWrapEl = ref(null),
+				richtextEditorIsTruncated = ref(false),
+				_richtextEditorHeightObserver = ref(undefined)
 
 	const handleNoteEdit = e => {
 		const clickedActionBar = e.composedPath().includes(noteActionBarEl?.value),
@@ -56,6 +74,20 @@
 
 		notesStore.openNoteEditor({ editNoteId: props.note.id })
 	}
+
+	// Create richtext height observer
+	const createRichtextEditorHeightObserver = () => {
+		const target = richtextEditorWrapEl?.value
+		_richtextEditorHeightObserver.value = new ResizeObserver(() => {
+			richtextEditorIsTruncated.value = richtextEditorWrapEl?.value.clientHeight > 400
+		})
+		_richtextEditorHeightObserver.value.observe(target)
+	}
+
+	// Destroy observer
+	onBeforeUnmount(() => {
+		_richtextEditorHeightObserver.value?.disconnect()
+	})
 </script>
 
 <style lang="postcss" scoped>
