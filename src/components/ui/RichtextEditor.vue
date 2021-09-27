@@ -1,5 +1,5 @@
 <template>
-  <div class="RichtextEditor">
+  <div class="RichtextEditor" ref="richtextEditorEl">
 		<div class="RichtextEditor-content" :class="{ isReadonly }">
 			<editor-content v-if="!isReadonly" :editor="editor" />
 			<div v-else v-html="readonlyHTML" />
@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-	import { computed, watch } from 'vue'
+	import { computed, ref, watch } from 'vue'
 	import useGetUrlHost from '@/hooks/useGetUrlHost'
 
 	// Import tiptap and tiptap utils.
@@ -27,12 +27,17 @@
 		isReadonly:	{ type: Boolean, default: false },
 	})
 
-	const emit = defineEmits([ 'update:modelValue' ])
+	const emit = defineEmits([ 'update:modelValue', 'editorCreated' ])
+
+	const richtextEditorEl = ref(null)
 
 	const editor = useEditor({
 		content: props.modelValue,
 		onUpdate: () => {
 			emit('update:modelValue', editor.value.getJSON())
+		},
+		onCreate: () => {
+			emit('editorCreated')
 		},
 		extensions: [
 			StarterKit,
