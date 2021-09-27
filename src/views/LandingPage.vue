@@ -6,7 +6,7 @@
 			<IllustrationLandingPage class="max-w-full desktop:w-10/12 h-auto order-2 desktop:order-1 mt-9 desktop:mt-0" aria-label="Illustration of a person with notes around" />
 
 			<div class="desktop:absolute desktop:top-40 desktop:right-0 rounded-3xl bg-gray-800 p-6 desktop:p-8 w-11/12 max-w-sm order-1 desktop:order-2 mt-8 desktop:mt-0">
-				<div class="-mt-12 -mr-10 desktop:-mr-12">
+				<div class="-mt-12 -mr-10 desktop:-mr-12 transition" :class="{ 'opacity-0 invisible': formState.isSuccess || formState.isError }">
 					<h1 class="mb-4 relative">
 						Google Keep,<br>without Google.
 						<IllustrationUnderlineLG aria-hidden class="pointer-events-none absolute -bottom-1" />
@@ -19,6 +19,15 @@
 						<TextInput v-model="formData.email" type="email" placeholder="hej@your.email" required class="rounded-r-none" />
 						<Button type="submit" class="flex-shrink-0">Join the list!</Button>
 					</form>
+				</div>
+
+				<div v-if="formState.isSuccess || formState.isError" class="absolute left-0 top-0 h-full w-full flex items-center justify-center text-center p-8">
+					<p v-if="formState.isSuccess">
+						Success! Thanks for joining the beta!
+					</p>
+					<p v-if="formState.isError">
+						Error! Please try again. (Or maybe, you are actually already on the list, which would be awesome!)
+					</p>
 				</div>
 			</div>
 		</div>
@@ -57,35 +66,26 @@
 	})
 
 	const formState = reactive({
-		isSubmitting: false,
 		isSuccess: false,
 		isError: false,
 	})
 
 	const handleFormSubmit = async () => {
-		/*try {
-			formState.isSubmitting = true
-			await supabase.from('waiting_list').insert([{ email: formData.email }])
+		try {
+			const { error } = await supabase
+				.from('waiting_list')
+				.insert(
+					[{ email: formData.email }], 
+					{ returning: 'minimal' }
+				)
+			if (error)
+				throw error
+
 			formState.isSuccess = true
 
 		} catch (error) {
 			formState.isError = true
-			
-		} finally {
-
-			formState.isSubmitting = false
-		}*/
-
-		fetch('/', {
-			method: 'POST',
-			headers: { "Content-Type": "application/x-www-form-urlencoded" },
-			body: new URLSearchParams({ 
-				'email': formData.email,
-				'form-name': 'waiting-list'
-			}).toString()
-		})
-			.then(() => console.log('Form successfully submitted'))
-			.catch((error) => alert(error))
+		}
 	}
 </script>
 
