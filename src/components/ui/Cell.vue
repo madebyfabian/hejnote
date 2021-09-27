@@ -23,7 +23,7 @@
 
 <style lang="postcss" scoped>
 	.Cell {
-		@apply py-1.5 px-4 flex items-center w-full;
+		@apply py-1.5 px-4 flex items-center w-full whitespace-pre;
 		@apply transition duration-150;
 
 		&.isClickable:hover {
