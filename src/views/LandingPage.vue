@@ -12,7 +12,7 @@
 						<IllustrationUnderlineLG aria-hidden class="pointer-events-none absolute -bottom-1" />
 					</h1>
 					<h2 class="mb-8">
-						Keep your data private.<br>Open Source. Free. Join the Beta!
+						Keep your notes private.<br>Open Source. Free. Join the Beta!
 					</h2>
 
 					<form @submit.prevent="handleFormSubmit" class="flex gap-3">
