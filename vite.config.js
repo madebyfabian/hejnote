@@ -21,8 +21,8 @@ export default defineConfig({
         'favicons/favicon.svg', 'favicon.ico', 'robots.txt', 'favicons/apple-touch-icon.png' 
       ],  
       manifest: {
-        name: 'noter',
-        description: 'noter app',
+        name: 'hejnote.',
+        description: 'hejnote. app',
         theme_color: '#111827',
         icons: [
           {

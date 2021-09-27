@@ -1,4 +1,4 @@
-# noter
+# hejnote. app
 
 ## Project setup
 Add new file `.env.local`

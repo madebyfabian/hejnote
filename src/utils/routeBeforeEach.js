@@ -27,7 +27,7 @@ const _next = ({ to, next, options }) => {
 	// Update title
 	const titleDevPrefix = import.meta.env.DEV ? '⚙️ ' : '',
 				title = to?.meta?.title ? `${ to?.meta?.title } – ` : ''
-	document.title = titleDevPrefix + title + 'noter'
+	document.title = titleDevPrefix + title + 'hejnote.'
 
 	return next(hasOptions ? options : undefined)
 }
