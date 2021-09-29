@@ -19,5 +19,9 @@
 		@apply text-100 text-base desktop:text-sm;
 		@apply transition duration-300;
 		@apply ring-0;
+
+		&::placeholder {
+			@apply text-gray-500;
+		}
 	}
 </style>
