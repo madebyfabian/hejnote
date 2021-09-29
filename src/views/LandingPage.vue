@@ -1,6 +1,6 @@
 <template>
-	<div class="LandingPage py-11 desktop:py-14 flex flex-col items-start desktop:items-center min-h-screen font-landingPage text-gray-100 overflow-hidden">
-		<LogoIcon alt="Logo" class="h-7 w-auto relative z-10 mx-11" />
+	<div class="LandingPage pb-11 desktop:pb-14 flex flex-col items-start desktop:items-center min-h-screen font-landingPage text-gray-100 overflow-hidden">
+		<HeaderMinimal />
 
 		<div class="container relative flex-1 flex flex-col desktop:flex-row desktop:justify-between my-14">
 			<IllustrationLandingPage class="max-w-full desktop:w-10/12 h-auto order-2 desktop:order-1 mt-9 desktop:mt-0" aria-label="Illustration of a person with notes around" />
@@ -50,14 +50,14 @@
 	import { reactive } from 'vue'
 	import useSupabase from '@/hooks/useSupabase'
 
-	// SVGs
-	import LogoIcon from '@/assets/images/logo.svg'
+	// SVG
 	import IllustrationLandingPage from '@/assets/images/illustration-landing-page.svg'
 	import IllustrationUnderlineLG from '@/assets/images/illustration-underline-lg.svg'
 	import IllustrationUnderlineSM from '@/assets/images/illustration-underline-sm.svg'
 	
 	// Components
 	import { TextInput, Button } from '@/components/ui'
+	import { HeaderMinimal } from '@/components/Header'
 
 	const supabase = useSupabase()
 
