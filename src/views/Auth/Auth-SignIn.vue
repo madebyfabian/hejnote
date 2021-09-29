@@ -15,6 +15,12 @@
 
 				<Button isFullWidth type="submit">Sign in 🚀</Button>
 			</form>
+
+			<div class="h-1 bg-gray-900 -mx-8" aria-hidden="true" />
+
+			<Button buttonType="secondary" isFullWidth type="submit" @click="() => doAuthenticate({ provider: 'github' })">
+				Sign in with GitHub
+			</Button>
 		</div>
 	</div>
 </template>
@@ -31,8 +37,8 @@
 				router = useRouter()
 
 	const formData = reactive({
-		email: 'x@y.de',
-		password: 'test'
+		email: '',
+		password: ''
 	})
 
 	const errorMsg = ref(null)
@@ -44,17 +50,30 @@
 		})
 	}
 
-	const doAuthenticate = async () => {
+	const doAuthenticate = async ({ provider = undefined }) => {
 		try {
 			errorMsg.value = null
 
-			if (!formData.email || !formData.password)
-				throw new Error('email or password not defined')
+			switch (provider) {
+				case 'github': {
+					// Actually sign in
+					const { user, session, error } = await supabase.auth.signIn({ provider: 'github' })
+					if (error) throw error
 
-			// Actually sign in
-			const { data: signInUser, error: signInError } = await _signIn()
-			if (signInError)
-				throw signInError
+					break
+				}
+
+				default: {
+					if (!formData.email || !formData.password)
+					throw new Error('email or password not defined')
+
+					// Actually sign in
+					const { data: signInUser, error } = await _signIn()
+					if (error) throw error
+
+					break
+				}
+			}
 
 			// User now will be redirected by global function in App.vue
 			
