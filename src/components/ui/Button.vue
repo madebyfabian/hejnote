@@ -1,14 +1,19 @@
 <template>
-	<button class="Button" :class="[
-		buttonType == 'primary' && 'isPrimary', 
-		buttonType == 'secondary' && 'isSecondary',
-		buttonType == 'tertiary' && 'isTertiary',
-		isIconOnly && 'isIconOnly',
-		hideBorder && 'hideBorder',
-		fitToArea && 'fitToArea',
-		noPadding && 'noPadding',
-		noRoundedBorder && 'noRoundedBorder',
-	]">
+	<button 
+		class="Button" 
+		:type="type"
+		:class="[
+			buttonType == 'primary' && 'isPrimary', 
+			buttonType == 'secondary' && 'isSecondary',
+			buttonType == 'tertiary' && 'isTertiary',
+			isIconOnly && 'isIconOnly',
+			hideBorder && 'hideBorder',
+			fitToArea && 'fitToArea',
+			isFullWidth && 'isFullWidth',
+			noPadding && 'noPadding',
+			noRoundedBorder && 'noRoundedBorder',
+		]">
+
 		<slot />
 
 		<div
@@ -26,11 +31,13 @@
 	import { IconChevron } from '@/assets/icons'
 
 	defineProps({
+		type: 										{ type: String, default: undefined },
 		buttonType:								{ type: String, default: 'primary', validate: val => [ 'primary', 'secondary', 'tertiary' ].includes(val) },
 		isIconOnly:								{ type: Boolean, default: false },
 		hideBorder:								{ type: Boolean, default: false },
 		noRoundedBorder: 					{ type: Boolean, default: false },
 		fitToArea: 								{ type: Boolean, default: false },
+		isFullWidth: 							{ type: Boolean, default: false },
 		noPadding: 								{ type: Boolean, default: false },
 		displayAsDropdown: 				{	type: Boolean, default: false },
 		displayAsDropdownOpened: 	{ type: Boolean, default: false },
@@ -39,7 +46,7 @@
 
 <style lang="postcss" scoped>
 	.Button {
-		@apply inline-flex items-center gap-1 h-11 px-4 rounded-xl border font-bold text-100 transition duration-100;
+		@apply inline-flex items-center justify-center gap-1 h-11 px-4 rounded-xl border font-bold text-100 transition duration-100;
 		
 		/**
 		 * Types
@@ -82,6 +89,10 @@
 
 		&.fitToArea {
 			@apply h-auto px-3;
+		}
+
+		&.isFullWidth {
+			@apply w-full flex;
 		}
 
 		&.noRoundedBorder {
