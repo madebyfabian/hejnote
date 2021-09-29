@@ -38,8 +38,7 @@
 
 <script setup>
   import { computed, ref } from 'vue'
-	import { notesStore } from '@/store'
-	import { useRoute, useRouter } from 'vue-router'
+	import { notesStore, generalStore } from '@/store'
 	import useCurrentCollection from '@/hooks/useCurrentCollection'
 
 	// Components
@@ -48,24 +47,15 @@
 	import ContextMenu from '@/components/ContextMenu.vue'
 	import NoteList from '@/components/NoteList.vue'
 
-	const route = useRoute(),
-				router = useRouter(),
-				routeName = computed(() => route.name),
-				routeQuery = computed(() => route.query)
-
 	
 	// Display mode context menu
 	const displayModeOptions = { all: 'All Notes', onlyOutsideCollections: 'Notes outside Collections', },
 				displayModeMenuIsOpened = ref(false),
-				displayModeActiveOptionKey = computed(() => {
-					const displayModeQuery = routeQuery.value?.displayMode,
-								isValidKey = displayModeOptions.hasOwnProperty(displayModeQuery)
-					return isValidKey ? displayModeQuery : 'onlyOutsideCollections'
-				})
+				displayModeActiveOptionKey = generalStore.appOptions.displayMode
 
 	const handleDisplayModeApplyOption = ({ key }) => {
 		displayModeMenuIsOpened.value = false
-		router.push({ query: { displayMode: key } })
+		displayModeActiveOptionKey.value = key
 	}
 	// ---
 	
