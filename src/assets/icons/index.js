@@ -5,6 +5,7 @@ import IconChevron from './chevron.svg'
 import IconClose from './close.svg'
 import IconEyeOff from './eyeOff.svg'
 import IconEyeOffSolid from './eyeOffSolid.svg'
+import IconGitHub from './github.svg'
 import IconGlobe from './globe.svg'
 import IconPin from './pin.svg'
 import IconPinSolid from './pinSolid.svg'
@@ -22,6 +23,7 @@ export {
   IconClose,
   IconEyeOff,
   IconEyeOffSolid,
+  IconGitHub,
   IconGlobe,
   IconPin,
   IconPinSolid,

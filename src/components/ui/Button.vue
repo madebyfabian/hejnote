@@ -19,7 +19,7 @@
 		<div
 			v-if="displayAsDropdown" 
 			aria-hidden="true"
-			class="transition-transform" :class="{ 'transform-gpu rotate-x-180': displayAsDropdownOpened }"
+			class="-ml-1 transition-transform" :class="{ 'transform-gpu rotate-x-180': displayAsDropdownOpened }"
 			style="-webkit-backface-visibility: initial">
 
 			<IconChevron />
@@ -46,7 +46,7 @@
 
 <style lang="postcss" scoped>
 	.Button {
-		@apply inline-flex items-center justify-center gap-1 h-11 px-4 rounded-xl border font-bold text-100 transition duration-100;
+		@apply inline-flex items-center justify-center gap-2 h-11 px-4 rounded-xl border font-bold text-100 transition duration-100;
 		
 		/**
 		 * Types

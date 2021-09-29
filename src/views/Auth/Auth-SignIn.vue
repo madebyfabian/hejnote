@@ -13,12 +13,16 @@
 				<TextInput v-model="formData.email" type="email" placeholder="hej@your.email" required class="mb-4" />
 				<TextInput v-model="formData.password" type="password" placeholder="Your Secret (Password)" required class="mb-6" />
 
-				<Button isFullWidth type="submit">Sign in 🚀</Button>
+				<Button isFullWidth type="submit">
+					<span>🚀</span>
+					Sign in
+				</Button>
 			</form>
 
 			<div class="h-1 bg-gray-900 -mx-8" aria-hidden="true" />
 
 			<Button buttonType="secondary" isFullWidth type="submit" @click="() => doAuthenticate({ provider: 'github' })">
+				<IconGitHub />
 				Sign in with GitHub
 			</Button>
 		</div>
@@ -30,6 +34,7 @@
 	import { useRouter } from 'vue-router'
 	import useSupabase from '@/hooks/useSupabase'
 
+	import { IconGitHub } from '@/assets/icons'
 	import { Button, TextInput } from '@/components/ui'
 	import { HeaderMinimal } from '@/components/Header'
 
