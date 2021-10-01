@@ -25,10 +25,12 @@
 			/>
 		</div>
 
-		<div ref="noteActionBarEl" class="-m-2 mt-0 flex items-center justify-between" >
-			<div>
-				<Note-CollectionBadge :note="note" />
-			</div>
+		<div 
+			ref="noteActionBarEl" 
+			class="-m-2 mt-0 flex items-center" 
+			:class="collection ? 'justify-between' : 'justify-end'">
+			
+			<Note-CollectionBadge :note="note" />
 
 			<div class="transition opacity-0 group-focus:opacity-100 group-focus-within:opacity-100 group-hover:opacity-100">
 				<Note-ActionBar :note="note" />
@@ -43,7 +45,7 @@
 
 <script setup>
 	import { computed, onBeforeUnmount, ref, watch } from 'vue'
-	import { linksStore, notesStore } from '@/store'
+	import { linksStore, notesStore, collectionsStore } from '@/store'
 	import { noteEditorContentDefault } from '@/utils/constants'
 	import { Button, RichtextEditor } from '@/components/ui'
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
@@ -59,6 +61,7 @@
 	const noteTitleLabel = computed(() => `Edit note "${ props.note.title }"`)
 	const noteLinks = computed(() => linksStore._findLinksByNoteId({ noteId: props.note.id }))
 	const isNoteBeingEdited = computed(() => notesStore.state.editNoteId === props.note.id)
+	const collection = computed(() => collectionsStore.collectionFindById({ collectionId: props.note.collection_id }))
 	const noteActionBarEl = ref(null),
 				noteLinkListEl = ref(null),
 				richtextEditorWrapEl = ref(null),

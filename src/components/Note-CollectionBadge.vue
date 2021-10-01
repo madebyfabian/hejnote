@@ -1,6 +1,9 @@
 <template>
-	<div v-if="collection" class="Note-CollectionBadge">
-		<Badge>{{ collection.title }}</Badge>
+	<Badge v-if="collection" class="Note-CollectionBadge">
+		<span class="max-w-24 overflow-ellipsis overflow-hidden whitespace-nowrap">
+			{{ collection.title }}
+		</span>
+
 		<button class="Note-CollectionBadge-badgeButton" @click="handleRemoveCollection">
 			<span 
 				aria-hidden="true" 
@@ -10,7 +13,7 @@
 				<IconClose />
 			</span>
 		</button>
-	</div>
+	</Badge>
 </template>
 
 <script setup>
@@ -35,7 +38,7 @@
 		@apply ml-2 relative;
 
 		&-badgeButton {
-			@apply absolute right-1 top-0.5 transition opacity-0 rounded;
+			@apply absolute right-1 transition opacity-0 rounded;
 		}
 
 		&:hover &-badgeButton,

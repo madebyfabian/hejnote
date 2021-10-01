@@ -80,6 +80,9 @@ module.exports = {
       maxHeight: {
         'none': 'none',
       },
+      maxWidth: {
+        '24': '6rem'
+      },
       spacing: {
         'safe-area-bottom': 'env(safe-area-inset-bottom)',
       },
