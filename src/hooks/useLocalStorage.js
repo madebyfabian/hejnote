@@ -45,7 +45,6 @@ export default function useLocalStorage({
 	const val = computed({
 		get: () => _ref.value,
 		set: (value) => {
-			console.log({ value, validator })
 			if (!validator(value)) 
 				return console.error('Invalid validator value for useLocalStorage:', { value, validator })
 
