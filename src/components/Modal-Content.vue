@@ -62,16 +62,13 @@
 <style lang="postcss" scoped>
 	.Modal {
 		@apply fixed h-full w-full top-0 left-0 z-50;
+		@apply py-10;
 		@apply bg-gray-900 bg-opacity-75 flex justify-center items-center;
 
 		&-container {
-			@apply bg-gray-800 relative flex flex-col w-full overflow-hidden max-w-sm rounded-2xl z-0 overflow-y-auto;
-
-			/* Golden Ratio */
-			@apply absolute;
-			top: 23.6%; 
+			@apply bg-gray-800 relative flex flex-col w-full overflow-hidden max-w-lg rounded-2xl z-0 overflow-y-auto;
 			
-			max-height: calc(100% - 5rem - 5rem);
+			max-height: 100%;
 			-webkit-overflow-scrolling: touch;
 
 			&.hasPadding {
