@@ -1,5 +1,7 @@
 <template>
 	<div class="Note-ActionBar flex items-center gap-1" role="toolbar">
+		<Note-ActionBar-Collection v-bind="{ note }" />
+
 		<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteHideAction">
 			<IconEyeOff v-if="!note.is_hidden" />
 			<IconEyeOffSolid v-else />
@@ -32,15 +34,17 @@
 </template>
 
 <script setup>	
-	import { nextTick } from 'vue'
-	import { IconArchive } from '@/assets/icons'
 	import useConfirm from '@/hooks/useConfirm'
 	import { notesStore } from '@/store' 
 	import useSupabase from '@/hooks/useSupabase'
-	import { Button, RichtextEditor } from '@/components/ui'
 	import { 
-		IconEyeOff, IconEyeOffSolid, IconPin, IconPinSolid, IconTrash, IconTrashDelete, IconTrashUndo, IconArchiveSolid 
+		IconEyeOff, IconEyeOffSolid, IconPin, IconPinSolid, 
+		IconTrash, IconTrashDelete, IconTrashUndo, IconArchive, IconArchiveSolid 
 	} from '@/assets/icons'
+
+	// Components
+	import { Button, RichtextEditor } from '@/components/ui'
+	import NoteActionBarCollection from '@/components/Note-ActionBar-Collection.vue'
 
 	const supabase = useSupabase()
 
