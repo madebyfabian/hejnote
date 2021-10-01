@@ -26,7 +26,9 @@
 		</div>
 
 		<div ref="noteActionBarEl" class="-m-2 mt-0 flex items-center justify-between" >
-			<Note-CollectionBar :note="note" />
+			<div>
+				<Note-CollectionBadge :note="note" />
+			</div>
 
 			<div class="transition opacity-0 group-focus:opacity-100 group-focus-within:opacity-100 group-hover:opacity-100">
 				<Note-ActionBar :note="note" />
@@ -47,7 +49,7 @@
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
 	import NoteEditor from '@/components/NoteEditor.vue'
 	import NoteLinkList from '@/components/Note-LinkList.vue'
-	import NoteCollectionBar from '@/components/Note-CollectionBar.vue'
+	import NoteCollectionBadge from '@/components/Note-CollectionBadge.vue'
 	
 	const props = defineProps({
 		note: { required: true },
