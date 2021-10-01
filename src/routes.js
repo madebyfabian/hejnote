@@ -55,7 +55,7 @@ export const routes = [
         path: 'test',
         name: 'App-Test',
         meta: { requiresAuth: true, title: 'Test' },
-        component: AppSearchRoute,
+        component: () => import('@/views/App/App-Test.vue'),
       }
     ] 
   },
