@@ -2,6 +2,9 @@
 	<MenuItem v-slot="{ active }" v-bind="$attrs">
 		<Cell :class="{ 'bg-gray-700': active }" class="cursor-pointer">
 			<slot />
+			<template #icon>
+				<slot name="icon" />
+			</template>
 		</Cell>
 	</MenuItem>
 </template>
