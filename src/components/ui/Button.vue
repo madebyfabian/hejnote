@@ -48,7 +48,9 @@
 
 <style lang="postcss" scoped>
 	.Button {
-		@apply inline-flex items-center justify-center gap-2 h-11 px-4 rounded-xl border font-bold text-100 transition duration-100;
+		@apply inline-flex items-center justify-center gap-2;
+		@apply h-11 px-4 rounded-xl border font-bold text-100;
+		@apply transition duration-100;
 		
 		/**
 		 * Types
