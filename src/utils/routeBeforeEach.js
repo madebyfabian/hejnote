@@ -15,7 +15,7 @@ export const getRequiredAuthRedirect = ({ user, requiresAuth }) => {
 const _next = ({ to, next, options }) => {
 	const hasOptions = options && typeof options === 'object' && Object.keys(options).length
 
-	const newIsHiddenModeState = options?.params?.isHiddenMode?.length
+	const newIsHiddenModeState = hasOptions && options?.params?.isHiddenMode !== undefined
 		? !!options?.params?.isHiddenMode?.length 
 		: !!to?.params?.isHiddenMode?.length 
 
