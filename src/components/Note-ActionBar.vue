@@ -1,7 +1,20 @@
 <template>
 	<div class="Note-ActionBar flex items-center gap-1" role="toolbar">
 		<template v-if="!note.deleted_at">
-			<Note-ActionBar-Collection :note="note" />
+			<ContextMenuV2 v-if="!collection">
+				<template #button>
+					<Button isIconOnly buttonType="secondary" hideBorder is="div">
+						<IconCollectionMove />
+					</Button>
+				</template>
+
+				<ContextMenuV2-Item
+					v-for="collection of allCollections" :key="collection.id" 
+					@click="() => handleAddCollection({ collectionId: collection.id })">
+					
+					{{ collection.title }}
+				</ContextMenuV2-Item>
+			</ContextMenuV2>
 
 			<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteHideAction">
 				<IconEyeOff v-if="!note.is_hidden" />
@@ -39,16 +52,18 @@
 <script setup>	
 	import { computed } from 'vue'
 	import useConfirm from '@/hooks/useConfirm'
-	import { notesStore } from '@/store' 
+	import { notesStore, collectionsStore } from '@/store' 
 	import useSupabase from '@/hooks/useSupabase'
 	import { 
 		IconEyeOff, IconEyeOffSolid, IconPin, IconPinSolid, 
-		IconTrash, IconTrashDelete, IconTrashUndo, IconArchive, IconArchiveSolid 
+		IconTrash, IconTrashDelete, IconTrashUndo, IconArchive, IconArchiveSolid,
+		IconCollectionMove
 	} from '@/assets/icons'
 
 	// Components
 	import { Button, RichtextEditor } from '@/components/ui'
-	import NoteActionBarCollection from '@/components/Note-ActionBar-Collection.vue'
+	import ContextMenuV2 from '@/components/ContextMenuV2.vue'
+	import ContextMenuV2Item from '@/components/ContextMenuV2-Item.vue'
 
 	const supabase = useSupabase()
 
@@ -66,6 +81,8 @@
 	const emit = defineEmits([ 'updatedNote' ])
 
 	const isEmitChangesMode = computed(() => props.mode === 'emitChanges')
+	const collection = computed(() => collectionsStore.collectionFindById({ collectionId: props.note.collection_id }))
+	const allCollections = computed(() => collectionsStore.state.collections)
 
 
 	/** Actions */
@@ -118,5 +135,10 @@
 		// no handling of the props.mode here, because we want to delete the note completely
 		
 		return notesStore.notesDeleteV2({ noteIds: [ props.note.id ] })
+	}
+
+	const handleAddCollection = ({ collectionId }) => {
+		// @TODO handle props.mode correctly here.
+		notesStore.notesUpdateSingleCollectionId({ noteId: props.note.id, collectionId })
 	}
 </script>
