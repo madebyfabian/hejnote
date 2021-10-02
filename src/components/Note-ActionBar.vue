@@ -1,6 +1,6 @@
 <template>
 	<div class="Note-ActionBar flex items-center gap-1" role="toolbar">
-		<Note-ActionBar-Collection v-bind="{ note }" />
+		<Note-ActionBar-Collection :note="note" />
 
 		<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteHideAction">
 			<IconEyeOff v-if="!note.is_hidden" />
