@@ -1,6 +1,7 @@
 <template>
 	<Modal 
     :isOpened="isVisible" 
+    isConfirm
     @close="() => doAnswer(false)" :title="title || ''"
     :displayCloseButton="false">
 

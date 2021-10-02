@@ -1,9 +1,9 @@
 <template>
 	<CFocusLock>
-		<div class="Modal" @mousedown.self="emit('close')">
+		<div class="Modal" @mousedown.self="emit('close')" :class="isConfirm ? 'z-60' : 'z-50'">
 			<div 
 				class="Modal-container"
-				:class="{ hasPadding }"
+				:class="{ hasPadding, 'max-w-lg': !isConfirm, 'max-w-sm': isConfirm }"
 				role="dialog"
 				aria-modal="true">
 
@@ -46,6 +46,7 @@
 		title: 							{ type: String, required: true },
 		displayTitle: 			{ type: Boolean, default: true },
 		displayCloseButton: { type: Boolean, default: true },
+		isConfirm: 					{ type: Boolean, default: false },
 	})
 
 	const handler = (e) => {
@@ -61,12 +62,12 @@
 
 <style lang="postcss" scoped>
 	.Modal {
-		@apply fixed h-full w-full top-0 left-0 z-50;
+		@apply fixed h-full w-full top-0 left-0;
 		@apply py-10;
 		@apply bg-gray-900 bg-opacity-75 flex justify-center items-center;
 
 		&-container {
-			@apply bg-gray-800 relative flex flex-col w-full overflow-hidden max-w-lg rounded-2xl z-0 overflow-y-auto;
+			@apply bg-gray-800 relative flex flex-col w-full overflow-hidden rounded-2xl z-0 overflow-y-auto;
 			
 			max-height: 100%;
 			-webkit-overflow-scrolling: touch;

@@ -13,10 +13,6 @@
 	import ModalContent from '@/components/Modal-Content.vue'
 
 	defineProps({
-		isOpened: 					{ type: Boolean, required: true },
-		hasPadding: 				{ type: Boolean, default: true },
-		title: 							{ type: String, required: true },
-		displayTitle: 			{ type: Boolean, default: true },
-		displayCloseButton: { type: Boolean, default: true },
+		...ModalContent.props,
 	})
 </script>

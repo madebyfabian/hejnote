@@ -69,7 +69,8 @@ module.exports = {
         '-1': '-1',
         '1': '1',
         '2': '2',
-        '3': '3'
+        '3': '3',
+        '60': '60'
       },
       boxShadow: {
         'border-inset': 'inset 0 0 0 1.5px ' + defaultTheme.colors.gray[700],
