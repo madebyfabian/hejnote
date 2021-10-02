@@ -1,6 +1,6 @@
 <template>
-	<button 
-		class="Button" 
+	<component 
+		:is="is"
 		:type="type"
 		:class="[
 			buttonType == 'primary' && 'isPrimary', 
@@ -12,7 +12,8 @@
 			isFullWidth && 'isFullWidth',
 			noPadding && 'noPadding',
 			noRoundedBorder && 'noRoundedBorder',
-		]">
+		]"
+		class="Button">
 
 		<slot />
 
@@ -24,13 +25,14 @@
 
 			<IconChevron />
 		</div>
-	</button>
+	</component>
 </template>
 
 <script setup>
 	import { IconChevron } from '@/assets/icons'
 
 	defineProps({
+		is: 											{ type: String, default: 'button' },
 		type: 										{ type: String, default: undefined },
 		buttonType:								{ type: String, default: 'primary', validate: val => [ 'primary', 'secondary', 'tertiary' ].includes(val) },
 		isIconOnly:								{ type: Boolean, default: false },

@@ -1,6 +1,8 @@
 <template>
 	<Menu>
-    <MenuButton ref="menuButtonEl">More &rarr;</MenuButton>
+    <MenuButton ref="menuButtonEl">
+			<slot name="button" />
+		</MenuButton>
 
     <teleport to="body">
 			<transition name="transition-menu">

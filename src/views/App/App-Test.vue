@@ -2,6 +2,12 @@
 	<h1>Test</h1>
 
 	<ContextMenuV2>
+		<template #button>
+			<Button buttonType="primary">
+				Hej!
+			</Button>
+		</template>
+
 		<ContextMenuV2-Item @click="handleClick">
 			Test
 		</ContextMenuV2-Item>
@@ -20,6 +26,12 @@
 	<br><br>
 
 	<ContextMenuV2 align="right">
+		<template #button>
+			<Button buttonType="primary">
+				Rechts!
+			</Button>
+		</template>
+
 		<ContextMenuV2-Item @click="handleClick">
 			Test
 		</ContextMenuV2-Item>
@@ -42,6 +54,7 @@
 	import ContextMenuV2 from '@/components/ContextMenuV2.vue'
 	import ContextMenuV2Item from '@/components/ContextMenuV2-Item.vue'
 	import ContextMenuV2Seperator from '@/components/ContextMenuV2-Seperator.vue'
+	import { Button } from '@/components/ui'
 
 	const handleClick = () => {
 		console.log('test');
