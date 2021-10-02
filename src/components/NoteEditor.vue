@@ -1,5 +1,5 @@
 <template>
-	<div class="NoteEditor z-50" ref="noteEditorEl" v-click-outside="clickOutsideConfig">
+	<div class="NoteEditor z-50" ref="noteEditorEl">
 		<article 
 			class="transition-transform duration-150" 
 			:class="{ 'transform-gpu -translate-y-12 delay-100': displayMinimized }">
