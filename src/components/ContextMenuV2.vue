@@ -1,5 +1,7 @@
 <template>
-	<Menu>
+	<Menu v-slot="{ open }">
+		<VSlotEmitter :open="open" @changedOpenState="$emit('changedOpenState', open)" />
+
     <MenuButton ref="menuButtonEl">
 			<slot name="button" />
 		</MenuButton>
@@ -7,6 +9,8 @@
     <teleport to="body">
 			<transition name="transition-menu">
 				<MenuItems 
+					v-show="open"
+					static
 					class="absolute z-40 py-2 rounded-xl bg-gray-800 border border-gray-700 min-w-[200px]"
 					:class="propAlignRight ? 'origin-top-right' : 'origin-top-left'"
 					:style="menuOffsetStyles">
@@ -19,9 +23,13 @@
 </template>
 
 <script setup>
-	import { ref, computed, watch } from 'vue'
+	import { ref, computed, watch, useSlots, onMounted, createCommentVNode } from 'vue'
 	import { Menu, MenuButton, MenuItems } from '@headlessui/vue'
 	import { useWindowSize } from 'vue-window-size'
+
+	defineEmits([
+		'changedOpenState',
+	])
 
 	const props = defineProps({
 		align: { type: String, default: 'left', validator: v => [ 'left', 'right' ].includes(v) },
@@ -49,6 +57,21 @@
 
 		return { top, left, right }
 	})
+
+	/**
+	 * This is very cool. You can define an empty component that takes in a slot and emits an event.
+	 * Which we normally would have to create another component for. Great stuff!
+	 */
+	const VSlotEmitter = {
+		props: { open: { type: Boolean }, },
+		watch: {
+			open: {
+				handler() { this.$emit('changedOpenState') },
+				immediate: true
+			}
+		},
+		render: () => createCommentVNode('VSlotEmitter')
+	}
 </script>
 
 <style lang="postcss" scoped>

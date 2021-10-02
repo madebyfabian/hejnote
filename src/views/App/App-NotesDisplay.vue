@@ -5,9 +5,15 @@
 		</template>
 		
 		<template v-if="!collectionId" #heading-right>
-			<ContextMenuV2 align="right">
+			<ContextMenuV2 align="right" @changedOpenState="newVal => displayModeContextMenuIsOpened = newVal">
 				<template #button>
-					<Button buttonType="tertiary" displayAsDropdown :displayAsDropdownOpened="true" noPadding is="div">
+					<Button 
+						buttonType="tertiary" 
+						displayAsDropdown 
+						:displayAsDropdownOpened="displayModeContextMenuIsOpened" 
+						noPadding 
+						is="div">
+						
 						<span class="sr-only">Choose display mode:</span>
 						{{ displayModeOptions[displayModeActiveOptionKey] }}
 					</Button>
@@ -44,6 +50,7 @@
 	
 	// Display mode context menu
 	const displayModeOptions = { all: 'All Notes', onlyOutsideCollections: 'Notes outside Collections', },
+				displayModeContextMenuIsOpened = ref(false),
 				displayModeActiveOptionKey = generalStore.appOptions.displayMode
 
 	const handleDisplayModeApplyOption = ({ key }) => {
