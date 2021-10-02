@@ -47,7 +47,7 @@
 		const windowWidthVal = windowWidth.value,
 					scrollBarWidth = windowWidthVal - document.documentElement.clientWidth
 
-		const top = Math.round(rect?.top + rect?.height) + 'px'
+		const top = Math.round(rect?.top + rect?.height + 4) + 'px' // 4px spacing
 		const left = propAlignRight.value
 			? 'initial' 
 			: Math.round(rect?.left) + 'px'
