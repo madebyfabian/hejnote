@@ -12,6 +12,7 @@
 			isFullWidth && 'isFullWidth',
 			noPadding && 'noPadding',
 			noRoundedBorder && 'noRoundedBorder',
+			displayAsDropdownOpened && 'displayAsDropdownOpened',
 		]"
 		class="Button">
 
@@ -58,7 +59,7 @@
 		&.isPrimary {
 			@apply border-transparent bg-green-400 text-gray-900;
 
-			&:hover {
+			&:hover, &.displayAsDropdownOpened {
 				@apply bg-opacity-75 text-opacity-75;
 			}
 		}
@@ -66,7 +67,7 @@
 		&.isSecondary {
 			@apply border-gray-700 text-gray-300;
 
-			&:hover {
+			&:hover, &.displayAsDropdownOpened {
 				@apply bg-gray-700;
 			}
 		}
@@ -74,7 +75,7 @@
 		&.isTertiary {
 			@apply border-none bg-transparent h-auto text-gray-300;
 
-			&:hover {
+			&:hover, &.displayAsDropdownOpened {
 				@apply text-gray-400;
 			}
 		}
