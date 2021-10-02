@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@chakra-ui/c-focus-lock": "^0.1.0-alpha.4",
+    "@headlessui/vue": "^1.4.1",
     "@supabase/supabase-js": "^1.23.0",
     "@tiptap/extension-bullet-list": "^2.0.0-beta.15",
     "@tiptap/extension-link": "^2.0.0-beta.20",
@@ -25,7 +26,8 @@
     "throttle-debounce": "^3.0.1",
     "vue": "^3.2.18",
     "vue-next-masonry": "^1.1.3",
-    "vue-router": "^4.0.11"
+    "vue-router": "^4.0.11",
+    "vue-window-size": "^1.1.2"
   },
   "devDependencies": {
     "@tailwindcss/line-clamp": "^0.2.1",
