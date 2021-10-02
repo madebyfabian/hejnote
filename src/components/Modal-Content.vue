@@ -80,10 +80,6 @@
 			@apply flex justify-between text-200 font-bold text-gray-300 pr-12 mb-4;
 		}
 
-		&-content {
-			
-		}
-
 		&-bottomBar {
 			@apply flex justify-end items-center mt-8 gap-3;
 		}
