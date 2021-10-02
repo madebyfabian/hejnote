@@ -13,6 +13,17 @@
 
 			<RichtextEditor v-model="note.content" />
 
+			<div class="flex justify-between items-center px-3 pb-3" v-if="note.id">
+				<div>()</div>
+				<div>
+					<Note-ActionBar 
+						:note="note" 
+						mode="emitChanges" 
+						@updatedNote="handleActionBarUpdatedNote"
+					/>
+				</div>
+			</div>
+
 			<div v-if="noteLinks.length" class="m-2">
 				<Note-LinkList :noteId="note.id" />
 			</div>
@@ -127,6 +138,19 @@
 				buildSetOfLinks(obj?.content).forEach(setValue => linkSet.add(setValue))
 		}
 		return linkSet
+	}
+
+	const handleActionBarUpdatedNote = newVal => {
+		// If note is being moved in trash, close the editor and update the note in real store state.
+		if (newVal.deleted_at !== undefined) {
+			notesStore.notesUpdateSingleDeletedState({ noteId: props.note.id, deleted_at: newVal.deleted_at })
+			return closeEditor()
+		}
+
+		Object.assign(note, newVal)
+
+		if (newVal.is_archived)
+			closeEditor()
 	}
 
 	onBeforeUnmount(() => {
