@@ -5,33 +5,27 @@
 		</template>
 		
 		<template v-if="!collectionId" #heading-right>
-			<ContextMenu 
-				:isOpened="displayModeMenuIsOpened" 
-				@toggleIsOpened="newVal => displayModeMenuIsOpened = newVal"
-				:buttonProps="{ buttonType: 'tertiary', displayAsDropdown: true, displayAsDropdownOpened: displayModeMenuIsOpened, noPadding: true }"
-				align="right">
-
+			<ContextMenuV2 align="right">
 				<template #button>
-					<span class="sr-only">Choose display mode:</span>
-					{{ displayModeOptions[displayModeActiveOptionKey] }}
+					<Button buttonType="tertiary" displayAsDropdown :displayAsDropdownOpened="true" noPadding is="div">
+						<span class="sr-only">Choose display mode:</span>
+						{{ displayModeOptions[displayModeActiveOptionKey] }}
+					</Button>
 				</template>
 
-				<li>
-					<Cell 
-						v-for="(option, key) in displayModeOptions" :key="key" 
-						isClickable 
-						@click="() => handleDisplayModeApplyOption({ key })">
+				<ContextMenuV2-Item
+					v-for="(option, key) in displayModeOptions" :key="key" 
+					@click="() => handleDisplayModeApplyOption({ key })">
+					
+					<template #icon>
+						<div class="h-5 w-5">
+							<IconCheck v-if="key === displayModeActiveOptionKey" />
+						</div>
+					</template>
 
-						<template #icon>
-							<div class="h-5 w-5">
-								<IconCheck v-if="key === displayModeActiveOptionKey" />
-							</div>
-						</template>
-
-						{{ option }}
-					</Cell>
-				</li>
-			</ContextMenu>
+					{{ option }}
+				</ContextMenuV2-Item>
+			</ContextMenuV2>
     </template>
 	</NoteList>
 </template>
@@ -42,19 +36,17 @@
 	import useCurrentCollection from '@/hooks/useCurrentCollection'
 
 	// Components
-	import { Cell } from '@/components/ui'
+	import { Button } from '@/components/ui'
 	import { IconCheck } from '@/assets/icons'
-	import ContextMenu from '@/components/ContextMenu.vue'
 	import NoteList from '@/components/NoteList.vue'
-
+	import ContextMenuV2 from '@/components/ContextMenuV2.vue'
+	import ContextMenuV2Item from '@/components/ContextMenuV2-Item.vue'
 	
 	// Display mode context menu
 	const displayModeOptions = { all: 'All Notes', onlyOutsideCollections: 'Notes outside Collections', },
-				displayModeMenuIsOpened = ref(false),
 				displayModeActiveOptionKey = generalStore.appOptions.displayMode
 
 	const handleDisplayModeApplyOption = ({ key }) => {
-		displayModeMenuIsOpened.value = false
 		displayModeActiveOptionKey.value = key
 	}
 	// ---
