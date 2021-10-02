@@ -3,8 +3,8 @@
 
 	<ContextMenuV2>
 		<template #button>
-			<Button buttonType="primary">
-				Hej!
+			<Button buttonType="primary" is="div">
+				Links!
 			</Button>
 		</template>
 
@@ -27,7 +27,7 @@
 
 	<ContextMenuV2 align="right">
 		<template #button>
-			<Button buttonType="primary">
+			<Button buttonType="primary" is="div">
 				Rechts!
 			</Button>
 		</template>
