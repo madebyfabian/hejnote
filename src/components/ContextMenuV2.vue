@@ -9,9 +9,9 @@
     <teleport to="body">
 			<transition name="transition-menu">
 				<MenuItems 
-					v-show="open"
+					v-if="open"
 					static
-					class="absolute z-40 py-2 rounded-xl bg-gray-800 border border-gray-700 min-w-[200px]"
+					class="absolute z-50 py-2 rounded-xl bg-gray-800 border border-gray-700 min-w-[200px]"
 					:class="propAlignRight ? 'origin-top-right' : 'origin-top-left'"
 					:style="menuOffsetStyles">
 
@@ -39,9 +39,16 @@
 	const { width: windowWidth } = useWindowSize()
 	const menuButtonEl = ref(null)
 
+	const isMounted = ref(false)
+	onMounted(() => isMounted.value = true)
+
 	// Computeds
 	const menuOffsetStyles = computed(() => {
 		const rect = menuButtonEl.value?.el?.getBoundingClientRect()
+		if (!rect || !isMounted.value)
+			return {}
+
+		console.log(rect, menuButtonEl.value?.el)
 
 		// Define variable to trigger computed rerender on window width change
 		const windowWidthVal = windowWidth.value,

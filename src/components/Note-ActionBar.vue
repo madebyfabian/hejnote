@@ -1,7 +1,7 @@
 <template>
 	<div class="Note-ActionBar flex items-center gap-1" role="toolbar">
 		<template v-if="!note.deleted_at">
-			<ContextMenuV2 v-if="!collection">
+			<ContextMenuV2 v-if="!collection" @changedOpenState="newVal => $emit('changedOpenState', newVal)">
 				<template #button>
 					<Button isIconOnly buttonType="secondary" hideBorder is="div">
 						<IconCollectionMove />
@@ -78,7 +78,7 @@
 		mode: { type: String, default: 'updateStore', validator: v => ['updateStore', 'emitChanges'].includes(v) },
 	})
 
-	const emit = defineEmits([ 'updatedNote' ])
+	const emit = defineEmits([ 'updatedNote', 'changedOpenState' ])
 
 	const isEmitChangesMode = computed(() => props.mode === 'emitChanges')
 	const collection = computed(() => collectionsStore.collectionFindById({ collectionId: props.note.collection_id }))

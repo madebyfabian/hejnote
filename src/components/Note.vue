@@ -2,10 +2,15 @@
 	<article 
 		@click="handleNoteEdit"
 		@keypress.enter="handleNoteEdit"
+		@focusin="handleFocusIn"
+		@focusout="handleFocusOut"
+		@mouseenter="handleFocusIn"
+		@mouseleave="handleFocusOut"
 		:aria-label="noteTitleLabel"
 		:class="{ isNoteBeingEdited }"
 		tabindex="0" 
-		class="Note group ring-0">
+		class="Note"
+		ref="noteEl">
 		
 		<h3 v-if="note.title" v-text="note.title" @click="handleNoteEdit" class="mb-2" />
 		<div class="relative max-h-80 overflow-hidden">
@@ -32,8 +37,8 @@
 			
 			<Note-CollectionBadge :note="note" />
 
-			<div class="transition opacity-0 group-focus:opacity-100 group-focus-within:opacity-100 group-hover:opacity-100">
-				<Note-ActionBar :note="note" />
+			<div :class="{ 'opacity-0': !displayActionBar }" class="transition">
+				<Note-ActionBar :note="note" @changedOpenState="newVal => actionBarContextMenuOpened = newVal" />
 			</div>
 		</div>
 
@@ -66,7 +71,10 @@
 				noteLinkListEl = ref(null),
 				richtextEditorWrapEl = ref(null),
 				richtextEditorIsTruncated = ref(false),
-				_richtextEditorHeightObserver = ref(undefined)
+				_richtextEditorHeightObserver = ref(undefined),
+				actionBarContextMenuOpened = ref(false),
+				displayActionBar = ref(false),
+				noteEl = ref(null)
 
 	const handleNoteEdit = e => {
 		const clickedActionBar = e.composedPath().includes(noteActionBarEl?.value),
@@ -78,6 +86,19 @@
 			return 
 
 		notesStore.openNoteEditor({ editNoteId: props.note.id })
+	}
+
+	const handleFocusIn = () => {
+		if (displayActionBar.value === true)
+			return
+
+		displayActionBar.value = true
+	}
+
+	const handleFocusOut = (event) => {
+		const noteStillFocused = noteEl.value?.contains(event.relatedTarget)
+		if (!noteStillFocused && !actionBarContextMenuOpened.value)
+			displayActionBar.value = false
 	}
 
 	// Create richtext height observer
