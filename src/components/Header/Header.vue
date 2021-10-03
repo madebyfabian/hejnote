@@ -25,39 +25,20 @@
 			</AppLink>
 		</div>
 	</header>
-
-	<Modal 
-		:isOpened="notesStore.state.editNoteModalVisible" 
-		:hasPadding="false" 
-		:displayTitle="false"
-		@close="() => notesStore.closeNoteEditor()"
-		title="Edit note" >
-
-		<NoteEditor 
-			displayInModal
-			:note="editNote" 
-		/>
-	</Modal>
 </template>
 
 <script setup>
 	import { computed } from 'vue'
-	import { notesStore, generalStore } from '@/store'
+	import { generalStore } from '@/store'
 	import { useRoute } from 'vue-router'
 	import LogoIcon from '@/assets/images/logo.svg'
 
 	// Import Components
 	import { AppLink, Avatar } from '@/components/ui'
-	import Modal from '@/components/Modal.vue'
-	import NoteEditor from '@/components/NoteEditor.vue'
 	import { HeaderCreateNoteEditor, HeaderSearchNotesBar } from '@/components/Header'
 
 	const userName = computed(() => {
 		return generalStore.state.user?.user_metadata?.name || generalStore.state.user?.email;
-	})
-
-	const editNote = computed(() => {
-		return notesStore.noteFindById({ noteId: notesStore.state.editNoteId })
 	})
 
 	const route = useRoute()

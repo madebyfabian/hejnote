@@ -18,13 +18,29 @@
 				<div class="fixed bottom-0 left-0 w-full desktop:hidden z-40">
 					<TabNav />
 				</div>
+
+				<!-- Edit note modal -->
+				<Modal 
+					:isOpened="notesStore.state.editNoteModalVisible" 
+					:hasPadding="false" 
+					:displayTitle="false"
+					@close="() => notesStore.closeNoteEditor()"
+					title="Edit note">
+
+					<NoteEditor 
+						displayInModal
+						:note="editNote" 
+					/>
+				</Modal>
 			</div>
 		</transition>
 	</router-view>
+
+	
 </template>
 
 <script setup>
-	import { onMounted } from 'vue'
+	import { onMounted, computed } from 'vue'
 
 	import { 
 		notesStore, 
@@ -38,6 +54,8 @@
 	import Header from '@/components/Header'
 	import Sidebar from '@/components/Sidebar'
 	import TabNav from '@/components/TabNav/TabNav.vue'
+	import Modal from '@/components/Modal.vue'
+	import NoteEditor from '@/components/NoteEditor.vue'
 
 	onMounted(async () => {
 		const isHiddenMode = generalStore.state.isHiddenMode
@@ -51,5 +69,9 @@
 		])
 
 		generalStore.updateIsAppLoading(false)
+	})
+
+	const editNote = computed(() => {
+		return notesStore.noteFindById({ noteId: notesStore.state.editNoteId })
 	})
 </script>

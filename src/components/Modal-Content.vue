@@ -63,11 +63,11 @@
 <style lang="postcss" scoped>
 	.Modal {
 		@apply fixed h-full w-full top-0 left-0;
-		@apply py-10 px-4;
-		@apply bg-gray-900 bg-opacity-75 flex justify-center items-center;
+		@apply p-0 pt-7 desktop:py-10;
+		@apply bg-gray-900 bg-opacity-75 flex justify-center items-end desktop:items-center;
 
 		&-container {
-			@apply bg-gray-800 relative flex flex-col w-full overflow-hidden rounded-2xl z-0 overflow-y-auto;
+			@apply bg-gray-800 relative flex flex-col w-full overflow-hidden rounded-t-2xl desktop:rounded-2xl z-0 overflow-y-auto;
 			
 			max-height: 100%;
 			-webkit-overflow-scrolling: touch;
