@@ -63,7 +63,7 @@
 <style lang="postcss" scoped>
 	.Modal {
 		@apply fixed h-full w-full top-0 left-0;
-		@apply py-10;
+		@apply py-10 px-4;
 		@apply bg-gray-900 bg-opacity-75 flex justify-center items-center;
 
 		&-container {
