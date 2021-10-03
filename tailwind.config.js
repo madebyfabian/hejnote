@@ -83,7 +83,10 @@ module.exports = {
       },
       maxWidth: {
         '24': '6rem'
-      }
+      },
+      spacing: {
+        'safe-area-bottom': '34px', // 'env(safe-area-inset-bottom)',
+      },
     },
   },
 
