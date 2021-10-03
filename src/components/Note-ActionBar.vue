@@ -4,7 +4,7 @@
 
 		<div 
 			class="Note-ActionBar flex items-center gap-1 transition-opacity" 
-			:class="{ 'opacity-0': !displayButtons }"
+			:class="{ 'desktop:opacity-0': !displayButtons }"
 			role="toolbar">
 
 			<template v-if="!note.deleted_at">
