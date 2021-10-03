@@ -50,7 +50,6 @@
 
 	const handleTabNavItemClick = ({ e, item }) => {
 		if (item.name === 'Collections'){
-			console.log('Clicked collections')
 			return e.preventDefault()
 		}
 
