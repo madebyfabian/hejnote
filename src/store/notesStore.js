@@ -145,6 +145,7 @@ export default {
   },
 
   async notesUpdateSingleDeletedState({ noteId, deleted_at = new Date() }) {
+    console.log({ noteId, deleted_at });
     try {
       // Set deleted_at to now in database
       await this.notesUpdateSingle({ noteId, newVal: { deleted_at } })

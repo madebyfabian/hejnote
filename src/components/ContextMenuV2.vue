@@ -48,6 +48,8 @@
 		if (!rect || !isMounted.value)
 			return {}
 
+		console.log(rect, menuButtonEl.value?.el)
+
 		// Define variable to trigger computed rerender on window width change
 		const windowWidthVal = windowWidth.value,
 					scrollBarWidth = windowWidthVal - document.documentElement.clientWidth
