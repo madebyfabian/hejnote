@@ -47,7 +47,7 @@
 	}
 
 	:focus {
-		@apply mouse-only:outline-none mouse-only:ring-2 mouse-only:ring-green-400;
+		@apply outline-none mouse-only:ring-2 mouse-only:ring-green-400;
 		@apply mouse-only:transition-shadow mouse-only:duration-100
 	}
 
