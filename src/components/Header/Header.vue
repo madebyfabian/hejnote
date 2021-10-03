@@ -37,9 +37,7 @@
 	import { AppLink, Avatar } from '@/components/ui'
 	import { HeaderCreateNoteEditor, HeaderSearchNotesBar } from '@/components/Header'
 
-	const userName = computed(() => {
-		return generalStore.state.user?.user_metadata?.name || generalStore.state.user?.email;
-	})
+	const userName = computed(() => generalStore.getUserName())
 
 	const route = useRoute()
 	const isSearchFocussed = computed(() => route.name === 'App-Search')

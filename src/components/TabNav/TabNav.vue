@@ -15,7 +15,10 @@
 				
 				@click="e => handleTabNavItemClick({ e, item })">
 
-				<template #icon><component :is="item.icon" /></template>
+				<template #icon>
+					<component v-if="item.route !== 'App-Account'" :is="item.icon" />
+					<Avatar v-else :name="userName" isSmall :isActive="isActiveTab(item.route)" />
+				</template>
 
 				{{ item.name }}
 			</TabNav-Item>
@@ -24,12 +27,16 @@
 </template>
 
 <script setup>
-	import { ref } from 'vue'
+	import { ref, computed } from 'vue'
 	import { useRoute } from 'vue-router'
+	import { generalStore } from '@/store'
 
+	import { Avatar } from '@/components/ui'
 	import TabNavItem from '@/components/TabNav/TabNav-Item.vue'
 	import TabNavActiveIndicator from '@/components/TabNav/TabNav-ActiveIndicator.vue'
 	import { IconPin, IconCollectionMove } from '@/assets/icons'
+
+	const userName = computed(() => generalStore.getUserName())
 
 	const route = useRoute()
 	const wrapperId = 'TabNav-wrapper'
@@ -38,7 +45,7 @@
 		{ name: 'Notes', route: 'App-Home', icon: IconPin, },
 		{ name: 'Collections', route: undefined, icon: IconCollectionMove, },
 		{ name: 'Archive', route: 'App-Archive', icon: IconCollectionMove, },
-		{ name: 'Fabian', route: 'App-Account', icon: IconCollectionMove, },
+		{ name: userName.value, route: 'App-Account', icon: IconCollectionMove, },
 	]
 
 	// Define the active Tab item on initial load. this is NOT reactive.

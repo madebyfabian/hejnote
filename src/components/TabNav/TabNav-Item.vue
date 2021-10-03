@@ -7,7 +7,7 @@
 
 		<slot name="icon" />
 
-		<span class="text-050" >
+		<span class="text-050 text-overflow-ellipsis max-w-full">
 			<slot />
 		</span>
 	</component>

@@ -17,6 +17,12 @@ export default {
 	},
 
 
+	// --- Getters ---
+	getUserName() {
+		return this.state.user?.user_metadata?.name || this.state.user?.email || 'Guest'
+	},
+
+
 	// --- Mutations ---
 	updateUser({ user }) {
 		this.state.user = user

@@ -9,6 +9,12 @@ const rotateX = plugin(function ({ addUtilities }) {
     '.rotate-x-180': {
       transform: 'rotateX(180deg)',
     },
+
+    '.text-overflow-ellipsis': {
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      whiteSpace: 'nowrap',
+    }
   })
 })
 
@@ -88,6 +94,12 @@ module.exports = {
       },
       spacing: {
         'safe-area-bottom': '34px', // 'env(safe-area-inset-bottom)',
+      },
+      scale: {
+        '60': '.60',
+      },
+      ringWidth: {
+        'DEFAULT': defaultBorderWidth
       },
     },
   },

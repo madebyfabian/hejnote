@@ -1,6 +1,6 @@
 <template>
 	<Badge v-if="collection" class="Note-ActionBar-Collection">
-		<span class="max-w-24 overflow-ellipsis overflow-hidden whitespace-nowrap">
+		<span class="max-w-24 text-overflow-ellipsis">
 			{{ collection.title }}
 		</span>
 
