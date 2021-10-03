@@ -13,16 +13,13 @@
 
 			<RichtextEditor v-model="note.content" />
 
-			<div class="flex justify-between items-center px-3 pb-3" v-if="note.id">
-				<div>()</div>
-				<div>
-					<Note-ActionBar 
-						:note="note" 
-						mode="emitChanges" 
-						@updatedNote="handleActionBarUpdatedNote"
-						_temp_isInsideModal
-					/>
-				</div>
+			<div class="px-5 pb-5" v-if="note.id">
+				<NoteActionBar
+					:note="note" 
+					mode="emitChanges"
+					@updatedNote="handleActionBarUpdatedNote"
+					_temp_isInsideModal
+				/>
 			</div>
 
 			<div v-if="noteLinks.length" class="m-2">

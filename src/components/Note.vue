@@ -30,16 +30,12 @@
 			/>
 		</div>
 
-		<div 
-			ref="noteActionBarEl" 
-			class="-m-2 mt-0 flex items-center" 
-			:class="collection ? 'justify-between' : 'justify-end'">
-			
-			<Note-CollectionBadge :note="note" />
-
-			<div :class="{ 'opacity-0': !displayActionBar }" class="transition">
-				<Note-ActionBar :note="note" @changedOpenState="newVal => actionBarContextMenuOpened = newVal" />
-			</div>
+		<div ref="noteActionBarEl">
+			<Note-ActionBar
+				:note="note" 
+				:displayButtons="displayActionBar"
+				@changedOpenState="newVal => actionBarContextMenuOpened = newVal" 
+			/>
 		</div>
 
 		<div v-if="noteLinks.length" ref="noteLinkListEl" class="mt-4 -m-2">
@@ -56,7 +52,6 @@
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
 	import NoteEditor from '@/components/NoteEditor.vue'
 	import NoteLinkList from '@/components/Note-LinkList.vue'
-	import NoteCollectionBadge from '@/components/Note-CollectionBadge.vue'
 	
 	const props = defineProps({
 		note: { required: true },

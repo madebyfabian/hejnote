@@ -1,10 +1,10 @@
 <template>
-	<Badge v-if="collection" class="Note-CollectionBadge">
+	<Badge v-if="collection" class="Note-ActionBar-Collection">
 		<span class="max-w-24 overflow-ellipsis overflow-hidden whitespace-nowrap">
 			{{ collection.title }}
 		</span>
 
-		<button class="Note-CollectionBadge-badgeButton" @click="handleRemoveCollection">
+		<button class="Note-ActionBar-Collection-badgeButton" @click="emit('removeCollection')">
 			<span 
 				aria-hidden="true" 
 				class="absolute -left-4 top-0 w-9 h-full bg-gradient-to-r from-transparent via-gray-800 to-gray-800" 
@@ -17,24 +17,18 @@
 </template>
 
 <script setup>
-	import { computed } from 'vue'
 	import { IconClose } from '@/assets/icons'
-	import { collectionsStore, notesStore } from '@/store'
 	import { Badge } from '@/components/ui'
 
+	const emit = defineEmits([ 'removeCollection' ])
+
 	const props = defineProps({
-		note: { type: [ Object, null ], required: true }
+		collection: { required: true, },
 	})
-
-	const collection = computed(() => collectionsStore.collectionFindById({ collectionId: props.note.collection_id }))
-
-	const handleRemoveCollection = () => {
-		notesStore.notesUpdateSingleCollectionId({ noteId: props.note.id, collectionId: null })
-	}
 </script>
 
 <style lang="postcss" scoped>
-	.Note-CollectionBadge {
+	.Note-ActionBar-Collection {
 		@apply ml-2 relative;
 
 		&-badgeButton {

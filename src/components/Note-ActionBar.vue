@@ -1,53 +1,61 @@
 <template>
-	<div class="Note-ActionBar flex items-center gap-1" role="toolbar">
-		<template v-if="!note.deleted_at">
-			<template v-if="!_temp_isInsideModal">
-				<ContextMenuV2 v-if="!collection" @changedOpenState="newVal => $emit('changedOpenState', newVal)">
-					<template #button>
-						<Button isIconOnly buttonType="secondary" hideBorder is="div">
-							<IconCollectionMove />
-						</Button>
-					</template>
+	<div class="flex items-center -mx-2 -mb-1.5" :class="collection ? 'justify-between' : 'justify-end'">
+		<Note-ActionBar-Collection v-bind="{ note, collection }" @removeCollection="() => handleRemoveCollection()" />
 
-					<ContextMenuV2-Item
-						v-for="collection of allCollections" :key="collection.id" 
-						@click="() => handleAddCollection({ collectionId: collection.id })">
-						
-						{{ collection.title }}
-					</ContextMenuV2-Item>
-				</ContextMenuV2>
+		<div 
+			class="Note-ActionBar flex items-center gap-1 transition-opacity" 
+			:class="{ 'opacity-0': !displayButtons }"
+			role="toolbar">
 
-				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteHideAction">
-					<IconEyeOff v-if="!note.is_hidden" />
-					<IconEyeOffSolid v-else />
+			<template v-if="!note.deleted_at">
+				<template v-if="!_temp_isInsideModal">
+					<ContextMenuV2 v-if="!collection" @changedOpenState="newVal => $emit('changedOpenState', newVal)">
+						<template #button>
+							<Button isIconOnly buttonType="secondary" hideBorder is="div">
+								<IconCollectionMove />
+							</Button>
+						</template>
+
+						<ContextMenuV2-Item
+							v-for="collection of allCollections" :key="collection.id" 
+							@click="() => handleAddCollection({ collectionId: collection.id })">
+							
+							{{ collection.title }}
+						</ContextMenuV2-Item>
+					</ContextMenuV2>
+
+					<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteHideAction">
+						<IconEyeOff v-if="!note.is_hidden" />
+						<IconEyeOffSolid v-else />
+					</Button>
+				</template>
+
+				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNotePinAction">
+					<IconPin v-if="!note.is_pinned" />
+					<IconPinSolid v-else />
+				</Button>
+
+				<!-- Archive -->
+				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteArchiveAction">
+					<IconArchive v-if="!note.is_archived" />
+					<IconArchiveSolid v-else />
+				</Button>
+
+				<!-- Trash -->
+				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteMoveToDeleted">
+					<IconTrash />
 				</Button>
 			</template>
-
-			<Button isIconOnly buttonType="secondary" hideBorder @click="handleNotePinAction">
-				<IconPin v-if="!note.is_pinned" />
-				<IconPinSolid v-else />
-			</Button>
-
-			<!-- Archive -->
-			<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteArchiveAction">
-				<IconArchive v-if="!note.is_archived" />
-				<IconArchiveSolid v-else />
-			</Button>
-
-			<!-- Trash -->
-			<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteMoveToDeleted">
-				<IconTrash />
-			</Button>
-		</template>
-		
-	  <template v-else>
-			<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteMoveOutOfDeleted">
-				<IconTrashUndo />
-			</Button>
-			<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteFullyDelete">
-				<IconTrashDelete />
-			</Button>
-		</template>
+			
+			<template v-else>
+				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteMoveOutOfDeleted">
+					<IconTrashUndo />
+				</Button>
+				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteFullyDelete">
+					<IconTrashDelete />
+				</Button>
+			</template>
+		</div>
 	</div>
 </template>
 
@@ -66,12 +74,14 @@
 	import { Button, RichtextEditor } from '@/components/ui'
 	import ContextMenuV2 from '@/components/ContextMenuV2.vue'
 	import ContextMenuV2Item from '@/components/ContextMenuV2-Item.vue'
+	import NoteActionBarCollection from '@/components/Note-ActionBar-Collection.vue'
 
 	const supabase = useSupabase()
 
 	const props = defineProps({
-		note: { required: true },
-		_temp_isInsideModal: { type: Boolean, default: false }, // Hide certain items because they have bugs inside modal.
+		note: 								{ required: true },
+		displayButtons: 			{ type: Boolean, default: true },
+		_temp_isInsideModal: 	{ type: Boolean, default: false }, // Hide certain items because they have bugs inside modal.
 
 		/**
 		 * There are two ways to use the ActionBar:
@@ -91,11 +101,15 @@
 	/** Actions */
 
 	const _updateNoteProperty = ( newVal = {} ) => {
-		return isEmitChangesMode.value
-			? emit('updatedNote', newVal) 
-			: (newVal.deleted_at !== undefined) 
-				? notesStore.notesUpdateSingleDeletedState({ noteId: props.note.id, deleted_at: newVal.deleted_at })
-				: notesStore.notesUpdateSingle({ noteId: props.note.id, newVal })
+		if (isEmitChangesMode.value)
+			emit('updatedNote', newVal)
+		else 
+			if (newVal.deleted_at !== undefined)
+				notesStore.notesUpdateSingleDeletedState({ noteId: props.note.id, deleted_at: newVal.deleted_at })
+			else if (newVal.collection_id !== undefined)
+				notesStore.notesUpdateSingleCollectionId({ noteId: props.note.id, collectionId: newVal.collection_id })
+			else 
+				notesStore.notesUpdateSingle({ noteId: props.note.id, newVal })
 	} 
 
 	const handleNotePinAction = () => {
@@ -141,7 +155,10 @@
 	}
 
 	const handleAddCollection = ({ collectionId }) => {
-		// @TODO handle props.mode correctly here.
-		notesStore.notesUpdateSingleCollectionId({ noteId: props.note.id, collectionId })
+		_updateNoteProperty({ collection_id: collectionId })
+	}
+
+	const handleRemoveCollection = () => {
+		_updateNoteProperty({ collection_id: null })
 	}
 </script>

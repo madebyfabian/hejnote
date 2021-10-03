@@ -23,12 +23,13 @@ export default {
 	}),
 
   getNoteDefaultDataObject({ note } = {}) { return {
-    id: 				  note?.id || undefined,
-		title: 			  note?.title || '',
-		content: 		  note?.content || noteEditorContentDefault,
-		is_pinned: 	  note?.is_pinned || false,
-		is_hidden: 	  note?.is_hidden || false,
-		is_archived:  note?.is_archived || false,
+    id: 				    note?.id || undefined,
+		title: 			    note?.title || '',
+		content: 		    note?.content || noteEditorContentDefault,
+		is_pinned: 	    note?.is_pinned || false,
+		is_hidden: 	    note?.is_hidden || false,
+		is_archived:    note?.is_archived || false,
+    collection_id:  note?.collection_id || null,
   }},
 
   noteObjectHasChanges({ compareToNoteId, newVal } = {}) {
