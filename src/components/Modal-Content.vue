@@ -1,34 +1,37 @@
 <template>
-	<div class="Modal" :class="isConfirm ? 'z-60' : 'z-50'">
-		<div 
-			class="Modal-container"
-			:class="{ hasPadding, 'max-w-lg': !isConfirm, 'max-w-sm': isConfirm }"
-			role="dialog"
-			aria-modal="true">
+	<CFocusLock>
+		<div class="Modal" @mousedown.self="emit('close')" :class="isConfirm ? 'z-60' : 'z-50'">
+			<div 
+				class="Modal-container"
+				:class="{ hasPadding, 'max-w-lg': !isConfirm, 'max-w-sm': isConfirm }"
+				role="dialog"
+				aria-modal="true">
 
-			<div class="Modal-header" v-if="displayTitle" v-text="title" />
-			
-			<div class="Modal-content">
-				<slot />
-			</div>
+				<div class="Modal-header" v-if="displayTitle" v-text="title" />
+				
+				<div class="Modal-content">
+					<slot />
+				</div>
 
-			<div v-if="displayCloseButton" class="absolute right-5 top-5">
-				<Button @click="emit('close')" isIconOnly buttonType="secondary">
-					<IconClose />
-				</Button>
-			</div>
+				<div v-if="displayCloseButton" class="absolute right-5 top-5">
+					<Button @click="emit('close')" isIconOnly buttonType="secondary">
+						<IconClose />
+					</Button>
+				</div>
 
-			<div class="Modal-bottomBar" v-if="hasBottomBar" >
-				<slot name="bottomBar" />
+				<div class="Modal-bottomBar" v-if="hasBottomBar" >
+					<slot name="bottomBar" />
+				</div>
 			</div>
 		</div>
-	</div>
+	</CFocusLock>
 </template>
 
 <script setup>
 	import { useSlots, ref, onUnmounted, computed } from 'vue'
 	import { Button } from '@/components/ui'
 	import { IconClose } from '@/assets/icons'
+	import { CFocusLock } from '@chakra-ui/c-focus-lock'
 
 	const emit = defineEmits([ 'close' ])
 
@@ -44,6 +47,16 @@
 		displayTitle: 			{ type: Boolean, default: true },
 		displayCloseButton: { type: Boolean, default: true },
 		isConfirm: 					{ type: Boolean, default: false },
+	})
+
+	const handler = (e) => {
+		if (e.key.toUpperCase() === 'ESCAPE')
+			emit('close')
+	}
+
+	document.addEventListener('keydown', handler)
+	onUnmounted(() => {
+		document.removeEventListener('keydown', handler)
 	})
 </script>
 
