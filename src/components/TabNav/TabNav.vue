@@ -1,5 +1,5 @@
 <template>
-	<div class="TabNav px-3 pt-2 border-t border-gray-700 border-opacity-50 pb-safe-area-bottom bg-gray-900">
+	<div class="TabNav px-3 pt-2 border-t border-gray-700 border-opacity-50 pb-[34px] bg-gray-900">
 		<div class="relative flex justify-between w-full" :id="wrapperId">
 			<TabNav-ActiveIndicator 
 				:tabNavWrapperId="wrapperId"
