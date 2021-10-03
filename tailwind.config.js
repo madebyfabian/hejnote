@@ -35,7 +35,9 @@ module.exports = {
     },
 
     screens: {
-      'desktop': `${ 1024 + (1.25 * 16) * 2 }px` // Wrapper + padding left & right
+      'desktop': `${ 1024 + (1.25 * 16) * 2 }px`, // Wrapper + padding left & right
+      'mouse-only': { raw: '(pointer: fine)' },
+      'touch-only': { raw: '(pointer: coarse)' },
     },
 
     borderWidth: {

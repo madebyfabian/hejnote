@@ -156,7 +156,9 @@
 							> input { @apply sr-only; }
 
 							&:focus-within {
-								@apply outline-none ring-2 ring-green-400 transition-shadow duration-100;
+								@screen mouse-only {
+									@apply outline-none ring-2 ring-green-400 transition-shadow duration-100;
+								}
 							}
 						}
 
