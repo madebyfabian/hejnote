@@ -3,11 +3,25 @@
 		:is="tag" 
 		:to="tag && to"
 		:class="isActive ? 'text-green-400' : 'text-gray-500'"
-		class="TabNav-Item relative flex flex-col items-center gap-1 w-20 rounded-xl pt-3 pb-2 px-2 flex-shrink-0 transition-colors">
+		class="TabNav-Item relative flex flex-col items-center gap-1 w-20 px-2 pt-4 flex-shrink-0">
 
-		<slot name="icon" />
+		<span 
+			class="relative transform-gpu duration-300 transition" 
+			:class="{ 'translate-y-0': isActive, 'translate-y-2': !isActive }">
+		
+			<span class="transition-opacity" :class="{ 'opacity-0': isActive }">
+				<slot name="icon" />
+			</span>
 
-		<span class="text-050 text-overflow-ellipsis max-w-full">
+			<span class="absolute top-0 left-0 z-1 transition-opacity" :class="{ 'opacity-0': !isActive }">
+				<slot name="activeIcon" />
+			</span>
+		</span>
+
+		<span 
+			class="text-050 font-bold text-overflow-ellipsis max-w-full transform-gpu duration-225 origin-top" 
+			:class="{ 'translate-y-0 opacity-100 scale-100': isActive, '-translate-y-2 opacity-0 scale-90': !isActive }">
+
 			<slot />
 		</span>
 	</component>
@@ -24,3 +38,4 @@
 
 	const tag = computed(() => props.to ? AppLink : 'button')
 </script>
+

@@ -7,6 +7,8 @@ import IconEyeOff from './eyeOff.svg'
 import IconEyeOffSolid from './eyeOffSolid.svg'
 import IconGitHub from './gitHub.svg'
 import IconGlobe from './globe.svg'
+import IconNotes from './notes.svg'
+import IconNotesSolid from './notesSolid.svg'
 import IconPin from './pin.svg'
 import IconPinSolid from './pinSolid.svg'
 import IconTrash from './trash.svg'
@@ -25,6 +27,8 @@ export {
   IconEyeOffSolid,
   IconGitHub,
   IconGlobe,
+  IconNotes,
+  IconNotesSolid,
   IconPin,
   IconPinSolid,
   IconTrash,
