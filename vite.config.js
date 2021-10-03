@@ -24,6 +24,7 @@ export default defineConfig({
         name: 'hejnote.',
         description: 'hejnote. app',
         theme_color: '#111827',
+        start_url: '/app',
         icons: [
           {
             src: 'favicons/android-chrome-192x192.png',
