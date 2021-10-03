@@ -15,7 +15,7 @@
 					</main>
 				</div>
 
-				<div class="fixed bottom-0 left-0 w-full desktop:hidden">
+				<div class="fixed bottom-0 left-0 w-full desktop:hidden z-40">
 					<TabNav />
 				</div>
 			</div>

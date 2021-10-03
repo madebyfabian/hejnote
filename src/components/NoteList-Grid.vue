@@ -1,6 +1,6 @@
 <template>
 	<section class="NoteList-Grid">
-		<masonry :cols="3" :gutter="24">
+		<masonry v-bind="masonryOptions">
 			<Note 
 				v-for="note of notes"
 				:key="note.id" 
@@ -17,4 +17,13 @@
 		notes: 				{ type: Array, required: true },
 		showIsPinned: { type: Boolean, default: false },
 	})
+
+	const masonryOptions = {
+		cols: {
+			default: 3,
+			1064: 2,
+			768: 1,
+		},
+		gutter: 24,
+	}
 </script>
