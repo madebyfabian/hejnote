@@ -1,25 +1,27 @@
 <template>
 	<div class="Note-ActionBar flex items-center gap-1" role="toolbar">
 		<template v-if="!note.deleted_at">
-			<ContextMenuV2 v-if="!collection" @changedOpenState="newVal => $emit('changedOpenState', newVal)">
-				<template #button>
-					<Button isIconOnly buttonType="secondary" hideBorder is="div">
-						<IconCollectionMove />
-					</Button>
-				</template>
+			<template v-if="!_temp_isInsideModal">
+				<ContextMenuV2 v-if="!collection" @changedOpenState="newVal => $emit('changedOpenState', newVal)">
+					<template #button>
+						<Button isIconOnly buttonType="secondary" hideBorder is="div">
+							<IconCollectionMove />
+						</Button>
+					</template>
 
-				<ContextMenuV2-Item
-					v-for="collection of allCollections" :key="collection.id" 
-					@click="() => handleAddCollection({ collectionId: collection.id })">
-					
-					{{ collection.title }}
-				</ContextMenuV2-Item>
-			</ContextMenuV2>
+					<ContextMenuV2-Item
+						v-for="collection of allCollections" :key="collection.id" 
+						@click="() => handleAddCollection({ collectionId: collection.id })">
+						
+						{{ collection.title }}
+					</ContextMenuV2-Item>
+				</ContextMenuV2>
 
-			<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteHideAction">
-				<IconEyeOff v-if="!note.is_hidden" />
-				<IconEyeOffSolid v-else />
-			</Button>
+				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteHideAction">
+					<IconEyeOff v-if="!note.is_hidden" />
+					<IconEyeOffSolid v-else />
+				</Button>
+			</template>
 
 			<Button isIconOnly buttonType="secondary" hideBorder @click="handleNotePinAction">
 				<IconPin v-if="!note.is_pinned" />
@@ -69,6 +71,7 @@
 
 	const props = defineProps({
 		note: { required: true },
+		_temp_isInsideModal: { type: Boolean, default: false }, // Hide certain items because they have bugs inside modal.
 
 		/**
 		 * There are two ways to use the ActionBar:

@@ -20,6 +20,7 @@
 						:note="note" 
 						mode="emitChanges" 
 						@updatedNote="handleActionBarUpdatedNote"
+						_temp_isInsideModal
 					/>
 				</div>
 			</div>
