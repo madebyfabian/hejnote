@@ -1,5 +1,5 @@
 <template>
-  <NoteList :notes="notes" title="Notes">
+  <NoteList :notes="notes" :title="collection?.title || 'Notes'">
 		<template v-if="!collectionId" #empty-state>
 			There are no notes which aren't inside a collection.
 		</template>
@@ -21,14 +21,9 @@
 
 				<ContextMenuV2-Item
 					v-for="(option, key) in displayModeOptions" :key="key" 
+					:displayAsSelected="key === displayModeActiveOptionKey"
 					@click="() => handleDisplayModeApplyOption({ key })">
 					
-					<template #icon>
-						<div class="h-5 w-5">
-							<IconCheck v-if="key === displayModeActiveOptionKey" />
-						</div>
-					</template>
-
 					{{ option }}
 				</ContextMenuV2-Item>
 			</ContextMenuV2>
@@ -43,7 +38,6 @@
 
 	// Components
 	import { Button } from '@/components/ui'
-	import { IconCheck } from '@/assets/icons'
 	import NoteList from '@/components/NoteList.vue'
 	import ContextMenuV2 from '@/components/ContextMenuV2.vue'
 	import ContextMenuV2Item from '@/components/ContextMenuV2-Item.vue'

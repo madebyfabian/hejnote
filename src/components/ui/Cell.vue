@@ -31,7 +31,7 @@
 		}
 
 		&-icon {
-			@apply mr-3;
+			@apply mr-2;
 		}
 	}
 </style>
