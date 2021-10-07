@@ -56,15 +56,7 @@ export const routes = [
         name: 'App-Test',
         meta: { requiresAuth: true, title: 'Test' },
         component: () => import('@/views/App/App-Test.vue'),
-      },
-
-      // Mobile-only
-      {
-        path: '_mobile/collection-overview',
-        name: 'App-Mobile-CollectionOverview',
-        meta: { requiresAuth: true, title: 'Collections' }, 
-        component: () => import('@/views/App/App-Mobile-CollectionOverview.vue'),
-      },
+      }
     ] 
   },
 
