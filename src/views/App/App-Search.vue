@@ -1,4 +1,15 @@
 <template>
+	<TextInput 
+		v-if="useIsMobileDevice"
+		v-model="searchNotesString" 
+		:inputProps="{ placeholder: 'Search for something', required: true, spellcheck: false }" 
+		class="mb-8">
+
+		<template #icon>
+			<IconSearch />
+		</template>
+	</TextInput>
+
 	<NoteList :notes="notes" groupAllNotes :title="title">
 		<template #empty-state>
 			{{ searchNotesString.length && !notes.length ? 'Nothing found for this search.' : 'Start typing to see results...' }}
@@ -7,13 +18,18 @@
 </template>
 
 <script setup>
-	import { computed } from 'vue'
+	import { ref, computed } from 'vue'
 	import Fuse from 'fuse.js'
 	import { notesStore } from '@/store'
-	import { useRoute } from 'vue-router'
-  import NoteList from '@/components/NoteList.vue'
+	import { useRoute, useRouter } from 'vue-router'
+	import useIsMobileDevice from '@/hooks/useIsMobileDevice'
 
-	const route = useRoute()
+  import NoteList from '@/components/NoteList.vue'
+	import { TextInput } from '@/components/ui'
+	import { IconSearch } from '@/assets/icons'
+
+	const route = useRoute(),
+				router = useRouter()
 
 	/**
 	 * Transform note.content json object into string or parse.
@@ -36,7 +52,11 @@
 		{ name: 'id', weight: 1 }
 	] })
 
-	const searchNotesString = computed(() => route.query?.q || '')
+	const searchNotesString = computed({
+		get() 			{ return route.query?.q || '' },
+		set(newVal)	{ router.push({ query: { q: newVal } }) }
+	})
+
 	const title = computed(() => {
 		return `Search Results ${ searchNotesString.value.length ? `for \"${ searchNotesString.value }\"` : '' }`
 	})

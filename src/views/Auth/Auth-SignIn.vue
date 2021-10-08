@@ -10,8 +10,8 @@
 			<div v-if="errorMsg" class="text-red-300 text-center font-bold">{{ errorMsg }}</div>
 
 			<form @submit.prevent="doAuthenticate">
-				<TextInput v-model="formData.email" type="email" placeholder="hej@your.email" required class="mb-4" />
-				<TextInput v-model="formData.password" type="password" placeholder="Your Secret (Password)" required class="mb-6" />
+				<TextInput v-model="formData.email" :inputProps="{ type: 'email', placeholder: 'hej@your.email', required: true }" class="mb-4" />
+				<TextInput v-model="formData.password" :inputProps="{ type: 'password', placeholder: 'Your Secret (Password)', required: true }" class="mb-6" />
 
 				<Button isFullWidth type="submit">
 					<span>🚀</span>

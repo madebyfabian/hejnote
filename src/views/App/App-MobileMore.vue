@@ -2,7 +2,14 @@
 	<div class="-mx-4">
 		<h1 class="mx-4 mb-8">More</h1>
 		<section>
-			<h2 class="mx-4 mb-2">Pages</h2>
+			<h2 class="mx-4 mb-2">Others</h2>
+
+			<Cell isTypeNavigation :navigateTo="{ name: 'App-Search' }" dividerInset>
+				<template #icon>
+					<IconSearch />
+				</template>
+				Search
+			</Cell>
 
 			<Cell isTypeNavigation :navigateTo="{ name: 'App-Archive' }" dividerInset>
 				<template #icon>
@@ -31,6 +38,6 @@
 
 <script setup>
 	import { Cell } from '@/components/ui'
-	import { IconArchive, IconTrash, IconMoreSolid } from '@/assets/icons'
+	import { IconArchive, IconTrash, IconMoreSolid, IconSearch } from '@/assets/icons'
 	import SwitchHiddenMode from '@/components/SwitchHiddenMode.vue'
 </script>

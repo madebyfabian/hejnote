@@ -16,7 +16,7 @@
 					</h2>
 
 					<form @submit.prevent="handleFormSubmit" class="flex gap-3">
-						<TextInput v-model="formData.email" type="email" placeholder="hej@your.email" required class="rounded-r-none" />
+						<TextInput v-model="formData.email" :inputProps="{ type: 'email', placeholder: 'hej@your.email', required: true }" class="rounded-r-none" />
 						<Button type="submit" class="flex-shrink-0">Join the list!</Button>
 					</form>
 				</div>
