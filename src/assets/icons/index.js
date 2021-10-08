@@ -2,6 +2,7 @@ import IconArchive from './archive.svg'
 import IconArchiveSolid from './archiveSolid.svg'
 import IconCheck from './check.svg'
 import IconChevron from './chevron.svg'
+import IconChevronRight from './chevronRight.svg'
 import IconClose from './close.svg'
 import IconEyeOff from './eyeOff.svg'
 import IconEyeOffSolid from './eyeOffSolid.svg'
@@ -22,6 +23,7 @@ export {
   IconArchiveSolid,
   IconCheck,
   IconChevron,
+  IconChevronRight,
   IconClose,
   IconEyeOff,
   IconEyeOffSolid,
