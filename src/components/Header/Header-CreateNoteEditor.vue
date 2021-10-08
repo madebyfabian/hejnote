@@ -3,7 +3,7 @@
 		class="CreateNoteEditor absolute top-0 left-0 w-full bg-gray-800 rounded-xl border border-gray-700 overflow-hidden" 
 		:style="{ '--max-height': `${ maxHeight }px` }"
 		:class="{ displayMinimized }"
-		@click="handleOpenNoteEditor">
+		@click="handleOpen">
 
 		<div class="-m-0.5">
 			<div ref="noteEditorEl">
@@ -37,7 +37,7 @@
 		displayMinimized.value = value
 	}
 
-	const handleOpenNoteEditor = () => {
+	const handleOpen = () => {
 		if (!displayMinimized.value)
 			return
 
