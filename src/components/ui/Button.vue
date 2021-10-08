@@ -52,6 +52,7 @@
 		@apply inline-flex items-center justify-center gap-2;
 		@apply h-11 px-4 rounded-xl border font-bold text-100;
 		@apply transition duration-100;
+		@apply w-full desktop:w-fit;
 		
 		/**
 		 * Types
@@ -97,7 +98,7 @@
 		}
 
 		&.isFullWidth {
-			@apply w-full flex;
+			@apply w-full flex !important;
 		}
 
 		&.noRoundedBorder {

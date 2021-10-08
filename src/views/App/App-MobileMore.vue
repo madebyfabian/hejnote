@@ -1,25 +1,30 @@
 <template>
 	<div class="-mx-4">
 		<h1 class="mx-4 mb-8">More</h1>
-		<h2 class="mx-4 mb-2">Pages</h2>
-		<Cell isTypeNavigation :navigateTo="{ name: 'App-Archive' }" dividerInset>
-			<template #icon>
-				<IconArchive />
-			</template>
-			Archive
-		</Cell>
+		<section>
+			<h2 class="mx-4 mb-2">Pages</h2>
 
-		<Cell isTypeNavigation :navigateTo="{ name: 'App-Deleted' }" dividerInset>
-			<template #icon>
-				<IconTrash />
-			</template>
-			Trash
-		</Cell>
+			<Cell isTypeNavigation :navigateTo="{ name: 'App-Archive' }" dividerInset>
+				<template #icon>
+					<IconArchive />
+				</template>
+				Archive
+			</Cell>
 
-		<h2 class="mx-4 mt-10 mb-1.5">Settings</h2>
-		<div class="mx-1">
-			<SwitchHiddenMode />
-		</div>
+			<Cell isTypeNavigation :navigateTo="{ name: 'App-Deleted' }" dividerInset>
+				<template #icon>
+					<IconTrash />
+				</template>
+				Trash
+			</Cell>
+		</section>
+
+		<section>
+			<h2 class="mx-4 mt-8 mb-1.5">Settings</h2>
+			<div class="mx-1">
+				<SwitchHiddenMode />
+			</div>
+		</section>
 	</div>
 	
 </template>

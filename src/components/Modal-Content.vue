@@ -81,7 +81,7 @@
 			-webkit-overflow-scrolling: touch;
 
 			&.hasPadding {
-				@apply p-6;
+				@apply p-6 pb-safe-area-bottom desktop:pb-6;
 			}
 		}
 
@@ -114,7 +114,7 @@
 		@apply opacity-0;
 
 		.Modal-container {
-			@apply transform-gpu translate-y-2;
+			@apply transform-gpu translate-y-8 desktop:translate-y-2;
 		}
 	}
 </style>
