@@ -3,7 +3,7 @@
 		<div class="Modal" :class="{ isConfirm }" @mousedown.self="emit('close')">
 			<div 
 				class="Modal-container"
-				:class="{ hasPadding, 'max-w-lg': !isConfirm, 'max-w-sm': isConfirm }"
+				:class="{ hasPadding, 'desktop:max-w-lg': !isConfirm, 'desktop:max-w-sm': isConfirm }"
 				role="dialog"
 				aria-modal="true">
 
