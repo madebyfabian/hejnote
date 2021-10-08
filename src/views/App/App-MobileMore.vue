@@ -1,6 +1,7 @@
 <template>
 	<div class="-mx-4">
-		<h1 class="mx-4 mb-4">More</h1>
+		<h1 class="mx-4 mb-8">More</h1>
+		<h2 class="mx-4 mb-2">Pages</h2>
 		<Cell isTypeNavigation :navigateTo="{ name: 'App-Archive' }" dividerInset>
 			<template #icon>
 				<IconArchive />
@@ -14,6 +15,11 @@
 			</template>
 			Trash
 		</Cell>
+
+		<h2 class="mx-4 mt-10 mb-1.5">Settings</h2>
+		<div class="mx-1">
+			<SwitchHiddenMode />
+		</div>
 	</div>
 	
 </template>
@@ -21,4 +27,5 @@
 <script setup>
 	import { Cell } from '@/components/ui'
 	import { IconArchive, IconTrash, IconMoreSolid } from '@/assets/icons'
+	import SwitchHiddenMode from '@/components/SwitchHiddenMode.vue'
 </script>
