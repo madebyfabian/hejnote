@@ -2,12 +2,12 @@
 	<router-view v-slot="{ Component }">
 		<transition name="transition-fade-100">
 			<div v-if="!generalStore.state.isAppLoading">
-				<div class="hidden desktop:block">
+				<div v-if="!isMobileDevice">
 					<Header />
 				</div>
 				
 				<div class="mt-4 desktop:mt-24">
-					<div class="hidden desktop:block">
+					<div v-if="!isMobileDevice">
 						<Sidebar />
 					</div>
 					<main class="container px-6 desktop:px-10">
@@ -15,7 +15,7 @@
 					</main>
 				</div>
 
-				<div class="fixed bottom-0 left-0 w-full desktop:hidden z-40">
+				<div v-if="isMobileDevice" class="fixed bottom-0 left-0 w-full z-40">
 					<TabNav />
 				</div>
 
@@ -35,12 +35,11 @@
 			</div>
 		</transition>
 	</router-view>
-
-	
 </template>
 
 <script setup>
 	import { onMounted, computed } from 'vue'
+	import useIsMobileDevice from '@/hooks/useIsMobileDevice'
 
 	import { 
 		notesStore, 
@@ -49,6 +48,8 @@
 		linksStore, 
 		joinNotesLinksStore 
 	} from '@/store'
+
+	const isMobileDevice = useIsMobileDevice()
 
 	// Components
 	import Header from '@/components/Header'
