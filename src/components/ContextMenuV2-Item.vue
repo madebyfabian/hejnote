@@ -1,6 +1,6 @@
 <template>
 	<MenuItem v-slot="{ active }" v-bind="$attrs">
-		<Cell class="cursor-pointer" :isFocused="active" :isSelected="displayAsSelected" dividerInset isTypeNavigation>
+		<Cell class="cursor-pointer" :isFocused="active" v-bind="{ ...cellProps, dividerInset: true }">
 			<slot />
 		</Cell>
 	</MenuItem>
@@ -13,8 +13,8 @@
 	import { IconCheck } from '@/assets/icons'
 
 	defineProps({
-		...Cell.props,
-		displayAsSelected: { type: Boolean, default: false },
+		...MenuItem.props,
+		cellProps: { type: Object, default: () => ({}) },
 	})
 
 	const slots = useSlots()

@@ -19,7 +19,10 @@
 
 				<ContextMenuV2-Item
 					v-for="collection of collectionsStore.state.collections" :key="collection.id"
-					:displayAsSelected="collection.id === route.params?.collectionId"
+					:cellProps="{ 
+						isSelected: collection.id === route.params?.collectionId,
+						isTypeNavigation: true 
+					}"
 					@click="router.push({ name: 'App-Collection', params: { collectionId: collection.id } })">
 					{{ collection.title }}
 				</ContextMenuV2-Item>

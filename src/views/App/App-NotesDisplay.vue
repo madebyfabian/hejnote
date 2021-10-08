@@ -21,7 +21,7 @@
 
 				<ContextMenuV2-Item
 					v-for="(option, key) in displayModeOptions" :key="key" 
-					:displayAsSelected="key === displayModeActiveOptionKey"
+					:cellProps="{ isSelected: key === displayModeActiveOptionKey }"
 					@click="() => handleDisplayModeApplyOption({ key })">
 					
 					{{ option }}
