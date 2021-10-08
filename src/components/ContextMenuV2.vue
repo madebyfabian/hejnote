@@ -2,7 +2,7 @@
 	<Menu v-slot="{ open }">
 		<VSlotEmitter :open="open" @changedOpenState="$emit('changedOpenState', open)" />
 
-    <MenuButton ref="menuButtonEl">
+    <MenuButton ref="menuButtonEl" v-bind="{ class: cssClass }">
 			<slot name="button" />
 		</MenuButton>
 
@@ -40,6 +40,7 @@
 	])
 
 	const props = defineProps({
+		cssClass: 				{ default: undefined },
 		verticalAlign:		{ type: String, default: 'bottom', validator: v => ['top', 'bottom'].includes(v) },
 		align: 						{ type: String, default: 'left', validator: v => [ 'left', 'right' ].includes(v) },
 		isFullWidth:			{ type: Boolean, default: false },

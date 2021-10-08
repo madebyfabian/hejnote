@@ -3,7 +3,7 @@
 		:is="tag" 
 		:to="tag && to"
 		:class="isActive ? 'text-green-400' : 'text-gray-500'"
-		class="TabNav-Item relative flex flex-col items-center gap-1 w-20 px-2 pt-4 flex-shrink-0">
+		class="TabNav-Item relative flex flex-col items-center gap-1 px-2 pt-4 flex-shrink-0 w-[20%]">
 
 		<span 
 			class="relative transform-gpu duration-300 transition" 
