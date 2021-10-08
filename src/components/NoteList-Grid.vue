@@ -18,10 +18,12 @@
 		showIsPinned: { type: Boolean, default: false },
 	})
 
+	const desktopWidth = 1064 - 2
+
 	const masonryOptions = {
 		cols: {
 			default: 3,
-			1064: 2,
+			[ desktopWidth ]: 2,
 			768: 1,
 		},
 		gutter: 24,
