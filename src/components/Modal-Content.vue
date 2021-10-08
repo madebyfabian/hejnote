@@ -1,6 +1,6 @@
 <template>
 	<CFocusLock>
-		<div class="Modal" @mousedown.self="emit('close')" :class="isConfirm ? 'z-60' : 'z-50'">
+		<div class="Modal" :class="{ isConfirm }" @mousedown.self="emit('close')">
 			<div 
 				class="Modal-container"
 				:class="{ hasPadding, 'max-w-lg': !isConfirm, 'max-w-sm': isConfirm }"
@@ -64,7 +64,15 @@
 	.Modal {
 		@apply fixed h-full w-full top-0 left-0;
 		@apply p-0 pt-7 desktop:py-10;
-		@apply bg-gray-900 bg-opacity-75 flex justify-center items-end desktop:items-center;
+		@apply bg-gray-900 bg-opacity-75 flex justify-center desktop:items-center;
+
+		&.isConfirm {
+			@apply z-60 items-end desktop:items-center;
+		}
+
+		&:not(.isConfirm) {
+			@apply z-50 
+		}
 
 		&-container {
 			@apply bg-gray-800 relative flex flex-col w-full overflow-hidden rounded-t-2xl desktop:rounded-2xl z-0 overflow-y-auto;
