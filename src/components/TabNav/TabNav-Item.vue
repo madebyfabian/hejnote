@@ -9,8 +9,8 @@
 			class="relative transform-gpu duration-300 transition" 
 			:class="{ 'translate-y-0': isActive, 'translate-y-2': !isActive }">
 		
-			<span class="transition-opacity" :class="{ 'opacity-0': isActive }">
-				<slot name="icon" />
+			<span class="TabNav-Item-icon" :class="{ isActive }">
+				<slot name="icon"  />
 			</span>
 
 			<span class="absolute top-0 left-0 z-1 transition-opacity" :class="{ 'opacity-0': !isActive }">
@@ -38,4 +38,16 @@
 
 	const tag = computed(() => props.to ? AppLink : 'button')
 </script>
+
+<style lang="postcss" scoped>
+	.TabNav-Item-icon {
+		:deep(svg) {
+			@apply transition-opacity;
+		}
+
+		&.isActive :deep(svg) {
+			@apply opacity-0
+		}
+	}
+</style>
 

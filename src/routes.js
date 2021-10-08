@@ -52,6 +52,12 @@ export const routes = [
         component: AppSearchRoute,
       },
       {
+        path: '_mobile/more',
+        name: 'App-MobileMore',
+        meta: { requiresAuth: true, title: 'More' },
+        component: () => import('@/views/App/App-MobileMore.vue'),
+      },
+      {
         path: 'test',
         name: 'App-Test',
         meta: { requiresAuth: true, title: 'Test' },

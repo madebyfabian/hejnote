@@ -1,7 +1,8 @@
 <template>
 	<component 
 		class="Cell" 
-		:is="isClickable ? 'button' : 'div'"
+		:is="isClickable ? 'router-link' : 'div'"
+		:to="navigateTo"
 		:class="{ isClickable, isSelected, isFocused, isIconSlotVisible, isIconRightSlotVisible, dividerInset }">
 
 		<span v-if="isIconSlotVisible" class="Cell-icon isLeft">
@@ -28,12 +29,13 @@
 
 	const props = defineProps({
 		isTypeNavigation: { type: Boolean, default: false },
-		isClickable: 			{ type: Boolean, default: false },
+		navigateTo: 			{ type: [ Object, String, null, undefined ], default: undefined },
 		isSelected: 			{ type: Boolean, default: undefined },
 		isFocused: 				{ type: Boolean, default: false },
 		dividerInset: 		{ type: Boolean, default: false },
 	})
 
+	const isClickable = computed(() => props.navigateTo)
 	const displayAsSelectable = computed(() => props.isSelected !== undefined)
 
 	const slots = useSlots()
