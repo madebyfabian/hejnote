@@ -13,6 +13,7 @@
 				<template #button>
 					<TabNav-Item :isActive="isActiveTab('App-Collection')" class="min-w-full">
 						<template #icon><component :is="IconCollectionMove" /></template>
+						<template #activeIcon><component :is="IconCollectionMoveSolid" /></template>
 						Collections
 					</TabNav-Item>
 				</template>
@@ -66,7 +67,7 @@
 	import ContextMenuV2 from '@/components/ContextMenuV2.vue'
 	import ContextMenuV2Item from '@/components/ContextMenuV2-Item.vue'
 	import TabNavCreateNoteEditor from '@/components/TabNav/TabNav-CreateNoteEditor.vue'
-	import { IconCollectionMove, IconNotes, IconNotesSolid, IconMore, IconMoreSolid, IconAdd } from '@/assets/icons'
+	import { IconCollectionMove, IconCollectionMoveSolid, IconNotes, IconNotesSolid, IconMore, IconMoreSolid, IconAdd } from '@/assets/icons'
 
 	const userName = computed(() => generalStore.getUserName())
 
