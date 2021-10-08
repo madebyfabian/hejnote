@@ -99,15 +99,18 @@ module.exports = {
         '60': '.60',
       },
       ringWidth: {
-        'DEFAULT': defaultBorderWidth
+        'DEFAULT': defaultBorderWidth,
+      },
+      borderRadius: {
+        '2.5xl': '20px',
       },
     },
   },
 
   variants: {
     extend: {
-      visibility: [ 'group-hover' ]
-    }
+      visibility: [ 'group-hover' ],
+    },
   },
 
   plugins: [

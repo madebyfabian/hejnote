@@ -33,7 +33,7 @@
 			<div class="w-[20%] flex justify-center">
 				<button 
 					@click="showCreateNoteEditor = true"
-					class="h-12 w-12 rounded-2xl bg-gray-800 border border-gray-700 flex justify-center items-center mt-2">
+					class="h-12 w-12 rounded-2.5xl bg-gradient-to-b from-green-400 to-green-600 text-gray-900 flex justify-center items-center mt-2">
 					
 					<IconAdd />
 				</button>
