@@ -29,8 +29,9 @@
 			<div class="w-[20%] flex justify-center">
 				<button 
 					@click="showCreateNoteEditor = true"
-					class="h-12 w-12 rounded-2xl bg-gray-800 border border-gray-700 text-200 flex justify-center items-center mt-2">
-					+
+					class="h-12 w-12 rounded-2xl bg-gray-800 border border-gray-700 flex justify-center items-center mt-2">
+					
+					<IconAdd />
 				</button>
 			</div>
 
@@ -62,7 +63,7 @@
 	import ContextMenuV2 from '@/components/ContextMenuV2.vue'
 	import ContextMenuV2Item from '@/components/ContextMenuV2-Item.vue'
 	import TabNavCreateNoteEditor from '@/components/TabNav/TabNav-CreateNoteEditor.vue'
-	import { IconCollectionMove, IconNotes, IconNotesSolid, IconArchive, IconArchiveSolid } from '@/assets/icons'
+	import { IconCollectionMove, IconNotes, IconNotesSolid, IconArchive, IconArchiveSolid, IconAdd } from '@/assets/icons'
 
 	const userName = computed(() => generalStore.getUserName())
 
