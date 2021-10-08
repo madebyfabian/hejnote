@@ -1,3 +1,4 @@
+import IconAdd from './add.svg'
 import IconArchive from './archive.svg'
 import IconArchiveSolid from './archiveSolid.svg'
 import IconCheck from './check.svg'
@@ -19,6 +20,7 @@ import IconSearch from './search.svg'
 import IconCollectionMove from './collectionMove.svg'
 
 export {
+  IconAdd,
   IconArchive,
   IconArchiveSolid,
   IconCheck,
