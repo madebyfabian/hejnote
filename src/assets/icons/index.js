@@ -5,6 +5,8 @@ import IconCheck from './check.svg'
 import IconChevron from './chevron.svg'
 import IconChevronRight from './chevronRight.svg'
 import IconClose from './close.svg'
+import IconCollectionMove from './collectionMove.svg'
+import IconCollectionMoveSolid from './collectionMoveSolid.svg'
 import IconEyeOff from './eyeOff.svg'
 import IconEyeOffSolid from './eyeOffSolid.svg'
 import IconGitHub from './gitHub.svg'
@@ -19,7 +21,7 @@ import IconTrash from './trash.svg'
 import IconTrashDelete from './trashDelete.svg'
 import IconTrashUndo from './trashUndo.svg'
 import IconSearch from './search.svg'
-import IconCollectionMove from './collectionMove.svg'
+
 
 export {
   IconAdd,
@@ -29,6 +31,8 @@ export {
   IconChevron,
   IconChevronRight,
   IconClose,
+  IconCollectionMove,
+  IconCollectionMoveSolid,
   IconEyeOff,
   IconEyeOffSolid,
   IconGitHub,
@@ -43,5 +47,4 @@ export {
   IconTrashDelete,
   IconTrashUndo,
   IconSearch,
-  IconCollectionMove
 }
