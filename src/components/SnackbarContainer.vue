@@ -19,7 +19,8 @@
 
 <style lang="postcss" scoped>
 	.SnackbarContainer {
-		@apply flex flex-col-reverse items-center fixed bottom-6 left-6 max-w-sm w-full z-50;
+		@apply flex flex-col-reverse items-center fixed w-full desktop:max-w-sm px-4 desktop:px-0 z-50;
+		@apply left-0 desktop:left-6 bottom-24 desktop:bottom-6;
 
 		> div {
 			@apply w-full;

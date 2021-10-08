@@ -6,7 +6,7 @@ const state = reactive({
 })
 
 export default function useSnackbar() {
-	const createSnackbar = ({ message, buttonText = null, onButtonClick = () => {} }) => {
+	const createSnackbar = ({ message, buttonText = null, onButtonClick = () => {}, timeout }) => {
 		const newSnackbar = { 
 			id: Math.random().toString(36).substr(2, 9), 
 			message,
@@ -16,7 +16,7 @@ export default function useSnackbar() {
 
 		state.snackbarInstances.unshift(newSnackbar)
 
-		setTimeout(() => removeSnackbar({ id: newSnackbar.id }), state.snackbarTimeout)
+		setTimeout(() => removeSnackbar({ id: newSnackbar.id }), timeout || state.snackbarTimeout)
 	}
 
 	const removeSnackbar = ({ id }) => {
