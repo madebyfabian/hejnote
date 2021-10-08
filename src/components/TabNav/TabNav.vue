@@ -1,5 +1,5 @@
 <template>
-	<div class="TabNav px-3 pb-safe-area-bottom relative pt-4 bg-gradient-to-t from-gray-900 via-gray-900">
+	<div class="TabNav fixed bottom-0 left-0 w-full z-40 px-3 pb-safe-area-bottom pt-4 bg-gradient-to-t from-gray-900 via-gray-900">
 		<div class="relative flex justify-between w-full z-1">
 			<!-- Home -->
 			<TabNav-Item :to="{ name: 'App-Home' }" :isActive="isActiveTab('App-Home')">
@@ -28,7 +28,7 @@
 			<!-- Add note -->
 			<div class="w-[20%] flex justify-center">
 				<button 
-					@click="handleOpenCreateNoteEditor"
+					@click="showCreateNoteEditor = true"
 					class="h-12 w-12 rounded-2xl bg-gray-800 border border-gray-700 text-200 flex justify-center items-center mt-2">
 					+
 				</button>
@@ -48,6 +48,8 @@
 			</TabNav-Item>		
 		</div>
 	</div>
+
+	<TabNav-CreateNoteEditor :isOpened="showCreateNoteEditor" @close="showCreateNoteEditor = false" />
 </template>
 
 <script setup>
@@ -59,12 +61,15 @@
 	import TabNavItem from '@/components/TabNav/TabNav-Item.vue'
 	import ContextMenuV2 from '@/components/ContextMenuV2.vue'
 	import ContextMenuV2Item from '@/components/ContextMenuV2-Item.vue'
+	import TabNavCreateNoteEditor from '@/components/TabNav/TabNav-CreateNoteEditor.vue'
 	import { IconCollectionMove, IconNotes, IconNotesSolid, IconArchive, IconArchiveSolid } from '@/assets/icons'
 
 	const userName = computed(() => generalStore.getUserName())
 
 	const router = useRouter(),
 				route = useRoute()
+
+	const showCreateNoteEditor = ref(false)
 
 	const tabNavItems = [
 		{ name: 'Notes', route: 'App-Home', icon: IconNotes, activeIcon: IconNotesSolid },
@@ -75,9 +80,5 @@
 
 	const isActiveTab = (routeName) => {
 		return route.name === routeName
-	}
-
-	const handleOpenCreateNoteEditor = () => {
-		console.log('open it!')
 	}
 </script>

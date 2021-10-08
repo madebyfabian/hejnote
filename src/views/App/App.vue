@@ -10,14 +10,12 @@
 					<div v-if="!isMobileDevice">
 						<Sidebar />
 					</div>
-					<main class="container px-6 desktop:px-10">
+					<main class="container px-6 pb-24 desktop:pb-0 desktop:px-10">
 						<component :is="Component" />
 					</main>
 				</div>
 
-				<div v-if="isMobileDevice" class="fixed bottom-0 left-0 w-full z-40">
-					<TabNav />
-				</div>
+				<TabNav v-if="isMobileDevice" />
 
 				<!-- Edit note modal -->
 				<Modal 
