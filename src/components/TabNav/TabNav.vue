@@ -55,6 +55,7 @@
 	</div>
 
 	<TabNav-CreateNoteEditor :isOpened="showCreateNoteEditor" @close="showCreateNoteEditor = false" />
+	<TabNav-HiddenModeBanner :isVisible="isHiddenMode" />
 </template>
 
 <script setup>
@@ -67,9 +68,11 @@
 	import ContextMenuV2 from '@/components/ContextMenuV2.vue'
 	import ContextMenuV2Item from '@/components/ContextMenuV2-Item.vue'
 	import TabNavCreateNoteEditor from '@/components/TabNav/TabNav-CreateNoteEditor.vue'
+	import TabNavHiddenModeBanner from '@/components/TabNav/TabNav-HiddenModeBanner.vue'
 	import { IconCollectionMove, IconCollectionMoveSolid, IconNotes, IconNotesSolid, IconMore, IconMoreSolid, IconAdd } from '@/assets/icons'
 
 	const userName = computed(() => generalStore.getUserName())
+	const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 
 	const router = useRouter(),
 				route = useRoute()

@@ -6,7 +6,10 @@
 					<Header />
 				</div>
 				
-				<div class="mt-4 desktop:mt-24">
+				<div 
+					class="mt-4 desktop:mt-24 transition-transform duration-300"
+					:class="{ 'transform-gpu translate-y-20': isHiddenMode && isMobileDevice }">
+					
 					<div v-if="!isMobileDevice">
 						<Sidebar />
 					</div>
@@ -48,6 +51,7 @@
 	} from '@/store'
 
 	const isMobileDevice = useIsMobileDevice()
+	const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 
 	// Components
 	import Header from '@/components/Header'
@@ -57,11 +61,9 @@
 	import NoteEditor from '@/components/NoteEditor.vue'
 
 	onMounted(async () => {
-		const isHiddenMode = generalStore.state.isHiddenMode
-
 		// Load all app data
 		await Promise.all([
-			notesStore.notesFetch({ fetchHidden: isHiddenMode }),
+			notesStore.notesFetch({ fetchHidden: isHiddenMode.value }),
 			joinNotesLinksStore.joinNotesLinksFetch(),
 			collectionsStore.collectionsFetch(),
 			linksStore.linksFetch(),

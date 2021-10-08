@@ -1,7 +1,7 @@
 <template>
 	<component 
 		class="Cell" 
-		:is="isClickable ? 'router-link' : 'div'"
+		:is="isClickable ? AppLink : 'div'"
 		:to="navigateTo"
 		:class="{ isClickable, isSelected, isFocused, isIconSlotVisible, isIconRightSlotVisible, dividerInset }">
 
@@ -25,6 +25,7 @@
 
 <script setup>
 	import { computed, useSlots } from 'vue'
+	import { AppLink } from '@/components/ui'
 	import { IconCheck, IconChevronRight } from '@/assets/icons'
 
 	const props = defineProps({

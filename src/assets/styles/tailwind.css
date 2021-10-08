@@ -65,3 +65,17 @@
 		@apply opacity-0;
 	}
 }
+
+.transition-fadeAndScale-fast {
+	&-enter-active						{ @apply transition duration-100 ease-out; }	
+	&-enter-from, &-leave-to 	{ @apply transform-gpu scale-95 opacity-0; }
+	&-enter-to, &-leave-from 	{ @apply transform-gpu scale-100 opacity-100; }
+	&-leave-active 						{ @apply transition duration-75 ease-out; }
+}
+
+.transition-fadeAndScale-medium {
+	&-enter-active						{ @apply transition duration-225 ease-out; }	
+	&-enter-from, &-leave-to 	{ @apply transform-gpu scale-95 opacity-0; }
+	&-enter-to, &-leave-from 	{ @apply transform-gpu scale-100 opacity-100; }
+	&-leave-active 						{ @apply transition duration-150 ease-out; }
+}
