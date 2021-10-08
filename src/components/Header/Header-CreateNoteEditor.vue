@@ -1,7 +1,7 @@
 <template>
 	<div 
-		class="NoteBar absolute top-0 left-0 w-full bg-gray-800 rounded-xl border border-gray-700 overflow-hidden" 
-		:style="{ '--noteBar-max-height': `${ noteBarMaxHeight }px` }"
+		class="CreateNoteEditor absolute top-0 left-0 w-full bg-gray-800 rounded-xl border border-gray-700 overflow-hidden" 
+		:style="{ '--max-height': `${ maxHeight }px` }"
 		:class="{ displayMinimized }"
 		@click="handleOpenNoteEditor">
 
@@ -23,7 +23,7 @@
 
 	const displayMinimized = ref(true),
 				noteEditorEl = ref(null),
-				noteBarMaxHeight = ref(44),
+				maxHeight = ref(44),
 				noteEditorKey = ref(0)
 
 	const toggleDisplayMinimized = (value) => {
@@ -33,7 +33,7 @@
 		if (!isMinimized)
 			noteEditorKey.value++
 
-		noteBarMaxHeight.value = isMinimized ? 167 : (noteEditorEl?.value?.scrollHeight || 1) - 1
+		maxHeight.value = isMinimized ? 167 : (noteEditorEl?.value?.scrollHeight || 1) - 1
 		displayMinimized.value = value
 	}
 
@@ -46,33 +46,33 @@
 </script>
 
 <style lang="postcss" scoped>
-	.NoteBar {
+	.CreateNoteEditor {
 		@apply max-h-11;
 
 		&:not(.displayMinimized) {
-			animation: NoteBar-maximize-height 300ms ease forwards;
+			animation: maximize-height 300ms ease forwards;
 		}
 
 		&.displayMinimized {
-			animation: NoteBar-minimize-height 300ms ease forwards;
+			animation: minimize-height 300ms ease forwards;
 		}
 	}
 
-	@keyframes NoteBar-maximize-height {
+	@keyframes maximize-height {
 		0% {
 			@apply max-h-11;
 		}
 		99.9% {
-			max-height: var(--noteBar-max-height)
+			max-height: var(--max-height)
 		}
 		100% {
 			@apply max-h-none;
 		}
 	}
 
-	@keyframes NoteBar-minimize-height {
+	@keyframes minimize-height {
 		0% {
-			min-height: var(--noteBar-max-height)
+			min-height: var(--max-height)
 		}
 		100% {
 			min-height: 44px;
