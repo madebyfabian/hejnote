@@ -7,6 +7,7 @@ import IconChevronRight from './chevronRight.svg'
 import IconClose from './close.svg'
 import IconCollectionMove from './collectionMove.svg'
 import IconCollectionMoveSolid from './collectionMoveSolid.svg'
+import IconEdit from './edit.svg'
 import IconEyeOff from './eyeOff.svg'
 import IconEyeOffSolid from './eyeOffSolid.svg'
 import IconGitHub from './gitHub.svg'
@@ -33,6 +34,7 @@ export {
   IconClose,
   IconCollectionMove,
   IconCollectionMoveSolid,
+  IconEdit,
   IconEyeOff,
   IconEyeOffSolid,
   IconGitHub,
