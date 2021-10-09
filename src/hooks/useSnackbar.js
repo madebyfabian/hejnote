@@ -1,4 +1,5 @@
 import { computed, reactive, watch } from 'vue'
+import generateRandomId from '@/utils/generateRandomId'
 
 const state = reactive({
 	snackbarInstances: [],
@@ -8,7 +9,7 @@ const state = reactive({
 export default function useSnackbar() {
 	const createSnackbar = ({ message, buttonText = null, onButtonClick = () => {}, timeout }) => {
 		const newSnackbar = { 
-			id: Math.random().toString(36).substr(2, 9), 
+			id: generateRandomId(), 
 			message,
 			buttonText,
 			onButtonClick
