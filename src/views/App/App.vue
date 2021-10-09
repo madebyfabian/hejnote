@@ -44,6 +44,9 @@
 <script setup>
 	import { onMounted, computed } from 'vue'
 	import useIsMobileDevice from '@/hooks/useIsMobileDevice'
+	import handleCollectionsChanges from '@/utils/handleCollectionsChanges'
+	import { useRoute, useRouter } from 'vue-router'
+	import useGenerateRouterLink from '@/hooks/useGenerateRouterLink'
 
 	import { 
 		notesStore, 
@@ -53,7 +56,10 @@
 		joinNotesLinksStore 
 	} from '@/store'
 
+	const { generateRouterLink } = useGenerateRouterLink()
 	const isMobileDevice = useIsMobileDevice()
+	const route = useRoute(),
+				router = useRouter()
 	const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 
 	// Components
@@ -76,6 +82,15 @@
 		])
 
 		generalStore.updateIsAppLoading(false)
+
+		handleCollectionsChanges({
+			route,
+
+			// Bit hacky, but otherwise the router.replace collides with the router.push from hiddenMode change.
+			doRedirect: () => setTimeout(() => {
+				router.replace(generateRouterLink({ name: 'App-Home' }).value)
+			}, 10),
+		})
 	})
 
 	const editNote = computed(() => {
