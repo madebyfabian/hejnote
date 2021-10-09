@@ -4,7 +4,8 @@
 		:hasPadding="false" 
 		:displayTitle="false"
 		@close="$emit('close')"
-		title="Edit note">
+		title="Edit note"
+		forceFullHeight>
 
 		<NoteEditor displayInModal />
 	</Modal>

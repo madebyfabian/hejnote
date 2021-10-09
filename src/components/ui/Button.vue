@@ -86,7 +86,7 @@
 		 * Other props
 		 */
 		&.isIconOnly {
-			@apply h-9 w-9 p-0 flex justify-center items-center; 
+			@apply h-9 w-9 p-0 flex justify-center items-center flex-shrink-0; 
 		}
 
 		&.hideBorder {

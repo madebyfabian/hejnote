@@ -3,7 +3,8 @@
 		class="Cell" 
 		:is="isClickable ? AppLink : 'div'"
 		:to="navigateTo"
-		:class="{ isClickable, isSelected, isFocused, isIconSlotVisible, isIconRightSlotVisible, dividerInset }">
+		:class="{ isClickable, isSelected, isFocused, dividerInset }"
+		:data-size="size">
 
 		<span v-if="isIconSlotVisible" class="Cell-icon isLeft">
 			<slot name="icon" />
@@ -12,7 +13,14 @@
 		<span class="Cell-content">
 			<div class="Cell-content-inner"><slot /></div>
 
-			<span v-if="isIconRightSlotVisible || isSelected || displayAsSelectable || isTypeNavigation" class="Cell-icon isRight">
+			<div v-if="isContentRightSlotVisible" class="Cell-content-innerRight">
+				<slot name="contentRight" />
+			</div>
+
+			<span 
+				v-if="isIconRightSlotVisible || isSelected || displayAsSelectable || isTypeNavigation" 
+				class="Cell-icon isRight">
+
 				<slot v-if="isIconRightSlotVisible" name="iconRight" />
 				<template v-else>
 					<IconChevronRight v-if="isTypeNavigation && !isSelected" />
@@ -34,6 +42,7 @@
 		isSelected: 			{ type: Boolean, default: undefined },
 		isFocused: 				{ type: Boolean, default: false },
 		dividerInset: 		{ type: Boolean, default: false },
+		size: 						{ type: String, default: '100', validator: v => [ '100', '200' ].includes(v) },
 	})
 
 	const isClickable = computed(() => props.navigateTo)
@@ -42,6 +51,7 @@
 	const slots = useSlots()
 	const isIconSlotVisible = computed(() => slots.icon?.())
 	const isIconRightSlotVisible = computed(() => slots.iconRight?.())
+	const isContentRightSlotVisible = computed(() => slots.contentRight?.())
 </script>
 
 <style lang="postcss" scoped>
@@ -74,6 +84,14 @@
 			&-inner {
 				@apply flex-1 text-100;
 			}
+
+			&-innerRight {
+				@apply ml-3;
+			}
+		}
+
+		&[data-size="200"] .Cell-content {
+			@apply py-4 desktop:py-3;
 		}
 
 		&:not(:last-child) &-content {

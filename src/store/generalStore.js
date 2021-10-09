@@ -6,6 +6,7 @@ export default {
 		user: undefined,
     isAppLoading: true,
 		isHiddenMode: false,
+		updateCollectionsModalVisible: false,
 	}),
 
 	appOptions: {
@@ -34,5 +35,9 @@ export default {
 
 	updateIsHiddenMode({ isHiddenMode }) {
 		this.state.isHiddenMode = isHiddenMode
+	},
+
+	updateUpdateCollectionsModalVisible({ newVal }) {
+		this.state.updateCollectionsModalVisible = newVal
 	}
 }

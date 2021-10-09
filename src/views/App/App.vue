@@ -26,13 +26,16 @@
 					:hasPadding="false" 
 					:displayTitle="false"
 					@close="() => notesStore.closeNoteEditor()"
-					title="Edit note">
+					title="Edit note"
+					forceFullHeight>
 
 					<NoteEditor 
 						displayInModal
 						:note="editNote" 
 					/>
 				</Modal>
+
+				<ModalUpdateCollections />
 			</div>
 		</transition>
 	</router-view>
@@ -61,6 +64,7 @@
 	import NoteEditor from '@/components/NoteEditor.vue'
 	import BannerHiddenMode from '@/components/BannerHiddenMode.vue'
 	import SwitchHiddenMode from '@/components/SwitchHiddenMode.vue'
+	import ModalUpdateCollections from '@/templates/ModalUpdateCollections.vue'
 
 	onMounted(async () => {
 		// Load all app data

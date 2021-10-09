@@ -18,6 +18,18 @@
 					</TabNav-Item>
 				</template>
 
+				<div>
+					<ContextMenuV2-Item
+						:cellProps="{ 
+						}"
+						@click="generalStore.updateUpdateCollectionsModalVisible({ newVal: true })">
+
+						Edit or add Collections....
+					</ContextMenuV2-Item>
+				</div>
+
+				<ContextMenuV2-Seperator />
+
 				<ContextMenuV2-Item
 					v-for="collection of collectionsStore.state.collections" :key="collection.id"
 					:cellProps="{ 
@@ -65,6 +77,7 @@
 	import { Avatar } from '@/components/ui'
 	import ContextMenuV2 from '@/components/ContextMenuV2.vue'
 	import ContextMenuV2Item from '@/components/ContextMenuV2-Item.vue'
+	import ContextMenuV2Seperator from '@/components/ContextMenuV2-Seperator.vue'
 	import TabNavCreateNoteEditor from '@/components/TabNav/TabNav-CreateNoteEditor.vue'
 	import TabNavItem from '@/components/TabNav/TabNav-Item.vue'
 	import { IconCollectionMove, IconCollectionMoveSolid, IconNotes, IconNotesSolid, IconMore, IconMoreSolid, IconAdd } from '@/assets/icons'

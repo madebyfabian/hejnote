@@ -1,6 +1,6 @@
 <template>
 	<CFocusLock>
-		<div class="Modal" :class="{ isConfirm }" @mousedown.self="emit('close')">
+		<div class="Modal" :class="{ isConfirm, isFullHeight }" @mousedown.self="emit('close')">
 			<div 
 				class="Modal-container"
 				:class="{ hasPadding, 'desktop:max-w-lg': !isConfirm, 'desktop:max-w-sm': isConfirm }"
@@ -40,13 +40,21 @@
 	if (slots.bottomBar()?.[0].children.length)
 		hasBottomBar.value = true
 
-	defineProps({
+	const props = defineProps({
 		isOpened: 					{ type: Boolean, required: true },
 		hasPadding: 				{ type: Boolean, default: true },
 		title: 							{ type: String, required: true },
 		displayTitle: 			{ type: Boolean, default: true },
 		displayCloseButton: { type: Boolean, default: true },
 		isConfirm: 					{ type: Boolean, default: false },
+		forceFullHeight: 		{ type: Boolean, default: false },
+	})
+
+	const isFullHeight = computed(() => {
+		if (props.isConfirm)
+			return false
+		
+		return props.forceFullHeight || false
 	})
 
 	const handler = (e) => {
@@ -64,14 +72,15 @@
 	.Modal {
 		@apply fixed h-full w-full top-0 left-0;
 		@apply p-0 pt-7 desktop:py-10;
-		@apply bg-gray-900 bg-opacity-75 flex justify-center desktop:items-center;
+		@apply bg-gray-900 bg-opacity-75 flex justify-center;
+		@apply z-50 items-end desktop:items-center;
 
 		&.isConfirm {
-			@apply z-60 items-end desktop:items-center;
+			@apply z-60;
 		}
 
-		&:not(.isConfirm) {
-			@apply z-50 
+		&.isFullHeight {
+			align-items: inherit;
 		}
 
 		&-container {

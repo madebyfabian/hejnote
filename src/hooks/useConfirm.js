@@ -4,16 +4,18 @@ const _initalState = {
 	isVisible: false,
   question: null,
   title: null,
+	inputProps: null,
   answer: null,
 }
 
 const state = reactive({..._initalState})
 
 export default function useConfirm() {
-	const doConfirm = ({ question, title }) => new Promise(resolve => {
+	const doConfirm = ({ question, title, inputProps }) => new Promise(resolve => {
 		state.isVisible = true
 		state.question = question
 		state.title = title
+		state.inputProps = inputProps
 
 		const stopWatcher = watch(() => state.answer, ( newAnswer ) => {
 			if (newAnswer !== null) {
@@ -39,6 +41,7 @@ export default function useConfirm() {
 		isVisible: 	computed(() => state.isVisible),
 		question: 	computed(() => state.question),
 		title: 			computed(() => state.title),
+		inputProps: computed(() => state.inputProps),
 		answer: 		computed(() => state.answer),
 
 		// Methods
