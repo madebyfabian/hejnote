@@ -82,7 +82,9 @@ export default {
   async collectionsDelete({ collectionIds }) {
     try {
       // First unlink all collection_id from all notes
-      await notesStore.notesUpdateUnlinkCollections({ collectionIds })
+      try {
+        await notesStore.notesUpdateUnlinkCollections({ collectionIds })
+      } catch (_) {}
 
       // Delete from database
       const { error } = await supabase.from('collections').delete().in('id', collectionIds)
