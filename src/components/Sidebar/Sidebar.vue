@@ -7,7 +7,17 @@
 			</SidebarItem>
 
 			<template v-if="collectionsStore.state.collections.length">
-				<SidebarSubheadline>{{ isHiddenMode ? 'Hidden ' : null }}Collections</SidebarSubheadline>
+
+				<SidebarSubheadline class="group relative">
+					{{ isHiddenMode ? 'Hidden ' : null }}Collections
+					<Button 
+						buttonType="tertiary"
+						class="absolute bottom-2.5"
+						@click="generalStore.updateUpdateCollectionsModalVisible({ newVal: true })">
+
+						<IconEdit class="h-4 w-4 text-gray-500 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100" />
+					</Button>
+				</SidebarSubheadline>
 
 				<SidebarItem 
 					v-for="collection of collectionsStore.state.collections" :key="collection.id"
@@ -38,6 +48,8 @@
 	import { computed } from 'vue'
 	import { generalStore, collectionsStore } from '@/store'
 	import { SidebarItem, SidebarSubheadline } from '@/components/Sidebar'
+	import { Button } from '@/components/ui'
+	import { IconEdit } from '@/assets/icons'
 
 	const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 </script>

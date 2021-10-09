@@ -3,6 +3,7 @@ import useSnackbar from '@/hooks/useSnackbar'
 import handleError from '@/utils/handleError'
 import useSupabase from '@/hooks/useSupabase'
 import generalStore from '@/store/generalStore'
+import notesStore from '@/store/notesStore'
 
 const supabase = useSupabase()
 
@@ -80,6 +81,9 @@ export default {
 
   async collectionsDelete({ collectionIds }) {
     try {
+      // First unlink all collection_id from all notes
+      await notesStore.notesUpdateUnlinkCollections({ collectionIds })
+
       // Delete from database
       const { error } = await supabase.from('collections').delete().in('id', collectionIds)
       if (error) throw error

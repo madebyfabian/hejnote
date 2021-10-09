@@ -116,6 +116,13 @@ export default {
     })
   },
 
+  async notesUpdateUnlinkCollections({ collectionIds }) {
+    const { data, error } = await supabase.from('notes').update({ collection_id: null }).in('collection_id', collectionIds)
+    if (error) throw error
+
+    this.state.notes = data
+  },
+
   async notesUpsertSingle({ newVal, updateDB = true, updateState = true }) {
     try {
       const hasChanges = this.noteObjectHasChanges({ compareToNoteId: newVal?.id, newVal })
