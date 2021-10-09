@@ -2,18 +2,18 @@
 	<router-view v-slot="{ Component }">
 		<transition name="transition-fade-100">
 			<div v-if="!generalStore.state.isAppLoading">
-				<div v-if="!isMobileDevice">
-					<Header />
-				</div>
-				
-				<div 
-					class="mt-4 desktop:mt-24 transition-transform duration-300"
-					:class="{ 'transform-gpu translate-y-20': isHiddenMode && isMobileDevice }">
-					
-					<div v-if="!isMobileDevice">
-						<Sidebar />
+				<BannerHiddenMode :isVisible="isHiddenMode" />
+
+				<Header v-if="!isMobileDevice" class="willMoveDown" :class="{ 'movedDown': isHiddenMode }" />
+
+				<div class="pt-4 desktop:pt-24">
+					<Sidebar v-if="!isMobileDevice" class="willMoveDown" :class="{ 'movedDown': isHiddenMode }" />
+
+					<div class="fixed bottom-2 left-2 z-10">
+						<SwitchHiddenMode />
 					</div>
-					<main class="container px-6 pb-24 desktop:pb-0 desktop:px-10">
+
+					<main class="container px-6 pb-24 desktop:pb-0 desktop:px-10 willMoveDown" :class="{ 'movedDown': isHiddenMode }">
 						<component :is="Component" />
 					</main>
 				</div>
@@ -59,6 +59,8 @@
 	import TabNav from '@/components/TabNav/TabNav.vue'
 	import Modal from '@/components/Modal.vue'
 	import NoteEditor from '@/components/NoteEditor.vue'
+	import BannerHiddenMode from '@/components/BannerHiddenMode.vue'
+	import SwitchHiddenMode from '@/components/SwitchHiddenMode.vue'
 
 	onMounted(async () => {
 		// Load all app data
@@ -76,3 +78,13 @@
 		return notesStore.noteFindById({ noteId: notesStore.state.editNoteId })
 	})
 </script>
+
+<style lang="postcss" scoped>
+	.willMoveDown {
+		@apply transition-transform duration-300 transform-gpu;
+
+		&.movedDown {
+			@apply translate-y-20 desktop:translate-y-8;
+		}
+	}
+</style>

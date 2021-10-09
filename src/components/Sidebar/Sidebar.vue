@@ -25,12 +25,6 @@
 				Trash
 			</SidebarItem>
 		</ul>
-
-		<div class="fixed bottom-2 left-2 z-10">
-			<SwitchHiddenMode />
-		</div>
-
-		<SidebarHiddenModeBanner :isDisplayed="isHiddenMode" />
 	</aside>
 </template>
 
@@ -43,8 +37,7 @@
 <script setup>
 	import { computed } from 'vue'
 	import { generalStore, collectionsStore } from '@/store'
-	import { SidebarItem, SidebarSubheadline, SidebarHiddenModeBanner } from '@/components/Sidebar'
-	import SwitchHiddenMode from '@/components/SwitchHiddenMode.vue'
+	import { SidebarItem, SidebarSubheadline } from '@/components/Sidebar'
 
 	const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 </script>

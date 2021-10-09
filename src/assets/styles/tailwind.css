@@ -34,6 +34,10 @@
 		@apply bg-gray-900 text-gray-400 text-100 overflow-y-scroll;
 	}
 
+	#app {
+		@apply min-h-screen;
+	}
+
 	h1 {
 		@apply text-200 font-bold text-gray-300;
 	}
