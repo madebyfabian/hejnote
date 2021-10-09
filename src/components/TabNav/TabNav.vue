@@ -19,11 +19,7 @@
 				</template>
 
 				<div>
-					<ContextMenuV2-Item
-						:cellProps="{ 
-						}"
-						@click="generalStore.updateUpdateCollectionsModalVisible({ newVal: true })">
-
+					<ContextMenuV2-Item @click="generalStore.updateUpdateCollectionsModalVisible({ newVal: true })">
 						Edit or add Collections....
 					</ContextMenuV2-Item>
 				</div>
