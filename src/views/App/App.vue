@@ -84,7 +84,7 @@
 		@apply transition-transform duration-300 transform-gpu;
 
 		&.movedDown {
-			@apply translate-y-20 desktop:translate-y-8;
+			@apply translate-y-16 desktop:translate-y-8;
 		}
 	}
 </style>
