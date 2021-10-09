@@ -22,9 +22,9 @@
 					v-for="collection of collectionsStore.state.collections" :key="collection.id"
 					:cellProps="{ 
 						isSelected: collection.id === route.params?.collectionId,
-						isTypeNavigation: true 
-					}"
-					@click="router.push({ name: 'App-Collection', params: { collectionId: collection.id } })">
+						isTypeNavigation: true,
+						navigateTo: { name: 'App-Collection', params: { collectionId: collection.id } }
+					}">
 					{{ collection.title }}
 				</ContextMenuV2-Item>
 			</ContextMenuV2>
@@ -60,7 +60,7 @@
 
 <script setup>
 	import { ref, computed } from 'vue'
-	import { useRoute, useRouter } from 'vue-router'
+	import { useRoute } from 'vue-router'
 	import { generalStore, collectionsStore } from '@/store'
 
 	import { Avatar } from '@/components/ui'
@@ -74,8 +74,7 @@
 	const userName = computed(() => generalStore.getUserName())
 	const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 
-	const router = useRouter(),
-				route = useRoute()
+	const route = useRoute()
 
 	const showCreateNoteEditor = ref(false)
 
