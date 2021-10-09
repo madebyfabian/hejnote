@@ -37,8 +37,7 @@
 	import useConfirm from '@/hooks/useConfirm'
 
 	// Components
-	import { TextInput, Cell, Button } from '@/components/ui'
-	import Modal from '@/components/Modal.vue'	
+	import { TextInput, Cell, Button, Modal } from '@/components/ui'
 	import { IconTrashDelete, IconEdit, IconAdd } from '@/assets/icons'
 
 	const updateCollectionsModalVisible = computed({

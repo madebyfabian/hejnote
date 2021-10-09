@@ -1,25 +1,13 @@
-import AppLink from './AppLink.vue'
-import Avatar from './Avatar.vue'
-import Badge from './Badge.vue'
-import Button from './Button.vue'
-import Cell from './Cell.vue'
-import RichtextEditor from './RichtextEditor.vue'
-import Switch from './Switch.vue'
-import TextInput from './TextInput.vue'
-import ContextMenu from './ContextMenu/ContextMenu.vue'
-import ContextMenuItem from './ContextMenu/ContextMenu-Item.vue'
-import ContextMenuSeperator from './ContextMenu/ContextMenu-Seperator.vue'
-
-export { 
-	AppLink, 
-	Avatar, 
-	Badge, 
-	Button, 
-	Cell, 
-	RichtextEditor, 
-	Switch, 
-	TextInput,
-	ContextMenu,
-	ContextMenuItem,
-	ContextMenuSeperator 
-}
+export { default as AppLink } from './AppLink.vue';
+export { default as Avatar } from './Avatar.vue';
+export { default as Badge } from './Badge.vue';
+export { default as Button } from './Button.vue';
+export { default as Cell } from './Cell.vue';
+export { default as ContextMenuItem } from './ContextMenu-Item.vue';
+export { default as ContextMenuSeperator } from './ContextMenu-Seperator.vue';
+export { default as ContextMenu } from './ContextMenu.vue';
+export { default as ModalContent } from './Modal-Content.vue';
+export { default as Modal } from './Modal.vue';
+export { default as RichtextEditor } from './RichtextEditor.vue';
+export { default as Switch } from './Switch.vue';
+export { default as TextInput } from './TextInput.vue';

@@ -12,7 +12,7 @@
 </template>
 
 <script setup>
-	import ModalContent from '@/components/Modal-Content.vue'
+	import { ModalContent } from '@/components/ui'
 
 	defineEmits(ModalContent.emits)
 	defineProps({ ...ModalContent.props })

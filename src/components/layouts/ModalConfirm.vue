@@ -22,9 +22,9 @@
 <script setup>
   import { ref } from 'vue'
 	import useConfirm from '@/hooks/useConfirm'
+  import { Button, TextInput, Modal } from '@/components/ui'
+
   const { isVisible, title, question, inputProps, doAnswer } = useConfirm()
-  import Modal from '@/components/Modal.vue'
-  import { Button, TextInput } from '@/components/ui'
 
   const formEl = ref(null)
 
