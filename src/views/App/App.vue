@@ -64,8 +64,8 @@
 
 	// Components
 	import Header from '@/components/Header'
-	import Sidebar from '@/components/Sidebar'
-	import TabNav from '@/components/TabNav/TabNav.vue'
+	import { Sidebar } from '@/components/Sidebar'
+	import { TabNav } from '@/components/TabNav'
 	import Modal from '@/components/Modal.vue'
 	import NoteEditor from '@/components/NoteEditor.vue'
 	import SwitchHiddenMode from '@/components/SwitchHiddenMode.vue'

@@ -71,8 +71,7 @@
 	import { generalStore, collectionsStore } from '@/store'
 
 	import { Avatar, ContextMenu, ContextMenuItem, ContextMenuSeperator } from '@/components/ui'
-	import TabNavCreateNoteEditor from '@/components/TabNav/TabNav-CreateNoteEditor.vue'
-	import TabNavItem from '@/components/TabNav/TabNav-Item.vue'
+	import { TabNavItem, TabNavCreateNoteEditor } from '@/components/TabNav'
 	import { IconCollectionMove, IconCollectionMoveSolid, IconNotes, IconNotesSolid, IconMore, IconMoreSolid, IconAdd } from '@/assets/icons'
 
 	const route = useRoute()

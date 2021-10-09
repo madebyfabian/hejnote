@@ -23,3 +23,8 @@ npm run build
 
 ## Useful packages
 Outside click: https://www.npmjs.com/package/click-outside-vue3
+
+## Useful extensions
+`index.js` files are built with "JS Index" extension. Options:
+- Default template: `export { default as ${variable} } from ${relpathwithext}`
+- Quotes: `single`
