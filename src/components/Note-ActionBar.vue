@@ -9,20 +9,20 @@
 
 			<template v-if="!note.deleted_at">
 				<template v-if="!_temp_isInsideModal">
-					<ContextMenuV2 v-if="!collection" @changedOpenState="newVal => $emit('changedOpenState', newVal)">
+					<ContextMenu v-if="!collection" @changedOpenState="newVal => $emit('changedOpenState', newVal)">
 						<template #button>
 							<Button isIconOnly buttonType="secondary" hideBorder is="div">
 								<IconCollectionMove />
 							</Button>
 						</template>
 
-						<ContextMenuV2-Item
+						<ContextMenu-Item
 							v-for="collection of allCollections" :key="collection.id" 
 							@click="() => handleAddCollection({ collectionId: collection.id })">
 							
 							{{ collection.title }}
-						</ContextMenuV2-Item>
-					</ContextMenuV2>
+						</ContextMenu-Item>
+					</ContextMenu>
 
 					<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteHideAction">
 						<IconEyeOff v-if="!note.is_hidden" />
@@ -71,9 +71,7 @@
 	} from '@/assets/icons'
 
 	// Components
-	import { Button, RichtextEditor } from '@/components/ui'
-	import ContextMenuV2 from '@/components/ContextMenuV2.vue'
-	import ContextMenuV2Item from '@/components/ContextMenuV2-Item.vue'
+	import { Button, RichtextEditor, ContextMenu, ContextMenuItem } from '@/components/ui'
 	import NoteActionBarCollection from '@/components/Note-ActionBar-Collection.vue'
 
 	const supabase = useSupabase()

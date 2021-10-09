@@ -9,7 +9,7 @@
 			</TabNav-Item>
 
 			<!-- Collections -->
-			<ContextMenuV2 transformOrigin="36% bottom" isFixed isFullWidth verticalAlign="top" cssClass="w-[20%]">
+			<ContextMenu transformOrigin="36% bottom" isFixed isFullWidth verticalAlign="top" cssClass="w-[20%]">
 				<template #button>
 					<TabNav-Item :isActive="isActiveTab('App-Collection')" class="min-w-full">
 						<template #icon><component :is="IconCollectionMove" /></template>
@@ -19,14 +19,14 @@
 				</template>
 
 				<div>
-					<ContextMenuV2-Item @click="generalStore.updateUpdateCollectionsModalVisible({ newVal: true })">
+					<ContextMenu-Item @click="generalStore.updateUpdateCollectionsModalVisible({ newVal: true })">
 						Edit or add Collections....
-					</ContextMenuV2-Item>
+					</ContextMenu-Item>
 				</div>
 
-				<ContextMenuV2-Seperator />
+				<ContextMenu-Seperator />
 
-				<ContextMenuV2-Item
+				<ContextMenu-Item
 					v-for="collection of collectionsStore.state.collections" :key="collection.id"
 					:cellProps="{ 
 						isSelected: collection.id === route.params?.collectionId,
@@ -34,8 +34,8 @@
 						navigateTo: { name: 'App-Collection', params: { collectionId: collection.id } }
 					}">
 					{{ collection.title }}
-				</ContextMenuV2-Item>
-			</ContextMenuV2>
+				</ContextMenu-Item>
+			</ContextMenu>
 
 			<!-- Add note -->
 			<div class="w-[20%] flex justify-center">
@@ -70,10 +70,7 @@
 	import { useRoute } from 'vue-router'
 	import { generalStore, collectionsStore } from '@/store'
 
-	import { Avatar } from '@/components/ui'
-	import ContextMenuV2 from '@/components/ContextMenuV2.vue'
-	import ContextMenuV2Item from '@/components/ContextMenuV2-Item.vue'
-	import ContextMenuV2Seperator from '@/components/ContextMenuV2-Seperator.vue'
+	import { Avatar, ContextMenu, ContextMenuItem, ContextMenuSeperator } from '@/components/ui'
 	import TabNavCreateNoteEditor from '@/components/TabNav/TabNav-CreateNoteEditor.vue'
 	import TabNavItem from '@/components/TabNav/TabNav-Item.vue'
 	import { IconCollectionMove, IconCollectionMoveSolid, IconNotes, IconNotesSolid, IconMore, IconMoreSolid, IconAdd } from '@/assets/icons'

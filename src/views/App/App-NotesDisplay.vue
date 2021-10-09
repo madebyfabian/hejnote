@@ -5,7 +5,7 @@
 		</template>
 		
 		<template v-if="!collectionId" #heading-right>
-			<ContextMenuV2 align="right" @changedOpenState="newVal => displayModeContextMenuIsOpened = newVal">
+			<ContextMenu align="right" @changedOpenState="newVal => displayModeContextMenuIsOpened = newVal">
 				<template #button>
 					<Button 
 						buttonType="tertiary" 
@@ -19,14 +19,14 @@
 					</Button>
 				</template>
 
-				<ContextMenuV2-Item
+				<ContextMenu-Item
 					v-for="(option, key) in displayModeOptions" :key="key" 
 					:cellProps="{ isSelected: key === displayModeActiveOptionKey }"
 					@click="() => handleDisplayModeApplyOption({ key })">
 					
 					{{ option }}
-				</ContextMenuV2-Item>
-			</ContextMenuV2>
+				</ContextMenu-Item>
+			</ContextMenu>
     </template>
 	</NoteList>
 </template>
@@ -37,10 +37,8 @@
 	import useCurrentCollection from '@/hooks/useCurrentCollection'
 
 	// Components
-	import { Button } from '@/components/ui'
+	import { Button, ContextMenu, ContextMenuItem } from '@/components/ui'
 	import NoteList from '@/components/NoteList.vue'
-	import ContextMenuV2 from '@/components/ContextMenuV2.vue'
-	import ContextMenuV2Item from '@/components/ContextMenuV2-Item.vue'
 
 	const collection = useCurrentCollection(),
 				collectionId = computed(() => collection.value?.id)
