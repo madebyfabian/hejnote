@@ -68,9 +68,8 @@
 	import TabNav from '@/components/TabNav/TabNav.vue'
 	import Modal from '@/components/Modal.vue'
 	import NoteEditor from '@/components/NoteEditor.vue'
-	import BannerHiddenMode from '@/components/BannerHiddenMode.vue'
 	import SwitchHiddenMode from '@/components/SwitchHiddenMode.vue'
-	import ModalUpdateCollections from '@/templates/ModalUpdateCollections.vue'
+	import { BannerHiddenMode, ModalUpdateCollections } from '@/components/layouts'
 
 	onMounted(async () => {
 		// Load all app data

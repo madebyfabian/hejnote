@@ -13,7 +13,7 @@
 	import { getRequiredAuthRedirect } from '@/utils/routeBeforeEach'
 
 	import SnackbarContainer from '@/components/SnackbarContainer.vue'
-	import ModalConfirm from '@/components/ModalConfirm.vue'
+	import { ModalConfirm } from '@/components/layouts'
 
 	const route = useRoute(),
 				router = useRouter()
