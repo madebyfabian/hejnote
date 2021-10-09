@@ -8,11 +8,8 @@ export default {
 		collections: [],
 	}),
 
-	async collectionsFetch() {
-    const { data, error } = await supabase
-      .from('collections')
-      .select('*')
-
+	async collectionsFetch({ fetchHidden = false } = {}) {
+    const { data, error } = await supabase.from('collections').select('*').eq('is_hidden', fetchHidden)
     if (error) 
       console.error(error)
 

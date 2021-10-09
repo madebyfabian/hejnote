@@ -1,6 +1,6 @@
 import useConfirm from '@/hooks/useConfirm'
 import useSupabase from '@/hooks/useSupabase'
-import { generalStore, notesStore } from '@/store'
+import { collectionsStore, generalStore, notesStore } from '@/store'
 
 export const getRequiredAuthRedirect = ({ user, requiresAuth }) => {
 	if (requiresAuth && !user)
@@ -65,6 +65,7 @@ export default async ( to, from, next ) => {
 	// If the hidden mode changes in any direction (hidden -> not hidden; or not hidden -> hidden)
 	if (fromIsHidden !== toIsHidden) {
 		await notesStore.notesFetch({ fetchHidden: toIsHidden })
+		await collectionsStore.collectionsFetch({ fetchHidden: toIsHidden })
 	}
 
 	_next({ to, next })

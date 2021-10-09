@@ -67,7 +67,7 @@
 		await Promise.all([
 			notesStore.notesFetch({ fetchHidden: isHiddenMode.value }),
 			joinNotesLinksStore.joinNotesLinksFetch(),
-			collectionsStore.collectionsFetch(),
+			collectionsStore.collectionsFetch({ fetchHidden: isHiddenMode.value }),
 			linksStore.linksFetch(),
 		])
 
