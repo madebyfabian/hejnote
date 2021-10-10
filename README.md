@@ -25,6 +25,11 @@ npm run build
 Outside click: https://www.npmjs.com/package/click-outside-vue3
 
 ## Useful extensions
-`index.js` files are built with "JS Index" extension. Options:
-- Default template: `export { default as ${variable} } from ${relpathwithext}`
-- Quotes: `single`
+- `index.js` files are built with "JS Index" extension. Options:
+	- Default template: `export { default as ${variable} } from ${relpathwithext}`
+	- Quotes: `single`
+- volar extension instead of vetur, better script setup support
+
+
+## Other notes
+I didn't used vues syntactic sugar, since it looses types and seems not stable enough. https://github.com/vuejs/rfcs/discussions/369
