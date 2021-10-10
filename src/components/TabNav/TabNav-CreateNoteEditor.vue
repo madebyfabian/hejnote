@@ -5,7 +5,7 @@
 		:displayTitle="false"
 		@close="$emit('close')"
 		title="Edit note"
-		forceFullHeight>
+		forceMobileFullHeight>
 
 		<NoteEditor displayInModal />
 	</Modal>

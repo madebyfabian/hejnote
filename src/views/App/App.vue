@@ -27,7 +27,7 @@
 					:displayTitle="false"
 					@close="() => notesStore.closeNoteEditor()"
 					title="Edit note"
-					forceFullHeight>
+					forceMobileFullHeight>
 
 					<NoteEditor 
 						displayInModal

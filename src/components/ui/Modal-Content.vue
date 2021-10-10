@@ -1,6 +1,6 @@
 <template>
 	<CFocusLock>
-		<div class="Modal" :class="{ isConfirm, isFullHeight }" @mousedown.self="emit('close')">
+		<div class="Modal" :class="{ isConfirm, isMobileFullHeight }" @mousedown.self="emit('close')">
 			<div 
 				class="Modal-container"
 				:class="{ hasPadding, 'desktop:max-w-lg': !isConfirm, 'desktop:max-w-sm': isConfirm }"
@@ -41,20 +41,20 @@
 		hasBottomBar.value = true
 
 	const props = defineProps({
-		isOpened: 					{ type: Boolean, required: true },
-		hasPadding: 				{ type: Boolean, default: true },
-		title: 							{ type: String, required: true },
-		displayTitle: 			{ type: Boolean, default: true },
-		displayCloseButton: { type: Boolean, default: true },
-		isConfirm: 					{ type: Boolean, default: false },
-		forceFullHeight: 		{ type: Boolean, default: false },
+		isOpened: 							{ type: Boolean, required: true },
+		hasPadding: 						{ type: Boolean, default: true },
+		title: 									{ type: String, required: true },
+		displayTitle: 					{ type: Boolean, default: true },
+		displayCloseButton: 		{ type: Boolean, default: true },
+		isConfirm: 							{ type: Boolean, default: false },
+		forceMobileFullHeight: 	{ type: Boolean, default: false },
 	})
 
-	const isFullHeight = computed(() => {
+	const isMobileFullHeight = computed(() => {
 		if (props.isConfirm)
 			return false
 		
-		return props.forceFullHeight || false
+		return props.forceMobileFullHeight || false
 	})
 
 	const handler = (e) => {
@@ -79,8 +79,12 @@
 			@apply z-60;
 		}
 
-		&.isFullHeight {
+		&.isMobileFullHeight {
 			align-items: inherit;
+			
+			@screen desktop {
+				align-items: center;
+			}
 		}
 
 		&-container {
