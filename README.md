@@ -28,7 +28,6 @@ Outside click: https://www.npmjs.com/package/click-outside-vue3
 - `index.js` files are built with "JS Index" extension. Options:
 	- Default template: `export { default as ${variable} } from ${relpathwithext}`
 	- Quotes: `single`
-- volar extension instead of vetur, better script setup support
 
 
 ## Other notes
