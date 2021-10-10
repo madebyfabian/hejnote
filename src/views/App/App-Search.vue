@@ -1,6 +1,6 @@
 <template>
 	<TextInput 
-		v-if="useIsMobileDevice"
+		v-if="isMobileDevice"
 		v-model="searchNotesString" 
 		:inputProps="{ placeholder: 'Search for something', required: true, spellcheck: false }" 
 		class="mb-8">
@@ -30,6 +30,7 @@
 
 	const route = useRoute(),
 				router = useRouter()
+	const isMobileDevice = useIsMobileDevice()
 
 	/**
 	 * Transform note.content json object into string or parse.
