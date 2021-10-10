@@ -1,7 +1,7 @@
 <template>
-	<div class="NoteEditor z-50" ref="noteEditorEl" v-click-outside="clickOutsideConfig">
+	<div class="NoteEditor z-50 flex-1 h-full" ref="noteEditorEl" v-click-outside="clickOutsideConfig">
 		<article 
-			class="transition-transform duration-150" 
+			class="transition-transform duration-150 flex flex-col flex-1 h-full" 
 			:class="{ 'transform-gpu -translate-y-12 delay-100': displayMinimized }">
 
 			<div class="transition-opacity duration-300 opacity-0" :class="{ 'opacity-100': !displayMinimized }">
@@ -11,7 +11,7 @@
 				/>
 			</div>
 
-			<RichtextEditor v-model="note.content" />
+			<RichtextEditor v-model="note.content" class="flex-1" />
 
 			<div class="px-5 pb-5" v-if="note.id">
 				<NoteActionBar

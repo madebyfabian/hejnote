@@ -9,7 +9,7 @@
 
 				<div class="Modal-header" v-if="displayTitle" v-text="title" />
 				
-				<div class="Modal-content">
+				<div class="Modal-content" :class="{ 'flex-1': isMobileFullHeight }">
 					<slot />
 				</div>
 
