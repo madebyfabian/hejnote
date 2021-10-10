@@ -4,7 +4,7 @@
 			{{ collection.title }}
 		</span>
 
-		<button class="Note-ActionBar-Collection-badgeButton" @click="emit('removeCollection')">
+		<button v-if="!isReadonly" class="Note-ActionBar-Collection-badgeButton" @click="emit('removeCollection')">
 			<span 
 				aria-hidden="true" 
 				class="absolute -left-4 top-0 w-9 h-full bg-gradient-to-r from-transparent via-gray-800 to-gray-800" 
@@ -23,7 +23,8 @@
 	const emit = defineEmits([ 'removeCollection' ])
 
 	const props = defineProps({
-		collection: { required: true, },
+		collection: { required: true },
+		isReadonly: { required: true, default: false },
 	})
 </script>
 

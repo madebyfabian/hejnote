@@ -29,6 +29,7 @@ export default {
 		is_pinned: 	    note?.is_pinned || false,
 		is_hidden: 	    note?.is_hidden || false,
 		is_archived:    note?.is_archived || false,
+    is_locked:      note?.is_locked || false,
     collection_id:  note?.collection_id || null,
   }},
 

@@ -1,6 +1,8 @@
 <template>
-	<div class="flex items-center -mx-2 -mb-1.5" :class="collection ? 'justify-between' : 'justify-end'">
-		<Note-ActionBar-Collection v-bind="{ note, collection }" @removeCollection="() => handleRemoveCollection()" />
+	<div class="flex items-center -mx-2 -mb-1.5 gap-2 justify-end">
+		<div class="flex items-center flex-1">
+			<Note-ActionBar-Collection v-bind="{ note, collection, isReadonly: isLocked }" @removeCollection="() => handleRemoveCollection()" />
+		</div>
 
 		<div 
 			class="Note-ActionBar flex items-center gap-1 transition-opacity" 
@@ -8,7 +10,20 @@
 			role="toolbar">
 
 			<template v-if="!note.deleted_at">
-				<template v-if="!_temp_isInsideModal">
+				<!-- Editor Only -->
+				<template v-if="isInEditMode">
+					<!-- Lock -->
+					<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteLockAction">
+						<IconLock v-if="!isLocked" />
+						<IconLockSolid v-else />
+						<span class="sr-only">Note is {{ isLocked ? 'locked' : 'unlocked' }}. Click to {{ isLocked ? 'unlock' : 'lock' }}</span>
+					</Button>
+
+					<!-- --- Seperator --- -->
+					<span aria-hidden="true" class="h-5 rounded-full mx-2 border-r border-gray-700" />
+				</template>
+				
+				<template v-if="!isInEditMode">
 					<ContextMenu v-if="!collection" @changedOpenState="newVal => $emit('changedOpenState', newVal)">
 						<template #button>
 							<Button isIconOnly buttonType="secondary" hideBorder is="div">
@@ -24,25 +39,25 @@
 						</ContextMenu-Item>
 					</ContextMenu>
 
-					<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteHideAction">
+					<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteHideAction" :isDisabled="isLocked">
 						<IconEyeOff v-if="!note.is_hidden" />
 						<IconEyeOffSolid v-else />
 					</Button>
 				</template>
 
-				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNotePinAction">
+				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNotePinAction" :isDisabled="isLocked">
 					<IconPin v-if="!note.is_pinned" />
 					<IconPinSolid v-else />
 				</Button>
 
 				<!-- Archive -->
-				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteArchiveAction">
+				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteArchiveAction" :isDisabled="isLocked">
 					<IconArchive v-if="!note.is_archived" />
 					<IconArchiveSolid v-else />
 				</Button>
 
 				<!-- Trash -->
-				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteMoveToDeleted">
+				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteMoveToDeleted" :isDisabled="isLocked">
 					<IconTrash />
 				</Button>
 			</template>
@@ -67,7 +82,7 @@
 	import { 
 		IconEyeOff, IconEyeOffSolid, IconPin, IconPinSolid, 
 		IconTrash, IconTrashDelete, IconTrashUndo, IconArchive, IconArchiveSolid,
-		IconCollectionMove
+		IconCollectionMove, IconLock, IconLockSolid
 	} from '@/assets/icons'
 
 	// Components
@@ -79,7 +94,7 @@
 	const props = defineProps({
 		note: 								{ required: true },
 		displayButtons: 			{ type: Boolean, default: true },
-		_temp_isInsideModal: 	{ type: Boolean, default: false }, // Hide certain items because they have bugs inside modal.
+		isInEditMode: 				{ type: Boolean, default: false },
 
 		/**
 		 * There are two ways to use the ActionBar:
@@ -92,6 +107,7 @@
 	const emit = defineEmits([ 'updatedNote', 'changedOpenState' ])
 
 	const isEmitChangesMode = computed(() => props.mode === 'emitChanges')
+	const isLocked = computed(() => props.note.is_locked)
 	const collection = computed(() => collectionsStore.collectionFindById({ collectionId: props.note.collection_id }))
 	const allCollections = computed(() => collectionsStore.state.collections)
 
@@ -109,6 +125,10 @@
 			else 
 				notesStore.notesUpdateSingle({ noteId: props.note.id, newVal })
 	} 
+
+	const handleNoteLockAction = () => {
+		_updateNoteProperty({ is_locked: !isLocked.value })
+	}
 
 	const handleNotePinAction = () => {
 		_updateNoteProperty({ is_pinned: !props.note.is_pinned })

@@ -2,6 +2,7 @@
 	<component 
 		:is="is"
 		:type="type"
+		:disabled="isDisabled"
 		:class="[
 			buttonType == 'primary' && 'isPrimary', 
 			buttonType == 'secondary' && 'isSecondary',
@@ -13,6 +14,7 @@
 			noPadding && 'noPadding',
 			noRoundedBorder && 'noRoundedBorder',
 			displayAsDropdownOpened && 'displayAsDropdownOpened',
+			isDisabled && 'isDisabled'
 		]"
 		class="Button">
 
@@ -44,6 +46,7 @@
 		noPadding: 								{ type: Boolean, default: false },
 		displayAsDropdown: 				{	type: Boolean, default: false },
 		displayAsDropdownOpened: 	{ type: Boolean, default: false },
+		isDisabled: 							{ type: Boolean, default: false },
 	})
 </script>
 
@@ -107,6 +110,10 @@
 
 		&.noPadding {
 			@apply p-0;
+		}
+
+		&.isDisabled {
+			@apply pointer-events-none opacity-25;
 		}
 	}
 </style>

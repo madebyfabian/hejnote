@@ -1,6 +1,6 @@
 <template>
   <div class="RichtextEditor" ref="richtextEditorEl">
-		<div class="RichtextEditor-content" :class="{ isReadonly }">
+		<div class="RichtextEditor-content" :class="{ isReadonly, isInEditMode }">
 			<editor-content v-if="!isReadonly" :editor="editor" />
 			<div v-else v-html="readonlyHTML" />
 		</div>
@@ -23,8 +23,9 @@
 	import Link from '@tiptap/extension-link'
 
 	const props = defineProps({
-		modelValue:	{ type: [ String, Object ], default: '' },
-		isReadonly:	{ type: Boolean, default: false },
+		modelValue:		{ type: [ String, Object ], default: '' },
+		isReadonly:		{ type: Boolean, default: false },
+		isInEditMode: { type: Boolean, default: false },
 	})
 
 	const emit = defineEmits([ 'update:modelValue', 'editorCreated' ])
@@ -100,7 +101,7 @@
 
 		:deep(&-content) {
 			.ProseMirror {
-        @apply p-5 pt-2 pb-7 outline-none;
+        @apply outline-none;
 				@apply ring-0;
         overflow-wrap: break-word;
         word-wrap: break-word;
@@ -111,6 +112,13 @@
 					content: attr(data-placeholder);
 				}
       }
+
+			&.isInEditMode {
+				&:not(.isReadonly) .ProseMirror,
+				&.isReadonly {
+					@apply p-5 pt-2 pb-7;
+				}
+			}
 
       * {
         @apply caret-current;
