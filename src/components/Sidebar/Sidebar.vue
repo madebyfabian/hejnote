@@ -1,7 +1,6 @@
 <template>
 	<aside class="Sidebar">
 		<ul>
-			<SidebarSubheadline v-if="isHiddenMode">Hidden</SidebarSubheadline>
 			<SidebarItem :to="{ name: 'App-Home' }">
 				Notes
 			</SidebarItem>
@@ -27,7 +26,7 @@
 				</SidebarItem>
 			</template>
 			
-			<SidebarSubheadline>{{ isHiddenMode ? 'Hidden ' : null }}Others</SidebarSubheadline>
+			<SidebarSubheadline>Others</SidebarSubheadline>
 			<SidebarItem :to="{ name: 'App-Archive' }">
 				Archive
 			</SidebarItem>
