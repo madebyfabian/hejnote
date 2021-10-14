@@ -31,4 +31,5 @@ Outside click: https://www.npmjs.com/package/click-outside-vue3
 
 
 ## Other notes
-I didn't used vues syntactic sugar, since it looses types and seems not stable enough. https://github.com/vuejs/rfcs/discussions/369
+- I didn't used vues syntactic sugar, since it looses types and seems not stable enough. https://github.com/vuejs/rfcs/discussions/369
+- I use `vue-window-size` instead of `@vueuse/core` useWindowSize() because the package does only regiester one event listner, while vueuse registers many (for each usage of the hook 1 listener).
