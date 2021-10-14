@@ -5,3 +5,9 @@ dist-ssr
 *.local
 debug.log
 .idea
+
+/tests/e2e/videos/
+/tests/e2e/screenshots/
+/instrumented
+/coverage
+.nyc_output

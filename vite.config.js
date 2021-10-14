@@ -1,10 +1,16 @@
 
-import path from 'path'
+import * as path from 'path'
 import { defineConfig } from 'vite'
-
 import vue from '@vitejs/plugin-vue'
 import svgLoader from 'vite-svg-loader'
 import { VitePWA } from 'vite-plugin-pwa'
+
+import pkg from './package.json'
+
+process.env.VITE_APP_VERSION = pkg.version
+if (process.env.NODE_ENV === 'production') {
+  process.env.VITE_APP_BUILD_EPOCH = new Date().getTime().toString()
+}
 
 export default defineConfig({
   plugins: [

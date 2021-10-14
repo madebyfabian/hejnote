@@ -4,7 +4,11 @@
   "scripts": {
     "serve": "vite preview",
     "build": "vite build",
-    "start": "vite --host"
+    "start": "vite --host",
+    "test": "cypress open",
+    "test-components": "cypress open-ct",
+    "test:ci": "cypress run --headless",
+    "test:ci-components": "cypress run-ct"
   },
   "dependencies": {
     "@chakra-ui/c-focus-lock": "^0.1.0-alpha.4",
@@ -30,13 +34,17 @@
     "vue-window-size": "^1.1.2"
   },
   "devDependencies": {
+    "@cypress/vite-dev-server": "~2.1",
+    "@cypress/vue": "~3.0",
     "@tailwindcss/line-clamp": "^0.2.1",
     "@types/tailwindcss": "^2.2.1",
     "@vitejs/plugin-vue": "^1.6.0",
     "@vue/compiler-sfc": "^3.2.18",
     "autoprefixer": "^10.3.3",
+    "cypress": "~8.5",
     "postcss-nested": "^5.0.6",
     "tailwindcss": "^2.2.15",
+    "typescript": "~4.4",
     "vite": "^2.5.3",
     "vite-plugin-pwa": "^0.11.2",
     "vite-svg-loader": "^2.2.0"
