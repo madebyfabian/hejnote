@@ -6,13 +6,30 @@ import joinNotesLinksStore from '@/store/joinNotesLinksStore'
 
 const supabase = useSupabase()
 
-const loadImage = ({ url }) => {
-  return new Promise((resolve, reject) => {
+const isImageValid = async ({ url }) => {
+  return new Promise(( resolve ) => {
+    if (!url)
+      return resolve(undefined)
+
     let img = new Image()
-    img.onload = () => resolve(img)
-    img.onerror = reject
+    img.onload = () => resolve(true)
+    img.onerror = () => resolve(undefined)
     img.src = url
   })
+}
+
+const fetchMetadata = async ({ url }) => {
+  try {
+    const metadataAPIUrl = 
+      'https://netlify-functions-madebyfabian.netlify.app/.netlify/functions/meta-fetcher?url=' 
+      + url
+    const metadataRes = await fetch(metadataAPIUrl)
+    const json = await metadataRes.json()
+    return json?.metadata
+
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 export default {
@@ -59,30 +76,14 @@ export default {
         continue
       }
       
-      // Fetch metadata
-      let metadata
-      try {
-        const metadataAPIUrl = 'https://netlify-functions-madebyfabian.netlify.app/.netlify/functions/meta-fetcher?url=' + newVal
-        const metadataRes = await fetch(metadataAPIUrl)
-        const json = await metadataRes.json()
-        metadata = json?.metadata
-
-      } catch (error) {
-        console.error(error)
-      }
-
-      if (metadata?.banner) {
-        try {
-          await loadImage({ url: metadata.banner })
-        } catch (error) {
-          metadata.banner = null
-        }
-      }
+      const metadata = await fetchMetadata({ url: newVal })
+      console.log(await isImageValid({ url: metadata?.banner }));
+      const banner = (await isImageValid({ url: metadata?.banner })) ? metadata.banner : null
 
       preparedData.push({
         url: newVal,
         title: metadata?.title || null,
-        banner_url: metadata?.banner || null,
+        banner_url: banner || null,
         owner_id: generalStore.state.user.id
       })
     }
@@ -99,7 +100,11 @@ export default {
       this.state.links.push(...data)
 
       // Update joins
-      preparedJoins.push(...data.map(link => ({ note_id: noteId, link_id: link.id })))
+      preparedJoins.push(...data.map(link => ({ 
+        note_id: noteId, 
+        link_id: link.id,
+        added_from_text: true
+      })))
     }
 
     // Then, if there are some new joins to insert, do it.
