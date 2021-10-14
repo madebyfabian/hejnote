@@ -18,13 +18,23 @@
 
 		setup( props ) {
 			const computedNameAbbr = computed(() => {
-        let name = props.name.trim(),
-            splitter = name.includes('.') ? '.' : ' '
+				const DEFAULT = '-'
+        let name = props.name?.trim() || DEFAULT
+				let isEmail = name.includes('@')
+				if (isEmail)
+					name = name.split('@')[0] // Get only value before @
 
-        return name.split(splitter)
+				let splitter = isEmail ? /\-|\.|_/ : ' '
+
+				let allLetters = name.split(splitter)
           .map(str => str.substr(0, 1))
           .join('')
-          .substr(0, 2)
+
+				let str = allLetters[0]
+				if (allLetters.length > 1)
+					str += allLetters[allLetters.length - 1]
+
+        return str?.toUpperCase() || DEFAULT
       })
 
 			return {
@@ -68,10 +78,6 @@
 
 		img {
 			@apply w-full h-full block;
-		}
-
-		span {
-			@apply uppercase;
 		}
 	}
 </style>

@@ -3,34 +3,11 @@ import useSupabase from '@/hooks/useSupabase'
 
 import generalStore from '@/store/generalStore'
 import joinNotesLinksStore from '@/store/joinNotesLinksStore'
+import isImageValid from '@/utils/isImageValid'
+import fetchMetadata from '@/utils/fetchMetadata'
 
 const supabase = useSupabase()
 
-const isImageValid = async ({ url }) => {
-  return new Promise(( resolve ) => {
-    if (!url)
-      return resolve(undefined)
-
-    let img = new Image()
-    img.onload = () => resolve(true)
-    img.onerror = () => resolve(undefined)
-    img.src = url
-  })
-}
-
-const fetchMetadata = async ({ url }) => {
-  try {
-    const metadataAPIUrl = 
-      'https://netlify-functions-madebyfabian.netlify.app/.netlify/functions/meta-fetcher?url=' 
-      + url
-    const metadataRes = await fetch(metadataAPIUrl)
-    const json = await metadataRes.json()
-    return json?.metadata
-
-  } catch (error) {
-    console.error(error)
-  }
-}
 
 export default {
   state: reactive({
@@ -77,7 +54,6 @@ export default {
       }
       
       const metadata = await fetchMetadata({ url: newVal })
-      console.log(await isImageValid({ url: metadata?.banner }));
       const banner = (await isImageValid({ url: metadata?.banner })) ? metadata.banner : null
 
       preparedData.push({
