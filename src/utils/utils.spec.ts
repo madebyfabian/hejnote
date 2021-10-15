@@ -34,6 +34,7 @@ describe('"fetchUrlMetadata": Should return metadata obj if something was fetche
       await fetchUrlMetadata({ url: undefined }),
       await fetchUrlMetadata({ url: '' }),
       await fetchUrlMetadata({ url: 'https://' }),
+      await fetchUrlMetadata({ url: 'https://99999999.com' }),
     ])
 
     results.forEach(result => expect(result).to.equal(undefined))
