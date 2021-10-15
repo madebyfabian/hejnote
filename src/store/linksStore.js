@@ -4,7 +4,7 @@ import useSupabase from '@/hooks/useSupabase'
 import generalStore from '@/store/generalStore'
 import joinNotesLinksStore from '@/store/joinNotesLinksStore'
 import isImageValid from '@/utils/isImageValid'
-import fetchMetadata from '@/utils/fetchMetadata'
+import fetchUrlMetadata from '@/utils/fetchUrlMetadata'
 
 const supabase = useSupabase()
 
@@ -53,7 +53,7 @@ export default {
         continue
       }
       
-      const metadata = await fetchMetadata({ url: newVal })
+      const metadata = await fetchUrlMetadata({ url: newVal })
       const banner = (await isImageValid({ url: metadata?.banner })) ? metadata.banner : null
 
       preparedData.push({
