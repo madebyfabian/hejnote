@@ -11,7 +11,7 @@
 						buttonType="tertiary" 
 						displayAsDropdown 
 						:displayAsDropdownOpened="displayModeContextMenuIsOpened" 
-						noPadding 
+						hasNegativeMargin 
 						is="div">
 						
 						<span class="sr-only">Choose display mode:</span>

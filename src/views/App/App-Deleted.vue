@@ -1,7 +1,7 @@
 <template>
   <NoteList :notes="notes" groupAllNotes title="Trash">
     <template #heading-right>
-      <Button v-if="notes.length" buttonType="tertiary" @click="handleDeleteAllNotesInTrash" noPadding>Delete All</Button>
+      <Button v-if="notes.length" buttonType="tertiary" @click="handleDeleteAllNotesInTrash" hasNegativeMargin>Delete All</Button>
     </template>
   </NoteList>
 </template>

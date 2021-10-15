@@ -11,10 +11,10 @@
 			hideBorder && 'hideBorder',
 			fitToArea && 'fitToArea',
 			isFullWidth && 'isFullWidth',
-			noPadding && 'noPadding',
 			noRoundedBorder && 'noRoundedBorder',
 			displayAsDropdownOpened && 'displayAsDropdownOpened',
-			isDisabled && 'isDisabled'
+			isDisabled && 'isDisabled',
+			hasNegativeMargin && 'hasNegativeMargin',
 		]"
 		class="Button">
 
@@ -43,19 +43,22 @@
 		noRoundedBorder: 					{ type: Boolean, default: false },
 		fitToArea: 								{ type: Boolean, default: false },
 		isFullWidth: 							{ type: Boolean, default: false },
-		noPadding: 								{ type: Boolean, default: false },
 		displayAsDropdown: 				{	type: Boolean, default: false },
 		displayAsDropdownOpened: 	{ type: Boolean, default: false },
 		isDisabled: 							{ type: Boolean, default: false },
+		hasNegativeMargin: 				{ type: Boolean, default: false },
 	})
 </script>
 
 <style lang="postcss" scoped>
 	.Button {
 		@apply inline-flex items-center justify-center gap-2;
-		@apply h-11 px-4 rounded-xl border font-bold text-100;
+		@apply h-11 rounded-xl border font-bold text-100;
 		@apply transition duration-100;
 		@apply w-full desktop:w-fit;
+
+		@apply px-4;
+		&.hasNegativeMargin { @apply -mx-4; }
 		
 		/**
 		 * Types
@@ -89,7 +92,10 @@
 		 * Other props
 		 */
 		&.isIconOnly {
-			@apply h-9 w-9 p-0 flex justify-center items-center flex-shrink-0; 
+			@apply flex justify-center items-center flex-shrink-0; 
+
+			@apply h-9 w-9 p-0;
+			&.hasNegativeMargin { @apply -mx-1.5; }
 		}
 
 		&.hideBorder {
@@ -97,7 +103,10 @@
 		}
 
 		&.fitToArea {
-			@apply h-auto px-3;
+			@apply h-auto;
+
+			@apply px-3;
+			&.hasNegativeMargin { @apply -mx-3; }
 		}
 
 		&.isFullWidth {
@@ -106,10 +115,6 @@
 
 		&.noRoundedBorder {
 			@apply rounded-none;
-		}
-
-		&.noPadding {
-			@apply p-0;
 		}
 
 		&.isDisabled {
