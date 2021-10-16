@@ -12,7 +12,7 @@
 
 <script setup>
 	import useSnackbar from '@/hooks/useSnackbar'
-	import Snackbar from '@/components/Snackbar.vue'
+	import { Snackbar } from '@/components'
 
 	const { snackbarInstances, removeSnackbar } = useSnackbar()
 </script>

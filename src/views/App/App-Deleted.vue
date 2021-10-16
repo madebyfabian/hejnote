@@ -10,7 +10,7 @@
   import { computed } from 'vue'
   import { notesStore } from '@/store'
   import useConfirm from '@/hooks/useConfirm'
-  import NoteList from '@/components/NoteList.vue'
+  import { NoteList } from '@/components'
   import { Button } from '@/components/ui'
 
 	const notes = computed(() => {

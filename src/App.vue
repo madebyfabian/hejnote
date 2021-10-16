@@ -12,7 +12,7 @@
 	import { generalStore } from '@/store'
 	import { getRequiredAuthRedirect } from '@/utils/routeBeforeEach'
 
-	import SnackbarContainer from '@/components/SnackbarContainer.vue'
+	import { SnackbarContainer } from '@/components'
 	import { ModalConfirm } from '@/components/layouts'
 
 	const route = useRoute(),

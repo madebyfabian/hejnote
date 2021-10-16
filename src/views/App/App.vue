@@ -65,8 +65,7 @@
 	// Components
 	import { Header, TabNav, Sidebar, BannerHiddenMode, ModalUpdateCollections } from '@/components/layouts'
 	import { Modal } from '@/components/ui'
-	import NoteEditor from '@/components/NoteEditor.vue'
-	import SwitchHiddenMode from '@/components/SwitchHiddenMode.vue'
+	import { NoteEditor, SwitchHiddenMode } from '@/components'
 
 	onMounted(async () => {
 		// Load all app data

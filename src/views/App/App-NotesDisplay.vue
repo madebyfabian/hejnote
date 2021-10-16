@@ -38,7 +38,8 @@
 
 	// Components
 	import { Button, ContextMenu, ContextMenuItem } from '@/components/ui'
-	import NoteList from '@/components/NoteList.vue'
+	import { NoteList } from '@/components'
+
 
 	const collection = useCurrentCollection(),
 				collectionId = computed(() => collection.value?.id)

@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-	import Note from '@/components/Note.vue'
+	import { Note } from '@/components'
 
 	const props = defineProps({
 		notes: 				{ type: Array, required: true },

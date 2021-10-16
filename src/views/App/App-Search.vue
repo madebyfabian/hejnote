@@ -24,7 +24,7 @@
 	import { useRoute, useRouter } from 'vue-router'
 	import useIsMobileDevice from '@/hooks/useIsMobileDevice'
 
-  import NoteList from '@/components/NoteList.vue'
+  import { NoteList } from '@/components'
 	import { TextInput } from '@/components/ui'
 	import { IconSearch } from '@/assets/icons'
 

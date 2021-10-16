@@ -87,7 +87,7 @@
 
 	// Components
 	import { Button, RichtextEditor, ContextMenu, ContextMenuItem } from '@/components/ui'
-	import NoteActionBarCollection from '@/components/Note-ActionBar-Collection.vue'
+	import { NoteActionBarCollection } from '@/components'
 
 	const supabase = useSupabase()
 

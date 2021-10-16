@@ -49,9 +49,7 @@
 	import { linksStore, notesStore, collectionsStore } from '@/store'
 	import { noteEditorContentDefault } from '@/utils/constants'
 	import { Button, RichtextEditor } from '@/components/ui'
-	import NoteActionBar from '@/components/Note-ActionBar.vue'
-	import NoteEditor from '@/components/NoteEditor.vue'
-	import NoteLinkList from '@/components/Note-LinkList.vue'
+	import { NoteActionBar, NoteLinkList, NoteEditor } from '@/components'
 	
 	const props = defineProps({
 		note: { required: true },

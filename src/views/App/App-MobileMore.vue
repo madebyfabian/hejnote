@@ -39,5 +39,5 @@
 <script setup>
 	import { Cell } from '@/components/ui'
 	import { IconArchive, IconTrash, IconMoreSolid, IconSearch } from '@/assets/icons'
-	import SwitchHiddenMode from '@/components/SwitchHiddenMode.vue'
+	import { SwitchHiddenMode } from '@/components'
 </script>

@@ -13,7 +13,7 @@
 
 <script setup>
 	import { ref } from 'vue'
-	import NoteEditor from '@/components/NoteEditor.vue'
+	import { NoteEditor } from '@/components'
 	import { Modal } from '@/components/ui'
 	
 	defineProps({

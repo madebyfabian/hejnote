@@ -41,7 +41,7 @@
 	import { generalStore } from '@/store'
 	import useCurrentCollection from '@/hooks/useCurrentCollection'
 	import { Badge } from '@/components/ui'
-	import NoteListGrid from '@/components/NoteList-Grid.vue'
+	import { NoteListGrid } from '@/components'
 	
 	const dayjs = useDayjs()
 
