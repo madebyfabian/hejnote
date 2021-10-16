@@ -46,7 +46,7 @@
 <script setup>
 	import { computed } from 'vue'
 	import { generalStore, collectionsStore } from '@/store'
-	import { SidebarItem, SidebarSubheadline } from '@/components/Sidebar'
+	import { SidebarItem, SidebarSubheadline } from '@/components/layouts'
 	import { Button } from '@/components/ui'
 	import { IconEdit } from '@/assets/icons'
 
