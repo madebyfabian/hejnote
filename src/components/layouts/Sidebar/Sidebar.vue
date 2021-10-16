@@ -7,7 +7,7 @@
 
 			<template v-if="collectionsStore.state.collections.length">
 
-				<SidebarSubheadline class="group relative">
+				<LocalSubheadline class="group relative">
 					{{ isHiddenMode ? 'Hidden ' : null }}Collections
 					<Button 
 						buttonType="tertiary"
@@ -16,7 +16,7 @@
 
 						<IconEdit class="h-4 w-4 text-gray-500 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100" />
 					</Button>
-				</SidebarSubheadline>
+				</LocalSubheadline>
 
 				<SidebarItem 
 					v-for="collection of collectionsStore.state.collections" :key="collection.id"
@@ -26,7 +26,7 @@
 				</SidebarItem>
 			</template>
 			
-			<SidebarSubheadline>Others</SidebarSubheadline>
+			<LocalSubheadline>Others</LocalSubheadline>
 			<SidebarItem :to="{ name: 'App-Archive' }">
 				Archive
 			</SidebarItem>
@@ -44,11 +44,15 @@
 </style>
 
 <script setup>
-	import { computed } from 'vue'
+	import { computed, defineComponent } from 'vue'
 	import { generalStore, collectionsStore } from '@/store'
-	import { SidebarItem, SidebarSubheadline } from '@/components/layouts'
+	import { SidebarItem } from '@/components/layouts'
 	import { Button } from '@/components/ui'
 	import { IconEdit } from '@/assets/icons'
+
+	const LocalSubheadline = defineComponent({
+		template: `<h2 class="pt-6 pb-2 pl-5 first:pt-0"><slot /></h2>`
+	})
 
 	const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 </script>

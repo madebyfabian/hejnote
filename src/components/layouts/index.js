@@ -2,7 +2,6 @@ export { default as TabNavCreateNoteEditor } from './TabNav/TabNav-CreateNoteEdi
 export { default as TabNavItem } from './TabNav/TabNav-Item.vue';
 export { default as TabNav } from './TabNav/TabNav.vue';
 
-export { default as SidebarSubheadline } from './Sidebar/Sidebar-Subheadline.vue';
 export { default as SidebarItem } from './Sidebar/Sidebar-Item.vue';
 export { default as Sidebar } from './Sidebar/Sidebar.vue';
 
