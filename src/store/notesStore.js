@@ -3,6 +3,7 @@ import useSnackbar from '@/hooks/useSnackbar'
 import useSupabase from '@/hooks/useSupabase'
 import handleError from '@/utils/handleError'
 import { noteEditorContentDefault } from '@/utils/constants'
+import findIndexById from '@/utils/findIndexById'
 
 import generalStore from '@/store/generalStore'
 import linksStore from '@/store/linksStore'
@@ -10,10 +11,6 @@ import linksStore from '@/store/linksStore'
 const supabase = useSupabase(),
 			isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 
-// Helper
-const findIndexById = ({ data, id }) => {
-  return data.findIndex(obj => obj !== undefined && obj.id === id)
-}
 
 export default {
 	state: reactive({

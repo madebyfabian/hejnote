@@ -4,15 +4,12 @@ import handleError from '@/utils/handleError'
 import useSupabase from '@/hooks/useSupabase'
 import generalStore from '@/store/generalStore'
 import notesStore from '@/store/notesStore'
+import findIndexById from '@/utils/findIndexById'
 
 const supabase = useSupabase()
 
 const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 
-// Helper
-const findIndexById = ({ data, id }) => {
-  return data.findIndex(obj => obj !== undefined && obj.id === id)
-}
 
 export default {
 	state: reactive({

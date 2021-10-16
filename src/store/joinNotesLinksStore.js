@@ -1,15 +1,10 @@
 import { reactive } from 'vue'
 import useSupabase from '@/hooks/useSupabase'
 import handleError from '@/utils/handleError'
-
+import findIndexById from '@/utils/findIndexById'
 import generalStore from '@/store/generalStore'
 
 const supabase = useSupabase()
-
-// Helper
-const findIndexById = ({ data, id }) => {
-  return data.findIndex(obj => obj !== undefined && obj.id === id)
-}
 
 
 export default {
