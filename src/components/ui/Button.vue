@@ -9,6 +9,7 @@
 			buttonType == 'tertiary' && 'isTertiary',
 			buttonType == 'inline' && 'isInline',
 			isIconOnly && 'isIconOnly',
+			isText050 && 'isText050',
 			hideBorder && 'hideBorder',
 			fitToArea && 'fitToArea',
 			isFullWidth && 'isFullWidth',
@@ -41,6 +42,7 @@
 		buttonType:								{ type: String, default: 'primary', 
 																validate: val => [ 'primary', 'secondary', 'tertiary', 'inline' ].includes(val) },
 		isIconOnly:								{ type: Boolean, default: false },
+		isText050: 								{ type: Boolean, default: false },
 		hideBorder:								{ type: Boolean, default: false },
 		noRoundedBorder: 					{ type: Boolean, default: false },
 		fitToArea: 								{ type: Boolean, default: false },
@@ -55,18 +57,23 @@
 <style lang="postcss" scoped>
 	.Button {
 		@apply inline-flex items-center justify-center gap-2;
-		@apply h-11 rounded-xl border font-bold text-100;
+		@apply h-11 border font-bold;
 		@apply transition duration-100;
 		@apply w-full desktop:w-fit;
 
+		/** Margin & Padding */
 		@apply px-4;
 		&.hasNegativeMargin { @apply -mx-4; }
+
+		/** Text */
+		&.isText050 { @apply text-050; }
+		&:not(.isText050) { @apply text-100; }
 		
 		/**
 		 * Types
 		 */
 		&.isPrimary {
-			@apply border-transparent bg-green-400 text-gray-900;
+			@apply rounded-xl border-transparent bg-green-400 text-gray-900;
 
 			&:hover, &.displayAsDropdownOpened {
 				@apply bg-opacity-75 text-opacity-75;
@@ -74,7 +81,7 @@
 		}
 
 		&.isSecondary {
-			@apply border-gray-700 text-gray-300;
+			@apply rounded-xl border-gray-700 text-gray-400;
 
 			&:hover, &.displayAsDropdownOpened {
 				@apply bg-gray-700;
@@ -82,7 +89,7 @@
 		}
 
 		&.isTertiary {
-			@apply border-none bg-transparent h-auto text-gray-300;
+			@apply border-none bg-transparent h-auto text-gray-400;
 
 			&:hover, &.displayAsDropdownOpened {
 				@apply text-gray-400;
@@ -90,7 +97,7 @@
 		}
 
 		&.isInline {
-			@apply border-none text-green-400 font-bold underline;
+			@apply border-none text-green-400 font-bold underline h-auto p-0;
 
 			&:hover, &.displayAsDropdownOpened {
 				@apply text-opacity-75;
@@ -102,14 +109,14 @@
 		 * Other props
 		 */
 		&.isIconOnly {
-			@apply flex justify-center items-center flex-shrink-0; 
+			@apply flex justify-center items-center flex-shrink-0 text-gray-500; 
 
 			@apply h-9 w-9 p-0;
 			&.hasNegativeMargin { @apply -mx-1.5; }
 		}
 
 		&.hideBorder {
-			@apply border-transparent text-gray-500;
+			@apply border-transparent;
 		}
 
 		&.fitToArea {

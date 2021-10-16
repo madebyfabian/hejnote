@@ -8,13 +8,13 @@
 			<Cell v-for="collection of collectionsStore.state.collections" :key="collection.id" size="200" dividerInset>
 				{{ collection.title }}
 				<template #contentRight>
-					<div class="flex gap-1 -m-2 ml-0">
-						<Button buttonType="tertiary" isIconOnly @click="() => handleUpdateCollection({ collectionId: collection.id })">
+					<div class="flex gap-4">
+						<Button buttonType="secondary" hideBorder isIconOnly hasNegativeMargin @click="() => handleUpdateCollection({ collectionId: collection.id })">
 							<IconEdit />
 							<div class="sr-only">Edit collection "{{ collection.title }}"</div>
 						</Button>
 
-						<Button buttonType="tertiary" isIconOnly @click="() => handleUpdateCollection({ collectionId: collection.id, doDelete: true })">
+						<Button buttonType="secondary" hideBorder isIconOnly hasNegativeMargin @click="() => handleUpdateCollection({ collectionId: collection.id, doDelete: true })">
 							<IconTrashDelete />
 
 							<div class="sr-only">Delete collection "{{ collection.title }}"</div>
