@@ -31,7 +31,6 @@ export default {
   }},
 
   noteObjectHasChanges({ compareToNoteId, newVal } = {}) {
-    console.log({ compareToNoteId, newVal })
     let oldVal = !compareToNoteId
       ? this.getNoteDefaultDataObject()
       : this.state.notes.find(note => note.id === compareToNoteId)
