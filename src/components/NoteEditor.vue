@@ -71,7 +71,7 @@
 	const isLocked = computed(() => note.is_locked)
 
 	// Setup note links
-	const noteLinks = computed(() => linksStore._findLinksByNoteId({ noteId: note.id }))
+	const noteLinks = computed(() => linksStore._findLinksByNoteIdsV2({ noteIds: [ note.id ] }))
 	const lastLinkSet = reactive(new Set(noteLinks.value.map(link => link.url)))
 	
 

@@ -73,7 +73,7 @@
 
 	const noteContentIsEmpty = computed(() => JSON.stringify(noteEditorContentDefault) === JSON.stringify(props.note.content))
 	const noteTitleLabel = computed(() => `Edit note "${ props.note.title }"`)
-	const noteLinks = computed(() => linksStore._findLinksByNoteId({ noteId: props.note.id }))
+	const noteLinks = computed(() => linksStore._findLinksByNoteIdsV2({ noteIds: [ props.note.id ] }))
 	const isNoteBeingEdited = computed(() => notesStore.state.editNoteId === props.note.id)
 	const collection = computed(() => collectionsStore.collectionFindById({ collectionId: props.note.collection_id }))
 	const isLinkOnlyMode = computed(() => !!(!props.note?.title?.length && noteContentIsEmpty.value && noteLinks.value?.length))

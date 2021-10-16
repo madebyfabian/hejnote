@@ -107,56 +107,14 @@ export default {
     }
   },
 
-  async joinNotesLinksDelete({ urlArray, noteId }) {
-    let linkIdsToDelete = []
-
-    // If urlArray is defined, only delete those for noteId. If not, delete all.
-    if (urlArray) {
-      // Get all link.id's for this note
-      linkIdsToDelete = await this._fetchLinkIdsByUrls({ urlArray })
-
-      // Delete all joins for this note that contain these link.id's
-      const { error } = await supabase
-        .from('join_notes_links')
-        .delete()
-        .eq('note_id', noteId)
-        .in('link_id', linkIdsToDelete)
-
-      if (error) 
-        return console.error(error)
-
-    } else {
-      // Delete all joins for this note.
-      const { data, error } = await supabase
-        .from('join_notes_links')
-        .delete()
-        .eq('note_id', noteId)
-
-      if (error) 
-        return console.error(error)
-
-      linkIdsToDelete = data.map(dataItem => dataItem.link_id)
-    }
-
-    // Remove deleted joins from state
-    this.state.joinNotesLinks.forEach(( join, index ) => {
-      if (join.note_id === noteId && linkIdsToDelete.includes(join.link_id))
-        this.state.joinNotesLinks.splice(index, 1)
-    })
-
-    return linkIdsToDelete
-  },
-
-  async joinNotesLinksDeleteV2({ joinsToDelete }) {
-    const joinIdsToDelete = joinsToDelete.map(join => join.id)
-
+  async joinNotesLinksDelete({ joinIds = [] } = {}) {
     // Delete all defined joins.
     const { error } = await supabase
       .from('join_notes_links')
       .delete()
-      .in('id', joinIdsToDelete)
+      .in('id', joinIds)
     if (error) return console.error(error)
 
-    this.state.joinNotesLinks = this.state.joinNotesLinks.filter(join => !joinIdsToDelete.includes(join.id))
+    this.state.joinNotesLinks = this.state.joinNotesLinks.filter(join => !joinIds.includes(join.id))
   }
 }

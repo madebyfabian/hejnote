@@ -14,13 +14,6 @@ export default {
     links: [],
   }),
 
-  _findLinksByNoteId({ noteId }) {
-    const joins = joinNotesLinksStore.state.joinNotesLinks.filter(join => join.note_id === noteId)
-    return joins.map(join => {
-      return this.state.links.find(link => link.id === join.link_id)
-    })
-  },
-
   _findLinksByNoteIdsV2({ noteIds }) {
     const joins = joinNotesLinksStore.findJoinNotesLinksByNoteIds({ noteIds })
     return joins.map(join => {
@@ -98,29 +91,6 @@ export default {
     }
   },
 
-  async linksDelete({ urlArray, noteId }) {
-    let linkIdsToDelete = await joinNotesLinksStore.joinNotesLinksDelete({ urlArray, noteId })
-
-    // Now we have to delete the links from the DB.
-    // To avoid some supabase errors, we need to check if they are used by other joinNotesLinks.
-    const linkIdsNotToDelete = joinNotesLinksStore.state.joinNotesLinks
-      .filter(join => linkIdsToDelete.includes(join.link_id))
-      .map(join => join.link_id)
-
-    // Then filter the links to delete with the ones that are not to be deleted.
-    linkIdsToDelete = linkIdsToDelete.filter(linkId => !linkIdsNotToDelete.includes(linkId))
-    
-    // Delete the joins from the DB
-    const { error } = await supabase
-      .from('links')
-      .delete()
-      .in('id', linkIdsToDelete)
-    if (error) return console.error(error)
-
-    // Remove deleted links from state
-    this.state.links = this.state.links.filter(link => !linkIdsToDelete.includes(link.id))
-  },
-
   async linksDeleteV2({ urlArray, noteIds }) {
     // First get all links of the notes
     // if urlArray is defined, inlcude only those.
@@ -142,7 +112,7 @@ export default {
     linkIdsToDelete = linksToDelete.filter(linkId => !linkIdsNotToDelete.includes(linkId)).map(linkId => linkId)
 
     // Delete all joins
-    await joinNotesLinksStore.joinNotesLinksDeleteV2({ joinsToDelete }) 
+    await joinNotesLinksStore.joinNotesLinksDelete({ joinIds: joinsToDelete.map(join => join.id) }) 
 
     // Delete all links
     if (linkIdsToDelete.length) {
