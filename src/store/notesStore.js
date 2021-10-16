@@ -34,6 +34,7 @@ export default {
   }},
 
   noteObjectHasChanges({ compareToNoteId, newVal } = {}) {
+    console.log({ compareToNoteId, newVal })
     let oldVal = !compareToNoteId
       ? this.getNoteDefaultDataObject()
       : this.state.notes.find(note => note.id === compareToNoteId)
@@ -126,20 +127,17 @@ export default {
 
   async notesUpsertSingle({ newVal, updateDB = true, updateState = true }) {
     try {
-      const hasChanges = this.noteObjectHasChanges({ compareToNoteId: newVal?.id, newVal })
-
       // If we are in hidden mode, the new val should also have this prop.
       newVal.is_hidden = isHiddenMode.value
 
       let res
-      if (updateDB && hasChanges) {
+      if (updateDB) {
         res = await supabase.from('notes').upsert([{ ...newVal, owner_id: generalStore.state.user.id }])
         if (res.error) throw res.error
       }
 
       const newData = res?.data?.[0] || newVal
-      const isEmpty = (!newVal?.id && !hasChanges)
-      if (updateState && !isEmpty) {
+      if (updateState && !newVal?.id) {
         const index = findIndexById({ id: newData?.id, data: this.state.notes })
         if (index > -1)
           this.state.notes[index] = { ...this.state.notes[index], ...newData }
