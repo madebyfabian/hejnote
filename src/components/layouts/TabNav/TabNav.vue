@@ -71,7 +71,7 @@
 	import { generalStore, collectionsStore } from '@/store'
 
 	import { Avatar, ContextMenu, ContextMenuItem, ContextMenuSeperator } from '@/components/ui'
-	import { TabNavItem, TabNavCreateNoteEditor } from '@/components/TabNav'
+	import { TabNavItem, TabNavCreateNoteEditor } from '@/components/layouts'
 	import { IconCollectionMove, IconCollectionMoveSolid, IconNotes, IconNotesSolid, IconMore, IconMoreSolid, IconAdd } from '@/assets/icons'
 
 	const route = useRoute()
