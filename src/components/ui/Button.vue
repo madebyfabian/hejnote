@@ -7,6 +7,7 @@
 			buttonType == 'primary' && 'isPrimary', 
 			buttonType == 'secondary' && 'isSecondary',
 			buttonType == 'tertiary' && 'isTertiary',
+			buttonType == 'inline' && 'isInline',
 			isIconOnly && 'isIconOnly',
 			hideBorder && 'hideBorder',
 			fitToArea && 'fitToArea',
@@ -37,7 +38,8 @@
 	defineProps({
 		is: 											{ type: String, default: 'button' },
 		type: 										{ type: String, default: undefined },
-		buttonType:								{ type: String, default: 'primary', validate: val => [ 'primary', 'secondary', 'tertiary' ].includes(val) },
+		buttonType:								{ type: String, default: 'primary', 
+																validate: val => [ 'primary', 'secondary', 'tertiary', 'inline' ].includes(val) },
 		isIconOnly:								{ type: Boolean, default: false },
 		hideBorder:								{ type: Boolean, default: false },
 		noRoundedBorder: 					{ type: Boolean, default: false },
@@ -84,6 +86,14 @@
 
 			&:hover, &.displayAsDropdownOpened {
 				@apply text-gray-400;
+			}
+		}
+
+		&.isInline {
+			@apply border-none text-green-400 font-bold underline;
+
+			&:hover, &.displayAsDropdownOpened {
+				@apply text-opacity-75;
 			}
 		}
 
