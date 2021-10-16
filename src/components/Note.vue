@@ -7,13 +7,21 @@
 		@mouseenter="handleFocusIn"
 		@mouseleave="handleFocusOut"
 		:aria-label="noteTitleLabel"
-		:class="{ isNoteBeingEdited }"
+		class="Note relative bg-gray-800 rounded-2xl p-4 cursor-default transition duration-225 mb-6 overflow-hidden"
+		:class="{ 
+			'blur-md': isNoteBeingEdited,
+		}"
 		tabindex="0" 
-		class="Note"
 		ref="noteEl">
 		
-		<h3 v-if="note.title" v-text="note.title" @click="handleNoteEdit" class="mb-2" />
-		<div class="relative max-h-80 overflow-hidden">
+		<h3 
+			v-if="note.title" 
+			v-text="note.title" 
+			@click="handleNoteEdit"
+			class="mb-2"
+		/>
+
+		<div v-if="!noteContentIsEmpty" class="relative max-h-80 overflow-hidden">
 			<div ref="richtextEditorWrapEl">
 				<RichtextEditor 
 					v-if="!noteContentIsEmpty" 
@@ -30,17 +38,25 @@
 			/>
 		</div>
 
+		<div 
+			v-if="noteLinks.length" 
+			ref="noteLinkListEl" 
+			:class="isLinkOnlyMode ? '-mx-4 -mt-4 mb-2' : '-mx-1 mt-2 mb-2'">
+
+			<Note-LinkList 
+				:noteId="note.id" 
+				:displayAsLinkOnly="isLinkOnlyMode"
+				isReadonly 
+			/>
+		</div>
+
 		<div ref="noteActionBarEl">
 			<Note-ActionBar
 				:note="note" 
 				:displayButtons="displayActionBar"
 				@changedOpenState="newVal => actionBarContextMenuOpened = newVal" 
 			/>
-		</div>
-
-		<div v-if="noteLinks.length" ref="noteLinkListEl" class="mt-4 -m-2">
-			<Note-LinkList :noteId="note.id" isReadonly />
-		</div>
+		</div>		
 	</article>
 </template>
 
@@ -60,6 +76,7 @@
 	const noteLinks = computed(() => linksStore._findLinksByNoteId({ noteId: props.note.id }))
 	const isNoteBeingEdited = computed(() => notesStore.state.editNoteId === props.note.id)
 	const collection = computed(() => collectionsStore.collectionFindById({ collectionId: props.note.collection_id }))
+	const isLinkOnlyMode = computed(() => !!(!props.note?.title?.length && noteContentIsEmpty.value && noteLinks.value?.length))
 	const noteActionBarEl = ref(null),
 				noteLinkListEl = ref(null),
 				richtextEditorWrapEl = ref(null),
@@ -71,11 +88,10 @@
 
 	const handleNoteEdit = e => {
 		const clickedActionBar = e.composedPath().includes(noteActionBarEl?.value),
-					clickedLinkListEl = e.composedPath().includes(noteLinkListEl?.value),
 					selectedSomething = window.getSelection().type === 'Range',
 					clickedLink = e.target.tagName === 'A'
 
-		if (clickedActionBar || clickedLinkListEl || selectedSomething || clickedLink)
+		if (clickedActionBar || selectedSomething || clickedLink)
 			return 
 
 		notesStore.openNoteEditor({ editNoteId: props.note.id })
@@ -98,7 +114,7 @@
 	const createRichtextEditorHeightObserver = () => {
 		const target = richtextEditorWrapEl?.value
 		_richtextEditorHeightObserver.value = new ResizeObserver(() => {
-			richtextEditorIsTruncated.value = richtextEditorWrapEl?.value.clientHeight > 400
+			richtextEditorIsTruncated.value = richtextEditorWrapEl?.value?.clientHeight > 400
 		})
 		_richtextEditorHeightObserver.value.observe(target)
 	}
@@ -108,13 +124,3 @@
 		_richtextEditorHeightObserver.value?.disconnect()
 	})
 </script>
-
-<style lang="postcss" scoped>
-	.Note {
-		@apply bg-gray-800 rounded-2xl p-4 cursor-default transition duration-225 mb-6;
-
-		&.isNoteBeingEdited {
-			@apply blur-md;
-		}
-	}
-</style>
