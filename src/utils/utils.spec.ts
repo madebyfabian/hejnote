@@ -1,7 +1,12 @@
 // @ts-ignore
 import isImageValid from './isImageValid'
+
 // @ts-ignore
 import fetchUrlMetadata from './fetchUrlMetadata'
+
+//@ts-ignore
+import findIndexById from './findIndexById'
+
 
 describe('"isImageValid": Check if image url loads and therefore is valid', () => {
   it('Should return false with invalid param', async () => {
@@ -47,5 +52,30 @@ describe('"fetchUrlMetadata": Should return metadata obj if something was fetche
     ])
 
     results.forEach(result => expect(result).to.be.an('object'))
+  })
+})
+
+describe('"findIndexById": Should return index number or -1', () => {
+  it('should return -1 with invalid params', () => {
+    const results = [
+      findIndexById(),
+      findIndexById({}),
+      findIndexById({ data: undefined }),
+      findIndexById({ data: '' }),
+      findIndexById({ id: undefined }),
+      findIndexById({ id: undefined, data: [] }),
+      findIndexById({ id: '9', data: [{ id: '222' }] }),
+    ]
+
+    results.forEach(result => expect(result).to.equal(-1))
+  })
+
+  it('should return index number', () => {
+    const results = [
+      { input: findIndexById({ id: '789', data: [{ id: '123' }, { id: '456' }, { id: '789' }] }), output: 2 },
+      { input: findIndexById({ id: '22', data: [{ id: '11' }, { id: '22' }] }), output: 1 },
+    ]
+
+    results.forEach(result => expect(result.input).to.equal(result.output))
   })
 })
