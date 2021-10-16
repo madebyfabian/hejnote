@@ -1,5 +1,6 @@
 <template>
-	<HeaderMinimal />
+	<Header isMinimal />
+
 	<div class="container">
 		<div class="mx-auto max-w-sm mt-16 rounded-2xl bg-gray-800 p-8 flex flex-col gap-8">
 			<div class="text-center">
@@ -36,7 +37,7 @@
 
 	import { IconGitHub } from '@/assets/icons'
 	import { Button, TextInput } from '@/components/ui'
-	import { HeaderMinimal } from '@/components/Header'
+	import { Header } from '@/components/layouts'
 
 	const supabase = useSupabase(),
 				router = useRouter()

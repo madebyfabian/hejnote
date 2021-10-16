@@ -1,5 +1,5 @@
 <template>
-	<header class="Header">
+	<header v-if="!isMinimal" class="Header">
 		<AppLink :to="{ name: 'App-Home' }" class="flex-1 select-none">
 			<LogoIcon alt="Logo" class="ml-5" />
 		</AppLink>
@@ -25,17 +25,26 @@
 			</AppLink>
 		</div>
 	</header>
+
+	<header v-else class="Header isMinimal flex justify-center pt-11 desktop:pt-14">
+		<LogoIcon alt="Logo" class="h-7 w-auto relative z-10 mx-11" />
+	</header>
 </template>
 
 <script setup>
 	import { computed } from 'vue'
 	import { generalStore } from '@/store'
 	import { useRoute } from 'vue-router'
-	import LogoIcon from '@/assets/images/logo.svg'
 
 	// Import Components
 	import { AppLink, Avatar } from '@/components/ui'
-	import { HeaderCreateNoteEditor, HeaderSearchNotesBar } from '@/components/Header'
+	import { HeaderCreateNoteEditor, HeaderSearchNotesBar } from '@/components/layouts'
+
+	import LogoIcon from '@/assets/images/logo.svg'
+
+	defineProps({
+		isMinimal: { type: Boolean, default: false, },
+	})
 
 	const userName = computed(() => generalStore.getUserName())
 
@@ -44,7 +53,7 @@
 </script>
 
 <style lang="postcss" scoped>
-	.Header {
+	.Header:not(.isMinimal) {
 		@apply fixed top-0 left-0 w-full z-40 flex items-center pt-5;
 
 		&-bgGradient {
