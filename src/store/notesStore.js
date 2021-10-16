@@ -134,7 +134,7 @@ export default {
       }
 
       const newData = res?.data?.[0] || newVal
-      if (updateState && !newVal?.id) {
+      if (updateState && newVal?.id) {
         const index = findIndexById({ id: newData?.id, data: this.state.notes })
         if (index > -1)
           this.state.notes[index] = { ...this.state.notes[index], ...newData }
