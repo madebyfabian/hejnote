@@ -5,6 +5,8 @@
  */
 export default function useGetUrlHost( fullUrl ) {
 	let title
+	if (!fullUrl || fullUrl.length === 0 || fullUrl === '#' || fullUrl?.trim()?.length === 0)
+		return undefined
 
 	try {
 		const urlInstance = new URL(fullUrl)
