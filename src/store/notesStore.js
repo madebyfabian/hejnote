@@ -64,22 +64,6 @@ export default {
     this.state.notes = data
   },
 
-  async notesFetchSingle({ noteId }) {
-    // First fetch from database
-    const { data: rowsArr, error } = await supabase
-      .from('notes')
-      .select('*')
-      .eq('id', noteId)
-    if (error) throw error
-
-    // Update local state, Check if already in state
-    const index = findIndexById({ id: noteId, data: this.state.notes })
-    if (index > -1)
-      this.notesUpdateSingle({ noteId, newVal: rowsArr[0] })
-    else
-      this.state.notes.push(rowsArr[0])
-  },
-
   async notesUpdateSingle({ noteId, newVal, updateDB = true, updateState = true }) {
     try {
       if (updateDB) {
