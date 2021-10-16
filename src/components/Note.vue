@@ -39,7 +39,7 @@
 		</div>
 
 		<div v-if="noteLinks.length" ref="noteLinkListEl" class="mt-4 -m-2">
-			<Note-LinkList :noteId="note.id" />
+			<Note-LinkList :noteId="note.id" isReadonly />
 		</div>
 	</article>
 </template>

@@ -22,7 +22,7 @@ export default {
   },
 
   _findLinksByNoteIdsV2({ noteIds }) {
-    const joins = joinNotesLinksStore.state.joinNotesLinks.filter(join => noteIds.includes(join.note_id))
+    const joins = joinNotesLinksStore.findJoinNotesLinksByNoteIds({ noteIds })
     return joins.map(join => {
       return this.state.links.find(link => link.id === join.link_id)
     })
@@ -39,7 +39,10 @@ export default {
     this.state.links = data
   },
 
-  async linksInsert({ urlArray = [], noteId = null }) {
+  async linksInsert({ urlArray = [], noteId = null, isAddedFromText }) {
+    if (typeof isAddedFromText !== 'boolean')
+      return console.error('linksInsert: cancel because isAddedFromText is not set/not a boolean value.')
+
     // Update existing links
     await this.linksFetch()
 
@@ -49,7 +52,12 @@ export default {
     for (const newVal of urlArray) {
       const existingLink = this.state.links.find(link => link.url === newVal)
       if (existingLink) {
-        preparedJoins.push({ note_id: noteId, link_id: existingLink.id })
+        preparedJoins.push({ 
+          note_id: noteId, 
+          link_id: existingLink.id,
+          is_added_from_text: isAddedFromText,
+          is_in_text: true,
+        })
         continue
       }
       
@@ -79,7 +87,8 @@ export default {
       preparedJoins.push(...data.map(link => ({ 
         note_id: noteId, 
         link_id: link.id,
-        added_from_text: true
+        is_added_from_text: isAddedFromText,
+        is_in_text: true,
       })))
     }
 

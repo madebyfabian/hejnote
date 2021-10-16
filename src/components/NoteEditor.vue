@@ -40,7 +40,7 @@
 <script setup>
 	import { ref, reactive, watch, computed, onUnmounted, onUpdated, onBeforeUnmount } from 'vue'
 	import { throttle } from 'throttle-debounce'
-	import { linksStore, notesStore } from '@/store'
+	import { joinNotesLinksStore, linksStore, notesStore } from '@/store'
 	import { Button, RichtextEditor } from '@/components/ui'
 	import NoteActionBar from '@/components/Note-ActionBar.vue'
 	import NoteLinkList from '@/components/Note-LinkList.vue'
@@ -112,12 +112,14 @@
 
 		const urlsToAdd = newVal.filter(url => !oldVal.includes(url))
 		if (urlsToAdd.length) {
-			linksStore.linksInsert({ urlArray: urlsToAdd, noteId: note.id })
+			linksStore.linksInsert({ urlArray: urlsToAdd, noteId: note.id, isAddedFromText: true })
 		}
 
-		const urlsToDelete = oldVal.filter(url => !newVal.includes(url))
-		if (urlsToDelete.length) {
-			linksStore.linksDeleteV2({ urlArray: urlsToDelete, noteIds: [ note.id ] })
+		const urlsNotInTextAnymore = oldVal.filter(url => !newVal.includes(url))
+		if (urlsNotInTextAnymore.length) {
+			joinNotesLinksStore.joinNotesLinksUpdate({ urlArray: urlsNotInTextAnymore, noteId: note.id, newVal: {
+				is_in_text: false
+			}})
 		}
 
 		lastLinkSet.clear()
