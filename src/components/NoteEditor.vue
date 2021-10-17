@@ -58,8 +58,7 @@
 	const clickOutsideConfig = {
 		events: [ 'mousedown' ],
 		handler: () => {
-			// Do only execute if the editor is not minimized.
-			if (!props.displayMinimized)
+			if (!props.displayInModal && !props.displayMinimized) 
 				closeEditor()
 		}
 	}
@@ -98,6 +97,7 @@
 	}
 
 	const closeEditor = () => {
+		console.log('closeEditor()')
 		prepareEditorClose()
 		notesStore.closeNoteEditor()
 	}
