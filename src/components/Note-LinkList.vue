@@ -1,7 +1,7 @@
 <template>
 	<ul 
 		v-if="noteLinks?.length"
-		class="Note-LinkList divide-y-2 bg-opacity-50 bg-gray-700 divide-gray-800" 
+		class="Note-LinkList divide-y-2 bg-opacity-50 bg-gray-700 divide-gray-800 overflow-hidden" 
 		:class="{ 
 			isReadonly, 
 			'': displayAsLinkOnly,
@@ -15,16 +15,38 @@
 			@handleLinkDelete="handleLinkDelete"
 			@handleKeepLinkAfterDeletingFromNote="handleKeepLinkAfterDeletingFromNote"
 		/>
+
+		<li v-if="!isReadonly">
+			<Button buttonType="secondary" hideBorder isFullWidth noRoundedBorder @click="createLinkModalIsOpened = true">
+				<IconAdd />
+				Add new link
+			</Button>
+		</li>
 	</ul>
+
+	<Modal title="Add new link" width="100" :isOpened="createLinkModalIsOpened" @close="createLinkModalIsOpened = false">
+		<form @submit.prevent="handleCreateLinkModalSubmit">
+			<div class="flex flex-col gap-4 mb-8">
+				<TextInput v-model="createLinkModalData.url" :inputProps="{ type: 'url', placeholder: 'Your Link', required: true }" />
+			</div>
+
+			<div class="flex gap-4">
+				<Button isFullWidth :isLoading="createLinkModalButtonLoading">Save</Button>
+			</div>
+		</form>
+	</Modal>
 </template>
 
 <script setup>
-	import { computed } from 'vue'
+	import { computed, reactive, ref } from 'vue'
 	import { linksStore, joinNotesLinksStore } from '@/store'
 	import useConfirm from '@/hooks/useConfirm'
+	import { Button, Modal, TextInput } from '@/components/ui'
+	import { IconAdd, IconTrashDelete } from '@/assets/icons'
 
 	// !! Must be a direct import, otherwise props importing doesn't work.
 	import NoteLinkListItem from '@/components/Note-LinkList-Item.vue'
+import useSnackbar from '@/hooks/useSnackbar'
 
 	const props = defineProps({
 		...NoteLinkListItem.props,
@@ -51,5 +73,39 @@
 			return
 
 		linksStore.linksDeleteV2({ urlArray: [ url ], noteIds: [ props.noteId ] })
+	}
+
+	/**
+	 * Create link modal
+	 */
+	const createLinkModalIsOpened = ref(false)
+	const _default_createLinkModalData = {
+		url: ''
+	}
+	const createLinkModalData = reactive(_default_createLinkModalData)
+	const createLinkModalButtonLoading = ref(false)
+
+	const handleCreateLinkModalSubmit = async () => {
+		createLinkModalButtonLoading.value = true
+
+		try {
+			await linksStore.linksInsert({ 
+				urlArray: [ createLinkModalData.url ], 
+				noteId: props.noteId,
+				isAddedFromText: false,
+				isInText: false
+			})
+
+			createLinkModalIsOpened.value = false
+
+			// Reset data.
+			Object.assign(createLinkModalData, _default_createLinkModalData)
+
+		} catch (error) {
+			useSnackbar().createSnackbar({ message: 'Error while trying to create new link' })
+
+		} finally {
+			createLinkModalButtonLoading.value = false
+		}
 	}
 </script>
