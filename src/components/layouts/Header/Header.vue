@@ -54,18 +54,18 @@
 
 <style lang="postcss" scoped>
 	.Header:not(.isMinimal) {
-		@apply fixed top-0 left-0 w-full z-40 flex items-center pt-5;
+		@apply fixed top-0 left-0 w-full z-40 flex items-center pt-5;	
+	}
 
-		&-bgGradient {
-			@apply absolute left-0 w-full -z-1 pointer-events-none;
+	.Header-bgGradient {
+		@apply absolute left-0 w-full -z-1 pointer-events-none;
 
-			&.isTop {
-				@apply -top-5 h-8 backdrop-blur-xl bg-gray-900 bg-opacity-75;
-			}
+		&.isTop {
+			@apply -top-5 h-8 backdrop-blur-xl bg-gray-900 bg-opacity-75;
+		}
 
-			&.isBottom {
-				@apply top-8 h-10 bg-gradient-to-b from-gray-900 to-transparent;
-			}
+		&.isBottom {
+			@apply top-8 h-10 bg-gradient-to-b from-gray-900 to-transparent;
 		}
 	}
 </style>

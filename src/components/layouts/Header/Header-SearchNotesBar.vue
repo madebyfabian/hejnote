@@ -96,7 +96,7 @@
 		}
 
 		input {
-			@apply inline-flex w-full bg-transparent h-11 pl-11 rounded-xl border border-gray-700 text-100 cursor-pointer;
+			@apply inline-flex w-full bg-gray-900 h-11 pl-11 rounded-xl border border-gray-700 text-100 cursor-pointer;
 			@apply absolute;
 			@apply transition duration-300;
 			@apply ring-0;
