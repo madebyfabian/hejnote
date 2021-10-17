@@ -14,9 +14,9 @@
 				</div>
 
 				<div v-if="displayCloseButton" class="absolute right-5 top-5">
-					<Button @click="emit('close')" isIconOnly buttonType="secondary">
-						<IconClose />
-					</Button>
+					<ButtonIconOnly @click="emit('close')" :icon="IconClose">
+						Close modal
+					</ButtonIconOnly>
 				</div>
 
 				<div class="Modal-bottomBar" v-if="hasBottomBar" >
@@ -29,7 +29,7 @@
 
 <script setup>
 	import { useSlots, ref, onUnmounted, computed } from 'vue'
-	import { Button } from '@/components/ui'
+	import { ButtonIconOnly } from '@/components/ui'
 	import { IconClose } from '@/assets/icons'
 	import { CFocusLock } from '@chakra-ui/c-focus-lock'
 

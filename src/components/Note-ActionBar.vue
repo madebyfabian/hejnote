@@ -1,34 +1,32 @@
 <template>
-	<div class="flex items-center -mx-2 -mb-1.5 gap-2 justify-end">
+	<div class="Note-ActionBar flex items-center gap-2 justify-end pt-2">
 		<div class="flex items-center flex-1">
 			<Note-ActionBar-Collection v-bind="{ note, collection, isReadonly: isLocked }" @removeCollection="() => handleRemoveCollection()" />
 		</div>
 
 		<div 
-			class="Note-ActionBar flex items-center gap-1 transition-opacity" 
+			class="Note-ActionBar flex items-center gap-5 transition-opacity" 
 			:class="{ 'desktop:opacity-0': !displayButtons }"
 			role="toolbar">
 
 			<template v-if="!note.deleted_at">
-				<!-- Editor Only -->
+				<!-- Lock: Inside Editor Only -->
 				<template v-if="isInEditMode">
-					<!-- Lock -->
-					<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteLockAction">
-						<IconLock v-if="!isLocked" />
-						<IconLockSolid v-else />
-						<span class="sr-only">Note is {{ isLocked ? 'locked' : 'unlocked' }}. Click to {{ isLocked ? 'unlock' : 'lock' }}</span>
-					</Button>
+					<ButtonIconOnly isInline :icon="isLocked ? IconLockSolid : IconLock" @click="handleNoteLockAction">
+						Note is {{ isLocked ? 'locked' : 'unlocked' }}. Click to {{ isLocked ? 'unlock' : 'lock' }}
+					</ButtonIconOnly>
 
 					<!-- --- Seperator --- -->
-					<span aria-hidden="true" class="h-5 rounded-full mx-2 border-r border-gray-700" />
+					<span aria-hidden="true" class="h-5 rounded-full border-r border-gray-700" />
 				</template>
 				
+				<!-- Collections & Hide: Non-Editor Only (Readonly) -->
 				<template v-if="!isInEditMode">
-					<ContextMenu v-if="!collection" @changedOpenState="newVal => $emit('changedOpenState', newVal)">
+					<ContextMenu v-if="!collection" :isDisabled="isLocked" @changedOpenState="newVal => $emit('changedOpenState', newVal)">
 						<template #button>
-							<Button isIconOnly buttonType="secondary" hideBorder is="div">
-								<IconCollectionMove />
-							</Button>
+							<ButtonIconOnly isInline is="div" :icon="IconCollectionMove" :isDisabled="isLocked">
+								Move note to collection
+							</ButtonIconOnly>
 						</template>
 
 						<ContextMenu-Item
@@ -39,36 +37,35 @@
 						</ContextMenu-Item>
 					</ContextMenu>
 
-					<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteHideAction" :isDisabled="isLocked">
-						<IconEyeOff v-if="!note.is_hidden" />
-						<IconEyeOffSolid v-else />
-					</Button>
+					<ButtonIconOnly isInline :icon="note.is_hidden ? IconEyeOffSolid : IconEyeOff" @click="handleNoteHideAction" :isDisabled="isLocked">
+						Note is {{ note.is_hidden ? 'hidden' : 'visible' }}. Click to {{ note.is_hidden ? 'unhide' : 'hide' }}.
+					</ButtonIconOnly>
 				</template>
 
-				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNotePinAction" :isDisabled="isLocked">
-					<IconPin v-if="!note.is_pinned" />
-					<IconPinSolid v-else />
-				</Button>
+				<!-- Pin -->
+				<ButtonIconOnly isInline :icon="note.is_pinned ? IconPinSolid : IconPin" @click="handleNotePinAction" :isDisabled="isLocked">
+					Note is {{ note.is_pinned ? 'pinned' : 'not pinned' }}. Click to {{ note.is_pinned ? 'unpin' : 'pin' }}.
+				</ButtonIconOnly>
 
 				<!-- Archive -->
-				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteArchiveAction" :isDisabled="isLocked">
-					<IconArchive v-if="!note.is_archived" />
-					<IconArchiveSolid v-else />
-				</Button>
+				<ButtonIconOnly isInline :icon="note.is_archived ? IconArchiveSolid : IconArchive" @click="handleNoteArchiveAction" :isDisabled="isLocked">
+					Note is {{ note.is_archived ? 'archived' : 'not archived' }}. Click to {{ note.is_archived ? 'unarchive' : 'archive' }}.
+				</ButtonIconOnly>
 
 				<!-- Trash -->
-				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteMoveToDeleted" :isDisabled="isLocked">
-					<IconTrash />
-				</Button>
+				<ButtonIconOnly isInline :icon="IconTrash" @click="handleNoteMoveToDeleted" :isDisabled="isLocked">
+					Click to delete note
+				</ButtonIconOnly>
 			</template>
 			
 			<template v-else>
-				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteMoveOutOfDeleted">
-					<IconTrashUndo />
-				</Button>
-				<Button isIconOnly buttonType="secondary" hideBorder @click="handleNoteFullyDelete">
-					<IconTrashDelete />
-				</Button>
+				<ButtonIconOnly isInline :icon="IconTrashUndo" @click="handleNoteMoveOutOfDeleted">
+					Click to undo deletion
+				</ButtonIconOnly>
+
+				<ButtonIconOnly isInline :icon="IconTrashDelete" @click="handleNoteFullyDelete">
+					Click to permanently delete note from trash
+				</ButtonIconOnly>
 			</template>
 		</div>
 	</div>
@@ -86,7 +83,7 @@
 	} from '@/assets/icons'
 
 	// Components
-	import { Button, RichtextEditor, ContextMenu, ContextMenuItem } from '@/components/ui'
+	import { ButtonIconOnly, RichtextEditor, ContextMenu, ContextMenuItem } from '@/components/ui'
 	import { NoteActionBarCollection } from '@/components'
 
 	const supabase = useSupabase()

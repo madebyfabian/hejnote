@@ -74,21 +74,19 @@
 			<!-- Edit options -->
 			<div 
 				v-if="!isReadonly" 
-				class="flex gap-4 text-gray-300 transition-opacity 
+				class="flex gap-5 text-gray-300 transition-opacity 
 					opacity-0 
 					group-hover:opacity-100 
 					group-focus-within:opacity-100 
 					group-focus:opacity-100">
 
-				<Button buttonType="secondary" hideBorder isIconOnly hasNegativeMargin>
-					<IconEdit />
-					<span class="sr-only">Edit link <span v-if="link.title">"{{ link.title }}"</span></span>
-				</Button>
-
-				<Button buttonType="secondary" hideBorder isIconOnly hasNegativeMargin @click="handleLinkDelete({ url: link.url })">
-					<IconTrashDelete />
-					<span class="sr-only">Delete link <span v-if="link.title">"{{ link.title }}"</span></span>
-				</Button>
+				<ButtonIconOnly isInline :icon="IconEdit">
+					Edit link <span v-if="link.title">"{{ link.title }}"</span>
+				</ButtonIconOnly>
+				
+				<ButtonIconOnly isInline :icon="IconTrashDelete" @click="handleLinkDelete({ url: link.url })">
+					Delete link <span v-if="link.title">"{{ link.title }}"</span>
+				</ButtonIconOnly>
 			</div>
 		</li>
 	</ul>
@@ -98,7 +96,7 @@
 	import { computed } from 'vue'
 	import { IconGlobe, IconEdit, IconLinkExternal, IconTrashDelete } from '@/assets/icons'
 	import { linksStore, joinNotesLinksStore } from '@/store'
-	import { HostnameLabel, Button } from '@/components/ui'
+	import { HostnameLabel, Button, ButtonIconOnly } from '@/components/ui'
 	import useConfirm from '@/hooks/useConfirm'
 
 	const props = defineProps({

@@ -30,7 +30,7 @@
 
 <style lang="postcss" scoped>
 	.Note-ActionBar-Collection {
-		@apply ml-2 relative;
+		@apply relative;
 
 		&-badgeButton {
 			@apply absolute right-1 transition opacity-0 rounded;

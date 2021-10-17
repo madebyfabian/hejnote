@@ -2,7 +2,7 @@
 	<Menu v-slot="{ open }">
 		<VSlotEmitter :open="open" @changedOpenState="$emit('changedOpenState', open)" />
 
-    <MenuButton ref="menuButtonEl" v-bind="{ class: cssClass }">
+    <MenuButton ref="menuButtonEl" v-bind="{ class: cssClass }" :disabled="isDisabled">
 			<slot name="button" />
 		</MenuButton>
 
@@ -46,6 +46,7 @@
 		isFullWidth:			{ type: Boolean, default: false },
 		isFixed: 					{ type: Boolean, default: false },
 		transformOrigin: 	{ type: String, default: undefined },
+		isDisabled: 			{ type: Boolean, default: false }
 	})
 	const propAlignRight = computed(() => props.align === 'right'),
 				propVerticalAlignTop = computed(() => props.verticalAlign === 'top')
