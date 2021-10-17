@@ -66,10 +66,6 @@
 				group-hover:opacity-100 
 				group-focus-within:opacity-100 
 				group-focus:opacity-100">
-
-			<ButtonIconOnly isInline :icon="IconEdit">
-				Edit link <span v-if="link.title">"{{ link.title }}"</span>
-			</ButtonIconOnly>
 			
 			<ButtonIconOnly isInline :icon="IconTrashDelete" @click="$emit('handleLinkDelete', { url: link.url })">
 				Delete link <span v-if="link.title">"{{ link.title }}"</span>
