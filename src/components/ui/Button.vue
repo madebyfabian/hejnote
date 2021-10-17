@@ -112,7 +112,7 @@
 			@apply flex justify-center items-center flex-shrink-0 text-gray-500; 
 
 			@apply h-9 w-9 p-0;
-			&.hasNegativeMargin { @apply -mx-1.5; }
+			&.hasNegativeMargin { @apply -m-2; }
 		}
 
 		&.hideBorder {

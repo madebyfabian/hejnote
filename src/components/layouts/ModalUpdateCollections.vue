@@ -8,17 +8,14 @@
 			<Cell v-for="collection of collectionsStore.state.collections" :key="collection.id" size="200" dividerInset>
 				{{ collection.title }}
 				<template #contentRight>
-					<div class="flex gap-4">
-						<Button buttonType="secondary" hideBorder isIconOnly hasNegativeMargin @click="() => handleUpdateCollection({ collectionId: collection.id })">
-							<IconEdit />
-							<div class="sr-only">Edit collection "{{ collection.title }}"</div>
-						</Button>
+					<div class="flex gap-5">
+						<ButtonIconOnly isInline :icon="IconEdit" @click="() => handleUpdateCollection({ collectionId: collection.id })">
+							Edit collection "{{ collection.title }}"
+						</ButtonIconOnly>
 
-						<Button buttonType="secondary" hideBorder isIconOnly hasNegativeMargin @click="() => handleUpdateCollection({ collectionId: collection.id, doDelete: true })">
-							<IconTrashDelete />
-
-							<div class="sr-only">Delete collection "{{ collection.title }}"</div>
-						</Button>
+						<ButtonIconOnly isInline :icon="IconTrashDelete" @click="() => handleUpdateCollection({ collectionId: collection.id, doDelete: true })">
+							Delete collection "{{ collection.title }}"
+						</ButtonIconOnly>
 					</div>
 				</template>
 			</Cell>
@@ -37,7 +34,7 @@
 	import useConfirm from '@/hooks/useConfirm'
 
 	// Components
-	import { TextInput, Cell, Button, Modal } from '@/components/ui'
+	import { TextInput, Cell, Button, ButtonIconOnly, Modal } from '@/components/ui'
 	import { IconTrashDelete, IconEdit, IconAdd } from '@/assets/icons'
 
 	const updateCollectionsModalVisible = computed({

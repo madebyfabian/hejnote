@@ -2,6 +2,7 @@ export { default as AppLink } from './AppLink.vue';
 export { default as Avatar } from './Avatar.vue';
 export { default as Badge } from './Badge.vue';
 export { default as Button } from './Button.vue';
+export { default as ButtonIconOnly } from './ButtonIconOnly.vue';
 export { default as Cell } from './Cell.vue';
 export { default as ContextMenuItem } from './ContextMenu-Item.vue';
 export { default as ContextMenuSeperator } from './ContextMenu-Seperator.vue';
