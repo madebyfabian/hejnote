@@ -2,7 +2,7 @@
 	<component 
 		:is="is"
 		:type="type"
-		:disabled="isDisabled"
+		:disabled="isDisabled || isLoading"
 		:class="[
 			buttonType == 'primary' && 'isPrimary', 
 			buttonType == 'secondary' && 'isSecondary',
@@ -17,10 +17,20 @@
 			displayAsDropdownOpened && 'displayAsDropdownOpened',
 			isDisabled && 'isDisabled',
 			hasNegativeMargin && 'hasNegativeMargin',
+			isLoading && 'isLoading'
 		]"
 		class="Button">
 
-		<slot />
+		<span class="transition-opacity inline-flex items-center justify-center gap-2" :class="isLoading ? 'opacity-0' : 'opacity-100'">
+			<slot />
+		</span>
+
+		<div 
+			class="absolute left-0 top-0 h-full w-full flex items-center justify-center transition-opacity pointer-events-none" 
+			:class="isLoading ? 'opacity-100' : 'opacity-0'">
+
+			<LoadingSpinner />
+		</div>
 
 		<div
 			v-if="displayAsDropdown" 
@@ -35,6 +45,7 @@
 
 <script setup>
 	import { IconChevron } from '@/assets/icons'
+	import { LoadingSpinner } from '@/components/ui'
 
 	defineProps({
 		is: 											{ type: String, default: 'button' },
@@ -49,6 +60,7 @@
 		displayAsDropdownOpened: 	{ type: Boolean, default: false },
 		isDisabled: 							{ type: Boolean, default: false },
 		hasNegativeMargin: 				{ type: Boolean, default: false },
+		isLoading: 								{ type: Boolean, default: false },
 
 		// Should not be used by layouts other than <Button...> helpers (e.g. "ButtonIconOnly")
 		_isIconOnly:							{ type: Boolean, default: false },
@@ -57,7 +69,7 @@
 
 <style lang="postcss" scoped>
 	.Button {
-		@apply inline-flex items-center justify-center gap-2;
+		@apply relative inline-flex items-center justify-center gap-2;
 		@apply h-11 border font-bold;
 		@apply transition duration-100;
 		@apply w-full desktop:w-fit;
@@ -69,7 +81,8 @@
 		/** Text */
 		&.isText050 { @apply text-050; }
 		&:not(.isText050) { @apply text-100; }
-		
+
+
 		/**
 		 * Types
 		 */
@@ -136,7 +149,11 @@
 		}
 
 		&.isDisabled {
-			@apply pointer-events-none opacity-25;
+			@apply opacity-25;
+		}
+
+		&.isLoading, &.isDisabled {
+			@apply pointer-events-none;
 		}
 	}
 </style>
