@@ -4,6 +4,7 @@
 			{{ collection.title }}
 		</span>
 
+		<!-- Exeption: I didn't used <Button> here, but it's okay -->
 		<button v-if="!isReadonly" class="Note-ActionBar-Collection-badgeButton" @click="emit('removeCollection')">
 			<span 
 				aria-hidden="true" 

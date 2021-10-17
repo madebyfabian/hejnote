@@ -1,5 +1,6 @@
 <template>
 	<label class="Switch" :class="{ isChecked: value }">
+		<!-- Exeption: I didn't used <Button> here, but it's okay -->
 		<button 
 			type="button" 
 			role="switch" 
