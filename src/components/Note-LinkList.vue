@@ -14,12 +14,11 @@
 			:class="displayAsLinkOnly ? 'p-4' : 'p-3'">
 
 			<!-- Image -->
-			<component 
-				:is="isReadonly ? 'a' : 'div'"
-				:href="isReadonly ? link.url : undefined"
-				:title="isReadonly ? link.title : undefined"
-				:target="isReadonly ? '_blank' : undefined"
-				:rel="isReadonly ? 'noopener noreferrer' : undefined"
+			<a
+				:href="link.url"
+				:title="link.title"
+				target="_blank"
+				rel="noopener noreferrer"
 				class="relative block rounded-lg overflow-hidden w-10 h-10 self-start">
 
 				<div
@@ -30,7 +29,6 @@
 				</div>
 
 				<div 
-					v-if="isReadonly"
 					class="
 						absolute top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-90
 						transition-opacity opacity-0 group-hover:opacity-100
@@ -41,7 +39,7 @@
 						<IconLinkExternal />
 					</span>
 				</div>
-			</component>
+			</a>
 
 			<!-- Content -->
 			<div 
