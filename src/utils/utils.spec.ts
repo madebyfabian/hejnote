@@ -74,6 +74,7 @@ describe('"findIndexById": Should return index number or -1', () => {
     const results = [
       { input: findIndexById({ id: '789', data: [{ id: '123' }, { id: '456' }, { id: '789' }] }), output: 2 },
       { input: findIndexById({ id: '22', data: [{ id: '11' }, { id: '22' }] }), output: 1 },
+      { input: findIndexById({ id: '222', data: [{ id: '222' }] }), output: 0 }
     ]
 
     results.forEach(result => expect(result.input).to.equal(result.output))
