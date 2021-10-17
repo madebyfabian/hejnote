@@ -74,8 +74,8 @@
 			<!-- Edit options -->
 			<div 
 				v-if="!isReadonly" 
-				class="flex gap-5 text-gray-300 transition-opacity 
-					opacity-0 
+				class="flex gap-5 text-gray-300 mr-2
+					transition-opacity opacity-0 
 					group-hover:opacity-100 
 					group-focus-within:opacity-100 
 					group-focus:opacity-100">

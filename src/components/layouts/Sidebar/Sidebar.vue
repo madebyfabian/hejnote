@@ -9,13 +9,12 @@
 
 				<LocalSubheadline class="group relative">
 					{{ isHiddenMode ? 'Hidden ' : null }}Collections
-					<Button 
-						buttonType="tertiary"
-						class="absolute bottom-2.5"
-						@click="generalStore.updateUpdateCollectionsModalVisible({ newVal: true })">
-
-						<IconEdit class="h-4 w-4 text-gray-500 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100" />
-					</Button>
+	
+					<div class="absolute right-0 bottom-2 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
+						<ButtonIconOnly isInline :icon="IconEdit" @click="generalStore.updateUpdateCollectionsModalVisible({ newVal: true })">
+							Edit collections
+						</ButtonIconOnly>
+					</div>
 				</LocalSubheadline>
 
 				<SidebarItem 
@@ -47,7 +46,7 @@
 	import { computed, defineComponent } from 'vue'
 	import { generalStore, collectionsStore } from '@/store'
 	import { SidebarItem } from '@/components/layouts'
-	import { Button } from '@/components/ui'
+	import { Button, ButtonIconOnly } from '@/components/ui'
 	import { IconEdit } from '@/assets/icons'
 
 	const LocalSubheadline = defineComponent({
