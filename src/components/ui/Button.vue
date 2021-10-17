@@ -8,7 +8,7 @@
 			buttonType == 'secondary' && 'isSecondary',
 			buttonType == 'tertiary' && 'isTertiary',
 			buttonType == 'inline' && 'isInline',
-			isIconOnly && 'isIconOnly',
+			_isIconOnly && '_isIconOnly',
 			isText050 && 'isText050',
 			hideBorder && 'hideBorder',
 			fitToArea && 'fitToArea',
@@ -39,9 +39,7 @@
 	defineProps({
 		is: 											{ type: String, default: 'button' },
 		type: 										{ type: String, default: undefined },
-		buttonType:								{ type: String, default: 'primary', 
-																validate: val => [ 'primary', 'secondary', 'tertiary', 'inline' ].includes(val) },
-		isIconOnly:								{ type: Boolean, default: false },
+		buttonType:								{ type: String, default: 'primary', validate: val => [ 'primary', 'secondary', 'tertiary', 'inline' ].includes(val) },
 		isText050: 								{ type: Boolean, default: false },
 		hideBorder:								{ type: Boolean, default: false },
 		noRoundedBorder: 					{ type: Boolean, default: false },
@@ -51,6 +49,9 @@
 		displayAsDropdownOpened: 	{ type: Boolean, default: false },
 		isDisabled: 							{ type: Boolean, default: false },
 		hasNegativeMargin: 				{ type: Boolean, default: false },
+
+		// Should not be used by layouts other than <Button...> helpers (e.g. "ButtonIconOnly")
+		_isIconOnly:							{ type: Boolean, default: false },
 	})
 </script>
 
@@ -108,7 +109,7 @@
 		/** 
 		 * Other props
 		 */
-		&.isIconOnly {
+		&._isIconOnly {
 			@apply flex justify-center items-center flex-shrink-0 text-gray-500; 
 
 			@apply h-9 w-9 p-0;

@@ -7,7 +7,7 @@
 			hideBorder: $props.isInline,
 			hasNegativeMargin: $props.isInline,
 			buttonType: 'secondary',
-			isIconOnly: true,
+			_isIconOnly: true,
 		}">
 
 		<component :is="$props.icon" />
