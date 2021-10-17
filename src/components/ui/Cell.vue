@@ -77,7 +77,7 @@
 		 * Content
 		 */
 		&-content {
-			@apply flex-1 flex;
+			@apply flex-1 flex items-center;
 			@apply py-2.5 desktop:py-1.5;
 			@apply border-b border-transparent;
 
