@@ -110,17 +110,17 @@
 
 	/** Transition */
 	.transition-modalSlideIn-enter-active {
-		@apply transition-opacity duration-300;
+		@apply transition-opacity duration-300 desktop:duration-150;
 
 		.Modal-container {
-			@apply transition-transform duration-300;
+			@apply transition-transform duration-300 desktop:duration-150;
 		}
 	}
 	.transition-modalSlideIn-leave-active {
-		@apply transition-opacity duration-150;
+		@apply transition-opacity duration-150 desktop:duration-100;
 
 		.Modal-container {
-			@apply transition-transform duration-150;
+			@apply transition-transform duration-150 desktop:duration-100;
 		}
 	}
 	.transition-modalSlideIn-enter-from, .transition-modalSlideIn-leave-to {
