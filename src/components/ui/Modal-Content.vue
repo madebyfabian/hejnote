@@ -3,7 +3,7 @@
 		<div class="Modal" :class="{ isConfirm, isMobileFullHeight }" @mousedown.self="emit('close')">
 			<div 
 				class="Modal-container"
-				:class="{ hasPadding, 'desktop:max-w-lg': !isConfirm, 'desktop:max-w-sm': isConfirm }"
+				:class="[ hasPadding && 'hasPadding', widthClass ]"
 				role="dialog"
 				aria-modal="true">
 
@@ -48,6 +48,7 @@
 		displayCloseButton: 		{ type: Boolean, default: true },
 		isConfirm: 							{ type: Boolean, default: false },
 		forceMobileFullHeight: 	{ type: Boolean, default: false },
+		width: 									{ type: String, default: '200', validator: v => [ '100', '200' ].includes(v) },
 	})
 
 	const isMobileFullHeight = computed(() => {
@@ -55,6 +56,14 @@
 			return false
 		
 		return props.forceMobileFullHeight || false
+	})
+
+	const widthClass = computed(() => {
+		if (props.width === '100' || props.isConfirm)
+			return 'desktop:max-w-sm'
+
+		if (props.width === '200' || !props.isConfirm)
+			return 'desktop:max-w-lg'
 	})
 
 	const handler = (e) => {
