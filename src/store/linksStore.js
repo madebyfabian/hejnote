@@ -32,7 +32,7 @@ export default {
     this.state.links = data
   },
 
-  async linksInsert({ urlArray = [], noteId = null, isAddedFromText }) {
+  async linksInsert({ urlArray = [], noteId = null, isAddedFromText = true, isInText = false }) {
     if (typeof isAddedFromText !== 'boolean')
       return console.error('linksInsert: cancel because isAddedFromText is not set/not a boolean value.')
 
@@ -49,7 +49,7 @@ export default {
           note_id: noteId, 
           link_id: existingLink.id,
           is_added_from_text: isAddedFromText,
-          is_in_text: true,
+          is_in_text: isInText,
         })
         continue
       }
