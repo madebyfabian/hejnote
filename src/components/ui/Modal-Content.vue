@@ -1,30 +1,30 @@
 <template>
 	<CFocusLock>
 		<div class="Modal" :class="{ isConfirm, isMobileFullHeight }" @mousedown.self="emit('close')">
-			<component 
-				:is="isForm ? 'form' : 'div'"
+			<div 
 				class="Modal-container"
 				:class="[ hasPadding && 'hasPadding', widthClass ]"
-				@submit.prevent="e => $emit('formSubmit', e)"
 				role="dialog"
 				aria-modal="true">
 
 				<div class="Modal-header" v-if="displayTitle" v-text="title" />
 				
-				<div class="Modal-content" :class="{ 'flex-1': isMobileFullHeight }">
-					<slot />
-				</div>
+				<component :is="isForm ? 'form' : 'div'" @submit.prevent="e => $emit('formSubmit', e)">
+					<div class="Modal-content" :class="{ 'flex-1': isMobileFullHeight }">
+						<slot />
+					</div>
 
-				<div v-if="displayCloseButton" class="absolute right-5 top-5">
-					<ButtonIconOnly @click="emit('close')" :icon="IconClose">
+					<div class="Modal-bottomBar" v-if="hasBottomBar" >
+						<slot name="bottomBar" />
+					</div>
+				</component>
+
+				<div v-if="displayCloseButton" class="absolute right-5 top-5 z-60">
+					<ButtonIconOnly @click="() => $emit('close')" :icon="IconClose">
 						Close modal
 					</ButtonIconOnly>
 				</div>
-
-				<div class="Modal-bottomBar" v-if="hasBottomBar" >
-					<slot name="bottomBar" />
-				</div>
-			</component>
+			</div>
 		</div>
 	</CFocusLock>
 </template>
