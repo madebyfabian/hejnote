@@ -31,7 +31,10 @@
 		width="100" 
 		isForm>
 
-		<TextInput v-model="createLinkModalData.url" :inputProps="{ type: 'url', placeholder: 'Your Link', required: true }" />
+		<div class="flex flex-col gap-4">
+			<TextInput v-model="createLinkModalData.url" :inputProps="{ type: 'url', placeholder: 'Your Link', required: true }" />
+			<TextInput v-model="createLinkModalData.annotation" :inputProps="{ placeholder: 'Annotations for this link' }" />
+		</div>
 
 		<template #bottomBar>
 			<Button type="submit" isFullWidth :isLoading="createLinkModalButtonLoading">Save</Button>
@@ -82,7 +85,8 @@
 	 */
 	const createLinkModalIsOpened = ref(false)
 	const _default_createLinkModalData = {
-		url: ''
+		url: '',
+		annotation: ''
 	}
 	const createLinkModalData = reactive({ ..._default_createLinkModalData })
 	const createLinkModalButtonLoading = ref(false)
@@ -95,7 +99,8 @@
 				urlArray: [ createLinkModalData.url ], 
 				noteId: props.noteId,
 				isAddedFromText: false,
-				isInText: false
+				isInText: false,
+				annotation: createLinkModalData.annotation || null,
 			})
 
 			createLinkModalIsOpened.value = false

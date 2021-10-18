@@ -55,7 +55,7 @@
 				</template>
 			</div>
 
-			<div v-if="!isReadonly && currentLinkJoin?.annotation" class="mt-1 text-050">"{{ currentLinkJoin.annotation }}"</div>
+			<div v-if="currentLinkJoin?.annotation" class="mt-1 text-050">"{{ currentLinkJoin.annotation }}"</div>
 		</div>
 
 		<!-- Edit options -->
