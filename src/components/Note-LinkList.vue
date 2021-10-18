@@ -41,12 +41,12 @@
 	import { computed, reactive, ref } from 'vue'
 	import { linksStore, joinNotesLinksStore } from '@/store'
 	import useConfirm from '@/hooks/useConfirm'
+	import useSnackbar from '@/hooks/useSnackbar'
 	import { Button, Modal, TextInput } from '@/components/ui'
 	import { IconAdd, IconTrashDelete } from '@/assets/icons'
 
 	// !! Must be a direct import, otherwise props importing doesn't work.
 	import NoteLinkListItem from '@/components/Note-LinkList-Item.vue'
-import useSnackbar from '@/hooks/useSnackbar'
 
 	const props = defineProps({
 		...NoteLinkListItem.props,
@@ -66,7 +66,7 @@ import useSnackbar from '@/hooks/useSnackbar'
 	const handleLinkDelete = async ({ url }) => {
 		const answer = await useConfirm().doConfirm({
 			title: 'Delete link',
-			message: `Are you sure you want to delete this link?`
+			question: `Are you sure you want to delete this link?<br>This can't be undone.`
 		})
 
 		if (!answer)
@@ -82,7 +82,7 @@ import useSnackbar from '@/hooks/useSnackbar'
 	const _default_createLinkModalData = {
 		url: ''
 	}
-	const createLinkModalData = reactive(_default_createLinkModalData)
+	const createLinkModalData = reactive({ ..._default_createLinkModalData })
 	const createLinkModalButtonLoading = ref(false)
 
 	const handleCreateLinkModalSubmit = async () => {
