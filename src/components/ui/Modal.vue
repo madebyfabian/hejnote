@@ -1,7 +1,12 @@
 <template>
 	<teleport to="body">
 		<transition name="transition-modalSlideIn">
-			<Modal-Content v-if="isOpened" v-bind="$props" @close="$emit('close')">
+			<Modal-Content 
+				v-if="isOpened" 
+				v-bind="$props" 
+				@close="$emit('close')"
+				@formSubmit="e => $emit('formSubmit', e)">
+
 				<slot />
 				<template #bottomBar>
 					<slot name="bottomBar"/>

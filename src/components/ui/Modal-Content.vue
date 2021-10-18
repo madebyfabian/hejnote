@@ -1,9 +1,11 @@
 <template>
 	<CFocusLock>
 		<div class="Modal" :class="{ isConfirm, isMobileFullHeight }" @mousedown.self="emit('close')">
-			<div 
+			<component 
+				:is="isForm ? 'form' : 'div'"
 				class="Modal-container"
 				:class="[ hasPadding && 'hasPadding', widthClass ]"
+				@submit.prevent="e => $emit('formSubmit', e)"
 				role="dialog"
 				aria-modal="true">
 
@@ -22,7 +24,7 @@
 				<div class="Modal-bottomBar" v-if="hasBottomBar" >
 					<slot name="bottomBar" />
 				</div>
-			</div>
+			</component>
 		</div>
 	</CFocusLock>
 </template>
@@ -33,7 +35,7 @@
 	import { IconClose } from '@/assets/icons'
 	import { CFocusLock } from '@chakra-ui/c-focus-lock'
 
-	const emit = defineEmits([ 'close' ])
+	const emit = defineEmits([ 'close', 'formSubmit' ])
 
 	const slots = useSlots()
 	const hasBottomBar = ref(false)
@@ -49,6 +51,7 @@
 		isConfirm: 							{ type: Boolean, default: false },
 		forceMobileFullHeight: 	{ type: Boolean, default: false },
 		width: 									{ type: String, default: '200', validator: v => [ '100', '200' ].includes(v) },
+		isForm: 								{ type: Boolean, default: false },
 	})
 
 	const isMobileFullHeight = computed(() => {

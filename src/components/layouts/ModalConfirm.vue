@@ -1,20 +1,22 @@
 <template>
 	<Modal 
     :isOpened="isVisible" 
-    isConfirm
-    @close="() => handleAnswer(false)" 
     :title="title || ''"
-    :displayCloseButton="false">
+    :displayCloseButton="false"
+    @close="() => handleAnswerV2({ doReject: true })" 
+    @formSubmit="e => handleAnswerV2({ e })"
+    isConfirm
+    isForm>
 
     <div v-html="question" />
 
-    <form v-if="inputProps" @submit.prevent="handleAnswer" ref="formEl">
-      <TextInput :modelValue="inputProps.value || ''" :inputProps="inputProps" />
-    </form>
+    <div v-if="inputProps">
+      <TextInput :modelValue="inputProps.value || ''" :inputProps="{ ...inputProps, name: 'input', required: true }" />
+    </div>
 
     <template #bottomBar>
-      <Button @click="() => handleAnswer(false)" buttonType="secondary">Cancel</Button>
-      <Button @click="() => handleAnswer(true)" buttonType="secondary">Okay</Button>
+      <Button type="button" @click="() => handleAnswerV2({ doReject: true })" buttonType="secondary">Cancel</Button>
+      <Button type="submit" buttonType="secondary">Okay</Button>
     </template>
   </Modal>
 </template>
@@ -28,7 +30,26 @@
 
   const formEl = ref(null)
 
+  const handleAnswerV2 = ({ doReject, doResolve, e }) => {
+    // Answer directly with boolean if required.
+    if (doReject || doResolve)
+      return doAnswer(doReject ? false : true)
+
+    // Answer with form data.
+    if (!inputProps.value)
+      return doAnswer(true)
+
+    // If no boolean set, resolve with form value.
+    // Loop inputs (for now, only one. So just return the first value)
+    const formData = new FormData(e?.target)
+    for (let [ key, value ] of formData.entries()) {
+      return doAnswer(value)
+    }
+  }
+
   const handleAnswer = value => {
+    console.log(value)
+    /*
     if (value == false)
       return doAnswer(false)
 
@@ -36,6 +57,6 @@
       return doAnswer(value)
 
     const inputValue = formEl.value.querySelector('input')?.value
-    return doAnswer(inputValue)
+    return doAnswer(inputValue)*/
   }
 </script>

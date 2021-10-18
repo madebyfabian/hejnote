@@ -24,16 +24,19 @@
 		</li>
 	</ul>
 
-	<Modal title="Add new link" width="100" :isOpened="createLinkModalIsOpened" @close="createLinkModalIsOpened = false">
-		<form @submit.prevent="handleCreateLinkModalSubmit">
-			<div class="flex flex-col gap-4 mb-8">
-				<TextInput v-model="createLinkModalData.url" :inputProps="{ type: 'url', placeholder: 'Your Link', required: true }" />
-			</div>
+	<Modal 
+		:isOpened="createLinkModalIsOpened" 
+		@close="createLinkModalIsOpened = false"
+		@formSubmit="handleCreateLinkModalSubmit"
+		title="Add new link" 
+		width="100" 
+		isForm>
 
-			<div class="flex gap-4">
-				<Button isFullWidth :isLoading="createLinkModalButtonLoading">Save</Button>
-			</div>
-		</form>
+		<TextInput v-model="createLinkModalData.url" :inputProps="{ type: 'url', placeholder: 'Your Link', required: true }" />
+
+		<template #bottomBar>
+			<Button type="submit" isFullWidth :isLoading="createLinkModalButtonLoading">Save</Button>
+		</template>
 	</Modal>
 </template>
 
@@ -85,7 +88,9 @@
 	const createLinkModalData = reactive({ ..._default_createLinkModalData })
 	const createLinkModalButtonLoading = ref(false)
 
-	const handleCreateLinkModalSubmit = async () => {
+	const handleCreateLinkModalSubmit = async (e) => {
+		console.log(e)
+
 		createLinkModalButtonLoading.value = true
 
 		try {
