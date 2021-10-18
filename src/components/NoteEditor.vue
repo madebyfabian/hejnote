@@ -23,7 +23,7 @@
 			</div>
 
 			<div v-if="note.id" class="m-2">
-				<Note-LinkList :noteId="note.id" />
+				<Note-LinkList :noteId="note.id" :isReadonly="isLocked" />
 			</div>
 		</article>
 
