@@ -12,5 +12,3 @@ debug.log
 /coverage
 .nyc_output
 components_TEST
-
-src/views/App/App-Test.vue
