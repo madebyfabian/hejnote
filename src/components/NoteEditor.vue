@@ -97,7 +97,6 @@
 	}
 
 	const closeEditor = () => {
-		console.log('closeEditor()')
 		prepareEditorClose()
 		notesStore.closeNoteEditor()
 	}

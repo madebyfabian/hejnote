@@ -88,9 +88,7 @@
 	const createLinkModalData = reactive({ ..._default_createLinkModalData })
 	const createLinkModalButtonLoading = ref(false)
 
-	const handleCreateLinkModalSubmit = async (e) => {
-		console.log(e)
-
+	const handleCreateLinkModalSubmit = async () => {
 		createLinkModalButtonLoading.value = true
 
 		try {

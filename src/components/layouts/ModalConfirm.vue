@@ -46,17 +46,4 @@
       return doAnswer(value)
     }
   }
-
-  const handleAnswer = value => {
-    console.log(value)
-    /*
-    if (value == false)
-      return doAnswer(false)
-
-    if (!inputProps.value)
-      return doAnswer(value)
-
-    const inputValue = formEl.value.querySelector('input')?.value
-    return doAnswer(inputValue)*/
-  }
 </script>
