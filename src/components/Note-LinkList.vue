@@ -1,6 +1,5 @@
 <template>
 	<ul 
-		v-if="noteLinks?.length"
 		class="Note-LinkList divide-y-2 bg-opacity-50 bg-gray-700 divide-gray-800 overflow-hidden" 
 		:class="{ 
 			isReadonly, 
