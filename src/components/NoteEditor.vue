@@ -22,7 +22,7 @@
 				/>
 			</div>
 
-			<div class="m-2">
+			<div v-if="note.id" class="m-2">
 				<Note-LinkList :noteId="note.id" />
 			</div>
 		</article>
