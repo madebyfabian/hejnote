@@ -1,5 +1,5 @@
 <template>
-  <div class="RichtextEditor" ref="richtextEditorEl">
+  <div class="RichtextEditor">
 		<div class="RichtextEditor-content" :class="{ isReadonly, isInEditMode }">
 			<EditorContent v-if="!isReadonly" :editor="editor" />
 			<div v-else v-html="readonlyHTML" />
@@ -24,12 +24,10 @@
 	const props = defineProps({
 		modelValue:		{ type: [ String, Object ], default: '' },
 		isReadonly:		{ type: Boolean, default: false },
-		isInEditMode: { type: Boolean, default: false },
+		isInEditMode: { type: Boolean, default: false }, // meaning: we are inside editor ui and user can edit the content (unless it's locked)
 	})
 
 	const emit = defineEmits([ 'update:modelValue', 'editorCreated' ])
-
-	const richtextEditorEl = ref(null)
 
 	const editor = useEditor({
 		content: props.modelValue,
