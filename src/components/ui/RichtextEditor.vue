@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-	import { computed, ref, watch } from 'vue'
+	import { computed, onMounted, ref, watch } from 'vue'
 	import useGetUrlHost from '@/hooks/useGetUrlHost'
 
 	// Import tiptap and tiptap utils.
@@ -68,9 +68,22 @@
 		})
 		return data
 	}
+	
+	watch(() => props.modelValue, newValue => {
+		const isSame = JSON.stringify(editor.value?.getJSON()) === JSON.stringify(newValue)
+		if (isSame) 
+			return
 
-	const readonlyHTML = computed(() => {
-		if (!editor?.value)
+		editor.value?.commands?.setContent(newValue, false)
+	}, { deep: true })
+
+
+	/**
+	 * Generates the HTML for the readonly editor.
+	 */
+	const readonlyHTML = ref('')
+	const generateReadonlyHTML = () => {
+		if (!props.isReadonly || !editor?.value)
 			return ''
 
 		// First, transform links
@@ -80,18 +93,20 @@
 		// Then, update the content of the readonly editor.
 		editor.value.commands.setContent(transformedData)
 
-		// Then, transform the data to HTML
+		// Then, transform the data to HTML*/
 		const html = editor.value.getHTML()
 
-		return html
+		readonlyHTML.value = html
+	}
+
+	// On first mount, run the readonly html generator.
+	onMounted(() => {
+		generateReadonlyHTML()
 	})
 
-	watch(() => props.modelValue, newValue => {
-		const isSame = JSON.stringify(editor.value?.getJSON()) === JSON.stringify(newValue)
-		if (isSame) 
-			return
-
-		editor.value?.commands?.setContent(newValue, false)
+	// After the props have been updated, regenerate the readonly html.
+	watch(() => props, () => {
+		generateReadonlyHTML()
 	}, { deep: true })
 </script>
 
