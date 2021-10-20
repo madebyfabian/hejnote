@@ -5,6 +5,7 @@
 				class="Modal-container"
 				:class="[ hasPadding && 'hasPadding', widthClass ]"
 				role="dialog"
+				v-scroll-lock="true"
 				aria-modal="true">
 
 				<div class="Modal-header" v-if="displayTitle" v-text="title" />

@@ -25,4 +25,7 @@ app.use(masonry)
 import vClickOutside from 'click-outside-vue3'
 app.use(vClickOutside)
 
+import BodyScrollLock from '@/plugins/bodyScrollLock'
+app.use(BodyScrollLock)
+
 app.mount('#app')

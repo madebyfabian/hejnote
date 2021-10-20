@@ -31,7 +31,8 @@
 	}
 
 	body {
-		@apply bg-gray-900 text-gray-400 text-100 overflow-y-scroll;
+		@apply bg-gray-900 text-gray-400 text-100;
+		overflow: overlay;
 	}
 
 	#app {
