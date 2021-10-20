@@ -1,15 +1,14 @@
 <template>
   <div class="RichtextEditor" ref="richtextEditorEl">
 		<div class="RichtextEditor-content" :class="{ isReadonly, isInEditMode }">
-			<editor-content v-if="!isReadonly" :editor="editor" />
+			<EditorContent v-if="!isReadonly" :editor="editor" />
 			<div v-else v-html="readonlyHTML" />
 		</div>
 	</div>
 </template>
 
 <script setup>
-	import { computed, onMounted, ref, watch } from 'vue'
-	import useGetUrlHost from '@/hooks/useGetUrlHost'
+	import { onMounted, ref, watch } from 'vue'
 
 	// Import tiptap and tiptap utils.
 	import { useEditor, EditorContent } from '@tiptap/vue-3'
@@ -56,19 +55,6 @@
 		]
 	})
 
-	const _replaceLinkTextWithHost = data => {
-		data.content = data.content.map(obj => {
-			if (obj?.type === 'text') {
-				const linkMarkIndex = obj?.marks?.findIndex(mark => mark?.type === 'link')
-				if (linkMarkIndex > -1) 
-					obj.text = useGetUrlHost(obj?.marks?.[0]?.attrs?.href)
-			}
-
-			return obj?.content ? _replaceLinkTextWithHost(obj) : obj
-		})
-		return data
-	}
-	
 	watch(() => props.modelValue, newValue => {
 		const isSame = JSON.stringify(editor.value?.getJSON()) === JSON.stringify(newValue)
 		if (isSame) 
@@ -85,13 +71,6 @@
 	const generateReadonlyHTML = () => {
 		if (!props.isReadonly || !editor?.value)
 			return ''
-
-		// First, transform links
-		const data = editor.value.getJSON()
-		const transformedData = _replaceLinkTextWithHost(data)
-
-		// Then, update the content of the readonly editor.
-		editor.value.commands.setContent(transformedData)
 
 		// Then, transform the data to HTML*/
 		const html = editor.value.getHTML()
@@ -227,9 +206,16 @@
 				a {
 					@apply inline-flex items-center bg-gray-700 px-1.5 rounded-lg no-underline text-050 max-h-5 overflow-hidden;
 					@apply -mt-1 transform translate-y-1;
+					@apply line-clamp-1;
+					@apply pl-5;
+
+					overflow: hidden;
+					display: -webkit-inline-box;
+					-webkit-box-orient: vertical;
+					-webkit-line-clamp: 1;
 
 					&::before {
-						@apply content block flex-shrink-0 h-4 w-4 -ml-0.5 mr-0.5;
+						@apply content absolute left-1 top-0.5 h-4 w-4 -ml-0.5 mr-0.5;
 						@apply icon-link;
 					}
 				}
