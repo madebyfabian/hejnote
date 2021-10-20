@@ -25,13 +25,14 @@
 			<slot />
 		</span>
 
-		<div 
-			v-if="isLoading"
-			class="absolute left-0 top-0 h-full w-full flex items-center justify-center transition-opacity pointer-events-none" 
-			:class="isLoading ? 'opacity-100' : 'opacity-0'">
+		<transition name="transition-fade-100">
+			<div 
+				v-if="isLoading"
+				class="absolute left-0 top-0 h-full w-full flex items-center justify-center pointer-events-none">
 
-			<LoadingSpinner />
-		</div>
+				<LoadingSpinner />
+			</div>
+		</transition>
 
 		<div
 			v-if="displayAsDropdown" 
