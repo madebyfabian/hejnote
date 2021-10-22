@@ -15,8 +15,8 @@
     </div>
 
     <template #bottomBar>
-      <Button type="button" @click="() => handleAnswerV2({ doReject: true })" buttonType="secondary">Cancel</Button>
-      <Button type="submit" buttonType="secondary">Okay</Button>
+      <Button type="button" buttonType="secondary" @click="() => handleAnswerV2({ doReject: true })">Cancel</Button>
+      <Button type="submit" buttonType="primary">Okay</Button>
     </template>
   </Modal>
 </template>

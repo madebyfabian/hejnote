@@ -104,8 +104,11 @@
 			max-height: 100%;
 			-webkit-overflow-scrolling: touch;
 
+			/** Even when hasPadding=false, the safe area padding should appear. */
+			@apply pb-safe-area-bottom !important;
+
 			&.hasPadding {
-				@apply p-6 pb-safe-area-bottom desktop:pb-6;
+				@apply p-6 desktop:pb-6;
 			}
 		}
 
