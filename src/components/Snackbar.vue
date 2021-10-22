@@ -2,14 +2,16 @@
 	<div 
 		class="Snackbar"
 		ref="snackbarRef"
-		role="status"
 		:style="{ '--snackbar-max-height': `${ snackbarMaxHeight }px` }">
 
-		<div class="Snackbar-inner" @click.self="$emit('removeSnackbar')">
-			<span 
+		<div class="Snackbar-inner">
+			<button 
 				v-html="snackbar.message"
 				class="Snackbar-content"
 				:class="{ 'border-r border-gray-700': snackbar.buttonText }"
+				@click.self="$emit('removeSnackbar')"
+				role="status"
+				aria-label="Close this message"
 			/>
 
 			<Button 
@@ -59,7 +61,7 @@
 		will-change: transform, opacity, max-height;
 
 		.Snackbar-content {
-			@apply block px-4 py-3 relative z-1 pointer-events-none flex-1;
+			@apply block w-full text-left px-4 py-3 relative z-1 flex-1;
 		}
 	}
 </style>

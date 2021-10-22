@@ -1,13 +1,15 @@
 <template>
-	<div class="SnackbarContainer">
-		<transition-group name="transition-snackbar" tag="div">
-			<Snackbar 
-				v-for="snackbar of snackbarInstances" :key="snackbar.id"
-				:snackbar="snackbar"
-				@removeSnackbar="removeSnackbar({ id: snackbar.id })"
-			/>
-		</transition-group>
-	</div>
+	<teleport to="body">
+		<div class="SnackbarContainer" aria-live="assertive">
+			<transition-group name="transition-snackbar" tag="div">
+				<Snackbar 
+					v-for="snackbar of snackbarInstances" :key="snackbar.id"
+					:snackbar="snackbar"
+					@removeSnackbar="removeSnackbar({ id: snackbar.id })"
+				/>
+			</transition-group>
+		</div>
+	</teleport>
 </template>
 
 <script setup>
@@ -20,7 +22,7 @@
 <style lang="postcss" scoped>
 	.SnackbarContainer {
 		@apply flex flex-col-reverse items-center fixed w-full desktop:max-w-sm px-4 desktop:px-0 z-50;
-		@apply left-0 desktop:left-6 bottom-24 desktop:bottom-6;
+		@apply left-0 desktop:left-6 top-0 desktop:top-initial desktop:bottom-6;
 
 		> div {
 			@apply w-full;
@@ -37,8 +39,6 @@
 	}
 	.transition-snackbar-enter-from,
 	.transition-snackbar-leave-to {
-		opacity: 0;
-		max-height: 0;
-		transform: translateY(8px);
+		@apply opacity-0 max-h-0 transform-gpu -translate-y-2 desktop:translate-y-2;
 	}
 </style>
