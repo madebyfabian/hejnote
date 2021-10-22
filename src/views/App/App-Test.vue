@@ -1,14 +1,18 @@
 <template>
-	<button @click="useSnackbar().createSnackbar({ message: 'This is some very long snackbar content though that will last long', timeout: 9999999, buttonText: 'haha', onButtonClick })">open snackbar</button>
+	<button @click="isLoading = !isLoading">Change loading</button>
+
 	<br><br>
-	<button @click="useConfirm().doConfirm({ question: 'hello' })">confirm</button>
+
+	<Button :isLoading="isLoading">
+		Test
+	</Button>
 </template>
 
 <script setup>
-	import useSnackbar from '@/hooks/useSnackbar'
-	import useConfirm from '@/hooks/useConfirm'
+	import { ref, computed } from 'vue'
+	import { generalStore, notesStore } from '@/store'
+	import { Button, ButtonIconOnly, LoadingSpinner } from '@/components/ui'
+	import { IconSearch } from '@/assets/icons'
 
-	const onButtonClick = () => {
-		console.log('clicked');
-	}
+	const isLoading = ref(false)
 </script>
