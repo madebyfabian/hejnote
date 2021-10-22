@@ -4,32 +4,14 @@
 		:class="displayAsLinkOnly ? 'p-4' : 'p-3'">
 
 		<!-- Image -->
-		<a
-			:href="link.url"
-			:title="link.title"
-			target="_blank"
-			rel="noopener noreferrer"
-			class="relative block rounded-lg overflow-hidden w-10 h-10 self-start">
-
+		<div class="relative block rounded-lg overflow-hidden w-10 h-10 self-start">
 			<div
 				class="bg-gray-600 w-full h-full bg-cover bg-center flex-shrink-0 flex items-center justify-center text-gray-500"
 				:style="generateBannerStyle(link?.banner_url)">
 
 				<IconGlobe v-if="!link?.banner_url" />
 			</div>
-
-			<div 
-				class="
-					absolute top-0 left-0 w-full h-full flex justify-center items-center bg-gray-800 bg-opacity-90
-					transition-opacity opacity-0 group-hover:opacity-100
-				" 
-				aria-hidden="false">
-
-				<span class="transition-transform transform-gpu translate-y-1.5 group-hover:translate-y-0">
-					<IconLinkExternal />
-				</span>
-			</div>
-		</a>
+		</div>
 
 		<!-- Content -->
 		<div class="flex-1 flex flex-col justify-center">
@@ -40,6 +22,7 @@
 				class="text-050 flex text-gray-500">
 
 				<HostnameLabel :url="link.url" />
+
 				<template v-if="!isReadonly">
 					<span class="block mx-1">&mdash;</span>
 
@@ -60,14 +43,18 @@
 
 		<!-- Edit options -->
 		<div 
-			v-if="!isReadonly" 
-			class="flex gap-5 text-gray-300 mr-2
-				transition-opacity opacity-0 
-				group-hover:opacity-100 
-				group-focus-within:opacity-100 
-				group-focus:opacity-100">
+			class="flex gap-5 text-gray-300 transition-opacity 
+				desktop:opacity-0 
+				desktop:group-hover:opacity-100 
+				desktop:group-focus-within:opacity-100">
+
+			<AppLink v-bind="{ to: props.link.url, title: props.link.title, target: '_blank' }">
+				<ButtonIconOnly is="div" isInline :icon="IconLinkExternal">
+					Test
+				</ButtonIconOnly>
+			</AppLink>
 			
-			<ButtonIconOnly isInline :icon="IconTrashDelete" @click="$emit('handleLinkDelete', { url: link.url })">
+			<ButtonIconOnly v-if="!isReadonly" isInline :icon="IconTrashDelete" @click="$emit('handleLinkDelete', { url: link.url })">
 				Delete link <span v-if="link.title">"{{ link.title }}"</span>
 			</ButtonIconOnly>
 		</div>
@@ -77,8 +64,8 @@
 <script setup>
 	import { computed } from 'vue'
 	import { joinNotesLinksStore } from '@/store'
-	import { HostnameLabel, Button, ButtonIconOnly } from '@/components/ui'
-	import { IconGlobe, IconEdit, IconLinkExternal, IconTrashDelete } from '@/assets/icons'
+	import { HostnameLabel, Button, ButtonIconOnly, AppLink } from '@/components/ui'
+	import { IconGlobe, IconLinkExternal, IconTrashDelete } from '@/assets/icons'
 
 	defineEmits([ 'handleLinkDelete', 'handleKeepLinkAfterDeletingFromNote' ])
 
@@ -91,15 +78,13 @@
 		// Local props
 		link: { required: true }
 	})
-
+	
 	const currentLinkJoin = computed(() => {
 		const noteJoinLinks = joinNotesLinksStore.findJoinNotesLinksByNoteIds({ noteIds: [ props.noteId ] })
 		return noteJoinLinks.find(join => join.link_id === props.link?.id)
 	})
 
 	const generateBannerStyle = ( banner_url ) => {
-		return banner_url 
-			? `background-image: url('${ banner_url }')`
-			: ''
+		return banner_url ? `background-image: url('${ banner_url }')` : undefined
 	}
 </script>
