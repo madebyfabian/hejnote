@@ -15,7 +15,7 @@
 						<slot />
 					</div>
 
-					<div class="Modal-bottomBar" v-if="hasBottomBar" >
+					<div class="Modal-bottomBar" v-if="!isBottomBarSlotEmpty" >
 						<slot name="bottomBar" />
 					</div>
 				</component>
@@ -31,17 +31,13 @@
 </template>
 
 <script setup>
-	import { useSlots, ref, onUnmounted, computed } from 'vue'
+	import { onUnmounted, computed } from 'vue'
 	import { ButtonIconOnly } from '@/components/ui'
 	import { IconClose } from '@/assets/icons'
 	import { CFocusLock } from '@chakra-ui/c-focus-lock'
+	import useSlotIsEmpty from '@/hooks/useSlotIsEmpty'
 
 	const emit = defineEmits([ 'close', 'formSubmit' ])
-
-	const slots = useSlots()
-	const hasBottomBar = ref(false)
-	if (slots.bottomBar()?.[0].children.length)
-		hasBottomBar.value = true
 
 	const props = defineProps({
 		isOpened: 							{ type: Boolean, required: true },
@@ -54,6 +50,8 @@
 		width: 									{ type: String, default: '200', validator: v => [ '100', '200' ].includes(v) },
 		isForm: 								{ type: Boolean, default: false },
 	})
+
+	const isBottomBarSlotEmpty = useSlotIsEmpty({ name: 'bottomBar' })
 
 	const isMobileFullHeight = computed(() => {
 		if (props.isConfirm)

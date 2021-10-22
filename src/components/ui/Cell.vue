@@ -6,22 +6,22 @@
 		:class="{ isClickable, isSelected, isFocused, dividerInset }"
 		:data-size="size">
 
-		<span v-if="isIconSlotVisible" class="Cell-icon isLeft">
+		<span v-if="!isIconSlotEmpty" class="Cell-icon isLeft">
 			<slot name="icon" />
 		</span>
 
 		<span class="Cell-content">
 			<div class="Cell-content-inner"><slot /></div>
 
-			<div v-if="isContentRightSlotVisible" class="Cell-content-innerRight">
+			<div v-if="!isContentRightSlotEmpty" class="Cell-content-innerRight">
 				<slot name="contentRight" />
 			</div>
 
 			<span 
-				v-if="isIconRightSlotVisible || isSelected || displayAsSelectable || isTypeNavigation" 
+				v-if="!isIconRightSlotEmpty || isSelected || displayAsSelectable || isTypeNavigation" 
 				class="Cell-icon isRight">
 
-				<slot v-if="isIconRightSlotVisible" name="iconRight" />
+				<slot v-if="!isIconRightSlotEmpty" name="iconRight" />
 				<template v-else>
 					<IconChevronRight v-if="isTypeNavigation && !isSelected" />
 					<IconCheck v-if="isSelected" />
@@ -32,9 +32,10 @@
 </template>
 
 <script setup>
-	import { computed, useSlots } from 'vue'
+	import { computed } from 'vue'
 	import { AppLink } from '@/components/ui'
 	import { IconCheck, IconChevronRight } from '@/assets/icons'
+	import useSlotIsEmpty from '@/hooks/useSlotIsEmpty'
 
 	const props = defineProps({
 		isTypeNavigation: { type: Boolean, default: false },
@@ -48,10 +49,9 @@
 	const isClickable = computed(() => props.navigateTo)
 	const displayAsSelectable = computed(() => props.isSelected !== undefined)
 
-	const slots = useSlots()
-	const isIconSlotVisible = computed(() => slots.icon?.())
-	const isIconRightSlotVisible = computed(() => slots.iconRight?.())
-	const isContentRightSlotVisible = computed(() => slots.contentRight?.())
+	const isIconSlotEmpty = useSlotIsEmpty({ name: 'icon' })
+	const isIconRightSlotEmpty = useSlotIsEmpty({ name: 'iconRight' })
+	const isContentRightSlotEmpty = useSlotIsEmpty({ name: 'contentRight' })
 </script>
 
 <style lang="postcss" scoped>

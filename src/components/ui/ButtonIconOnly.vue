@@ -19,8 +19,8 @@
 </template>
 
 <script setup>
-	import { computed, onMounted, useSlots } from 'vue'
 	import { Button } from '@/components/ui'
+	import useSlotIsEmpty from '@/hooks/useSlotIsEmpty'
 
 	defineProps({
 		// Button Props
@@ -32,8 +32,6 @@
 		isInline: { type: Boolean, default: false }
 	})
 
-	onMounted(() => {
-		if (!useSlots()?.default?.())
-			console.warn('No default slot provided for A11Y Label of this button. Please provide a slot with some text.')
-	})
+	if (useSlotIsEmpty().value)
+		console.warn('No default slot provided for A11Y Label of this button. Please provide a slot with some text.')
 </script>

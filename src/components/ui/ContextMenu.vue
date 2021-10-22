@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-	import { ref, computed, watch, useSlots, onMounted, createCommentVNode } from 'vue'
+	import { ref, computed, watch, onMounted, createCommentVNode } from 'vue'
 	import { Menu, MenuButton, MenuItems } from '@headlessui/vue'
 	import { useWindowSize } from 'vue-window-size'
 
