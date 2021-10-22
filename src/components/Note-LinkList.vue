@@ -27,8 +27,8 @@
 			</Button>
 
 			<template #expandButton="{ overflowAmount }">
-				<Button is="div" buttonType="secondary" hideBorder isFullWidth noRoundedBorder>
-					{{ isTruncated ? 'See' : 'Hide last' }}
+				<Button is="div" buttonType="secondary" hideBorder isFullWidth noRoundedBorder displayAsDropdown :displayAsDropdownOpened="!isTruncated">
+					{{ isTruncated ? 'Show' : 'Hide last' }}
 					{{ overflowAmount }}
 					{{ isTruncated ? 'more' : '' }} 
 					link{{ overflowAmount > 1 ? 's' : '' }}

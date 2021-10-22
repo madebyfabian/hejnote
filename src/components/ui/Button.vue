@@ -95,7 +95,7 @@
 		&.isPrimary {
 			@apply rounded-xl border-transparent bg-green-400 text-gray-900;
 
-			&:hover, &.displayAsDropdownOpened {
+			&:hover {
 				@apply bg-opacity-75 text-opacity-75;
 			}
 		}
@@ -103,7 +103,7 @@
 		&.isSecondary {
 			@apply rounded-xl border-gray-700 text-gray-400;
 
-			&:hover, &.displayAsDropdownOpened {
+			&:hover {
 				@apply bg-gray-700;
 			}
 		}
@@ -111,7 +111,7 @@
 		&.isTertiary {
 			@apply border-none bg-transparent h-auto text-gray-400;
 
-			&:hover, &.displayAsDropdownOpened {
+			&:hover {
 				@apply text-gray-400;
 			}
 		}
@@ -119,7 +119,7 @@
 		&.isInline {
 			@apply border-none text-green-400 font-bold underline h-auto p-0;
 
-			&:hover, &.displayAsDropdownOpened {
+			&:hover {
 				@apply text-opacity-75;
 			}
 		}
