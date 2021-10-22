@@ -140,7 +140,7 @@
 		}
 
 		&.fitToArea {
-			@apply h-auto;
+			@apply h-auto w-auto;
 
 			@apply px-3;
 			&.hasNegativeMargin { @apply -mx-3; }
