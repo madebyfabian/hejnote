@@ -22,7 +22,7 @@
 		class="Button">
 
 		<span 
-			class="transition-opacity inline-flex items-center justify-center gap-2" 
+			class="transition-opacity inline-flex items-center justify-center gap-2 flex-shrink-0"
 			:class="isLoading ? 'opacity-0' : 'opacity-100'"
 			:aria-hidden="isLoading ? true : false">
 
