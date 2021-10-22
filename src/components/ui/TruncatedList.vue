@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-	import { computed, ref, useSlots } from 'vue'
+	import { computed, ref } from 'vue'
 	import generateRandomId from '@/utils/generateRandomId'
 	import useSlotIsEmpty from '@/hooks/useSlotIsEmpty'
 

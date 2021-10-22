@@ -1,16 +1,18 @@
-import { useSlots, Comment } from 'vue'
+import { useSlots, computed, Comment } from 'vue'
 
-export default function useSlotIsEmpty({ name } = {}) {
-	let slots
-	try {
-		slots = useSlots()
-	} catch (error) {
-		console.error(error)
-		return false
-	}
+/**
+ * Checks if a slot is empty.
+ */
+export default function useSlotIsEmpty({ name = 'default' } = {}) {
+	const slots = useSlots()
 
-	const slotContent = slots?.[name]?.()
-	const slotIsEmpty = slotContent?.findIndex(o => o.type !== Comment) === -1
+	return computed(() => {
+		const slotContent = slots?.[name]?.()
+		if (!slotContent)
+			return true
 
-	return slotIsEmpty
+		// If the slot refers to a DOM Comment, we can be sure that it's empty.
+		const slotIsEmpty = slotContent?.findIndex(o => o.type !== Comment) === -1
+		return slotIsEmpty
+	})
 }
