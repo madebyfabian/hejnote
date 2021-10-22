@@ -21,7 +21,7 @@
 			<button 
 				:aria-expanded="!props.isTruncated" 
 				:aria-controls="listId"
-				@click="$emit('truncatedChange', !props.isTruncated)"
+				@click.stop="$emit('truncatedChange', !props.isTruncated)"
 				class="block w-full">
 				
 				<slot name="expandButton" v-bind="{ overflowAmount }" />
