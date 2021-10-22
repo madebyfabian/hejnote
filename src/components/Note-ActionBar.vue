@@ -83,7 +83,7 @@
 	} from '@/assets/icons'
 
 	// Components
-	import { ButtonIconOnly, RichtextEditor, ContextMenu, ContextMenuItem } from '@/components/ui'
+	import { ButtonIconOnly, ContextMenu, ContextMenuItem } from '@/components/ui'
 	import { NoteActionBarCollection } from '@/components'
 
 	const supabase = useSupabase()
