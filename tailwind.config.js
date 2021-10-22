@@ -106,6 +106,9 @@ module.exports = {
       borderRadius: {
         '2.5xl': '20px',
       },
+      inset: {
+        'initial': 'initial',
+      }
     },
   },
 
