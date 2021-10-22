@@ -1,27 +1,41 @@
 <template>
-	<ul 
-		class="Note-LinkList divide-y-2 bg-opacity-50 bg-gray-700 divide-gray-800 overflow-hidden" 
-		:class="{ 
-			isReadonly, 
-			'': displayAsLinkOnly,
-			'rounded-xl': !displayAsLinkOnly,
-		}">
+	<section class="Note-LinkList">
+		<TruncatedList 
+			@truncatedChange="newVal => isTruncated = newVal"
+			:items="noteLinks" 
+			:disableTruncation="!isReadonly"
+			v-bind="{ isTruncated }"
+			:class="{
+				'rounded-xl': !displayAsLinkOnly,
+				isReadonly,
+			}"
+			class="Note-LinkList divide-y-2 bg-opacity-50 bg-gray-700 divide-gray-800 overflow-hidden"
+			wrapperIs="ul"
+			itemIs="li">
 
-		<Note-LinkList-Item
-			v-for="link in noteLinks" 
-			:key="link.id"
-			v-bind="{ ...$props, link }"
-			@handleLinkDelete="handleLinkDelete"
-			@handleKeepLinkAfterDeletingFromNote="handleKeepLinkAfterDeletingFromNote"
-		/>
+			<template #item="{ item }">
+				<Note-LinkList-Item
+					v-bind="{ ...$props, link: item }"
+					@handleLinkDelete="handleLinkDelete"
+					@handleKeepLinkAfterDeletingFromNote="handleKeepLinkAfterDeletingFromNote"
+				/>
+			</template>
 
-		<li v-if="!isReadonly">
-			<Button buttonType="secondary" hideBorder isFullWidth noRoundedBorder @click="createLinkModalIsOpened = true">
+			<Button v-if="!isReadonly" buttonType="secondary" hideBorder isFullWidth noRoundedBorder @click="createLinkModalIsOpened = true">
 				<IconAdd />
 				Add new link
 			</Button>
-		</li>
-	</ul>
+
+			<template #expandButton="{ overflowAmount }">
+				<Button is="div" buttonType="secondary" hideBorder isFullWidth noRoundedBorder>
+					{{ isTruncated ? 'See' : 'Hide last' }}
+					{{ overflowAmount }}
+					{{ isTruncated ? 'more' : '' }} 
+					link{{ overflowAmount > 1 ? 's' : '' }}
+				</Button>
+			</template>
+		</TruncatedList>
+	</section>
 
 	<Modal 
 		:isOpened="createLinkModalIsOpened" 
@@ -47,7 +61,7 @@
 	import { linksStore, joinNotesLinksStore } from '@/store'
 	import useConfirm from '@/hooks/useConfirm'
 	import useSnackbar from '@/hooks/useSnackbar'
-	import { Button, Modal, TextInput } from '@/components/ui'
+	import { Button, Modal, TextInput, TruncatedList } from '@/components/ui'
 	import { IconAdd, IconTrashDelete } from '@/assets/icons'
 
 	// !! Must be a direct import, otherwise props importing doesn't work.
@@ -61,6 +75,8 @@
 	})
 
 	const noteLinks = computed(() => linksStore._findLinksByNoteIdsV2({ noteIds: [ props.noteId ] }))
+
+	const isTruncated = ref(true)
 
 	const handleKeepLinkAfterDeletingFromNote = ({ join }) => {
 		joinNotesLinksStore.joinNotesLinksUpdate({ joinIds: [ join.id ], noteId: props.noteId, newVal: {

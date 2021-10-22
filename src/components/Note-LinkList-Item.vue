@@ -1,5 +1,5 @@
 <template>
-	<li 
+	<div 
 		class="Note-LinkList-Item flex items-center group w-full gap-3"
 		:class="displayAsLinkOnly ? 'p-4' : 'p-3'">
 
@@ -71,7 +71,7 @@
 				Delete link <span v-if="link.title">"{{ link.title }}"</span>
 			</ButtonIconOnly>
 		</div>
-	</li>
+	</div>
 </template>
 
 <script setup>

@@ -14,3 +14,4 @@ export { default as Modal } from './Modal.vue';
 export { default as RichtextEditor } from './RichtextEditor.vue';
 export { default as Switch } from './Switch.vue';
 export { default as TextInput } from './TextInput.vue';
+export { default as TruncatedList } from './TruncatedList.vue';
