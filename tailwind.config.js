@@ -18,7 +18,7 @@ const rotateX = plugin(function ({ addUtilities }) {
   })
 })
 
-const defaultBorderWidth = '1.5px'
+const defaultBorderWidth = '1px'
 
 
 
