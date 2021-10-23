@@ -131,7 +131,7 @@
 			transition: color 100ms ease;
 
 			&:hover {
-				@apply text-opacity-75;
+				@apply desktop:text-opacity-75;
 			}
 
 			&:active {
