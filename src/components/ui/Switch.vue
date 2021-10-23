@@ -40,7 +40,7 @@
 
 			&::after {
 				@apply transition-transform-bg duration-225;
-				@apply block rounded-full w-4 h-4 absolute top-0.5 left-0.5;
+				@apply block rounded-full w-4 h-4 absolute top-[3px] left-[3px];
 				@apply bg-gray-500;
 				content: '';
 			}
