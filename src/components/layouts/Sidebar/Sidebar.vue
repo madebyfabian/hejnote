@@ -5,17 +5,18 @@
 				Notes
 			</SidebarItem>
 
-			<template v-if="collectionsStore.state.collections.length">
+			<div class="group" v-if="collectionsStore.state.collections.length">
+				<div class="flex items-end">
+					<LocalSubheadline class=" relative">
+						{{ isHiddenMode ? 'Hidden ' : null }}Collections
+					</LocalSubheadline>
 
-				<LocalSubheadline class="group relative">
-					{{ isHiddenMode ? 'Hidden ' : null }}Collections
-	
-					<div class="absolute right-0 bottom-2 opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
+					<div class="opacity-0 mb-2 ml-3 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
 						<ButtonIconOnly isInline :icon="IconEdit" @click="generalStore.updateUpdateCollectionsModalVisible({ newVal: true })">
 							Edit collections
 						</ButtonIconOnly>
 					</div>
-				</LocalSubheadline>
+				</div>
 
 				<SidebarItem 
 					v-for="collection of collectionsStore.state.collections" :key="collection.id"
@@ -23,7 +24,7 @@
 
 					{{ collection.title }}
 				</SidebarItem>
-			</template>
+			</div>
 			
 			<LocalSubheadline>Others</LocalSubheadline>
 			<SidebarItem :to="{ name: 'App-Archive' }">
@@ -55,7 +56,7 @@
 	const isDev = import.meta.env.DEV
 
 	const LocalSubheadline = defineComponent({
-		template: `<h2 class="pt-6 pb-2 pl-5 first:pt-0"><slot /></h2>`
+		template: `<h2 class="pt-6 pb-2 pl-5"><slot /></h2>`
 	})
 
 	const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
