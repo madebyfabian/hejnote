@@ -11,7 +11,7 @@
 						{{ isHiddenMode ? 'Hidden ' : null }}Collections
 					</LocalSubheadline>
 
-					<div class="opacity-0 mb-2 ml-3 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
+					<div class="opacity-0 mb-2 ml-3 transition-opacity focus-within:opacity-100 group-hover:opacity-100">
 						<ButtonIconOnly isInline :icon="IconEdit" @click="generalStore.updateUpdateCollectionsModalVisible({ newVal: true })">
 							Edit collections
 						</ButtonIconOnly>
