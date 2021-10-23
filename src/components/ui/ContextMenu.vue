@@ -60,12 +60,12 @@
 	// Helpers
 	const _menuOffsetStyles_top = ({ rect, verticalAlignTop }) => {
 		if (!verticalAlignTop)
-			return Math.round(rect?.top + rect?.height + 4) + 'px' // 4px spacing
+			return Math.round(rect?.top + window.scrollY + rect?.height + 4) + 'px' // 4px spacing
 	}
 
 	const _menuOffsetStyles_bottom = ({ rect, verticalAlignTop, windowHeightVal }) => {
 		if (verticalAlignTop)
-			return Math.round(Math.abs(rect?.top - windowHeightVal)) + 'px'
+			return Math.round(Math.abs(rect?.top - window.scrollY - windowHeightVal)) + 'px'
 	}
 
 	const _menuOffsetStyles_left = ({ rect, alignRight, isFullWidth }) => {
