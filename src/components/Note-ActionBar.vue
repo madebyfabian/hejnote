@@ -1,7 +1,7 @@
 <template>
 	<div class="Note-ActionBar flex items-center gap-2 justify-end pt-2">
-		<div class="flex items-center flex-1">
-			<Note-ActionBar-Collection v-bind="{ note, collection, isReadonly: isLocked }" @removeCollection="() => handleRemoveCollection()" />
+		<div class="flex items-center flex-1 -my-0.5">
+			<Note-ActionBar-Collection v-bind="{ collection, isReadonly: isLocked }" @removeCollection="() => handleRemoveCollection()" />
 		</div>
 
 		<div 
