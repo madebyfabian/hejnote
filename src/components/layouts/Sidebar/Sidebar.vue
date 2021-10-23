@@ -32,6 +32,9 @@
 			<SidebarItem :to="{ name: 'App-Deleted' }">
 				Trash
 			</SidebarItem>
+			<SidebarItem v-if="isDev" :to="{ name: 'App-Test' }">
+				⚙️ Test
+			</SidebarItem>
 		</ul>
 	</aside>
 </template>
@@ -48,6 +51,8 @@
 	import { SidebarItem } from '@/components/layouts'
 	import { Button, ButtonIconOnly } from '@/components/ui'
 	import { IconEdit } from '@/assets/icons'
+
+	const isDev = import.meta.env.DEV
 
 	const LocalSubheadline = defineComponent({
 		template: `<h2 class="pt-6 pb-2 pl-5 first:pt-0"><slot /></h2>`
