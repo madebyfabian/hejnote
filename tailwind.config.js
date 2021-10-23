@@ -85,9 +85,6 @@ module.exports = {
       boxShadow: {
         'border-inset': 'inset 0 0 0 1.5px ' + defaultTheme.colors.gray[700],
       },
-      width: {
-        'fit': 'fit-content',
-      },
       maxHeight: {
         'none': 'none',
       },
@@ -95,6 +92,7 @@ module.exports = {
         '24': '6rem'
       },
       spacing: {
+        'fit': 'fit-content',
         'safe-area-bottom': '34px', // 'env(safe-area-inset-bottom)',
       },
       scale: {

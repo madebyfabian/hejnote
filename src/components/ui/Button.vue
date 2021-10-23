@@ -3,8 +3,6 @@
 		:is="is"
 		:type="type"
 		:disabled="isDisabled || isLoading"
-		class="Button"
-		tabindex="0"
 		:class="{
 			[ 'Button-' + buttonType ]: true,
 			noRoundedBorder,
@@ -13,7 +11,8 @@
 			hasNegativeMargin,
 			isDisabled,
 			_isIconOnly
-		}">
+		}"
+		class="Button">
 
 		<span 
 			class="transition-opacity inline-flex items-center justify-center gap-2 flex-shrink-0"
@@ -35,7 +34,7 @@
 		<div
 			v-if="typeof isDropdownOpened === 'boolean'" 
 			aria-hidden="true"
-			class="-ml-1 transition-transform" :class="{ 'transform-gpu rotate-x-180': isDropdownOpened }"
+			class="-mx-1 transition-transform" :class="{ 'transform-gpu rotate-x-180': isDropdownOpened }"
 			style="-webkit-backface-visibility: initial">
 
 			<IconChevron />
@@ -69,7 +68,7 @@
 
 <style lang="postcss" scoped>
 	.Button {
-		@apply relative inline-flex items-center justify-center gap-2 h-11;
+		@apply relative inline-flex items-center justify-center gap-2;
 		@apply font-bold text-100;
 		@apply transition duration-100;
 		@apply w-full desktop:w-fit;
@@ -78,21 +77,39 @@
 		/**
 		 * Types
 		 */
+		&-primary, 
+		&-secondary, 
+		&-tertiary {
+			transition: border-color 750ms ease, background-color 100ms ease;
+			@apply rounded-xl;
+			
+			@apply px-4 h-11;
+			&.hasNegativeMargin { @apply -mx-4 -my-3; }
+		}
+
 		&-primary {
-			@apply rounded-xl border-transparent bg-green-400 text-gray-900;
+			@apply rounded-xl text-gray-900;
+			@apply border-transparent;
+			@apply bg-green-400;
 
 			&:hover {
-				@apply bg-opacity-75 text-opacity-75;
+				@apply desktop:bg-opacity-80;
+			}
+
+			&:active {
+				@apply border-green-200 bg-opacity-70;
+				transition: border-color 0ms ease, background-color 0ms ease;
 			}
 		}
 
-		&-secondary, &-tertiary {
-			@apply rounded-xl border-gray-700 text-gray-400;
+		&-secondary, 
+		&-tertiary {
+			@apply text-gray-400;
+			@apply border-gray-700;
 			@apply bg-gray-700 bg-opacity-0;
-			transition: border-color 750ms ease, background-color 100ms ease;
 
 			&:hover {
-				@apply bg-opacity-25;
+				@apply desktop:bg-opacity-25;
 			}
 
 			&:active {
@@ -110,10 +127,16 @@
 		}
 
 		&-inline {
-			@apply border-none text-green-400 font-bold underline h-auto p-0;
+			@apply border-none text-green-400 font-bold underline;
+			transition: color 100ms ease;
 
 			&:hover {
 				@apply text-opacity-75;
+			}
+
+			&:active {
+				@apply text-opacity-50;
+				transition: color 0ms ease;
 			}
 		}
 
@@ -136,9 +159,6 @@
 		&.isDisabled {
 			@apply opacity-25;
 		}
-
-		@apply px-4;
-		&.hasNegativeMargin { @apply -mx-4; }
 
 		&._isIconOnly {
 			@apply flex justify-center items-center flex-shrink-0 text-gray-500; 
