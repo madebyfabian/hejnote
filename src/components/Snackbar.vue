@@ -16,9 +16,10 @@
 
 			<Button 
 				v-if="snackbar.buttonText"
-				buttonType="tertiary" 
-				fitToArea
-				@click="handleButtonClick">
+				buttonType="tertiary"
+				noRoundedBorder
+				@click="handleButtonClick"
+				class="!h-auto !w-auto !rounded-r-xl !px-3">
 				
 				{{ snackbar.buttonText }}
 			</Button>

@@ -4,9 +4,8 @@
 		v-bind="{
 			isDisabled: $props.isDisabled,
 			is: $props.is,
-			hideBorder: $props.isInline,
 			hasNegativeMargin: $props.isInline,
-			buttonType: 'secondary',
+			buttonType: $props.isInline ? 'tertiary' : 'secondary',
 			_isIconOnly: true,
 		}">
 

@@ -21,13 +21,13 @@
 				/>
 			</template>
 
-			<Button v-if="!isReadonly" buttonType="secondary" hideBorder isFullWidth noRoundedBorder @click="createLinkModalIsOpened = true">
+			<Button v-if="!isReadonly" buttonType="tertiary" isFullWidth noRoundedBorder @click="createLinkModalIsOpened = true">
 				<IconAdd />
 				Add new link
 			</Button>
 
 			<template #expandButton="{ overflowAmount }">
-				<Button is="div" buttonType="secondary" hideBorder isFullWidth noRoundedBorder displayAsDropdown :displayAsDropdownOpened="!isTruncated">
+				<Button is="div" buttonType="tertiary" isFullWidth noRoundedBorder :isDropdownOpened="!isTruncated">
 					{{ isTruncated ? 'Show' : 'Hide last' }}
 					{{ overflowAmount }}
 					{{ isTruncated ? 'more' : '' }} 

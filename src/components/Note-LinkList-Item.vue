@@ -29,7 +29,7 @@
 					<template v-if="hasOptionToKeepAnyway">
 						<span>Not in note anymore.</span>
 						&nbsp;
-						<Button buttonType="inline" isText050 @click="$emit('handleKeepLinkAfterDeletingFromNote', { join: currentLinkJoin })">
+						<Button buttonType="inline" class="!text-050" @click="$emit('handleKeepLinkAfterDeletingFromNote', { join: currentLinkJoin })">
 							Keep anyway
 						</Button>
 					</template>

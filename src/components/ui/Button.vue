@@ -3,23 +3,17 @@
 		:is="is"
 		:type="type"
 		:disabled="isDisabled || isLoading"
-		:class="[
-			buttonType == 'primary' && 'isPrimary', 
-			buttonType == 'secondary' && 'isSecondary',
-			buttonType == 'tertiary' && 'isTertiary',
-			buttonType == 'inline' && 'isInline',
-			_isIconOnly && '_isIconOnly',
-			isText050 && 'isText050',
-			hideBorder && 'hideBorder',
-			fitToArea && 'fitToArea',
-			isFullWidth && 'isFullWidth',
-			noRoundedBorder && 'noRoundedBorder',
-			displayAsDropdownOpened && 'displayAsDropdownOpened',
-			isDisabled && 'isDisabled',
-			hasNegativeMargin && 'hasNegativeMargin',
-			isLoading && 'isLoading'
-		]"
-		class="Button">
+		class="Button"
+		tabindex="0"
+		:class="{
+			[ 'Button-' + buttonType ]: true,
+			noRoundedBorder,
+			isFullWidth,
+			isLoading,
+			hasNegativeMargin,
+			isDisabled,
+			_isIconOnly
+		}">
 
 		<span 
 			class="transition-opacity inline-flex items-center justify-center gap-2 flex-shrink-0"
@@ -39,9 +33,9 @@
 		</transition>
 
 		<div
-			v-if="displayAsDropdown" 
+			v-if="typeof isDropdownOpened === 'boolean'" 
 			aria-hidden="true"
-			class="-ml-1 transition-transform" :class="{ 'transform-gpu rotate-x-180': displayAsDropdownOpened }"
+			class="-ml-1 transition-transform" :class="{ 'transform-gpu rotate-x-180': isDropdownOpened }"
 			style="-webkit-backface-visibility: initial">
 
 			<IconChevron />
@@ -50,23 +44,23 @@
 </template>
 
 <script setup>
+	import { computed } from 'vue'
 	import { IconChevron } from '@/assets/icons'
 	import { LoadingSpinner } from '@/components/ui'
 
 	defineProps({
+		// <button> native element props
 		is: 											{ type: String, default: 'button' },
 		type: 										{ type: String, default: undefined },
-		buttonType:								{ type: String, default: 'primary', validate: val => [ 'primary', 'secondary', 'tertiary', 'inline' ].includes(val) },
-		isText050: 								{ type: Boolean, default: false },
-		hideBorder:								{ type: Boolean, default: false },
-		noRoundedBorder: 					{ type: Boolean, default: false },
-		fitToArea: 								{ type: Boolean, default: false },
-		isFullWidth: 							{ type: Boolean, default: false },
-		displayAsDropdown: 				{	type: Boolean, default: false },
-		displayAsDropdownOpened: 	{ type: Boolean, default: false },
 		isDisabled: 							{ type: Boolean, default: false },
-		hasNegativeMargin: 				{ type: Boolean, default: false },
+
+		// Custom props
+		buttonType:								{ type: String, default: 'primary', validate: val => [ 'primary', 'secondary', 'tertiary', 'inline' ].includes(val) },
+		noRoundedBorder: 					{ type: Boolean, default: false },
+		isFullWidth: 							{ type: Boolean, default: false },
 		isLoading: 								{ type: Boolean, default: false },
+		hasNegativeMargin: 				{ type: Boolean, default: false },
+		isDropdownOpened:					{ type: [ Boolean, undefined ], default: undefined },		
 
 		// Should not be used by layouts other than <Button...> helpers (e.g. "ButtonIconOnly")
 		_isIconOnly:							{ type: Boolean, default: false },
@@ -75,24 +69,16 @@
 
 <style lang="postcss" scoped>
 	.Button {
-		@apply relative inline-flex items-center justify-center gap-2;
-		@apply h-11 border font-bold;
+		@apply relative inline-flex items-center justify-center gap-2 h-11;
+		@apply font-bold text-100;
 		@apply transition duration-100;
 		@apply w-full desktop:w-fit;
-
-		/** Margin & Padding */
-		@apply px-4;
-		&.hasNegativeMargin { @apply -mx-4; }
-
-		/** Text */
-		&.isText050 { @apply text-050; }
-		&:not(.isText050) { @apply text-100; }
-
+		@apply border;
 
 		/**
 		 * Types
 		 */
-		&.isPrimary {
+		&-primary {
 			@apply rounded-xl border-transparent bg-green-400 text-gray-900;
 
 			&:hover {
@@ -100,23 +86,30 @@
 			}
 		}
 
-		&.isSecondary {
+		&-secondary, &-tertiary {
 			@apply rounded-xl border-gray-700 text-gray-400;
+			@apply bg-gray-700 bg-opacity-0;
+			transition: border-color 750ms ease, background-color 100ms ease;
 
 			&:hover {
-				@apply bg-gray-700;
+				@apply bg-opacity-25;
+			}
+
+			&:active {
+				@apply border-gray-500 bg-opacity-75;
+				transition: border-color 0ms ease, background-color 0ms ease;
 			}
 		}
 
-		&.isTertiary {
-			@apply border-none bg-transparent h-auto text-gray-400;
+		&-tertiary {
+			@apply border-transparent;
 
-			&:hover {
-				@apply text-gray-400;
+			&:active {
+				@apply border-gray-600;
 			}
 		}
 
-		&.isInline {
+		&-inline {
 			@apply border-none text-green-400 font-bold underline h-auto p-0;
 
 			&:hover {
@@ -128,38 +121,30 @@
 		/** 
 		 * Other props
 		 */
-		&._isIconOnly {
-			@apply flex justify-center items-center flex-shrink-0 text-gray-500; 
-
-			@apply h-9 w-9 p-0;
-			&.hasNegativeMargin { @apply -m-2; }
-		}
-
-		&.hideBorder {
-			@apply border-transparent;
-		}
-
-		&.fitToArea {
-			@apply h-auto w-auto;
-
-			@apply px-3;
-			&.hasNegativeMargin { @apply -mx-3; }
+		&.noRoundedBorder {
+			@apply rounded-none;
 		}
 
 		&.isFullWidth {
 			@apply w-full flex !important;
 		}
 
-		&.noRoundedBorder {
-			@apply rounded-none;
+		&.isLoading, &.isDisabled {
+			@apply pointer-events-none;
 		}
 
 		&.isDisabled {
 			@apply opacity-25;
 		}
 
-		&.isLoading, &.isDisabled {
-			@apply pointer-events-none;
+		@apply px-4;
+		&.hasNegativeMargin { @apply -mx-4; }
+
+		&._isIconOnly {
+			@apply flex justify-center items-center flex-shrink-0 text-gray-500; 
+
+			@apply h-9 w-9 p-0;
+			&.hasNegativeMargin { @apply -m-2; }
 		}
 	}
 </style>

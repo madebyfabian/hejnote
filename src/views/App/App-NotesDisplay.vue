@@ -9,8 +9,7 @@
 				<template #button>
 					<Button 
 						buttonType="tertiary" 
-						displayAsDropdown 
-						:displayAsDropdownOpened="displayModeContextMenuIsOpened" 
+						:isDropdownOpened="displayModeContextMenuIsOpened" 
 						hasNegativeMargin 
 						is="div">
 						
