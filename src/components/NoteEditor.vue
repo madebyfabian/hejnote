@@ -110,7 +110,13 @@
 
 		const urlsToAdd = newVal.filter(url => !oldVal.includes(url))
 		if (urlsToAdd.length) {
-			linksStore.linksInsert({ urlArray: urlsToAdd, noteId: note.id, isAddedFromText: true })
+			linksStore.linksUpsert({
+				linkObjArr: [ ...urlsToAdd.map(url => linksStore.getLinkDefaultDataObject({ link: { url } })) ],
+				noteId: note.id,
+				joinNotesLinksObj: {
+					is_added_from_text: true,
+				}
+			})
 		}
 
 		const urlsNotInTextAnymore = oldVal.filter(url => !newVal.includes(url))

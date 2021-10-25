@@ -111,12 +111,14 @@
 		createLinkModalButtonLoading.value = true
 
 		try {
-			await linksStore.linksInsert({ 
-				urlArray: [ createLinkModalData.url ], 
+			await linksStore.linksUpsert({
+				linkObjArr: [ linksStore.getLinkDefaultDataObject({ link: { url: createLinkModalData.url } }) ],
 				noteId: props.noteId,
-				isAddedFromText: false,
-				isInText: false,
-				annotation: createLinkModalData.annotation || null,
+				joinNotesLinksObj: {
+					is_added_from_text: false,
+					is_in_text: false,
+					annotation: createLinkModalData.annotation || null,
+				}
 			})
 
 			createLinkModalIsOpened.value = false

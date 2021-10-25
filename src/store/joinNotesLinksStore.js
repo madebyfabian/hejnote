@@ -1,5 +1,6 @@
 import { reactive } from 'vue'
 import useSupabase from '@/hooks/useSupabase'
+import useSnackbar from '@/hooks/useSnackbar'
 import handleError from '@/utils/handleError'
 import findIndexById from '@/utils/findIndexById'
 import generalStore from '@/store/generalStore'
@@ -37,12 +38,16 @@ export default {
   },
 
   async joinNotesLinksInsert({ newVals }) {
-    await this.joinNotesLinksFetch()
-
     // Filter out duplicates
     newVals = newVals.filter(newVal => !this.state.joinNotesLinks.find(join => 
       join.note_id === newVal.note_id && 
       join.link_id === newVal.link_id))
+
+    if (!newVals.length) {
+      return useSnackbar().createSnackbar({ message: 'This link already exists.' })
+    }
+
+    await this.joinNotesLinksFetch()
 
     const { data, error } = await supabase
       .from('join_notes_links')

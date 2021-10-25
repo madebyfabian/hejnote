@@ -5,6 +5,7 @@ import generalStore from '@/store/generalStore'
 import joinNotesLinksStore from '@/store/joinNotesLinksStore'
 import isImageValid from '@/utils/isImageValid'
 import fetchUrlMetadata from '@/utils/fetchUrlMetadata'
+import handleError from '@/utils/handleError'
 
 const supabase = useSupabase()
 
@@ -13,6 +14,14 @@ export default {
   state: reactive({
     links: [],
   }),
+
+  getLinkDefaultDataObject({ link } = {}) { return {
+    id: 				    link?.id || undefined,
+    owner_id:       generalStore.state.user.id,
+    url:            link.url,
+    title:          link?.title || null,
+    banner_url:     link?.banner_url || null,
+  }},
 
   _findLinksByNoteIdsV2({ noteIds }) {
     const joins = joinNotesLinksStore.findJoinNotesLinksByNoteIds({ noteIds })
@@ -32,64 +41,66 @@ export default {
     this.state.links = data
   },
 
-  async linksInsert({ urlArray = [], annotation = null, noteId = null, isAddedFromText = true, isInText = false }) {
-    if (typeof isAddedFromText !== 'boolean')
-      return console.error('linksInsert: cancel because isAddedFromText is not set/not a boolean value.')
+  /**
+   * This action does two things
+   * - it upserts all the links given links that are not already stored in the DB.
+   * - it updates/creates all the joinNotesLinks
+   * @param {Array<Object>} linkObjArr Use this only together with `getLinkDefaultDataObject`
+   */
+  async linksUpsert({ linkObjArr = [], noteId = null, joinNotesLinksObj = { annotation: null, is_added_from_text: true, is_in_text: false } } = {}) {
+    try {
+      // Update existing links
+      await this.linksFetch()
 
-    // Update existing links
-    await this.linksFetch()
+      // Filter out duplicates from the linkObjArr
+      linkObjArr = linkObjArr.filter(( linkObj, key ) => linkObjArr.findIndex(t => (t.url === linkObj.url)) === key)
 
-    // Prepare new links
-    const preparedData = [],
-          preparedJoins = []
-    for (const newVal of urlArray) {
-      const existingLink = this.state.links.find(link => link.url === newVal)
-      if (existingLink) {
-        preparedJoins.push({ 
-          note_id: noteId, 
-          link_id: existingLink.id,
-          is_added_from_text: isAddedFromText,
-          is_in_text: isInText,
-          annotation,
-        })
-        continue
+      // Prepare the links data
+      const preparedLinkData = []
+      for (const linkObj of linkObjArr) {
+        const existingLink = this.state.links.find(link => link.url === linkObj.url)
+        const preparedLinkObj = { ...linkObj, owner_id: generalStore.state.user.id }
+
+        if (!existingLink) {
+          // Link does not exist in store, so fetch metadata.
+          const metadata = await fetchUrlMetadata({ url: linkObj.url })
+          preparedLinkObj.title = metadata?.title || null
+          preparedLinkObj.banner_url = (await isImageValid({ url: metadata?.banner })) ? metadata.banner : null
+        } else {
+          preparedLinkObj.id = existingLink.id
+        }
+
+        preparedLinkData.push(preparedLinkObj)
       }
-      
-      const metadata = await fetchUrlMetadata({ url: newVal })
-      const banner = (await isImageValid({ url: metadata?.banner })) ? metadata.banner : null
 
-      preparedData.push({
-        url: newVal,
-        title: metadata?.title || null,
-        banner_url: banner || null,
-        owner_id: generalStore.state.user.id
-      })
-    }
+      const preparedLinkDataNewLinks = preparedLinkData.filter(link => !link.id)
 
-    // If there are new links to insert into the DB, do this first.
-    if (preparedData.length !== 0) {
-      // Insert into database
-      const { data, error } = await supabase
-        .from('links')
-        .insert(preparedData)
-      if (error) console.error(error)
+      // Step 1: insert links data into DB.
+      let linksUpsertResult = []
+      if (preparedLinkDataNewLinks.length) {
+        // insert into db.
+        const { data, error } = await supabase
+          .from('links')
+          .upsert(preparedLinkDataNewLinks, { onConflict: 'url' })
+        if (error) throw new Error(error)
 
-      // Update local state
-      this.state.links.push(...data)
+        // Update local state
+        this.state.links.push(...data)
 
-      // Update joins
-      preparedJoins.push(...data.map(link => ({ 
-        note_id: noteId, 
-        link_id: link.id,
-        is_added_from_text: isAddedFromText,
-        is_in_text: true,
-        annotation,
-      })))
-    }
+        linksUpsertResult.push(...data)
+      }
 
-    // Then, if there are some new joins to insert, do it.
-    if (preparedJoins.length !== 0) {
-      joinNotesLinksStore.joinNotesLinksInsert({ newVals: preparedJoins })
+      // Step 2: insert/update joinNotesLinks data into DB.
+      joinNotesLinksStore.joinNotesLinksInsert({ newVals: preparedLinkData.map(linkObj => {
+        const newLinkId = linkObj?.id || linksUpsertResult.find(link => link.url === linkObj.url)?.id
+        if (!newLinkId) 
+          throw new Error('Error adding links, please try again.')
+
+        return { ...joinNotesLinksObj, note_id: noteId, link_id: newLinkId }
+      }) })
+
+    } catch (error) {
+      handleError(error)
     }
   },
 

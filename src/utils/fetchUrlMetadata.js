@@ -5,7 +5,7 @@
 export default async ({ url } = {}) => {
 	try {
 		if (!url)
-      return resolve(false)
+      throw new Error('No url provided')
 
 		const metadataAPIUrl = 
 			'https://netlify-functions-madebyfabian.netlify.app/.netlify/functions/meta-fetcher?url=' 
