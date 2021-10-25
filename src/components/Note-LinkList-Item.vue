@@ -34,7 +34,7 @@
 						</Button>
 					</template>
 
-					<span v-else>{{ currentLinkJoin?.is_added_from_text ? 'Found in note' : 'Added by you' }}</span>
+					<span class="flex-shrink-0" v-else>{{ currentLinkJoin?.is_added_from_text ? 'Found in note' : 'Added by you' }}</span>
 				</template>
 			</div>
 
