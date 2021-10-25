@@ -7,8 +7,8 @@
 			v-bind="{ isTruncated }"
 			class="Note-LinkList overflow-hidden divide-y-2"
 			:class="{
-				'bg-gray-800 bg-opacity-50 divide-gray-900': isReadonly,
-				'bg-gray-700 bg-opacity-50 divide-gray-800': !isReadonly,
+				'bg-gray-800 bg-opacity-50 divide-gray-900': !isInEditMode,
+				'bg-gray-700 bg-opacity-50 divide-gray-800': isInEditMode,
 				'rounded-xl': !displayAsLinkOnly,
 				isReadonly,
 			}"
@@ -73,7 +73,8 @@
 		...NoteLinkListItem.props,
 
 		// Set child component's props to undefined.
-		link: undefined
+		link: undefined,
+		isInEditMode: { type: Boolean, default: false },
 	})
 
 	const noteLinks = computed(() => linksStore._findLinksByNoteIdsV2({ noteIds: [ props.noteId ] }))
