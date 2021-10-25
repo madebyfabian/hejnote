@@ -5,19 +5,23 @@
 		</div>
 
 		<div 
-			class="Note-ActionBar flex items-center gap-5 transition-opacity" 
-			:class="{ 'desktop:opacity-0': !displayButtons }"
+			class="Note-ActionBar desktop:flex gap-5 transition-opacity" 
+			:class="{ 
+				'desktop:opacity-0': !displayButtons,
+				'flex': isInEditMode,
+				'hidden': !isInEditMode
+			}"
 			role="toolbar">
 
 			<template v-if="!note.deleted_at">
 				<!-- Lock: Inside Editor Only -->
-				<template v-if="isInEditMode">
+				<template v-if="isInEditMode || (!isInEditMode && isLocked)">
 					<ButtonIconOnly isInline :icon="isLocked ? IconLockSolid : IconLock" @click="handleNoteLockAction">
 						Note is {{ isLocked ? 'locked' : 'unlocked' }}. Click to {{ isLocked ? 'unlock' : 'lock' }}
 					</ButtonIconOnly>
 
 					<!-- --- Seperator --- -->
-					<span aria-hidden="true" class="h-5 rounded-full border-r border-gray-700" />
+					<span v-if="isInEditMode" aria-hidden="true" class="h-5 rounded-full border-r border-gray-700" />
 				</template>
 				
 				<!-- Collections & Hide: Non-Editor Only (Readonly) -->
@@ -36,26 +40,29 @@
 							{{ collection.title }}
 						</ContextMenu-Item>
 					</ContextMenu>
+				</template>
 
+				<template v-if="isInEditMode || (!isInEditMode && !isLocked)">
+					<!-- Hide -->
 					<ButtonIconOnly isInline :icon="note.is_hidden ? IconEyeOffSolid : IconEyeOff" @click="handleNoteHideAction" :isDisabled="isLocked">
 						Note is {{ note.is_hidden ? 'hidden' : 'visible' }}. Click to {{ note.is_hidden ? 'unhide' : 'hide' }}.
 					</ButtonIconOnly>
+
+					<!-- Pin -->
+					<ButtonIconOnly isInline :icon="note.is_pinned ? IconPinSolid : IconPin" @click="handleNotePinAction" :isDisabled="isLocked">
+						Note is {{ note.is_pinned ? 'pinned' : 'not pinned' }}. Click to {{ note.is_pinned ? 'unpin' : 'pin' }}.
+					</ButtonIconOnly>
+
+					<!-- Archive -->
+					<ButtonIconOnly isInline :icon="note.is_archived ? IconArchiveSolid : IconArchive" @click="handleNoteArchiveAction" :isDisabled="isLocked">
+						Note is {{ note.is_archived ? 'archived' : 'not archived' }}. Click to {{ note.is_archived ? 'unarchive' : 'archive' }}.
+					</ButtonIconOnly>
+
+					<!-- Trash -->
+					<ButtonIconOnly isInline :icon="IconTrash" @click="handleNoteMoveToDeleted" :isDisabled="isLocked">
+						Click to delete note
+					</ButtonIconOnly>
 				</template>
-
-				<!-- Pin -->
-				<ButtonIconOnly isInline :icon="note.is_pinned ? IconPinSolid : IconPin" @click="handleNotePinAction" :isDisabled="isLocked">
-					Note is {{ note.is_pinned ? 'pinned' : 'not pinned' }}. Click to {{ note.is_pinned ? 'unpin' : 'pin' }}.
-				</ButtonIconOnly>
-
-				<!-- Archive -->
-				<ButtonIconOnly isInline :icon="note.is_archived ? IconArchiveSolid : IconArchive" @click="handleNoteArchiveAction" :isDisabled="isLocked">
-					Note is {{ note.is_archived ? 'archived' : 'not archived' }}. Click to {{ note.is_archived ? 'unarchive' : 'archive' }}.
-				</ButtonIconOnly>
-
-				<!-- Trash -->
-				<ButtonIconOnly isInline :icon="IconTrash" @click="handleNoteMoveToDeleted" :isDisabled="isLocked">
-					Click to delete note
-				</ButtonIconOnly>
 			</template>
 			
 			<template v-else>
