@@ -47,6 +47,7 @@
 	import { joinNotesLinksStore, linksStore, notesStore } from '@/store'
 	import { Button, RichtextEditor } from '@/components/ui'
 	import { NoteActionBar, NoteLinkList } from '@/components'
+	import { useRoute } from 'vue-router'
 
 	const emit = defineEmits([ 'isFinished' ])
 
@@ -57,6 +58,7 @@
 	})
 
 	const noteEditorEl = ref(null)
+	const route = useRoute()
 
 	// Setup click outside
 	const clickOutsideConfig = {
@@ -82,7 +84,7 @@
 	 * Methods
 	 */
 	const _handleDataChange = async ({ updateState = false } = {}) => {
-		const data = await notesStore.notesUpsertSingle({ newVal: note, updateState })
+		const data = await notesStore.notesUpsertSingle({ newVal: note, collectionId: route?.params?.collectionId, updateState })
 		if (!note?.id && data?.id)
 			note.id = data.id
 		updateLinks()

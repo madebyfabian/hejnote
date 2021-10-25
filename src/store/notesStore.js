@@ -105,7 +105,7 @@ export default {
     this.state.notes = data
   },
 
-  async notesUpsertSingle({ newVal, updateDB = true, updateState = true }) {
+  async notesUpsertSingle({ newVal, collectionId = undefined, updateDB = true, updateState = true }) {
     try {
       const hasChanges = this.noteObjectHasChanges({ compareToNoteId: newVal?.id, newVal })
       if (!hasChanges)
@@ -113,6 +113,7 @@ export default {
 
       // If we are in hidden mode, the new val should also have this prop.
       newVal.is_hidden = isHiddenMode.value
+      newVal.collection_id = newVal.collection_id || collectionId || undefined
 
       let res
       if (updateDB) {
