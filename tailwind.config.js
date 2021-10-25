@@ -175,11 +175,11 @@ module.exports = {
         /**
          * Icons
          */
-        '.icon-link': {
+        /*'.icon-link': {
           background: defaultTheme.colors.gray[400], // Icon color
           mask: `url('@/assets/icons/special/link.svg') no-repeat center center / 0.75rem`,
           '-webkit-mask': `url('@/assets/icons/special/link.svg') no-repeat center center / 0.75rem`,
-        },
+        },*/
       })
     })
   ],

@@ -193,29 +193,19 @@
 			a {
 				@apply break-all underline;
 			}
-			
+
+			&.isReadonly a {
+				@apply inline-flex items-center overflow-hidden;
+				display: -webkit-inline-box;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 1;
+				margin-bottom: -5px; /* hacky, but because of -webkit-inline-box */
+				max-width: 160px;
+			}
+
 			p {
 				&:empty:not(:last-child):not(:first-child) {
 					@apply h-3
-				}
-			}
-
-			&.isReadonly {
-				a {
-					@apply inline-flex items-center bg-gray-700 px-1.5 rounded-lg no-underline text-050 max-h-5 overflow-hidden;
-					@apply -mt-1 transform translate-y-1;
-					@apply line-clamp-1;
-					@apply pl-5;
-
-					overflow: hidden;
-					display: -webkit-inline-box;
-					-webkit-box-orient: vertical;
-					-webkit-line-clamp: 1;
-
-					&::before {
-						@apply content absolute left-1 top-0.5 h-4 w-4 -ml-0.5 mr-0.5;
-						@apply icon-link;
-					}
 				}
 			}
 		}
