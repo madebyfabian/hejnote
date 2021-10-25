@@ -26,6 +26,6 @@
 			[ desktopWidth ]: 2,
 			768: 1,
 		},
-		gutter: 24,
+		gutter: 32,
 	}
 </script>

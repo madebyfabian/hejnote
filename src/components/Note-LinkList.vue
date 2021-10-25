@@ -5,11 +5,13 @@
 			:items="noteLinks" 
 			:disableTruncation="!isReadonly"
 			v-bind="{ isTruncated }"
+			class="Note-LinkList overflow-hidden divide-y-2"
 			:class="{
+				'bg-gray-800 bg-opacity-50 divide-gray-900': isReadonly,
+				'bg-gray-700 bg-opacity-50 divide-gray-800': !isReadonly,
 				'rounded-xl': !displayAsLinkOnly,
 				isReadonly,
 			}"
-			class="Note-LinkList divide-y-2 bg-opacity-50 bg-gray-700 divide-gray-800 overflow-hidden"
 			wrapperIs="ul"
 			itemIs="li">
 
