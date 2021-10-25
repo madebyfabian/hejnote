@@ -8,7 +8,7 @@
 		<button v-if="!isReadonly" class="Note-ActionBar-Collection-badgeButton" @click="emit('removeCollection')">
 			<span 
 				aria-hidden="true" 
-				class="absolute -left-4 top-0 w-9 h-full bg-gradient-to-r from-transparent via-gray-800 to-gray-800" 
+				class="absolute -left-4 top-0 w-9 h-full bg-gradient-to-r from-transparent via-gray-900 to-gray-900" 
 			/>
 			<span class="relative">
 				<IconClose />
