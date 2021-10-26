@@ -7,7 +7,7 @@
 		@mouseenter="handleFocusIn"
 		@mouseleave="handleFocusOut"
 		:aria-label="noteTitleLabel"
-		class="Note relative border border-gray-700 border-opacity-50 rounded-2xl p-4 cursor-default transition duration-225 mb-8 overflow-hidden"
+		class="Note relative border border-gray-700 border-opacity-50 rounded-2xl p-4 cursor-default transition duration-225 mb-6 desktop:mb-8 overflow-hidden"
 		:class="{ 
 			'blur-md': isNoteBeingEdited,
 		}"
