@@ -4,21 +4,21 @@
 			<div v-if="!generalStore.state.isAppLoading">
 				<BannerHiddenMode :isVisible="isHiddenMode" />
 
-				<Header v-if="!isMobileDevice" class="willMoveDown" :class="{ 'movedDown': isHiddenMode }" />
+				<Header v-if="!isMobileDevice" class="willMove" :class="{ 'isMoved': isHiddenMode }" />
 
 				<div class="pt-4 desktop:pt-24">
-					<Sidebar v-if="!isMobileDevice" class="willMoveDown" :class="{ 'movedDown': isHiddenMode }" />
+					<Sidebar v-if="!isMobileDevice" class="willMove" :class="{ 'isMoved': isHiddenMode }" />
 
 					<div class="fixed bottom-2 left-2 z-10">
 						<SwitchHiddenMode />
 					</div>
 
-					<main class="container px-6 pb-24 desktop:pb-0 desktop:px-10 willMoveDown" :class="{ 'movedDown': isHiddenMode }">
+					<main class="container px-6 pb-24 desktop:pb-0 desktop:px-10 willMove" :class="{ 'isMoved': isHiddenMode }">
 						<component :is="Component" />
 					</main>
 				</div>
 
-				<TabNav v-if="isMobileDevice" />
+				<TabNav v-if="isMobileDevice" :class="{ 'willMove': true, 'isMovedUp': isHiddenMode }" />
 
 				<!-- Edit note modal -->
 				<Modal 
@@ -93,12 +93,16 @@
 	})
 </script>
 
-<style lang="postcss" scoped>
-	.willMoveDown {
+<style lang="postcss">
+	.willMove {
 		@apply transition-transform duration-300 transform-gpu;
 
-		&.movedDown {
-			@apply translate-y-16 desktop:translate-y-8;
+		&.isMoved {
+			@apply desktop:translate-y-8;
+		}
+
+		&.isMovedUp {
+			@apply -translate-y-10 desktop:-translate-y-0;
 		}
 	}
 </style>

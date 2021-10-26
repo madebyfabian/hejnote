@@ -1,5 +1,7 @@
 <template>
-	<div class="TabNav fixed bottom-0 left-0 w-full z-40 px-3 pb-safe-area-bottom pt-4 bg-gradient-to-t from-gray-900 via-gray-900">
+	<div 
+		class="TabNav fixed bottom-0 left-0 w-full z-40 px-3 pb-safe-area-bottom pt-4 bg-gradient-to-t from-gray-900 via-gray-900"
+		:class="props.class">
 		<div class="relative flex justify-between w-full z-1">
 			<!-- Home -->
 			<TabNav-Item :to="{ name: 'App-Home' }" :isActive="isActiveTab('App-Home')">
@@ -74,6 +76,10 @@
 	import { Avatar, ContextMenu, ContextMenuItem, ContextMenuSeperator } from '@/components/ui'
 	import { TabNavItem, TabNavCreateNoteEditor } from '@/components/layouts'
 	import { IconCollectionMove, IconCollectionMoveSolid, IconNotes, IconNotesSolid, IconMore, IconMoreSolid, IconAdd } from '@/assets/icons'
+
+	const props = defineProps({
+		class: { default: '' }
+	})
 
 	const route = useRoute()
 	const userName = computed(() => generalStore.getUserName())
