@@ -39,35 +39,23 @@
 		</TruncatedList>
 	</section>
 
-	<Modal 
-		:isOpened="createLinkModalIsOpened" 
-		@close="createLinkModalIsOpened = false"
-		@formSubmit="handleCreateLinkModalSubmit"
-		title="Add new link" 
-		width="100" 
-		isForm>
-
-		<div class="flex flex-col gap-4">
-			<TextInput v-model="createLinkModalData.url" :inputProps="{ type: 'url', placeholder: 'Your Link', required: true }" />
-			<TextInput v-model="createLinkModalData.annotation" :inputProps="{ placeholder: 'Annotations for this link' }" />
-		</div>
-
-		<template #bottomBar>
-			<Button type="submit" isFullWidth :isLoading="createLinkModalButtonLoading">Save</Button>
-		</template>
-	</Modal>
+	<Note-LinkList-EditorModal
+		:isOpened="createLinkModalIsOpened"
+		:noteId="props.noteId"
+		@close="createLinkModalIsOpened = false" 
+	/>
 </template>
 
 <script setup>
 	import { computed, reactive, ref } from 'vue'
 	import { linksStore, joinNotesLinksStore } from '@/store'
 	import useConfirm from '@/hooks/useConfirm'
-	import useSnackbar from '@/hooks/useSnackbar'
-	import { Button, Modal, TextInput, TruncatedList } from '@/components/ui'
+	import { Button, TruncatedList } from '@/components/ui'
 	import { IconAdd, IconTrashDelete } from '@/assets/icons'
 
 	// !! Must be a direct import, otherwise props importing doesn't work.
 	import NoteLinkListItem from '@/components/Note-LinkList-Item.vue'
+	import NoteLinkListEditorModal from '@/components/Note-LinkList-EditorModal.vue'
 
 	const props = defineProps({
 		...NoteLinkListItem.props,
@@ -80,6 +68,7 @@
 	const noteLinks = computed(() => linksStore._findLinksByNoteIdsV2({ noteIds: [ props.noteId ] }))
 
 	const isTruncated = ref(true)
+	const createLinkModalIsOpened = ref(false)
 
 	const handleKeepLinkAfterDeletingFromNote = ({ join }) => {
 		joinNotesLinksStore.joinNotesLinksUpdate({ joinIds: [ join.id ], noteId: props.noteId, newVal: {
@@ -97,43 +86,5 @@
 			return
 
 		linksStore.linksDeleteV2({ urlArray: [ url ], noteIds: [ props.noteId ] })
-	}
-
-	/**
-	 * Create link modal
-	 */
-	const createLinkModalIsOpened = ref(false)
-	const _default_createLinkModalData = {
-		url: '',
-		annotation: ''
-	}
-	const createLinkModalData = reactive({ ..._default_createLinkModalData })
-	const createLinkModalButtonLoading = ref(false)
-
-	const handleCreateLinkModalSubmit = async () => {
-		createLinkModalButtonLoading.value = true
-
-		try {
-			await linksStore.linksUpsert({
-				linkObjArr: [ linksStore.getLinkDefaultDataObject({ link: { url: createLinkModalData.url } }) ],
-				noteId: props.noteId,
-				joinNotesLinksObj: {
-					is_added_from_text: false,
-					is_in_text: false,
-					annotation: createLinkModalData.annotation || null,
-				}
-			})
-
-			createLinkModalIsOpened.value = false
-
-			// Reset data.
-			Object.assign(createLinkModalData, _default_createLinkModalData)
-
-		} catch (error) {
-			useSnackbar().createSnackbar({ message: 'Error while trying to create new link' })
-
-		} finally {
-			createLinkModalButtonLoading.value = false
-		}
 	}
 </script>
