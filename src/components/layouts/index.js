@@ -20,7 +20,6 @@ export { default as TabNav } from './TabNav/TabNav.vue';
 export { default as SidebarItem } from './Sidebar/Sidebar-Item.vue';
 export { default as Sidebar } from './Sidebar/Sidebar.vue';
 
-export { default as SnackbarItem } from './SnackbarItem.vue';
 export { default as SnackbarContainer } from './SnackbarContainer.vue';
 
 export { default as BannerHiddenMode } from './BannerHiddenMode.vue'

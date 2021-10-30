@@ -14,7 +14,7 @@
 
 <script setup>
 	import useSnackbar from '@/hooks/useSnackbar'
-	import { SnackbarItem } from '@/components/layouts'
+	import { SnackbarItem } from '@/components/ui'
 
 	const { snackbarInstances, removeSnackbar } = useSnackbar()
 </script>

@@ -12,6 +12,7 @@ export { default as LoadingSpinner } from './LoadingSpinner.vue';
 export { default as ModalContent } from './Modal-Content.vue';
 export { default as Modal } from './Modal.vue';
 export { default as RichtextEditor } from './RichtextEditor.vue';
+export { default as SnackbarItem } from './SnackbarItem.vue';
 export { default as Switch } from './Switch.vue';
 export { default as TextInput } from './TextInput.vue';
 export { default as TruncatedList } from './TruncatedList.vue';
