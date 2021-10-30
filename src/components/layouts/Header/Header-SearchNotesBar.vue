@@ -84,6 +84,10 @@
 	onMounted(handleUpdate)
 
 	const navigateToSearch = () => {
+		const routeToNavigate = 'App-Search'
+		if (route.name === routeToNavigate)
+			return
+
 		router.push(generateRouterLink({ name: 'App-Search' }).value)
 	}
 </script>
