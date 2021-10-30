@@ -12,8 +12,8 @@ export { default as TabNav } from './TabNav/TabNav.vue';
 export { default as SidebarItem } from './Sidebar/Sidebar-Item.vue';
 export { default as Sidebar } from './Sidebar/Sidebar.vue';
 
-export { default as SnackbarItem } from './Snackbar/SnackbarItem.vue';
-export { default as SnackbarContainer } from './Snackbar/SnackbarContainer.vue';
+export { default as SnackbarItem } from './SnackbarItem.vue';
+export { default as SnackbarContainer } from './SnackbarContainer.vue';
 
 export { default as BannerHiddenMode } from './BannerHiddenMode.vue'
 export { default as ModalConfirm } from './ModalConfirm.vue'
