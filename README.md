@@ -5,7 +5,7 @@ Problems:
 problem that we have to implement something like a scroll-prevent when we don't want the modal to be closable.
 Also, listening to "scrollEnd" or something is not possible, so it's hard to track when the modal should be closed/stay open.
 
-NOTE: install `vue3-smooth-scroll` package for this feature to work.
+NOTE: it uses JS native scrollIntoView, which is not supported smoothly by safari. but can be activated in iOS settings.
 
 
 ---
