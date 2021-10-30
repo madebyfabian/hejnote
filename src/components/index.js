@@ -6,6 +6,5 @@ export { default as Note } from './Note.vue';
 export { default as NoteEditor } from './NoteEditor.vue';
 export { default as NoteListGrid } from './NoteList-Grid.vue';
 export { default as NoteList } from './NoteList.vue';
-export { default as Snackbar } from './Snackbar.vue';
-export { default as SnackbarContainer } from './SnackbarContainer.vue';
+export { default as SnackbarContainer } from './layouts/Snackbar/SnackbarContainer.vue';
 export { default as SwitchHiddenMode } from './SwitchHiddenMode.vue';

@@ -2,7 +2,7 @@
 	<teleport to="body">
 		<div class="SnackbarContainer" aria-live="assertive">
 			<transition-group name="transition-snackbar" tag="div">
-				<Snackbar 
+				<SnackbarItem 
 					v-for="snackbar of snackbarInstances" :key="snackbar.id"
 					:snackbar="snackbar"
 					@removeSnackbar="removeSnackbar({ id: snackbar.id })"
@@ -14,7 +14,7 @@
 
 <script setup>
 	import useSnackbar from '@/hooks/useSnackbar'
-	import { Snackbar } from '@/components'
+	import { SnackbarItem } from '@/components/layouts'
 
 	const { snackbarInstances, removeSnackbar } = useSnackbar()
 </script>
