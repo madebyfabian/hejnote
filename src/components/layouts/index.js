@@ -2,6 +2,9 @@ export { default as HeaderCreateNoteEditor } from './Header/Header-CreateNoteEdi
 export { default as HeaderSearchNotesBar } from './Header/Header-SearchNotesBar.vue';
 export { default as Header } from './Header/Header.vue';
 
+export { default as NoteList } from './NoteList/NoteList.vue';
+export { default as NoteListGrid } from './NoteList/NoteList-Grid.vue';
+
 export { default as TabNavCreateNoteEditor } from './TabNav/TabNav-CreateNoteEditor.vue';
 export { default as TabNavItem } from './TabNav/TabNav-Item.vue';
 export { default as TabNav } from './TabNav/TabNav.vue';

@@ -37,7 +37,7 @@
 
 	// Components
 	import { Button, ContextMenu, ContextMenuItem } from '@/components/ui'
-	import { NoteList } from '@/components'
+	import { NoteList } from '@/components/layouts'
 
 
 	const collection = useCurrentCollection(),

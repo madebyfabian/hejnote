@@ -41,7 +41,7 @@
 	import { generalStore } from '@/store'
 	import useCurrentCollection from '@/hooks/useCurrentCollection'
 	import { Badge } from '@/components/ui'
-	import { NoteListGrid } from '@/components'
+	import { NoteListGrid } from '@/components/layouts'
 	
 	const dayjs = useDayjs()
 

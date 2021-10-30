@@ -4,5 +4,3 @@ export { default as NoteLinkList } from './Note-LinkList.vue';
 export { default as NoteLinkListItem } from './Note-LinkList-Item.vue';
 export { default as Note } from './Note.vue';
 export { default as NoteEditor } from './NoteEditor.vue';
-export { default as NoteListGrid } from './NoteList-Grid.vue';
-export { default as NoteList } from './NoteList.vue';

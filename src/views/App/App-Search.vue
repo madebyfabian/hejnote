@@ -25,7 +25,7 @@
 	import useIsMobileDevice from '@/hooks/useIsMobileDevice'
 	import richtextEditorUtils from '@/utils/richtextEditorUtils'
 
-  import { NoteList } from '@/components'
+  import { NoteList } from '@/components/layouts'
 	import { TextInput } from '@/components/ui'
 	import { IconSearch } from '@/assets/icons'
 
