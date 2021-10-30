@@ -18,11 +18,12 @@
 </template>
 
 <script setup>
-	import { ref, computed } from 'vue'
+	import { ref, computed, onMounted } from 'vue'
 	import Fuse from 'fuse.js'
-	import { notesStore } from '@/store'
+	import { notesStore, linksStore, joinNotesLinksStore } from '@/store'
 	import { useRoute, useRouter } from 'vue-router'
 	import useIsMobileDevice from '@/hooks/useIsMobileDevice'
+	import richtextEditorUtils from '@/utils/richtextEditorUtils'
 
   import { NoteList } from '@/components'
 	import { TextInput } from '@/components/ui'
@@ -32,40 +33,64 @@
 				router = useRouter()
 	const isMobileDevice = useIsMobileDevice()
 
-	/**
-	 * Transform note.content json object into string or parse.
-	 */
-	const _contentTransform = ({ notes, stringify = true }) => {
-		return notes.map(item => ({ 
-			...item, 
-			content: stringify ? JSON.stringify(item.content) : JSON.parse(item.content) 
-		}))
-	}
-
-	const originalData = computed(() => {
-		return _contentTransform({ notes: notesStore.getNotes(), stringify: true })
-	})
-
-	// Setup fuse.js
-	const fuse = new Fuse(originalData.value, { keys: [
-		{ name: 'title', weight: 1 },
-		{ name: 'content', weight: 0.8 },
-		{ name: 'id', weight: 1 }
-	] })
-
+	const notesOriginalData = computed(() => notesStore.getNotes())
 	const searchNotesString = computed({
 		get() 			{ return route.query?.q || '' },
 		set(newVal)	{ router.push({ query: { q: newVal } }) }
 	})
-
 	const title = computed(() => {
 		return `Search Results ${ searchNotesString.value.length ? `for \"${ searchNotesString.value }\"` : '' }`
 	})
 
+	const getNotesTransformedData = async () => {
+		return await Promise.all(notesOriginalData.value.map(async item => {
+			const content = await richtextEditorUtils.generateText({ doc: item.content })
+
+			const links = linksStore._findLinksByNoteIdsV2({ noteIds: [ item.id ] })
+			const joinNotesLinks = joinNotesLinksStore.findJoinNotesLinksByNoteIds({ noteIds: [ item.id ] })
+
+			return {
+				...item,
+				content,
+
+				// Custom fields, only for search index
+				_links: links,
+				_joinNotesLinks: joinNotesLinks
+			}
+		}))
+	}
+
+
+	// Setup fuse.js
+	let fuse 
+	const fuseInited = ref(false)
+	onMounted(async () => {
+		const searchData = await getNotesTransformedData()
+
+		fuse = new Fuse(searchData, { keys: [
+			{ name: 'title', weight: 1 },
+			{ name: 'id', weight: 1 },
+			{ name: 'content', weight: 1 },
+
+			// Custom fields, only for search index
+			{ name: '_links.id', weight: 0.8 },
+			{ name: '_links.title', weight: 0.8 },
+			{ name: '_links.url', weight: 0.8 },
+			{ name: '_joinNotesLinks.annotation', weight: 0.8 },
+		] })
+
+		fuseInited.value = true
+	})
+
 	const notes = computed(() => {
+		if (!fuseInited.value) 
+			return []
+
 		let results = fuse.search(searchNotesString.value)
-		results = results.map(result => result.item)
-		results = _contentTransform({ notes: results, stringify: false })
+
+		// Map the original data to the results, so that the notes can be rendered properly.
+		results = results.map(result => notesOriginalData.value.find(item => item.id === result.item.id))
+		
 		return results
 	})
 </script>
