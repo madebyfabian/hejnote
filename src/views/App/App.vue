@@ -63,9 +63,9 @@
 	const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 
 	// Components
-	import { Header, TabNav, Sidebar, BannerHiddenMode, ModalUpdateCollections } from '@/components/layouts'
+	import { Header, TabNav, Sidebar, BannerHiddenMode, ModalUpdateCollections, SwitchHiddenMode } from '@/components/layouts'
 	import { Modal } from '@/components/ui'
-	import { NoteEditor, SwitchHiddenMode } from '@/components'
+	import { NoteEditor } from '@/components'
 
 	onMounted(async () => {
 		// Load all app data

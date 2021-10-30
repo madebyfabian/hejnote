@@ -38,6 +38,6 @@
 
 <script setup>
 	import { Cell } from '@/components/ui'
+	import { SwitchHiddenMode } from '@/components/layouts'
 	import { IconArchive, IconTrash, IconMoreSolid, IconSearch } from '@/assets/icons'
-	import { SwitchHiddenMode } from '@/components'
 </script>
