@@ -1,3 +1,15 @@
+# Feature that tryies to implement a more native feeling modal on mobile
+Problems:
+- ModalV2 uses custom drag handlers, which causes to really bad performance on safari/iOS
+- ModalV3 uses the new css scroll snap, problem here is, it's still not 120fps on iOS, and also has the
+problem that we have to implement something like a scroll-prevent when we don't want the modal to be closable.
+Also, listening to "scrollEnd" or something is not possible, so it's hard to track when the modal should be closed/stay open.
+
+NOTE: install `vue3-smooth-scroll` package for this feature to work.
+
+
+---
+
 # hejnote. app
 
 ## Project setup
