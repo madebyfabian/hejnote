@@ -19,7 +19,7 @@
 
 <script setup>
 	import { ref, watch } from 'vue'
-	import { NoteEditor } from '@/components'
+	import { NoteEditor } from '@/components/layouts'
 
 	const displayMinimized = ref(true),
 				noteEditorEl = ref(null),
