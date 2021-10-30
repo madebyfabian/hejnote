@@ -112,7 +112,7 @@ export const routes = [
         meta: { requiresAuth: true },
         beforeEnter: async ( to, from, next ) => {
           supabase.auth.signOut()
-          return next({ name: 'Auth' })
+          window.location.reload()
         },
       }
     ]
