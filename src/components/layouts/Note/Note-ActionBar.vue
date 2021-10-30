@@ -91,7 +91,7 @@
 
 	// Components
 	import { ButtonIconOnly, ContextMenu, ContextMenuItem } from '@/components/ui'
-	import { NoteActionBarCollection } from '@/components'
+	import { NoteActionBarCollection } from '@/components/layouts'
 
 	const supabase = useSupabase()
 

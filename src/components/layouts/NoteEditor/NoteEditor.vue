@@ -46,7 +46,7 @@
 	import { throttle } from 'throttle-debounce'
 	import { joinNotesLinksStore, linksStore, notesStore } from '@/store'
 	import { Button, RichtextEditor } from '@/components/ui'
-	import { NoteActionBar, NoteLinkList } from '@/components'
+	import { NoteActionBar, NoteLinkList } from '@/components/layouts'
 	import { useRoute } from 'vue-router'
 
 	const emit = defineEmits([ 'isFinished' ])

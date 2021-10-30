@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-	import { Note } from '@/components'
+	import { Note } from '@/components/layouts'
 
 	const props = defineProps({
 		notes: 				{ type: Array, required: true },

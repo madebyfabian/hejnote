@@ -65,7 +65,7 @@
 	import { linksStore, notesStore, collectionsStore } from '@/store'
 	import { noteEditorContentDefault } from '@/utils/constants'
 	import { Button, RichtextEditor } from '@/components/ui'
-	import { NoteActionBar, NoteLinkList } from '@/components'
+	import { NoteActionBar, NoteLinkList } from '@/components/layouts'
 	
 	const props = defineProps({
 		note: { required: true },

@@ -54,8 +54,8 @@
 	import { IconAdd, IconTrashDelete } from '@/assets/icons'
 
 	// !! Must be a direct import, otherwise props importing doesn't work.
-	import NoteLinkListItem from '@/components/Note-LinkList-Item.vue'
-	import NoteLinkListEditorModal from '@/components/Note-LinkList-EditorModal.vue'
+	import NoteLinkListItem from '@/components/layouts/Note/Note-LinkList-Item.vue'
+	import NoteLinkListEditorModal from '@/components/layouts/Note/Note-LinkList-EditorModal.vue'
 
 	const props = defineProps({
 		...NoteLinkListItem.props,
