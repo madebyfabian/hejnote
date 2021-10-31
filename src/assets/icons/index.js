@@ -12,6 +12,7 @@ import IconEyeOff from './eyeOff.svg'
 import IconEyeOffSolid from './eyeOffSolid.svg'
 import IconGitHub from './gitHub.svg'
 import IconGlobe from './globe.svg'
+import IconLinkAdd from './linkAdd.svg'
 import IconLinkExternal from './linkExternal.svg'
 import IconLock from './lock.svg'
 import IconLockSolid from './lockSolid.svg'
@@ -42,6 +43,7 @@ export {
   IconEyeOffSolid,
   IconGitHub,
   IconGlobe,
+  IconLinkAdd,
   IconLinkExternal,
   IconLock,
   IconLockSolid,
