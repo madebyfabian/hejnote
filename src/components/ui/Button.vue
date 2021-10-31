@@ -81,14 +81,14 @@
 		&-secondary, 
 		&-tertiary {
 			transition: border-color 750ms ease, background-color 100ms ease;
-			@apply rounded-xl;
+			@apply rounded-button;
 			
 			@apply px-4 h-11;
 			&.hasNegativeMargin { @apply -mx-4 -my-3; }
 		}
 
 		&-primary {
-			@apply rounded-xl text-gray-900;
+			@apply rounded-button text-gray-900;
 			@apply border-transparent;
 			@apply bg-green-400;
 

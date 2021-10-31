@@ -17,6 +17,7 @@ export default {
 		notes: [],
     editNoteId: null,
     editNoteModalVisible: false,
+    createNoteModalVisible: false,
 	}),
 
   getNoteDefaultDataObject({ note } = {}) { return {
@@ -54,6 +55,10 @@ export default {
       this.state.editNoteModalVisible = false
 		})
 	},
+
+  updateCreateNoteModalVisible({ newVal } = {}) {
+    this.state.createNoteModalVisible = newVal
+  },
 
 	async notesFetch({ fetchHidden = false } = {}) {
     const { data, error } = await supabase.from('notes').select('*').eq('is_hidden', fetchHidden)

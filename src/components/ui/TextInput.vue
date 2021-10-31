@@ -26,7 +26,6 @@
 
 	defineProps({
 		modelValue: 	{ required: true },
-		placeholder: 	{ type: String, default: '' },
 		inputBgGray: 	{ type: Boolean, default: false },
 
 		// new:
@@ -50,7 +49,7 @@
 		}
 
 		input {
-			@apply inline-flex w-full h-11 rounded-xl border border-gray-700;
+			@apply inline-flex w-full h-11 rounded-input border border-gray-700;
 			@apply text-100 text-base desktop:text-sm;
 			@apply transition duration-300;
 			@apply ring-0;

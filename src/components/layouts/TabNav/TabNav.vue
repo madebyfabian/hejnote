@@ -61,7 +61,7 @@
 			<div class="w-[20%] flex justify-center">
 				<!-- Exeption: I didn't used <Button> here, but it's okay -->
 				<button 
-					@click="showCreateNoteEditor = true"
+					@click="() => notesStore.updateCreateNoteModalVisible({ newVal: true })"
 					class="h-12 w-12 rounded-2.5xl bg-gradient-to-b from-green-400 to-green-600 text-gray-900 flex justify-center items-center mt-2">
 					
 					<IconAdd />
@@ -82,17 +82,15 @@
 			</TabNav-Item>		
 		</div>
 	</div>
-
-	<TabNav-CreateNoteEditor :isOpened="showCreateNoteEditor" @close="showCreateNoteEditor = false" />
 </template>
 
 <script setup>
 	import { ref, computed } from 'vue'
 	import { useRoute } from 'vue-router'
-	import { generalStore, collectionsStore } from '@/store'
+	import { generalStore, notesStore, collectionsStore } from '@/store'
 
 	import { Avatar, ContextMenu, ContextMenuItem, ContextMenuSeperator, EmptyState } from '@/components/ui'
-	import { TabNavItem, TabNavCreateNoteEditor } from '@/components/layouts'
+	import { TabNavItem } from '@/components/layouts'
 	import { IconCollectionMove, IconCollectionMoveSolid, IconNotes, IconNotesSolid, IconMore, IconMoreSolid, IconAdd } from '@/assets/icons'
 
 	const props = defineProps({
@@ -102,7 +100,6 @@
 	const route = useRoute()
 	const userName = computed(() => generalStore.getUserName())
 
-	const showCreateNoteEditor = ref(false)
 
 	const isActiveTab = (routeName) => {
 		return route.name === routeName

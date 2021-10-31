@@ -1,15 +1,12 @@
 <template>
 	<div class="NoteEditor z-50 flex-1 h-full" ref="noteEditorEl" v-click-outside="clickOutsideConfig">
 		<article 
-			class="transition-transform duration-150 flex flex-col flex-1 h-full" 
-			:class="{ 'transform-gpu -translate-y-12 delay-100': displayMinimized }">
+			class="transition-transform duration-150 flex flex-col flex-1 h-full">
 
-			<div class="transition-opacity duration-300 opacity-0" :class="{ 'opacity-100': !displayMinimized }">
-				<input 
-					v-model="note.title" type="text" placeholder="New note" :disabled="isLocked"
-					class="p-5 pr-20 pb-2 text-150 text-gray-300 font-semibold bg-transparent w-full placeholder-gray-500 outline-none ring-0"
-				/>
-			</div>
+			<input 
+				v-model="note.title" type="text" placeholder="New note" :disabled="isLocked"
+				class="p-5 pr-20 pb-2 text-150 text-gray-300 font-semibold bg-transparent w-full placeholder-gray-500 outline-none ring-0"
+			/>
 
 			<RichtextEditor v-model="note.content" class="flex-1" :isReadonly="isLocked" isInEditMode />
 
@@ -33,8 +30,7 @@
 
 		<div 
 			v-if="!displayInModal"
-			class="h-14 flex justify-end pt-0 p-3 opacity-0 transition transform-gpu" 
-			:class="displayMinimized ? 'duration-300 opacity-0 -translate-y-3' : 'duration-500 opacity-100 -translate-y-0'">
+			class="h-14 flex justify-end pt-0 p-3">
 
 			<Button buttonType="secondary" @click.stop="closeEditor">Close</Button>
 		</div>
@@ -53,7 +49,6 @@
 
 	const props = defineProps({
 		note: 						{ type: [ Object ], default: {} },
-		displayMinimized: { type: Boolean, default: false },
 		displayInModal: 	{ type: Boolean, default: false },	
 	})
 
@@ -64,7 +59,7 @@
 	const clickOutsideConfig = {
 		events: [ 'mousedown' ],
 		handler: () => {
-			if (!props.displayInModal && !props.displayMinimized) 
+			if (!props.displayInModal) 
 				closeEditor()
 		}
 	}

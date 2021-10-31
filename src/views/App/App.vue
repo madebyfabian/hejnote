@@ -21,6 +21,7 @@
 				<TabNav v-if="isMobileDevice" :class="{ 'willMove': true, 'isMovedUp': isHiddenMode }" />
 
 				<ModalEditNote />
+				<ModalEditNote isCreateAction />
 				<ModalUpdateCollections />
 			</div>
 		</transition>

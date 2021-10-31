@@ -1,10 +1,10 @@
 <template>
 	<Modal 
 		:isOpened="isOpened"
-		@close="() => notesStore.closeNoteEditor()"
+		@close="handleClose"
 		:hasPadding="false"
 		:displayTitle="false"
-		title="Edit note"
+		:title="title"
 		forceMobileFullHeight>
 
 		<NoteEditor 
@@ -20,9 +20,35 @@
 	import { NoteEditor } from '@/components/layouts'
 	import { Modal } from '@/components/ui'
 
-	const editNote = computed(() => {
-		return notesStore.noteFindById({ noteId: notesStore.state.editNoteId })
+	const props = defineProps({
+		/**
+		 * Determines whether the editor should be in edit (update) mode or in create mode.
+		 */
+		isCreateAction: { type: Boolean, default: false },
 	})
 
-	const isOpened = computed(() => notesStore.state.editNoteModalVisible)
+	const editNote = computed(() => {
+		return !props.isCreateAction 
+			? notesStore.noteFindById({ noteId: notesStore.state.editNoteId })
+			: undefined
+	})
+
+	const isOpened = computed(() => {
+		return !props.isCreateAction
+			? notesStore.state.editNoteModalVisible
+			: notesStore.state.createNoteModalVisible
+	})
+
+	const title = computed(() => {
+		return !props.isCreateAction
+			? 'Edit note'
+			: 'Create note'
+	})
+
+	const handleClose = () => {
+		if (!props.isCreateAction) 
+			notesStore.closeNoteEditor()
+		else 
+			notesStore.updateCreateNoteModalVisible({ newVal: false })
+	}
 </script>

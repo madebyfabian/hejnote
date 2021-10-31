@@ -7,9 +7,24 @@
 		<div class="container h-11">
 			<transition name="transition-fadeAndScale-fast" mode="out-in">
 				<div v-if="!isSearchFocussed" class="flex relative gap-4">
-					<Header-CreateNoteEditor />
+
+					<button 
+						@click="() => notesStore.updateCreateNoteModalVisible({ newVal: true })" 
+						class="flex-1 cursor-text rounded-input">
+						
+						<TextInput 
+							modelValue="" 
+							:inputProps="{ placeholder: 'Write something...', disabled: true }" 
+							inputBgGray 
+							class="pointer-events-none">
+
+							<template #icon>
+								<IconAdd />
+							</template>
+						</TextInput>
+					</button>
 			
-					<div class="rounded-xl bg-gray-900">
+					<div class="bg-gray-900 rounded-button">
 						<Button buttonType="secondary" @click="navigateToSearch">
 							<IconSearch />
 							Search for something
@@ -40,11 +55,11 @@
 
 <script setup>
 	import { computed } from 'vue'
-	import { generalStore } from '@/store'
+	import { generalStore, notesStore } from '@/store'
 	import { useRoute, useRouter } from 'vue-router'
-	import { AppLink, Avatar, Button } from '@/components/ui'
-	import { IconSearch } from '@/assets/icons'
-	import { HeaderCreateNoteEditor, SearchNotesBar } from '@/components/layouts'
+	import { AppLink, Avatar, Button, TextInput } from '@/components/ui'
+	import { IconSearch, IconAdd } from '@/assets/icons'
+	import { SearchNotesBar } from '@/components/layouts'
 	import useGenerateRouterLink from '@/hooks/useGenerateRouterLink'
 
 	import LogoIcon from '@/assets/images/logo.svg'
