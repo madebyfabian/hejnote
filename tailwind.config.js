@@ -104,7 +104,8 @@ module.exports = {
       borderRadius: {
         '2.5xl': '20px',
         'input': '0.75rem',
-        'button': '0.75rem'
+        'button': '0.75rem',
+        'inherit': 'inherit',
       },
       inset: {
         'initial': 'initial',
