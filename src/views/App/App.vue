@@ -20,21 +20,7 @@
 
 				<TabNav v-if="isMobileDevice" :class="{ 'willMove': true, 'isMovedUp': isHiddenMode }" />
 
-				<!-- Edit note modal -->
-				<Modal 
-					:isOpened="notesStore.state.editNoteModalVisible" 
-					:hasPadding="false" 
-					:displayTitle="false"
-					@close="() => notesStore.closeNoteEditor()"
-					title="Edit note"
-					forceMobileFullHeight>
-
-					<NoteEditor 
-						displayInModal
-						:note="editNote" 
-					/>
-				</Modal>
-
+				<ModalEditNote />
 				<ModalUpdateCollections />
 			</div>
 		</transition>
@@ -63,8 +49,7 @@
 	const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 
 	// Components
-	import { Header, TabNav, Sidebar, BannerHiddenMode, ModalUpdateCollections, SwitchHiddenMode, NoteEditor } from '@/components/layouts'
-	import { Modal } from '@/components/ui'
+	import { Header, TabNav, Sidebar, BannerHiddenMode, ModalUpdateCollections, ModalEditNote, SwitchHiddenMode } from '@/components/layouts'
 
 	onMounted(async () => {
 		// Load all app data
@@ -87,9 +72,7 @@
 		})
 	})
 
-	const editNote = computed(() => {
-		return notesStore.noteFindById({ noteId: notesStore.state.editNoteId })
-	})
+	
 </script>
 
 <style lang="postcss">

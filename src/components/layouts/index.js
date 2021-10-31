@@ -23,6 +23,7 @@ export { default as SnackbarContainer } from './SnackbarContainer.vue';
 
 export { default as BannerHiddenMode } from './BannerHiddenMode.vue'
 export { default as ModalConfirm } from './ModalConfirm.vue'
+export { default as ModalEditNote } from './ModalEditNote.vue'
 export { default as ModalUpdateCollections } from './ModalUpdateCollections.vue'
 export { default as SwitchHiddenMode } from './SwitchHiddenMode.vue'
 export { default as SearchNotesBar } from './SearchNotesBar.vue'
