@@ -1,8 +1,8 @@
 <template>
 	<div 
-		class="CreateNoteEditor absolute top-0 left-0 w-full rounded-xl border border-gray-700 overflow-hidden transition" 
+		class="Header-CreateNoteEditor flex-1 rounded-xl bg-gray-800 border border-gray-700 overflow-hidden transition" 
 		:style="{ '--max-height': `${ maxHeight }px` }"
-		:class="displayMinimized ? 'displayMinimized bg-gray-900' : 'bg-gray-800'"
+		:class="displayMinimized ? 'displayMinimized' : ''"
 		@click="handleOpen">
 
 		<div class="-m-[1px]">
@@ -46,7 +46,7 @@
 </script>
 
 <style lang="postcss" scoped>
-	.CreateNoteEditor {
+	.Header-CreateNoteEditor {
 		@apply max-h-11;
 
 		&:not(.displayMinimized) {

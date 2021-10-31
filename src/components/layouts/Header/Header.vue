@@ -6,19 +6,18 @@
 
 		<div class="container h-11">
 			<transition name="transition-fadeAndScale-fast" mode="out-in">
-				<div v-if="!isSearchFocussed" class="flex">
-					<div class="relative flex-1">
-						<Header-CreateNoteEditor />
-
-						<div class="Header-bgGradient isTop"></div>
-						<div class="Header-bgGradient isBottom"></div>
-					</div>
-					<div class="ml-4">
+				<div v-if="!isSearchFocussed" class="flex relative gap-4">
+					<Header-CreateNoteEditor />
+			
+					<div class="rounded-xl bg-gray-900">
 						<Button buttonType="secondary" @click="navigateToSearch">
 							<IconSearch />
 							Search for something
 						</Button>
 					</div>
+					
+					<div class="Header-bgGradient isTop"></div>
+					<div class="Header-bgGradient isBottom"></div>
 				</div>
 
 				<SearchNotesBar v-else />
@@ -79,7 +78,7 @@
 		@apply absolute left-0 w-full -z-1 pointer-events-none;
 
 		&.isTop {
-			@apply -top-5 h-8 backdrop-blur-xl bg-gray-900 bg-opacity-75;
+			@apply -top-5 h-14 backdrop-blur-xl bg-gray-900 bg-opacity-75;
 		}
 
 		&.isBottom {
