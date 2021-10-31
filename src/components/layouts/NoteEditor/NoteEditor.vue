@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-	import { ref, reactive, watch, computed, onUnmounted, onUpdated, onBeforeUnmount, nextTick } from 'vue'
+	import { ref, reactive, watch, computed, onUnmounted, onUpdated, onBeforeUnmount, nextTick, onMounted } from 'vue'
 	import { throttle } from 'throttle-debounce'
 	import { joinNotesLinksStore, linksStore, notesStore } from '@/store'
 	import { Button, RichtextEditor } from '@/components/ui'
@@ -54,9 +54,10 @@
 		startWithNewLink: 	{ type: Boolean, default: false },
 	})
 
+	const route = useRoute()
+
 	const noteEditorEl = ref(null)
 	const dataChangeWatcherIsActive = ref(true)
-	const route = useRoute()
 
 	// Setup click outside
 	const clickOutsideConfig = {
@@ -102,19 +103,16 @@
 		{ deep: true }
 	)
 
-	// "Start with new link" functionality
-	watch(() => props.startWithNewLink, async newVal => {
-		if (!newVal)
-			return
-
+	onMounted(async () => {
 		// Start with new link, by first commiting the first change so the note creates itsself in DB.
 		dataChangeWatcherIsActive.value = false
 		await nextTick()
 		await _handleDataChange({ forceEvenWithoutChanges: true })
 		await nextTick()
 		dataChangeWatcherIsActive.value = true
-	}, { immediate: true })
+	})
 
+	// "Start with new link" functionality
 	const handleLinkListMounted = async data => {
 		if (!props.startWithNewLink)
 			return
@@ -125,7 +123,13 @@
 
 	const prepareEditorClose = () => {
 		emit('isFinished')
-		_handleDataChange({ updateState: true })
+
+		// Check if note is completely empty. If so, delete it.
+		const isEmpty = notesStore.checkIfNoteIsCompletelyEmpty({ note })
+		if (isEmpty)
+			notesStore.notesDeleteV2({ noteIds: [ note.id ], notifyUser: false })
+		else
+			_handleDataChange({ updateState: true })
 	}
 
 	const closeEditor = () => {

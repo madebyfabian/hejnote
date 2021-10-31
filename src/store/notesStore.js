@@ -34,6 +34,31 @@ export default {
     collection_id:  note?.collection_id || null,
   }},
 
+  /**
+   * Checks if the note is completly empty.
+   * This includes checking the note object isself, and also if there are any links.
+   */
+  checkIfNoteIsCompletelyEmpty({ note }) {
+    if (!note)
+      return true
+
+    // Delete unneccessary object fields
+    const { id, is_pinned, is_hidden, is_archived, is_locked, collection_id, ...defaultNote } = this.getNoteDefaultDataObject()
+
+    const hasFieldsWithContent = !!Object.entries(defaultNote)
+      .map(([ key, value ]) => JSON.stringify(defaultNote[key]) !== JSON.stringify(note[key]))
+      .filter(Boolean)
+      .length
+
+    // Check if there are any links.
+    const hasJoinNotesLinks = linksStore._findLinksByNoteIdsV2({ noteIds: [ note.id ] }).length
+    
+    if (!hasFieldsWithContent && !hasJoinNotesLinks)
+      return true
+
+    return false
+  },
+
   noteObjectHasChanges({ compareToNoteId, newVal } = {}) {
     let oldVal = !compareToNoteId
       ? this.getNoteDefaultDataObject()
@@ -117,7 +142,7 @@ export default {
     this.state.notes = data
   },
 
-  async notesUpsertSingle({ newVal, forceEvenWithoutChanges = false, collectionId = undefined, updateDB = true, updateState = true }) {
+  async notesUpsertSingle({ newVal, forceEvenWithoutChanges = false, collectionId = null, updateDB = true, updateState = true }) {
     try {
       if (!forceEvenWithoutChanges) {
         const hasChanges = this.noteObjectHasChanges({ compareToNoteId: newVal?.id, newVal })
@@ -127,7 +152,7 @@ export default {
 
       // If we are in hidden mode, the new val should also have this prop.
       newVal.is_hidden = isHiddenMode.value
-      newVal.collection_id = newVal.collection_id || collectionId || undefined
+      newVal.collection_id = newVal.collection_id || collectionId || null
 
       let res
       if (updateDB) {
@@ -172,7 +197,7 @@ export default {
     }
   },
 
-  async notesDeleteV2({ noteIds }) {
+  async notesDeleteV2({ noteIds, notifyUser = true }) {
     try {
       // Delete link joins and their links first.
       await linksStore.linksDeleteV2({ noteIds })
@@ -184,7 +209,8 @@ export default {
       // Delete from state
       this.state.notes = this.state.notes.filter(note => !noteIds.includes(note.id))
 
-      useSnackbar().createSnackbar({ message: `Deleted ${ noteIds.length } note${ noteIds.length === 1 ? '' : 's' }` })
+      if (notifyUser)
+        useSnackbar().createSnackbar({ message: `Deleted ${ noteIds.length } note${ noteIds.length === 1 ? '' : 's' }` })
     
     } catch (error) {
       handleError(error)
