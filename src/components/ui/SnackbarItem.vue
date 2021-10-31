@@ -17,9 +17,9 @@
 			<Button 
 				v-if="snackbar.buttonText"
 				buttonType="tertiary"
-				noRoundedBorder
+				customRoudedBorderClass="rounded-none rounded-r-xl"
 				@click="handleButtonClick"
-				class="!h-auto !w-auto !rounded-r-xl !px-3">
+				class="!h-auto !w-auto !px-3">
 				
 				{{ snackbar.buttonText }}
 			</Button>

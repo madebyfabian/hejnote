@@ -12,6 +12,8 @@
 				'pl-5': isIconSlotEmpty,
 				'bg-gray-800': inputBgGray,
 				'bg-transparent': !inputBgGray,
+				'border border-gray-700': !inputBorderHidden,
+				'border border-transparent': inputBorderHidden,
 			}"
 			ref="inputEl"
 		/>
@@ -25,11 +27,12 @@
 	const emit = defineEmits([ 'mountedInput', 'update:modelValue' ])
 
 	defineProps({
-		modelValue: 	{ required: true },
-		inputBgGray: 	{ type: Boolean, default: false },
+		modelValue: 				{ required: true },
+		inputBgGray: 				{ type: Boolean, default: false },
+		inputBorderHidden: 	{ type: Boolean, default: false },
 
 		// new:
-		inputProps: 	{ type: Object, default: () => ({}) },
+		inputProps: 				{ type: Object, default: () => ({}) },
 	})
 
 	const inputEl = ref(null)
@@ -49,7 +52,7 @@
 		}
 
 		input {
-			@apply inline-flex w-full h-11 rounded-input border border-gray-700;
+			@apply inline-flex w-full h-11 rounded-input;
 			@apply text-100 text-base desktop:text-sm;
 			@apply transition duration-300;
 			@apply ring-0;

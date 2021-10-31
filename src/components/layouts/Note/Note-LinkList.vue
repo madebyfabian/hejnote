@@ -23,13 +23,13 @@
 				/>
 			</template>
 
-			<Button v-if="!isReadonly" buttonType="tertiary" isFullWidth noRoundedBorder @click="createLinkModalIsOpened = true">
+			<Button v-if="!isReadonly" buttonType="tertiary" isFullWidth customRoudedBorderClass="rounded-b-xl" @click="createLinkModalIsOpened = true">
 				<IconAdd />
 				Add new link
 			</Button>
 
 			<template #expandButton="{ overflowAmount }">
-				<Button is="div" buttonType="tertiary" isFullWidth noRoundedBorder :isDropdownOpened="!isTruncated">
+				<Button is="div" buttonType="tertiary" isFullWidth customRoundedBorderClass="rounded-b-xl" :isDropdownOpened="!isTruncated">
 					{{ isTruncated ? 'Show' : 'Hide last' }}
 					{{ overflowAmount }}
 					{{ isTruncated ? 'more' : '' }} 
@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-	import { computed, reactive, ref } from 'vue'
+	import { computed, onMounted, reactive, ref } from 'vue'
 	import { linksStore, joinNotesLinksStore } from '@/store'
 	import useConfirm from '@/hooks/useConfirm'
 	import { Button, TruncatedList } from '@/components/ui'
@@ -57,18 +57,26 @@
 	import NoteLinkListItem from '@/components/layouts/Note/Note-LinkList-Item.vue'
 	import NoteLinkListEditorModal from '@/components/layouts/Note/Note-LinkList-EditorModal.vue'
 
+	const emit = defineEmits([ 'componentMounted' ])
+
 	const props = defineProps({
 		...NoteLinkListItem.props,
 
+		isInEditMode: 		{ type: Boolean, default: false },
+		startWithNewLink: { type: Boolean, default: false },
+
 		// Set child component's props to undefined.
 		link: undefined,
-		isInEditMode: { type: Boolean, default: false },
 	})
 
 	const noteLinks = computed(() => linksStore._findLinksByNoteIdsV2({ noteIds: [ props.noteId ] }))
 
 	const isTruncated = ref(true)
 	const createLinkModalIsOpened = ref(false)
+
+	onMounted(() => {
+		emit('componentMounted', ({ createLinkModalIsOpened }))
+	})
 
 	const handleKeepLinkAfterDeletingFromNote = ({ join }) => {
 		joinNotesLinksStore.joinNotesLinksUpdate({ joinIds: [ join.id ], noteId: props.noteId, newVal: {

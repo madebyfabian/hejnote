@@ -23,7 +23,9 @@
 				<Note-LinkList 
 					:noteId="note.id" 
 					isInEditMode 
+					:startWithNewLink="startWithNewLink"
 					:isReadonly="isLocked" 
+					@componentMounted="handleLinkListMounted"
 				/>
 			</div>
 		</article>
@@ -38,7 +40,7 @@
 </template>
 
 <script setup>
-	import { ref, reactive, watch, computed, onUnmounted, onUpdated, onBeforeUnmount } from 'vue'
+	import { ref, reactive, watch, computed, onUnmounted, onUpdated, onBeforeUnmount, nextTick } from 'vue'
 	import { throttle } from 'throttle-debounce'
 	import { joinNotesLinksStore, linksStore, notesStore } from '@/store'
 	import { Button, RichtextEditor } from '@/components/ui'
@@ -48,11 +50,13 @@
 	const emit = defineEmits([ 'isFinished' ])
 
 	const props = defineProps({
-		note: 						{ type: [ Object ], default: {} },
-		displayInModal: 	{ type: Boolean, default: false },	
+		note: 							{ type: [ Object ], default: {} },
+		displayInModal: 		{ type: Boolean, default: false },	
+		startWithNewLink: 	{ type: Boolean, default: false },
 	})
 
 	const noteEditorEl = ref(null)
+	const dataChangeWatcherIsActive = ref(true)
 	const route = useRoute()
 
 	// Setup click outside
@@ -78,19 +82,47 @@
 	/** 
 	 * Methods
 	 */
-	const _handleDataChange = async ({ updateState = false } = {}) => {
-		const data = await notesStore.notesUpsertSingle({ newVal: note, collectionId: route?.params?.collectionId, updateState })
+	const _handleDataChange = async ({ updateState = false, forceEvenWithoutChanges = false } = {}) => {
+		const data = await notesStore.notesUpsertSingle({ newVal: note, forceEvenWithoutChanges, collectionId: route?.params?.collectionId, updateState })
 		if (!note?.id && data?.id)
 			note.id = data.id
 		updateLinks()
 	}
 
+	const _watchDataChangeHandler = () => {
+		if (!dataChangeWatcherIsActive.value)
+			return
+
+		_handleDataChange()
+	}
+
 	// Watch for form data changes
 	watch(
 		[ note ], 
-		throttle(1000, false, _handleDataChange),
+		throttle(1000, false, _watchDataChangeHandler),
 		{ deep: true }
 	)
+
+	// "Start with new link" functionality
+	watch(() => props.startWithNewLink, async newVal => {
+		if (!newVal)
+			return
+
+		// Start with new link, by first commiting the first change so the note creates itsself in DB.
+		dataChangeWatcherIsActive.value = false
+		await nextTick()
+		await _handleDataChange({ forceEvenWithoutChanges: true })
+		await nextTick()
+		dataChangeWatcherIsActive.value = true
+	}, { immediate: true })
+
+	const handleLinkListMounted = async data => {
+		if (!props.startWithNewLink)
+			return
+
+		data.createLinkModalIsOpened.value = true
+	}
+	// END "start with new link" functionality
 
 	const prepareEditorClose = () => {
 		emit('isFinished')

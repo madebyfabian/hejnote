@@ -4,25 +4,36 @@
 			<LogoIcon alt="Logo" class="ml-5" />
 		</AppLink>
 
-		<div class="container h-11">
+		<div class="Header-centerContent container h-11">
 			<transition name="transition-fadeAndScale-fast" mode="out-in">
-				<div v-if="!isSearchFocussed" class="flex relative gap-4">
+				<div v-if="!isSearchFocussed" class="flex gap-4">
+					<div class="Header-createNoteButtonBar flex-1 rounded-input bg-gray-800 flex divide-x divide-gray-700">
+						<button 
+							class="flex-1 cursor-text" 
+							@click="() => notesStore.toggleCreateNoteModal({ isVisible: true })">
 
-					<button 
-						@click="() => notesStore.updateCreateNoteModalVisible({ newVal: true })" 
-						class="flex-1 cursor-text rounded-input">
-						
-						<TextInput 
-							modelValue="" 
-							:inputProps="{ placeholder: 'Write something...', disabled: true }" 
-							inputBgGray 
-							class="pointer-events-none">
+							<TextInput 
+								modelValue="" 
+								:inputProps="{ placeholder: 'Write something...', disabled: true }" 
+								inputBgGray 
+								inputBorderHidden
+								class="pointer-events-none flex-1">
 
-							<template #icon>
-								<IconAdd />
-							</template>
-						</TextInput>
-					</button>
+								<template #icon>
+									<IconAdd />
+								</template>
+							</TextInput>
+						</button>
+
+						<Button
+							@click="() => notesStore.toggleCreateNoteModal({ isVisible: true, startWithNewLink: true })" 
+							buttonType="tertiary" 
+							customRoudedBorderClass="rounded-r-button">
+
+							<IconLinkAdd />
+							Create Linklist
+						</Button>
+					</div>
 			
 					<div class="bg-gray-900 rounded-button">
 						<Button buttonType="secondary" @click="navigateToSearch">
@@ -30,9 +41,6 @@
 							Search for something
 						</Button>
 					</div>
-					
-					<div class="Header-bgGradient isTop"></div>
-					<div class="Header-bgGradient isBottom"></div>
 				</div>
 
 				<SearchNotesBar v-else />
@@ -58,7 +66,7 @@
 	import { generalStore, notesStore } from '@/store'
 	import { useRoute, useRouter } from 'vue-router'
 	import { AppLink, Avatar, Button, TextInput } from '@/components/ui'
-	import { IconSearch, IconAdd } from '@/assets/icons'
+	import { IconSearch, IconAdd, IconLinkAdd } from '@/assets/icons'
 	import { SearchNotesBar } from '@/components/layouts'
 	import useGenerateRouterLink from '@/hooks/useGenerateRouterLink'
 
@@ -89,15 +97,32 @@
 		@apply fixed top-0 left-0 w-full z-40 flex items-center pt-5;	
 	}
 
-	.Header-bgGradient {
-		@apply absolute left-0 w-full -z-1 pointer-events-none;
+	/**
+	 * Overlay bg gradients
+	 */
+	.Header-centerContent {
+		@apply relative;
 
-		&.isTop {
+		&::after, &::before {
+			@apply content absolute left-0 w-full -z-1 pointer-events-none;
+		}
+
+		&::after {
 			@apply -top-5 h-14 backdrop-blur-xl bg-gray-900 bg-opacity-75;
 		}
 
-		&.isBottom {
+		&::before {
 			@apply top-8 h-10 bg-gradient-to-b from-gray-900 to-transparent;
+		}
+	}
+
+	.Header-createNoteButtonBar {
+		@apply relative;
+
+		&::after {
+			@apply content pointer-events-none rounded-inherit;
+			@apply absolute left-0 top-0 w-full h-full z-1;
+			@apply border border-gray-700;
 		}
 	}
 </style>

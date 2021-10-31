@@ -9,13 +9,14 @@
 
 		<NoteEditor 
 			displayInModal
+			:startWithNewLink="startWithNewLink"
 			:note="editNote" 
 		/>
 	</Modal>
 </template>
 
 <script setup>
-	import { computed } from 'vue'
+	import { computed, watch } from 'vue'
 	import { notesStore } from '@/store'
 	import { NoteEditor } from '@/components/layouts'
 	import { Modal } from '@/components/ui'
@@ -45,10 +46,12 @@
 			: 'Create note'
 	})
 
+	const startWithNewLink = computed(() => notesStore.state.createNoteStartWithNewLink)
+
 	const handleClose = () => {
 		if (!props.isCreateAction) 
 			notesStore.closeNoteEditor()
 		else 
-			notesStore.updateCreateNoteModalVisible({ newVal: false })
+			notesStore.toggleCreateNoteModal({ isVisible: false })
 	}
 </script>

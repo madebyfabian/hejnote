@@ -15,8 +15,11 @@ const supabase = useSupabase(),
 export default {
 	state: reactive({
 		notes: [],
+
     editNoteId: null,
     editNoteModalVisible: false,
+
+    createNoteStartWithNewLink: false,
     createNoteModalVisible: false,
 	}),
 
@@ -56,8 +59,12 @@ export default {
 		})
 	},
 
-  updateCreateNoteModalVisible({ newVal } = {}) {
-    this.state.createNoteModalVisible = newVal
+  toggleCreateNoteModal({ startWithNewLink = false, isVisible = true } = {}) {
+    this.state.createNoteStartWithNewLink = startWithNewLink
+
+    nextTick(() => {
+      this.state.createNoteModalVisible = isVisible
+    })
   },
 
 	async notesFetch({ fetchHidden = false } = {}) {
@@ -110,11 +117,13 @@ export default {
     this.state.notes = data
   },
 
-  async notesUpsertSingle({ newVal, collectionId = undefined, updateDB = true, updateState = true }) {
+  async notesUpsertSingle({ newVal, forceEvenWithoutChanges = false, collectionId = undefined, updateDB = true, updateState = true }) {
     try {
-      const hasChanges = this.noteObjectHasChanges({ compareToNoteId: newVal?.id, newVal })
-      if (!hasChanges)
-        return
+      if (!forceEvenWithoutChanges) {
+        const hasChanges = this.noteObjectHasChanges({ compareToNoteId: newVal?.id, newVal })
+        if (!hasChanges)
+          return
+      }
 
       // If we are in hidden mode, the new val should also have this prop.
       newVal.is_hidden = isHiddenMode.value

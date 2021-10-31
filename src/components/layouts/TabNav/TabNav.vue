@@ -61,7 +61,7 @@
 			<div class="w-[20%] flex justify-center">
 				<!-- Exeption: I didn't used <Button> here, but it's okay -->
 				<button 
-					@click="() => notesStore.updateCreateNoteModalVisible({ newVal: true })"
+					@click="() => notesStore.toggleCreateNoteModal({ isVisible: true })"
 					class="h-12 w-12 rounded-2.5xl bg-gradient-to-b from-green-400 to-green-600 text-gray-900 flex justify-center items-center mt-2">
 					
 					<IconAdd />

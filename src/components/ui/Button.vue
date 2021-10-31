@@ -5,11 +5,11 @@
 		:disabled="isDisabled || isLoading"
 		:class="{
 			[ 'Button-' + buttonType ]: true,
-			noRoundedBorder,
 			isFullWidth,
 			isLoading,
 			hasNegativeMargin,
 			isDisabled,
+			[ customRoudedBorderClass ]: customRoudedBorderClass,
 			_isIconOnly
 		}"
 		class="Button">
@@ -55,7 +55,7 @@
 
 		// Custom props
 		buttonType:								{ type: String, default: 'primary', validate: val => [ 'primary', 'secondary', 'tertiary', 'inline' ].includes(val) },
-		noRoundedBorder: 					{ type: Boolean, default: false },
+		customRoudedBorderClass: 	{ type: String, default: 'rounded-button' },
 		isFullWidth: 							{ type: Boolean, default: false },
 		isLoading: 								{ type: Boolean, default: false },
 		hasNegativeMargin: 				{ type: Boolean, default: false },
@@ -81,14 +81,13 @@
 		&-secondary, 
 		&-tertiary {
 			transition: border-color 750ms ease, background-color 100ms ease;
-			@apply rounded-button;
 			
 			@apply px-4 h-11;
 			&.hasNegativeMargin { @apply -mx-4 -my-3; }
 		}
 
 		&-primary {
-			@apply rounded-button text-gray-900;
+			@apply text-gray-900;
 			@apply border-transparent;
 			@apply bg-green-400;
 
@@ -128,6 +127,7 @@
 
 		&-inline {
 			@apply border-none text-green-400 font-bold underline;
+			@apply !rounded-none;
 			transition: color 100ms ease;
 
 			&:hover {
@@ -144,10 +144,6 @@
 		/** 
 		 * Other props
 		 */
-		&.noRoundedBorder {
-			@apply rounded-none;
-		}
-
 		&.isFullWidth {
 			@apply w-full flex !important;
 		}
