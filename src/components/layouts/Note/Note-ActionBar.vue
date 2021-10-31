@@ -25,7 +25,7 @@
 				</template>
 				
 				<!-- Collections & Hide: Non-Editor Only (Readonly) -->
-				<template v-if="!isInEditMode">
+				<template v-if="!isInEditMode && !isLocked">
 					<ContextMenu v-if="!collection" :isDisabled="isLocked" @changedOpenState="newVal => $emit('changedOpenState', newVal)">
 						<template #button>
 							<ButtonIconOnly isInline is="div" :icon="IconCollectionMove" :isDisabled="isLocked">
