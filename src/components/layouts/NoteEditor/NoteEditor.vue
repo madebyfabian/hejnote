@@ -24,8 +24,7 @@
 					:noteId="note.id" 
 					isInEditMode 
 					:startWithNewLink="startWithNewLink"
-					:isReadonly="isLocked" 
-					@componentMounted="handleLinkListMounted"
+					:isReadonly="isLocked"
 				/>
 			</div>
 		</article>

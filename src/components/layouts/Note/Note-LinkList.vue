@@ -47,7 +47,7 @@
 </template>
 
 <script setup>
-	import { computed, onMounted, reactive, ref } from 'vue'
+	import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
 	import { linksStore, joinNotesLinksStore } from '@/store'
 	import useConfirm from '@/hooks/useConfirm'
 	import { Button, TruncatedList } from '@/components/ui'
@@ -56,8 +56,6 @@
 	// !! Must be a direct import, otherwise props importing doesn't work.
 	import NoteLinkListItem from '@/components/layouts/Note/Note-LinkList-Item.vue'
 	import NoteLinkListEditorModal from '@/components/layouts/Note/Note-LinkList-EditorModal.vue'
-
-	const emit = defineEmits([ 'componentMounted' ])
 
 	const props = defineProps({
 		...NoteLinkListItem.props,
@@ -74,9 +72,13 @@
 	const isTruncated = ref(true)
 	const createLinkModalIsOpened = ref(false)
 
-	onMounted(() => {
-		emit('componentMounted', ({ createLinkModalIsOpened }))
-	})
+	watch(() => props.startWithNewLink, async newVal => {
+		if (!newVal)
+			return
+
+		await nextTick() // for waiting until the transition of parent is finished
+		createLinkModalIsOpened.value = true
+	}, { immediate: true })
 
 	const handleKeepLinkAfterDeletingFromNote = ({ join }) => {
 		joinNotesLinksStore.joinNotesLinksUpdate({ joinIds: [ join.id ], noteId: props.noteId, newVal: {
