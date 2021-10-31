@@ -5,23 +5,31 @@
 		title="Your collections">
 
 		<div class="-mx-4 mb-4">
-			<Cell v-for="collection of collectionsStore.state.collections" :key="collection.id" size="200" dividerInset>
-				{{ collection.title }}
-				<template #contentRight>
-					<div class="flex gap-5">
-						<ButtonIconOnly isInline :icon="IconEdit" @click="() => handleUpdateCollection({ collectionId: collection.id })">
-							Edit collection "{{ collection.title }}"
-						</ButtonIconOnly>
+			<template v-if="collectionsStore.state.collections?.length">
+				<Cell v-for="collection of collectionsStore.state.collections" :key="collection.id" size="200" dividerInset>
+					{{ collection.title }}
+					<template #contentRight>
+						<div class="flex gap-5">
+							<ButtonIconOnly isInline :icon="IconEdit" @click="() => handleUpdateCollection({ collectionId: collection.id })">
+								Edit collection "{{ collection.title }}"
+							</ButtonIconOnly>
 
-						<ButtonIconOnly isInline :icon="IconTrashDelete" @click="() => handleUpdateCollection({ collectionId: collection.id, doDelete: true })">
-							Delete collection "{{ collection.title }}"
-						</ButtonIconOnly>
-					</div>
-				</template>
+							<ButtonIconOnly isInline :icon="IconTrashDelete" @click="() => handleUpdateCollection({ collectionId: collection.id, doDelete: true })">
+								Delete collection "{{ collection.title }}"
+							</ButtonIconOnly>
+						</div>
+					</template>
+				</Cell>
+			</template>
+			
+			<Cell v-else size="200">
+				<EmptyState class="flex items-center desktop:justify-center">
+					You don't have any collections yet.
+				</EmptyState>
 			</Cell>
 		</div>
 
-		<Button buttonType="secondary" isFullWidth @click="handleAddNewCollection">
+		<Button buttonType="secondary" isFullWidth @click="() => collectionsStore.handleAddNewCollection()">
 			<IconAdd />
 			Add new
 		</Button>
@@ -34,7 +42,7 @@
 	import useConfirm from '@/hooks/useConfirm'
 
 	// Components
-	import { TextInput, Cell, Button, ButtonIconOnly, Modal } from '@/components/ui'
+	import { TextInput, Cell, Button, ButtonIconOnly, Modal, EmptyState } from '@/components/ui'
 	import { IconTrashDelete, IconEdit, IconAdd } from '@/assets/icons'
 
 	const updateCollectionsModalVisible = computed({
@@ -56,17 +64,5 @@
 			collectionsStore.collectionsDelete({ collectionIds: [ collectionId ] })
 		else
 			collectionsStore.collectionsUpdateSingle({ collectionId, newVal: { title: answer } })
-	}
-
-	const handleAddNewCollection = async () => {
-		const answer = await useConfirm().doConfirm({ 
-			title: 'Add new collection',
-			inputProps: {
-				placeholder: 'Name'
-			}
-		})
-		if (!answer) return
-
-		collectionsStore.collectionsInsertSingle({ newVal: { title: answer } })
 	}
 </script>

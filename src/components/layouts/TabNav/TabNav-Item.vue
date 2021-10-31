@@ -36,7 +36,7 @@
 		to: 			{ type: Object, default: undefined },
 	})
 
-	const tag = computed(() => props.to ? AppLink : 'button')
+	const tag = computed(() => props.to ? AppLink : 'div')
 </script>
 
 <style lang="postcss" scoped>

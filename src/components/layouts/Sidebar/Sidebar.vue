@@ -5,7 +5,7 @@
 				Notes
 			</SidebarItem>
 
-			<div class="group" v-if="collectionsStore.state.collections.length">
+			<div class="group">
 				<div class="flex items-end">
 					<LocalSubheadline class=" relative">
 						{{ isHiddenMode ? 'Hidden ' : null }}Collections
@@ -18,12 +18,16 @@
 					</div>
 				</div>
 
-				<SidebarItem 
-					v-for="collection of collectionsStore.state.collections" :key="collection.id"
-					:to="{ name: 'App-Collection', params: { collectionId: collection.id } }">
+				<template v-if="collectionsStore.state.collections?.length">
+					<SidebarItem
+						v-for="collection of collectionsStore.state.collections" :key="collection.id"
+						:to="{ name: 'App-Collection', params: { collectionId: collection.id } }">
 
-					{{ collection.title }}
-				</SidebarItem>
+						{{ collection.title }}
+					</SidebarItem>
+				</template>
+
+				<EmptyState v-else class="h-9 flex items-center pl-5">No collections yet.</EmptyState>
 			</div>
 			
 			<LocalSubheadline>Others</LocalSubheadline>
@@ -50,7 +54,7 @@
 	import { computed, defineComponent } from 'vue'
 	import { generalStore, collectionsStore } from '@/store'
 	import { SidebarItem } from '@/components/layouts'
-	import { Button, ButtonIconOnly } from '@/components/ui'
+	import { Button, ButtonIconOnly, EmptyState } from '@/components/ui'
 	import { IconEdit } from '@/assets/icons'
 
 	const isDev = import.meta.env.DEV

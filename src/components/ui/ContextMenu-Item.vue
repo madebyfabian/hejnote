@@ -1,5 +1,5 @@
 <template>
-	<MenuItem v-slot="{ active }" v-bind="$attrs">
+	<MenuItem v-slot="{ active }" v-bind="{ ...$attrs, ...$props, cellProps: undefined }">
 		<Cell class="cursor-pointer" :isFocused="active" v-bind="{ ...cellProps, dividerInset: true }">
 			<slot />
 		</Cell>

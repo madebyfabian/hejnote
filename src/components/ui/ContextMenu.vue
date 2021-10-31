@@ -3,7 +3,7 @@
 		<VSlotEmitter :open="open" @changedOpenState="$emit('changedOpenState', open)" />
 
     <MenuButton ref="menuButtonEl" v-bind="{ class: cssClass }" :disabled="isDisabled">
-			<slot name="button" />
+			<slot name="button" v-bind="{ menuButtonEl }" />
 		</MenuButton>
 
     <teleport to="body">

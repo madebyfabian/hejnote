@@ -5,6 +5,7 @@ import useSupabase from '@/hooks/useSupabase'
 import generalStore from '@/store/generalStore'
 import notesStore from '@/store/notesStore'
 import findIndexById from '@/utils/findIndexById'
+import useConfirm from '@/hooks/useConfirm'
 
 const supabase = useSupabase()
 
@@ -97,5 +98,24 @@ export default {
     } catch (error) {
       handleError(error)
     }
+  },
+
+
+  /**
+   * UI Actions
+   */
+  async handleAddNewCollection() {
+    const answer = await useConfirm().doConfirm({ 
+			title: 'Add new collection',
+			inputProps: {
+				placeholder: 'Name'
+			}
+		})
+		if (!answer) 
+      return
+
+		this.collectionsInsertSingle({ newVal: { title: answer } })
+
+    return answer
   },
 }

@@ -27,11 +27,11 @@
 			</section>
 		</template>	
 
-		<p v-else class="NoteList-emptyState">
+		<EmptyState v-else class="-mt-5">
 			<slot name="empty-state">
-				There are no notes yet.
+				No notes in here.
 			</slot>
-		</p>
+		</EmptyState>
 	</div>
 </template>
 
@@ -40,7 +40,7 @@
 	import useDayjs from '@/hooks/useDayjs'
 	import { generalStore } from '@/store'
 	import useCurrentCollection from '@/hooks/useCurrentCollection'
-	import { Badge } from '@/components/ui'
+	import { Badge, EmptyState } from '@/components/ui'
 	import { NoteListGrid } from '@/components/layouts'
 	
 	const dayjs = useDayjs()
@@ -87,10 +87,6 @@
 
 		&-sectionTitle {
 			@apply my-4 mt-8;
-		}
-
-		&-emptyState {
-			@apply text-gray-500 select-none -mt-5;
 		}
 	}
 </style>
