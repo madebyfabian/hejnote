@@ -8,6 +8,7 @@ export { default as ContextMenuItem } from './ContextMenu-Item.vue';
 export { default as ContextMenuSeperator } from './ContextMenu-Seperator.vue';
 export { default as ContextMenu } from './ContextMenu.vue';
 export { default as HostnameLabel } from './HostnameLabel.vue';
+export { default as EmptyState } from './EmptyState.vue';
 export { default as LoadingSpinner } from './LoadingSpinner.vue';
 export { default as ModalContent } from './Modal-Content.vue';
 export { default as Modal } from './Modal.vue';
