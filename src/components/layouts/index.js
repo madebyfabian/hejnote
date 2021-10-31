@@ -1,5 +1,4 @@
 export { default as HeaderCreateNoteEditor } from './Header/Header-CreateNoteEditor.vue';
-export { default as HeaderSearchNotesBar } from './Header/Header-SearchNotesBar.vue';
 export { default as Header } from './Header/Header.vue';
 
 export { default as NoteList } from './NoteList/NoteList.vue';
@@ -26,3 +25,4 @@ export { default as BannerHiddenMode } from './BannerHiddenMode.vue'
 export { default as ModalConfirm } from './ModalConfirm.vue'
 export { default as ModalUpdateCollections } from './ModalUpdateCollections.vue'
 export { default as SwitchHiddenMode } from './SwitchHiddenMode.vue'
+export { default as SearchNotesBar } from './SearchNotesBar.vue'

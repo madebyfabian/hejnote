@@ -4,17 +4,25 @@
 			<LogoIcon alt="Logo" class="ml-5" />
 		</AppLink>
 
-		<div class="flex container h-11">
-			<div class="relative flex-1">
-				<transition name="transition-fade-100">
-					<Header-CreateNoteEditor v-show="!isSearchFocussed" />
-				</transition>
-				<div class="Header-bgGradient isTop"></div>
-				<div class="Header-bgGradient isBottom"></div>
-			</div>
-		  <div class="ml-4">
-				<Header-SearchNotesBar v-bind="{ isSearchFocussed }" />
-			</div>
+		<div class="container h-11">
+			<transition name="transition-fadeAndScale-fast" mode="out-in">
+				<div v-if="!isSearchFocussed" class="flex">
+					<div class="relative flex-1">
+						<Header-CreateNoteEditor />
+
+						<div class="Header-bgGradient isTop"></div>
+						<div class="Header-bgGradient isBottom"></div>
+					</div>
+					<div class="ml-4">
+						<Button buttonType="secondary" @click="navigateToSearch">
+							<IconSearch />
+							Search for something
+						</Button>
+					</div>
+				</div>
+
+				<SearchNotesBar v-else />
+			</transition>
 		</div>
 
 		<div class="flex-1 flex justify-end items-center select-none">
@@ -34,11 +42,11 @@
 <script setup>
 	import { computed } from 'vue'
 	import { generalStore } from '@/store'
-	import { useRoute } from 'vue-router'
-
-	// Import Components
-	import { AppLink, Avatar } from '@/components/ui'
-	import { HeaderCreateNoteEditor, HeaderSearchNotesBar } from '@/components/layouts'
+	import { useRoute, useRouter } from 'vue-router'
+	import { AppLink, Avatar, Button } from '@/components/ui'
+	import { IconSearch } from '@/assets/icons'
+	import { HeaderCreateNoteEditor, SearchNotesBar } from '@/components/layouts'
+	import useGenerateRouterLink from '@/hooks/useGenerateRouterLink'
 
 	import LogoIcon from '@/assets/images/logo.svg'
 
@@ -46,10 +54,20 @@
 		isMinimal: { type: Boolean, default: false, },
 	})
 
-	const userName = computed(() => generalStore.getUserName())
-
+	const { generateRouterLink } = useGenerateRouterLink() 
 	const route = useRoute()
+	const router = useRouter()
+
+	const userName = computed(() => generalStore.getUserName())
 	const isSearchFocussed = computed(() => route.name === 'App-Search')
+
+	const navigateToSearch = () => {
+		const routeToNavigate = 'App-Search'
+		if (route.name === routeToNavigate)
+			return
+
+		router.push(generateRouterLink({ name: 'App-Search' }).value)
+	}
 </script>
 
 <style lang="postcss" scoped>

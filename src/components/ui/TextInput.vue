@@ -5,25 +5,40 @@
 		</span>
 
 		<input
-			@input="$emit('update:modelValue', $event.target.value)"
+			@input="emit('update:modelValue', $event.target.value)"
 			v-bind="{ ...inputProps, value: modelValue }"
-			:class="!isIconSlotEmpty ? 'pl-11' : 'pl-5'"
+			:class="{
+				'pl-11': !isIconSlotEmpty,
+				'pl-5': isIconSlotEmpty,
+				'bg-gray-800': inputBgGray,
+				'bg-transparent': !inputBgGray,
+			}"
+			ref="inputEl"
 		/>
 	</div>
 </template>
 
 <script setup>
+	import { onMounted, ref } from 'vue'
 	import useSlotIsEmpty from '@/hooks/useSlotIsEmpty'
+
+	const emit = defineEmits([ 'mountedInput', 'update:modelValue' ])
 
 	defineProps({
 		modelValue: 	{ required: true },
 		placeholder: 	{ type: String, default: '' },
+		inputBgGray: 	{ type: Boolean, default: false },
 
 		// new:
 		inputProps: 	{ type: Object, default: () => ({}) },
 	})
 
+	const inputEl = ref(null)
 	const isIconSlotEmpty = useSlotIsEmpty({ name: 'icon' })
+
+	onMounted(() => {
+		emit('mountedInput', { inputEl: inputEl.value })
+	})
 </script>
 
 <style lang="postcss" scoped>
@@ -35,12 +50,10 @@
 		}
 
 		input {
-			@apply inline-flex w-full bg-transparent h-11 rounded-xl border border-gray-700;
+			@apply inline-flex w-full h-11 rounded-xl border border-gray-700;
 			@apply text-100 text-base desktop:text-sm;
 			@apply transition duration-300;
 			@apply ring-0;
 		}
 	}
-
-	
 </style>

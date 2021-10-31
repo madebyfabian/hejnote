@@ -1,11 +1,11 @@
 <template>
 	<div 
-		class="CreateNoteEditor absolute top-0 left-0 w-full bg-gray-800 rounded-xl border border-gray-700 overflow-hidden" 
+		class="CreateNoteEditor absolute top-0 left-0 w-full rounded-xl border border-gray-700 overflow-hidden transition" 
 		:style="{ '--max-height': `${ maxHeight }px` }"
-		:class="{ displayMinimized }"
+		:class="displayMinimized ? 'displayMinimized bg-gray-900' : 'bg-gray-800'"
 		@click="handleOpen">
 
-		<div class="-m-0.5">
+		<div class="-m-[1px]">
 			<div ref="noteEditorEl">
 				<NoteEditor 
 					@isFinished="() => toggleDisplayMinimized(true)"

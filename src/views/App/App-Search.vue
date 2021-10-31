@@ -1,14 +1,5 @@
 <template>
-	<TextInput 
-		v-if="isMobileDevice"
-		v-model="searchNotesString" 
-		:inputProps="{ placeholder: 'Search for something', required: true, spellcheck: false }" 
-		class="mb-8">
-
-		<template #icon>
-			<IconSearch />
-		</template>
-	</TextInput>
+	<SearchNotesBar v-if="isMobileDevice" />
 
 	<NoteList :notes="notes" groupAllNotes :title="title">
 		<template #empty-state>
@@ -21,23 +12,17 @@
 	import { ref, computed, onMounted } from 'vue'
 	import Fuse from 'fuse.js'
 	import { notesStore, linksStore, joinNotesLinksStore } from '@/store'
-	import { useRoute, useRouter } from 'vue-router'
+	import { useRoute } from 'vue-router'
 	import useIsMobileDevice from '@/hooks/useIsMobileDevice'
 	import richtextEditorUtils from '@/utils/richtextEditorUtils'
 
-  import { NoteList } from '@/components/layouts'
-	import { TextInput } from '@/components/ui'
-	import { IconSearch } from '@/assets/icons'
+  import { NoteList, SearchNotesBar } from '@/components/layouts'
 
-	const route = useRoute(),
-				router = useRouter()
-	const isMobileDevice = useIsMobileDevice()
+	const route = useRoute()
 
 	const notesOriginalData = computed(() => notesStore.getNotes())
-	const searchNotesString = computed({
-		get() 			{ return route.query?.q || '' },
-		set(newVal)	{ router.push({ query: { q: newVal } }) }
-	})
+	const searchNotesString = computed(() => route.query?.q || '' )
+	const isMobileDevice = useIsMobileDevice()
 	const title = computed(() => {
 		return `Search Results ${ searchNotesString.value.length ? `for \"${ searchNotesString.value }\"` : '' }`
 	})
