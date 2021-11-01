@@ -24,7 +24,7 @@
 			</template>
 
 			<Button v-if="!isReadonly" buttonType="tertiary" isFullWidth customRoudedBorderClass="rounded-b-xl" @click="createLinkModalIsOpened = true">
-				<IconAdd />
+				<IconLinkAdd />
 				Add new link
 			</Button>
 
@@ -51,7 +51,7 @@
 	import { linksStore, joinNotesLinksStore } from '@/store'
 	import useConfirm from '@/hooks/useConfirm'
 	import { Button, TruncatedList } from '@/components/ui'
-	import { IconAdd, IconTrashDelete } from '@/assets/icons'
+	import { IconLinkAdd, IconTrashDelete } from '@/assets/icons'
 
 	// !! Must be a direct import, otherwise props importing doesn't work.
 	import NoteLinkListItem from '@/components/layouts/Note/Note-LinkList-Item.vue'
