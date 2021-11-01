@@ -134,7 +134,7 @@
 		if (!Object.keys(props.note).length)
 			notesStore.toggleCreateNoteModal({ isVisible: false })
 		else
-			notesStore.closeNoteEditor()
+			notesStore.toggleNoteEditor({ isVisible: false })
 	}
 
 	const updateLinks = () => {

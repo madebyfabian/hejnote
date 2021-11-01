@@ -50,7 +50,7 @@
 
 	const handleClose = () => {
 		if (!props.isCreateAction) 
-			notesStore.closeNoteEditor()
+			notesStore.toggleNoteEditor({ isVisible: false })
 		else 
 			notesStore.toggleCreateNoteModal({ isVisible: false })
 	}

@@ -34,55 +34,15 @@ export default {
     collection_id:  note?.collection_id || null,
   }},
 
-  /**
-   * Checks if the note is completly empty.
-   * This includes checking the note object isself, and also if there are any links.
-   */
-  checkIfNoteIsCompletelyEmpty({ note }) {
-    if (!note)
-      return true
 
-    // Delete unneccessary object fields
-    const { id, is_pinned, is_hidden, is_archived, is_locked, collection_id, ...defaultNote } = this.getNoteDefaultDataObject()
 
-    const hasFieldsWithContent = !!Object.entries(defaultNote)
-      .map(([ key, value ]) => JSON.stringify(defaultNote[key]) !== JSON.stringify(note[key]))
-      .filter(Boolean)
-      .length
-
-    // Check if there are any links.
-    const hasJoinNotesLinks = linksStore._findLinksByNoteIdsV2({ noteIds: [ note.id ] }).length
-    
-    if (!hasFieldsWithContent && !hasJoinNotesLinks)
-      return true
-
-    return false
-  },
-
-  noteObjectHasChanges({ compareToNoteId, newVal } = {}) {
-    let oldVal = !compareToNoteId
-      ? this.getNoteDefaultDataObject()
-      : this.state.notes.find(note => note.id === compareToNoteId)
-
-    const oldAndNew = { ...oldVal, ...newVal }
-    return JSON.stringify(oldVal) !== JSON.stringify(oldAndNew)
-  },
-
-  openNoteEditor({ editNoteId }) {
-		this.state.editNoteId = editNoteId
+  toggleNoteEditor({ editNoteId = null, isVisible = false } = {}) {
+    this.state.editNoteId = editNoteId
 
 		nextTick(() => {
-			this.state.editNoteModalVisible = true
+      this.state.editNoteModalVisible = isVisible
 		})
-	},
-
-	closeNoteEditor() {
-    this.state.editNoteId = null
-
-		nextTick(() => {
-      this.state.editNoteModalVisible = false
-		})
-	},
+  },
 
   toggleCreateNoteModal({ startWithNewLink = false, isVisible = true } = {}) {
     this.state.createNoteStartWithNewLink = startWithNewLink
@@ -91,6 +51,8 @@ export default {
       this.state.createNoteModalVisible = isVisible
     })
   },
+
+
 
 	async notesFetch({ fetchHidden = false } = {}) {
     const { data, error } = await supabase.from('notes').select('*').eq('is_hidden', fetchHidden)
@@ -217,6 +179,8 @@ export default {
     }
   },
 
+
+
   /**
    * Filters out basic things and 
    * @returns {Array} of Notes
@@ -237,6 +201,40 @@ export default {
 
       return true
     })
+  },
+
+  noteObjectHasChanges({ compareToNoteId, newVal } = {}) {
+    let oldVal = !compareToNoteId
+      ? this.getNoteDefaultDataObject()
+      : this.state.notes.find(note => note.id === compareToNoteId)
+
+    const oldAndNew = { ...oldVal, ...newVal }
+    return JSON.stringify(oldVal) !== JSON.stringify(oldAndNew)
+  },
+
+  /**
+   * Checks if the note is completly empty.
+   * This includes checking the note object isself, and also if there are any links.
+   */
+  checkIfNoteIsCompletelyEmpty({ note }) {
+    if (!note)
+      return true
+
+    // Delete unneccessary object fields
+    const { id, is_pinned, is_hidden, is_archived, is_locked, collection_id, ...defaultNote } = this.getNoteDefaultDataObject()
+
+    const hasFieldsWithContent = !!Object.entries(defaultNote)
+      .map(([ key, value ]) => JSON.stringify(defaultNote[key]) !== JSON.stringify(note[key]))
+      .filter(Boolean)
+      .length
+
+    // Check if there are any links.
+    const hasJoinNotesLinks = linksStore._findLinksByNoteIdsV2({ noteIds: [ note.id ] }).length
+    
+    if (!hasFieldsWithContent && !hasJoinNotesLinks)
+      return true
+
+    return false
   },
 
   /**

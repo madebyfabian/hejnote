@@ -94,7 +94,7 @@
 		if (clickedActionBar || selectedSomething || clickedLink)
 			return 
 
-		notesStore.openNoteEditor({ editNoteId: props.note.id })
+		notesStore.toggleNoteEditor({ editNoteId: props.note.id, isVisible: true })
 	}
 
 	const handleFocusIn = () => {
