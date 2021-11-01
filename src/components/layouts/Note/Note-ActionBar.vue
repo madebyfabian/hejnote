@@ -22,23 +22,23 @@
 
 					<!-- --- Seperator --- -->
 					<span v-if="isInEditMode" aria-hidden="true" class="h-5 rounded-full border-r border-gray-700" />
-				</template>
-				
-				<!-- Collections & Hide: Non-Editor Only (Readonly) -->
-				<ContextMenuCollections 
-					v-if="!isInEditMode && !isLocked && !collection" 
-					:isDisabled="isLocked" 
-					@changedOpenState="newVal => $emit('changedOpenState', newVal)"
-					@itemClicked="({ collection }) => handleAddCollection({ collectionId: collection.id })">
-
-					<template #button>
-						<ButtonIconOnly isInline is="div" :icon="IconCollectionMove" :isDisabled="isLocked">
-							Move note to collection
-						</ButtonIconOnly>
-					</template>
-				</ContextMenuCollections>
+				</template>	
 
 				<template v-if="isInEditMode || (!isInEditMode && !isLocked)">
+					<!-- Collections -->
+					<ContextMenuCollections
+						v-if="!collection"
+						:isDisabled="isLocked" 
+						@changedOpenState="newVal => $emit('changedOpenState', newVal)"
+						@itemClicked="({ collection }) => handleAddCollection({ collectionId: collection.id })">
+
+						<template #button>
+							<ButtonIconOnly isInline is="div" :icon="IconCollectionMove" :isDisabled="isLocked">
+								Move note to collection
+							</ButtonIconOnly>
+						</template>
+					</ContextMenuCollections>
+
 					<!-- Hide -->
 					<ButtonIconOnly isInline :icon="note.is_hidden ? IconEyeOffSolid : IconEyeOff" @click="handleNoteHideAction" :isDisabled="isLocked">
 						Note is {{ note.is_hidden ? 'hidden' : 'visible' }}. Click to {{ note.is_hidden ? 'unhide' : 'hide' }}.

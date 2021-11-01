@@ -1,5 +1,5 @@
 <template>
-	<CFocusLock>
+	<CFocusLock v-bind="{ allowOutsideClick: true }">
 		<div class="Modal" :class="{ isConfirm, isMobileFullHeight }" @mousedown.self="emit('close')">
 			<div 
 				class="Modal-container"
