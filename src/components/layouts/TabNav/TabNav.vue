@@ -11,7 +11,7 @@
 			</TabNav-Item>
 
 			<!-- Collections -->
-			<ContextMenu transformOrigin="36% bottom" isFixed isFullWidth verticalAlign="top" cssClass="w-[20%]">
+			<ContextMenuCollections transformOrigin="36% bottom" isFixed isFullWidth verticalAlign="top" cssClass="w-[20%]">
 				<template #button>
 					<TabNav-Item :isActive="isActiveTab('App-Collection')"  class="min-w-full">
 						<template #icon><component :is="IconCollectionMove" /></template>
@@ -19,43 +19,7 @@
 						Collections
 					</TabNav-Item>
 				</template>
-
-				<div>
-					<ContextMenu-Item 
-						v-if="collectionsStore.state.collections?.length"
-					 	@click="generalStore.updateUpdateCollectionsModalVisible({ newVal: true })">
-
-						Edit or add Collections...
-					</ContextMenu-Item>
-
-					<ContextMenu-Item 
-						v-else
-					 	@click="() => collectionsStore.handleAddNewCollection()">
-						 
-						Add new Collection...
-					</ContextMenu-Item>
-				</div>
-
-				<ContextMenu-Seperator />
-
-				<template v-if="collectionsStore.state.collections?.length">
-					<ContextMenu-Item
-						v-for="collection of collectionsStore.state.collections" :key="collection.id"
-						:cellProps="{ 
-							isSelected: collection.id === route.params?.collectionId,
-							isTypeNavigation: true,
-							navigateTo: { name: 'App-Collection', params: { collectionId: collection.id } }
-						}">
-						{{ collection.title }}
-					</ContextMenu-Item>
-				</template>
-
-				<ContextMenu-Item v-else disabled>
-					<EmptyState>
-						You don't have any collections yet.
-					</EmptyState>
-				</ContextMenu-Item>
-			</ContextMenu>
+			</ContextMenuCollections>
 
 			<!-- Add note -->
 			<div class="w-[20%] flex justify-center">
@@ -87,10 +51,10 @@
 <script setup>
 	import { ref, computed } from 'vue'
 	import { useRoute } from 'vue-router'
-	import { generalStore, notesStore, collectionsStore } from '@/store'
+	import { generalStore, notesStore } from '@/store'
 
-	import { Avatar, ContextMenu, ContextMenuItem, ContextMenuSeperator, EmptyState } from '@/components/ui'
-	import { TabNavItem } from '@/components/layouts'
+	import { Avatar } from '@/components/ui'
+	import { TabNavItem, ContextMenuCollections } from '@/components/layouts'
 	import { IconCollectionMove, IconCollectionMoveSolid, IconNotes, IconNotesSolid, IconMore, IconMoreSolid, IconAdd } from '@/assets/icons'
 
 	const props = defineProps({
@@ -99,7 +63,6 @@
 
 	const route = useRoute()
 	const userName = computed(() => generalStore.getUserName())
-
 
 	const isActiveTab = (routeName) => {
 		return route.name === routeName

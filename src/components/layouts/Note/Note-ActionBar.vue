@@ -25,22 +25,18 @@
 				</template>
 				
 				<!-- Collections & Hide: Non-Editor Only (Readonly) -->
-				<template v-if="!isInEditMode && !isLocked">
-					<ContextMenu v-if="!collection" :isDisabled="isLocked" @changedOpenState="newVal => $emit('changedOpenState', newVal)">
-						<template #button>
-							<ButtonIconOnly isInline is="div" :icon="IconCollectionMove" :isDisabled="isLocked">
-								Move note to collection
-							</ButtonIconOnly>
-						</template>
+				<ContextMenuCollections 
+					v-if="!isInEditMode && !isLocked && !collection" 
+					:isDisabled="isLocked" 
+					@changedOpenState="newVal => $emit('changedOpenState', newVal)"
+					@itemClicked="({ collection }) => handleAddCollection({ collectionId: collection.id })">
 
-						<ContextMenu-Item
-							v-for="collection of allCollections" :key="collection.id" 
-							@click="() => handleAddCollection({ collectionId: collection.id })">
-							
-							{{ collection.title }}
-						</ContextMenu-Item>
-					</ContextMenu>
-				</template>
+					<template #button>
+						<ButtonIconOnly isInline is="div" :icon="IconCollectionMove" :isDisabled="isLocked">
+							Move note to collection
+						</ButtonIconOnly>
+					</template>
+				</ContextMenuCollections>
 
 				<template v-if="isInEditMode || (!isInEditMode && !isLocked)">
 					<!-- Hide -->
@@ -90,8 +86,8 @@
 	} from '@/assets/icons'
 
 	// Components
-	import { ButtonIconOnly, ContextMenu, ContextMenuItem } from '@/components/ui'
-	import { NoteActionBarCollection } from '@/components/layouts'
+	import { ButtonIconOnly } from '@/components/ui'
+	import { NoteActionBarCollection, ContextMenuCollections } from '@/components/layouts'
 
 	const supabase = useSupabase()
 
@@ -113,7 +109,6 @@
 	const isEmitChangesMode = computed(() => props.mode === 'emitChanges')
 	const isLocked = computed(() => props.note.is_locked)
 	const collection = computed(() => collectionsStore.collectionFindById({ collectionId: props.note.collection_id }))
-	const allCollections = computed(() => collectionsStore.state.collections)
 
 
 	/** Actions */
