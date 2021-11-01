@@ -124,7 +124,7 @@
 		else 
 			if (newVal.deleted_at !== undefined)
 				notesStore.notesUpdateSingleDeletedState({ noteId: props.note.id, deleted_at: newVal.deleted_at })
-			else if (newVal.is_archived !== props.note.is_archived)
+			else if (newVal.is_archived !== undefined && newVal.is_archived !== props.note.is_archived)
 				notesStore.notesUpdateSingleArchivedState({ noteId: props.note.id, is_archived: newVal.is_archived })
 			else if (newVal.collection_id !== undefined)
 				notesStore.notesUpdateSingleCollectionId({ noteId: props.note.id, collectionId: newVal.collection_id })
