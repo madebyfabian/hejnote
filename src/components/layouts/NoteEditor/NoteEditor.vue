@@ -46,8 +46,6 @@
 	import { NoteActionBar, NoteLinkList } from '@/components/layouts'
 	import { useRoute } from 'vue-router'
 
-	const emit = defineEmits([ 'isFinished' ])
-
 	const props = defineProps({
 		note: 							{ type: [ Object ], default: {} },
 		displayInModal: 		{ type: Boolean, default: false },	
@@ -122,8 +120,6 @@
 	// END "start with new link" functionality
 
 	const prepareEditorClose = () => {
-		emit('isFinished')
-
 		// Check if note is completely empty. If so, delete it.
 		const isEmpty = notesStore.checkIfNoteIsCompletelyEmpty({ note })
 		if (isEmpty)
@@ -134,7 +130,11 @@
 
 	const closeEditor = () => {
 		prepareEditorClose()
-		notesStore.closeNoteEditor()
+
+		if (!Object.keys(props.note).length)
+			notesStore.toggleCreateNoteModal({ isVisible: false })
+		else
+			notesStore.closeNoteEditor()
 	}
 
 	const updateLinks = () => {
@@ -183,8 +183,12 @@
 
 	const handleActionBarUpdatedNote = newVal => {
 		// If note is being moved in trash, close the editor and update the note in real store state.
+		const noteIsEmpty = notesStore.checkIfNoteIsCompletelyEmpty({ note })
+
 		if (newVal.deleted_at !== undefined) {
-			notesStore.notesUpdateSingleDeletedState({ noteId: props.note.id, deleted_at: newVal.deleted_at })
+			if (!noteIsEmpty)
+				notesStore.notesUpdateSingleDeletedState({ noteId: note.id, deleted_at: newVal.deleted_at })
+
 			return closeEditor()
 		}
 

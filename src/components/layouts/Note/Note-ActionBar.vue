@@ -60,7 +60,7 @@
 
 					<!-- Trash -->
 					<ButtonIconOnly isInline :icon="IconTrash" @click="handleNoteMoveToDeleted" :isDisabled="isLocked">
-						Click to delete note
+						Click to move note to trash.
 					</ButtonIconOnly>
 				</template>
 			</template>
