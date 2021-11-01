@@ -159,6 +159,25 @@ export default {
     }
   },
 
+  async notesUpdateSingleArchivedState({ noteId, is_archived = false }) {
+    try {
+      // Set is_archived in database
+      await this.notesUpdateSingle({ noteId, newVal: { is_archived } })
+
+      // Notify
+      useSnackbar().createSnackbar({ 
+        message: `Moved note ${ is_archived ? 'to archive' : 'out of archive' }.`,
+        buttonText: 'Undo',
+        onButtonClick: () => {
+          this.notesUpdateSingle({ noteId, newVal: { is_archived: !is_archived } })
+        }
+      })
+
+    } catch (error) {
+      handleError(error)
+    }
+  },
+
   async notesDeleteV2({ noteIds, notifyUser = true }) {
     try {
       // Delete link joins and their links first.
