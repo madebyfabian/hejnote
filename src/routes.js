@@ -9,17 +9,19 @@ import AppArchiveRoute from '@/views/App/App-Archive.vue'
 import AppSearchRoute from '@/views/App/App-Search.vue'
 import AppAccountRoute from '@/views/App/App-Account.vue'
 
+import { Home, UserDetails } from '@/views/App/modalRoutes'
+
 /** @type {import('vue-router').RouterOptions['routes']} */
 export const routes = [
   /**
    * Notes
    */
   {
-    path: '/app/:isHiddenMode(hidden)?',
+    path: '/',
     name: 'App',
     component: AppRoute,
-    redirect: { name: 'App-Home' },
-    meta: { requiresAuth: true }, 
+    //redirect: { name: 'App-Home' },
+    //meta: { requiresAuth: true }, 
     children: [
       { 
         path: 'home', 
@@ -61,8 +63,19 @@ export const routes = [
         path: 'test',
         name: 'App-Test',
         meta: { requiresAuth: true, title: 'Test' },
-        component: () => import('@/views/App/App-Test.vue'),
-      }
+        component: () => import('@/views/App/App-Test.vue')
+      },
+
+      {
+        path: '',
+        component: Home,
+      },
+      {
+        path: 'users/:id',
+        props: true,
+        name: 'user',
+        component: UserDetails,
+      },
     ] 
   },
 

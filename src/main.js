@@ -13,7 +13,17 @@ const router = createRouter({ history: createWebHistory(), routes })
 
 // Router beforeEach
 import routeBeforeEach from '@/utils/routeBeforeEach'
-router.beforeEach(routeBeforeEach)
+//router.beforeEach(routeBeforeEach)
+
+
+// modal
+import { historyState } from '@/utils/modal'
+
+router.afterEach(() => {
+  historyState.value = history.state
+})
+// END modal
+
 
 app.use(router)
 

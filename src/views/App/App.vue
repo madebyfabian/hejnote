@@ -1,5 +1,5 @@
 <template>
-	<router-view v-slot="{ Component }">
+	<router-view :route="routeWithModal" v-slot="{ Component }">
 		<transition name="transition-fade-100">
 			<div v-if="!generalStore.state.isAppLoading">
 				<BannerHiddenMode :isVisible="isHiddenMode" />
@@ -34,6 +34,8 @@
 	import handleCollectionsChanges from '@/utils/handleCollectionsChanges'
 	import { useRoute, useRouter } from 'vue-router'
 	import useGenerateRouterLink from '@/hooks/useGenerateRouterLink'
+
+	import { historyState } from '@/utils/modal'
 
 	import { 
 		notesStore, 
@@ -74,6 +76,18 @@
 	})
 
 	
+
+
+	/**
+	 * Router
+	 */
+	const routeWithModal = computed(() => {
+		if (historyState.value.backgroundView) {
+			return router.resolve(historyState.value.backgroundView)
+		} else {
+			return route
+		}
+	})
 </script>
 
 <style lang="postcss">
