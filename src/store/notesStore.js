@@ -127,10 +127,8 @@ export default {
 
   async notesUpdateSingleDeletedState({ noteId, deleted_at = new Date() }) {
     try {
-      // Set deleted_at to now in database
       await this.notesUpsertSingle({ note: { id: noteId, deleted_at: deleted_at } })
 
-      // Notify
       const index = findIndexById({ id: noteId, data: this.state.notes })
       const noteData = this.state.notes[index]
       useSnackbar().createSnackbar({ 
@@ -148,15 +146,31 @@ export default {
 
   async notesUpdateSingleArchivedState({ noteId, is_archived = false }) {
     try {
-      // Set is_archived in database
       await this.notesUpsertSingle({ note: { id: noteId, is_archived } })
 
-      // Notify
       useSnackbar().createSnackbar({ 
         message: `Moved note ${ is_archived ? 'to archive' : 'out of archive' }.`,
         buttonText: 'Undo',
         onButtonClick: () => {
           this.notesUpsertSingle({ note: { id: noteId, is_archived: !is_archived } })
+        }
+      })
+
+    } catch (error) {
+      handleError(error)
+    }
+  },
+
+  async notesUpdateSingleHiddenState({ noteId, is_hidden }) {
+    try {
+      is_hidden = is_hidden ?? isHiddenMode.value ?? false
+      await this.notesUpsertSingle({ note: { id: noteId, is_hidden } })
+
+      useSnackbar().createSnackbar({ 
+        message: `Moved note ${ is_hidden ? 'to hidden' : 'out of hidden' }.`,
+        buttonText: 'Undo',
+        onButtonClick: () => {
+          this.notesUpsertSingle({ note: { id: noteId, is_hidden: !is_hidden } })
         }
       })
 

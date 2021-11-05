@@ -126,6 +126,8 @@
 				notesStore.notesUpdateSingleArchivedState({ noteId: props.note.id, is_archived: newVal.is_archived })
 			else if (newVal.collection_id !== undefined)
 				notesStore.notesUpdateSingleCollectionId({ noteId: props.note.id, collectionId: newVal.collection_id })
+			else if (newVal.is_hidden !== undefined)
+				notesStore.notesUpdateSingleHiddenState({ noteId: props.note.id, is_hidden: newVal.is_hidden })
 			else 
 				notesStore.notesUpsertSingle({ note: { ...newVal, id: props.note.id } })
 	} 

@@ -201,13 +201,16 @@
 		if (newVal.deleted_at !== undefined) {
 			if (!noteIsEmpty)
 				notesStore.notesUpdateSingleDeletedState({ noteId: note.id, deleted_at: newVal.deleted_at })
-
 			return closeEditor()
 		}
 
 		if (newVal.is_archived !== undefined) {
 			notesStore.notesUpdateSingleArchivedState({ noteId: note.id, is_archived: newVal.is_archived })
+			return closeEditor()
+		}
 
+		if (newVal.is_hidden !== undefined) {
+			notesStore.notesUpdateSingleHiddenState({ noteId: props.note.id, is_hidden: newVal.is_hidden })
 			return closeEditor()
 		}
 
