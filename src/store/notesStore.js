@@ -60,50 +60,30 @@ export default {
     this.state.notes = data
   },
 
-  async notesUpdateSingle({ noteId, newVal, forceEvenWithoutChanges = false, updateDB = true, updateState = true }) {
+  async notesUpsertSingle({ note, forceEvenWithoutChanges = false, updateDB = true, updateState = true }) {
     try {
-      if (!forceEvenWithoutChanges && !this.noteObjectHasChanges({ compareToNoteId: noteId, newVal }))
-        return
-          
-      if (updateDB) {
-        // Delete id column because it's not needed and supabase throws an error.
-        newVal = { ...newVal }
-        delete newVal?.id
+      const noteId = note?.id
+      const isNewNote = !noteId
 
-        // Update database
-        const { data, error } = await supabase.from('notes').update(newVal).eq('id', noteId)
-        if (error) throw error
-        newVal = data[0]
-      }
-
-      // Update local state
-      if (updateState) {
-        const index = findIndexById({ id: noteId, data: this.state.notes })
-        const newData = { ...this.state.notes[index], ...newVal }
-        this.state.notes[index] = newData
-      }
-    } catch (error) {
-      handleError(error)
-    }
-  },
-
-  async notesUpsertSingle({ newVal, forceEvenWithoutChanges = false, collectionId = null, updateDB = true, updateState = true }) {
-    try {
-      if (!forceEvenWithoutChanges && !this.noteObjectHasChanges({ compareToNoteId: newVal?.id, newVal }))
+      // Cancel if nothing changes AND we are not "forcing the function even without changes"
+      if (!forceEvenWithoutChanges && !this.noteObjectHasChanges({ compareToNoteId: noteId, newVal: note }))
         return
 
-      // If we are in hidden mode, the new val should also have this prop.
-      newVal.is_hidden = isHiddenMode.value
-      newVal.collection_id = newVal.collection_id || collectionId || null
+      note.owner_id = generalStore.state.user.id
+      if (isNewNote) {
+        note.is_hidden = isHiddenMode.value
+      }
 
+      // Update database
       let res
       if (updateDB) {
-        res = await supabase.from('notes').upsert([{ ...newVal, owner_id: generalStore.state.user.id }])
+        res = await supabase.from('notes').upsert([ note ])
         if (res.error) throw res.error
       }
 
-      const newData = res?.data?.[0] || newVal
-      if (updateState && newVal?.id) {
+      // Update local state
+      const newData = res?.data?.[0] || note
+      if (updateState && newData?.id) {
         const index = findIndexById({ id: newData?.id, data: this.state.notes })
         if (index > -1)
           this.state.notes[index] = { ...this.state.notes[index], ...newData }
@@ -112,13 +92,14 @@ export default {
       }
 
       return newData
+
     } catch (error) {
       handleError(error)
     }
   },
 
   async notesUpdateSingleCollectionId({ noteId, collectionId = null }) {
-    await this.notesUpdateSingle({ noteId, newVal: { collection_id: collectionId } })
+    await this.notesUpsertSingle({ note: { id: noteId, collection_id: collectionId } })
 
     useSnackbar().createSnackbar({ 
       message: collectionId ? 'Moved Note to collection' : 'Moved Note out of collection'
@@ -135,7 +116,7 @@ export default {
   async notesUpdateSingleDeletedState({ noteId, deleted_at = new Date() }) {
     try {
       // Set deleted_at to now in database
-      await this.notesUpdateSingle({ noteId, newVal: { deleted_at } })
+      await this.notesUpsertSingle({ note: { id: noteId, deleted_at: deleted_at } })
 
       // Notify
       const index = findIndexById({ id: noteId, data: this.state.notes })
@@ -144,8 +125,7 @@ export default {
         message: `Moved note ${ noteData.title && `<b>"${ noteData.title }"</b>` } ${ deleted_at == null ? 'out of the' : 'to the' } Trash.`,
         buttonText: 'Undo',
         onButtonClick: () => {
-          const newVal = { deleted_at: (deleted_at == null) ? new Date() : null }
-          this.notesUpdateSingle({ noteId, newVal })
+          this.notesUpsertSingle({ note: { id: noteId, deleted_at: (deleted_at == null) ? new Date() : null } })
         }
       })
       
@@ -157,14 +137,14 @@ export default {
   async notesUpdateSingleArchivedState({ noteId, is_archived = false }) {
     try {
       // Set is_archived in database
-      await this.notesUpdateSingle({ noteId, newVal: { is_archived } })
+      await this.notesUpsertSingle({ note: { id: noteId, is_archived } })
 
       // Notify
       useSnackbar().createSnackbar({ 
         message: `Moved note ${ is_archived ? 'to archive' : 'out of archive' }.`,
         buttonText: 'Undo',
         onButtonClick: () => {
-          this.notesUpdateSingle({ noteId, newVal: { is_archived: !is_archived } })
+          await this.notesUpsertSingle({ note: { id: noteId, is_archived: !is_archived } })
         }
       })
 

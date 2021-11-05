@@ -124,7 +124,7 @@
 			else if (newVal.collection_id !== undefined)
 				notesStore.notesUpdateSingleCollectionId({ noteId: props.note.id, collectionId: newVal.collection_id })
 			else 
-				notesStore.notesUpdateSingle({ noteId: props.note.id, newVal })
+				notesStore.notesUpsertSingle({ note: { ...newVal, id: props.note.id } })
 	} 
 
 	const handleNoteLockAction = () => {

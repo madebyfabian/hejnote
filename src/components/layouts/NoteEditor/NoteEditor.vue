@@ -84,7 +84,12 @@
 	 * Methods
 	 */
 	const _handleDataChange = async ({ updateState = false, forceEvenWithoutChanges = false } = {}) => {
-		const data = await notesStore.notesUpsertSingle({ newVal: note, forceEvenWithoutChanges, collectionId: route?.params?.collectionId, updateState })
+		const data = await notesStore.notesUpsertSingle({ 
+			note, 
+			forceEvenWithoutChanges, 
+			collectionId: route?.params?.collectionId, 
+			updateState
+		})
 		if (!note?.id && data?.id)
 			note.id = data.id
 		updateLinks()
