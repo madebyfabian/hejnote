@@ -1,5 +1,5 @@
 <template>
-	<Badge v-if="collection" class="Note-ActionBar-Collection">
+	<Badge v-if="collection" class="Note-ActionBar-Collection" :class="{ isReadonly }">
 		<span class="max-w-24 text-overflow-ellipsis">
 			{{ collection.title }}
 		</span>
@@ -30,13 +30,29 @@
 		@apply relative;
 		--mask-optical-size: 36px;
 
-		span {
-			--gradient: linear-gradient(to left, transparent 0px, black var(--mask-optical-size));
-			--size: calc(100% + var(--mask-optical-size)) 100%;
-			-webkit-mask-image: var(--gradient);
-			-webkit-mask-size: var(--size);
-			mask-image: var(--gradient);
-			mask-size: var(--size);
+		&:not(.isReadonly) {
+			span {
+				--gradient: linear-gradient(to left, transparent 0px, black var(--mask-optical-size));
+				--size: calc(100% + var(--mask-optical-size)) 100%;
+				-webkit-mask-image: var(--gradient);
+				-webkit-mask-size: var(--size);
+				mask-image: var(--gradient);
+				mask-size: var(--size);
+			}
+
+			&:hover,
+			&:focus-within {
+				span {
+					animation: clip-fade 150ms ease forwards;
+
+					@keyframes clip-fade {
+						100% {
+							-webkit-mask-position: right;
+							mask-position: right;
+						}
+					}
+				}
+			}
 		}
 
 		&-badgeButton {
@@ -47,17 +63,6 @@
 		&:focus-within {
 			^&-badgeButton {
 				@apply opacity-100;
-			}
-
-			span {
-				animation: clip-fade 150ms ease forwards;
-
-				@keyframes clip-fade {
-					100% {
-						-webkit-mask-position: right;
-    				mask-position: right;
-					}
-				}
 			}
 		}
 	}
