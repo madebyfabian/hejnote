@@ -144,7 +144,7 @@ export default {
         message: `Moved note ${ is_archived ? 'to archive' : 'out of archive' }.`,
         buttonText: 'Undo',
         onButtonClick: () => {
-          await this.notesUpsertSingle({ note: { id: noteId, is_archived: !is_archived } })
+          this.notesUpsertSingle({ note: { id: noteId, is_archived: !is_archived } })
         }
       })
 
