@@ -52,8 +52,6 @@ export default {
     })
   },
 
-
-
 	async notesFetch({ fetchHidden = false } = {}) {
     const { data, error } = await supabase.from('notes').select('*').eq('is_hidden', fetchHidden)
     if (error) 
@@ -62,12 +60,12 @@ export default {
     this.state.notes = data
   },
 
-  async notesUpdateSingle({ noteId, newVal, updateDB = true, updateState = true }) {
+  async notesUpdateSingle({ noteId, newVal, forceEvenWithoutChanges = false, updateDB = true, updateState = true }) {
     try {
+      if (!forceEvenWithoutChanges && !this.noteObjectHasChanges({ compareToNoteId: noteId, newVal }))
+        return
+          
       if (updateDB) {
-        if (!this.noteObjectHasChanges({ compareToNoteId: noteId, newVal }))
-          return
-
         // Delete id column because it's not needed and supabase throws an error.
         newVal = { ...newVal }
         delete newVal?.id
@@ -89,28 +87,10 @@ export default {
     }
   },
 
-  async notesUpdateSingleCollectionId({ noteId, collectionId = null }) {
-    await this.notesUpdateSingle({ noteId, newVal: { collection_id: collectionId } })
-
-    useSnackbar().createSnackbar({ 
-      message: collectionId ? 'Moved Note to collection' : 'Moved Note out of collection'
-    })
-  },
-
-  async notesUpdateUnlinkCollections({ collectionIds }) {
-    const { data, error } = await supabase.from('notes').update({ collection_id: null }).in('collection_id', collectionIds)
-    if (error) throw error
-
-    this.state.notes = data
-  },
-
   async notesUpsertSingle({ newVal, forceEvenWithoutChanges = false, collectionId = null, updateDB = true, updateState = true }) {
     try {
-      if (!forceEvenWithoutChanges) {
-        const hasChanges = this.noteObjectHasChanges({ compareToNoteId: newVal?.id, newVal })
-        if (!hasChanges)
-          return
-      }
+      if (!forceEvenWithoutChanges && !this.noteObjectHasChanges({ compareToNoteId: newVal?.id, newVal }))
+        return
 
       // If we are in hidden mode, the new val should also have this prop.
       newVal.is_hidden = isHiddenMode.value
@@ -135,6 +115,21 @@ export default {
     } catch (error) {
       handleError(error)
     }
+  },
+
+  async notesUpdateSingleCollectionId({ noteId, collectionId = null }) {
+    await this.notesUpdateSingle({ noteId, newVal: { collection_id: collectionId } })
+
+    useSnackbar().createSnackbar({ 
+      message: collectionId ? 'Moved Note to collection' : 'Moved Note out of collection'
+    })
+  },
+
+  async notesUpdateUnlinkCollections({ collectionIds }) {
+    const { data, error } = await supabase.from('notes').update({ collection_id: null }).in('collection_id', collectionIds)
+    if (error) throw error
+
+    this.state.notes = data
   },
 
   async notesUpdateSingleDeletedState({ noteId, deleted_at = new Date() }) {
