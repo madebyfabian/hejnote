@@ -68,7 +68,10 @@
 
 	// Setup note data
 	const note = reactive({ 
-		...notesStore.getNoteDefaultDataObject({ note: props.note }) 
+		...notesStore.getNoteDefaultDataObject({ note: {
+			...props.note,
+			is_archived: props.note?.is_archived || route?.name === 'App-Archive' || false
+		} })
 	})
 	const isLocked = computed(() => note.is_locked)
 
