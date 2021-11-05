@@ -6,10 +6,6 @@
 
 		<!-- Exeption: I didn't used <Button> here, but it's okay -->
 		<button v-if="!isReadonly" class="Note-ActionBar-Collection-badgeButton" @click="emit('removeCollection')">
-			<span 
-				aria-hidden="true" 
-				class="absolute -left-4 top-0 w-9 h-full bg-gradient-to-r from-transparent via-gray-900 to-gray-900" 
-			/>
 			<span class="relative">
 				<IconClose />
 			</span>
@@ -32,14 +28,37 @@
 <style lang="postcss" scoped>
 	.Note-ActionBar-Collection {
 		@apply relative;
+		--mask-optical-size: 36px;
+
+		span {
+			--gradient: linear-gradient(to left, transparent 0px, black var(--mask-optical-size));
+			--size: calc(100% + var(--mask-optical-size)) 100%;
+			-webkit-mask-image: var(--gradient);
+			-webkit-mask-size: var(--size);
+			mask-image: var(--gradient);
+			mask-size: var(--size);
+		}
 
 		&-badgeButton {
 			@apply absolute right-1 transition opacity-0 rounded;
 		}
 
-		&:hover &-badgeButton,
-		&:focus-within &-badgeButton {
-			@apply opacity-100;
+		&:hover,
+		&:focus-within {
+			^&-badgeButton {
+				@apply opacity-100;
+			}
+
+			span {
+				animation: clip-fade 150ms ease forwards;
+
+				@keyframes clip-fade {
+					100% {
+						-webkit-mask-position: right;
+    				mask-position: right;
+					}
+				}
+			}
 		}
 	}
 </style>
