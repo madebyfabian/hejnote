@@ -171,7 +171,12 @@
 		for (const obj of content) {
 			if (obj?.type === 'text') {
 				const linkMark = obj?.marks?.find(mark => mark?.type === 'link')
-				if (linkMark) 
+
+				// We have to check this, since it could be the case that user has pasted 
+				// a real link "mailto:abc@xyz.com" (not just the string) from clipboard 
+				const isHTTPLink = linkMark?.attrs?.href?.startsWith('http')
+
+				if (linkMark && isHTTPLink)
 					linkSet.add(linkMark.attrs.href)
 			}
 
