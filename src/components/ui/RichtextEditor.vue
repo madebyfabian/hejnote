@@ -1,23 +1,26 @@
 <template>
   <div class="RichtextEditor">
 		<div class="RichtextEditor-content" :class="{ isReadonly, isInEditMode }">
-			<FloatingMenu 
-				v-if="editor && !isReadonly"
-				:editor="editor"
-				class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm px-2 py-2 rounded-xl flex gap-4">
+			<template v-if="!isReadonly">
+				<FloatingMenu 
+					v-if="editor"
+					:editor="editor"
+					class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm px-2 py-2 rounded-xl flex gap-4">
 
-				<ButtonIconOnly :icon="IconListUnordered" isInline @click="editor.chain().focus().toggleBulletList().run()" >
-					Unordered List
-				</ButtonIconOnly>
-				<ButtonIconOnly :icon="IconListOrdered" isInline @click="editor.chain().focus().toggleOrderedList().run()" >
-					Ordered List
-				</ButtonIconOnly>
-				<ButtonIconOnly :icon="IconCheckSquare" isInline @click="editor.chain().focus().toggleTaskList().run()" >
-					Tesk List
-				</ButtonIconOnly>
-			</FloatingMenu>
+					<ButtonIconOnly :icon="IconListUnordered" isInline @click="() => editor.chain().focus().toggleBulletList().run()" >
+						Unordered List
+					</ButtonIconOnly>
+					<ButtonIconOnly :icon="IconListOrdered" isInline @click="() => editor.chain().focus().toggleOrderedList().run()" >
+						Ordered List
+					</ButtonIconOnly>
+					<ButtonIconOnly :icon="IconCheckSquare" isInline @click="() => editor.chain().focus().toggleTaskList().run()" >
+						Tesk List
+					</ButtonIconOnly>
+				</FloatingMenu>
 
-			<EditorContent v-if="!isReadonly" :editor="editor" />
+				<EditorContent :editor="editor" />
+			</template>
+
 			<div v-else v-html="readonlyHTML" />
 		</div>
 	</div>
