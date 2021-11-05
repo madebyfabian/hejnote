@@ -1,5 +1,5 @@
 <template>
-	<CFocusLock v-bind="{ allowOutsideClick: true }">
+	<CFocusLock v-bind="{ allowOutsideClick: true, autoFocus: !isMobileDevice }">
 		<div class="Modal" :class="{ isConfirm, isMobileFullHeight }" @mousedown.self="emit('close')">
 			<div 
 				class="Modal-container"
@@ -36,6 +36,7 @@
 	import { IconClose } from '@/assets/icons'
 	import { CFocusLock } from '@chakra-ui/c-focus-lock'
 	import useSlotIsEmpty from '@/hooks/useSlotIsEmpty'
+	import useIsMobileDevice from '@/hooks/useIsMobileDevice'
 
 	const emit = defineEmits([ 'close', 'formSubmit' ])
 
@@ -52,6 +53,7 @@
 	})
 
 	const isBottomBarSlotEmpty = useSlotIsEmpty({ name: 'bottomBar' })
+	const isMobileDevice = useIsMobileDevice()
 
 	const isMobileFullHeight = computed(() => {
 		if (props.isConfirm)
