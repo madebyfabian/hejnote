@@ -45,7 +45,7 @@
 					</ButtonIconOnly>
 
 					<!-- Pin -->
-					<ButtonIconOnly isInline :icon="note.is_pinned ? IconPinSolid : IconPin" @click="handleNotePinAction" :isDisabled="isLocked">
+					<ButtonIconOnly v-if="!isCurrentlyInArchiveRoute" isInline :icon="note.is_pinned ? IconPinSolid : IconPin" @click="handleNotePinAction" :isDisabled="isLocked">
 						Note is {{ note.is_pinned ? 'pinned' : 'not pinned' }}. Click to {{ note.is_pinned ? 'unpin' : 'pin' }}.
 					</ButtonIconOnly>
 
@@ -79,6 +79,7 @@
 	import useConfirm from '@/hooks/useConfirm'
 	import { notesStore, collectionsStore } from '@/store' 
 	import useSupabase from '@/hooks/useSupabase'
+	import { useRoute } from 'vue-router'
 	import { 
 		IconEyeOff, IconEyeOffSolid, IconPin, IconPinSolid, 
 		IconTrash, IconTrashDelete, IconTrashUndo, IconArchive, IconArchiveSolid,
@@ -90,6 +91,7 @@
 	import { NoteActionBarCollection, ContextMenuCollections } from '@/components/layouts'
 
 	const supabase = useSupabase()
+	const route = useRoute()
 
 	const props = defineProps({
 		note: 								{ required: true },
@@ -109,6 +111,7 @@
 	const isEmitChangesMode = computed(() => props.mode === 'emitChanges')
 	const isLocked = computed(() => props.note.is_locked)
 	const collection = computed(() => collectionsStore.collectionFindById({ collectionId: props.note.collection_id }))
+	const isCurrentlyInArchiveRoute = computed(() => route.name === 'App-Archive')
 
 
 	/** Actions */
