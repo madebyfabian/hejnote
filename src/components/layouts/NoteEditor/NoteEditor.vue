@@ -205,10 +205,13 @@
 			return closeEditor()
 		}
 
-		Object.assign(note, newVal)
+		if (newVal.is_archived !== undefined) {
+			notesStore.notesUpdateSingleArchivedState({ noteId: note.id, is_archived: newVal.is_archived })
 
-		if (newVal.is_archived)
-			closeEditor()
+			return closeEditor()
+		}
+
+		Object.assign(note, newVal)
 	}
 
 	onBeforeUnmount(() => {
