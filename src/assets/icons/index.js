@@ -2,6 +2,7 @@ import IconAdd from './add.svg'
 import IconArchive from './archive.svg'
 import IconArchiveSolid from './archiveSolid.svg'
 import IconCheck from './check.svg'
+import IconCheckSquare from './checkSquare.svg'
 import IconChevron from './chevron.svg'
 import IconChevronRight from './chevronRight.svg'
 import IconClose from './close.svg'
@@ -14,6 +15,8 @@ import IconGitHub from './gitHub.svg'
 import IconGlobe from './globe.svg'
 import IconLinkAdd from './linkAdd.svg'
 import IconLinkExternal from './linkExternal.svg'
+import IconListOrdered from './listOrdered.svg'
+import IconListUnordered from './listUnordered.svg'
 import IconLock from './lock.svg'
 import IconLockSolid from './lockSolid.svg'
 import IconMore from './more.svg'
@@ -33,6 +36,7 @@ export {
   IconArchive,
   IconArchiveSolid,
   IconCheck,
+  IconCheckSquare,
   IconChevron,
   IconChevronRight,
   IconClose,
@@ -45,6 +49,8 @@ export {
   IconGlobe,
   IconLinkAdd,
   IconLinkExternal,
+  IconListOrdered,
+  IconListUnordered,
   IconLock,
   IconLockSolid,
   IconMore,
