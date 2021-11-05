@@ -64,6 +64,7 @@ export default {
     try {
       const noteId = note?.id
       const isNewNote = !noteId
+      const noteObjInState = this.noteFindById({ noteId: note?.id })
 
       // Cancel if nothing changes AND we are not "forcing the function even without changes"
       if (!forceEvenWithoutChanges && !this.noteObjectHasChanges({ compareToNoteId: noteId, newVal: note }))
@@ -72,6 +73,12 @@ export default {
       note.owner_id = generalStore.state.user.id
       if (isNewNote) {
         note.is_hidden = isHiddenMode.value
+      }
+
+      // If the value "is_hidden" is being changed, we will also have to remove the collection_id
+      // (since collections in hidden are different than collections in non-hidden)
+      if (noteObjInState && note.is_hidden !== undefined && note.is_hidden !== noteObjInState?.is_hidden) {
+        note.collection_id = null
       }
 
       // Update database
