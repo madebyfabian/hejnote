@@ -75,10 +75,15 @@ export default {
         note.is_hidden = isHiddenMode.value
       }
 
-      // If the value "is_hidden" is being changed, we will also have to remove the collection_id
-      // (since collections in hidden are different than collections in non-hidden)
-      if (noteObjInState && note.is_hidden !== undefined && note.is_hidden !== noteObjInState?.is_hidden) {
-        note.collection_id = null
+      if (noteObjInState) {
+        // If the value "is_archived" is being changed, we will also want to reset the pinned state.
+        if (note.is_archived !== undefined && note.is_archived !== noteObjInState?.is_archived)
+          note.is_pinned = false
+
+        // If the value "is_hidden" is being changed, we will also want to remove the collection_id,
+        // (since collections in hidden are different than collections in non-hidden).
+        if (note.is_hidden !== undefined && note.is_hidden !== noteObjInState?.is_hidden)
+          note.collection_id = null
       }
 
       // Update database
