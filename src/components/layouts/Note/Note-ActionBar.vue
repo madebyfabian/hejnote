@@ -50,7 +50,7 @@
 					</ButtonIconOnly>
 
 					<!-- Archive -->
-					<ButtonIconOnly isInline :icon="note.is_archived ? IconArchiveSolid : IconArchive" @click="handleNoteArchiveAction" :isDisabled="isLocked">
+					<ButtonIconOnly isInline :icon="note.is_archived ? IconArchiveUndo : IconArchive" @click="handleNoteArchiveAction" :isDisabled="isLocked">
 						Note is {{ note.is_archived ? 'archived' : 'not archived' }}. Click to {{ note.is_archived ? 'unarchive' : 'archive' }}.
 					</ButtonIconOnly>
 
@@ -82,7 +82,7 @@
 	import { useRoute } from 'vue-router'
 	import { 
 		IconEyeOff, IconEyeOffSolid, IconPin, IconPinSolid, 
-		IconTrash, IconTrashDelete, IconTrashUndo, IconArchive, IconArchiveSolid,
+		IconTrash, IconTrashDelete, IconTrashUndo, IconArchive, IconArchiveUndo,
 		IconCollectionMove, IconLock, IconLockSolid
 	} from '@/assets/icons'
 

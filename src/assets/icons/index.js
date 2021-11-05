@@ -1,6 +1,6 @@
 import IconAdd from './add.svg'
 import IconArchive from './archive.svg'
-import IconArchiveSolid from './archiveSolid.svg'
+import IconArchiveUndo from './archiveUndo.svg'
 import IconCheck from './check.svg'
 import IconCheckSquare from './checkSquare.svg'
 import IconChevron from './chevron.svg'
@@ -34,7 +34,7 @@ import IconSearch from './search.svg'
 export {
   IconAdd,
   IconArchive,
-  IconArchiveSolid,
+  IconArchiveUndo,
   IconCheck,
   IconCheckSquare,
   IconChevron,
