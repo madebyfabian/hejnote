@@ -1,6 +1,22 @@
 <template>
   <div class="RichtextEditor">
 		<div class="RichtextEditor-content" :class="{ isReadonly, isInEditMode }">
+			<FloatingMenu 
+				v-if="editor && !isReadonly"
+				:editor="editor"
+				class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm px-2 py-2 rounded-xl flex gap-4">
+
+				<ButtonIconOnly :icon="IconListUnordered" isInline @click="editor.chain().focus().toggleBulletList().run()" >
+					Unordered List
+				</ButtonIconOnly>
+				<ButtonIconOnly :icon="IconListOrdered" isInline @click="editor.chain().focus().toggleOrderedList().run()" >
+					Ordered List
+				</ButtonIconOnly>
+				<ButtonIconOnly :icon="IconCheckSquare" isInline @click="editor.chain().focus().toggleTaskList().run()" >
+					Tesk List
+				</ButtonIconOnly>
+			</FloatingMenu>
+
 			<EditorContent v-if="!isReadonly" :editor="editor" />
 			<div v-else v-html="readonlyHTML" />
 		</div>
@@ -9,9 +25,11 @@
 
 <script setup>
 	import { onMounted, ref, watch } from 'vue'
+	import { IconListUnordered, IconListOrdered, IconCheckSquare } from '@/assets/icons'
+	import { ButtonIconOnly } from '@/components/ui'
 
 	// Import tiptap and tiptap utils.
-	import { useEditor, EditorContent, generateText } from '@tiptap/vue-3'
+	import { useEditor, EditorContent, generateText, FloatingMenu } from '@tiptap/vue-3'
 	import richtextEditorUtils from '@/utils/richtextEditorUtils'
 
 	const props = defineProps({
@@ -30,7 +48,7 @@
 		onCreate: () => {
 			emit('editorCreated')
 		},
-		extensions: richtextEditorUtils.extensionList
+		extensions: richtextEditorUtils.extensionList,
 	})
 
 	watch(() => props.modelValue, newValue => {
