@@ -71,7 +71,7 @@
 		 * :hover modifier styles
 		 */
 		&:hover {
-			@apply bg-gray-800;
+			@apply bg-gray-900;
 		}
 
 		&:not(.isChecked):hover &-button::after {

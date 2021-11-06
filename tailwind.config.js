@@ -109,6 +109,15 @@ module.exports = {
       },
       inset: {
         'initial': 'initial',
+      },
+      colors: {
+        gray: {
+          '750-standaloneBorder': '#2B3645',
+          '1000': '#0A0E1A'
+        }
+      },
+      opacity: {
+        '85': '.85'
       }
     },
   },

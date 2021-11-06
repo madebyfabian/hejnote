@@ -20,7 +20,7 @@
 				</Button>
 			</form>
 
-			<div class="h-1 bg-gray-900 -mx-8" aria-hidden="true" />
+			<div class="h-1 bg-gray-1000 -mx-8" aria-hidden="true" />
 
 			<Button buttonType="secondary" isFullWidth type="submit" @click="() => doAuthenticate({ provider: 'github' })">
 				<IconGitHub />

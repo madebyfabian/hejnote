@@ -87,7 +87,7 @@
 		}
 
 		&-primary {
-			@apply text-gray-900;
+			@apply text-gray-1000;
 			@apply border-transparent;
 			@apply bg-green-400;
 
@@ -104,15 +104,15 @@
 		&-secondary, 
 		&-tertiary {
 			@apply text-gray-400;
-			@apply border-gray-700;
-			@apply bg-gray-700 bg-opacity-0;
+			@apply border-gray-750-standaloneBorder;
+			@apply bg-gray-800 bg-opacity-0;
 
 			&:hover {
-				@apply desktop:bg-opacity-25;
+				@apply desktop:bg-opacity-40;
 			}
 
 			&:active {
-				@apply border-gray-500 bg-opacity-75;
+				@apply border-gray-600 bg-opacity-80;
 				transition: border-color 0ms ease, background-color 0ms ease;
 			}
 		}
@@ -121,7 +121,7 @@
 			@apply border-transparent;
 
 			&:active {
-				@apply border-gray-600;
+				@apply border-gray-700;
 			}
 		}
 

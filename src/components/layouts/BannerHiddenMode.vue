@@ -5,7 +5,7 @@
 			role="banner"
 			class="BannerHiddenMode">
 
-			<span class="text-050 flex items-center w-full justify-center gap-1.5 text-gray-900 font-bold">
+			<span class="text-050 flex items-center w-full justify-center gap-1.5 text-gray-1000 font-bold">
 				<IconEyeOff class="h-4 w-4" />
 				Hidden mode activated
 			</span>

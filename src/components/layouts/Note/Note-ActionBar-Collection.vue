@@ -56,7 +56,7 @@
 		}
 
 		&-badgeButton {
-			@apply absolute right-1 transition opacity-0 rounded;
+			@apply absolute right-1.5 transition opacity-0 rounded;
 		}
 
 		&:hover,

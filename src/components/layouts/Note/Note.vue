@@ -7,7 +7,7 @@
 		@mouseenter="handleFocusIn"
 		@mouseleave="handleFocusOut"
 		:aria-label="noteTitleLabel"
-		class="Note relative border border-gray-700 border-opacity-50 rounded-2xl p-4 cursor-default transition duration-225 mb-6 desktop:mb-8 overflow-hidden"
+		class="Note relative bg-gray-900 border border-gray-800 rounded-2xl p-4 cursor-default transition duration-225 mb-6 desktop:mb-8 overflow-hidden"
 		:class="{ 
 			'blur-md': isNoteBeingEdited,
 		}"
@@ -33,7 +33,7 @@
 			</div>
 			<span 
 				aria-hidden="true" 
-				class="pointer-events-none absolute left-0 bottom-0 z-10 w-full h-10 bg-gradient-to-t from-gray-900"
+				class="pointer-events-none absolute left-0 bottom-0 z-10 w-full h-10 bg-gradient-to-t from-gray-1000"
 				:class="{ 'opacity-0 invisible': !richtextEditorIsTruncated }"
 			/>
 		</div>

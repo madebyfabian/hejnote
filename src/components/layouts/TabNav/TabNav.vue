@@ -1,6 +1,6 @@
 <template>
 	<div 
-		class="TabNav fixed bottom-0 left-0 w-full z-40 px-3 pb-safe-area-bottom pt-4 bg-gradient-to-t from-gray-900 via-gray-900"
+		class="TabNav fixed bottom-0 left-0 w-full z-40 px-3 pb-safe-area-bottom pt-4 bg-gradient-to-t from-gray-1000 via-gray-1000"
 		:class="props.class">
 		<div class="relative flex justify-between w-full z-1">
 			<!-- Home -->
@@ -26,7 +26,7 @@
 				<!-- Exeption: I didn't used <Button> here, but it's okay -->
 				<button 
 					@click="() => notesStore.toggleCreateNoteModal({ isVisible: true })"
-					class="h-12 w-12 rounded-2.5xl bg-gradient-to-b from-green-400 to-green-600 text-gray-900 flex justify-center items-center mt-2">
+					class="h-12 w-12 rounded-2.5xl bg-gradient-to-b from-green-400 to-green-600 text-gray-1000 flex justify-center items-center mt-2">
 					
 					<IconAdd />
 				</button>

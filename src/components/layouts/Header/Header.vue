@@ -7,7 +7,7 @@
 		<div class="Header-centerContent container h-11">
 			<transition name="transition-fadeAndScale-fast" mode="out-in">
 				<div v-if="!isSearchFocussed" class="flex gap-4">
-					<div class="Header-createNoteButtonBar flex-1 rounded-input bg-gray-800 flex divide-x divide-gray-700">
+					<div class="Header-createNoteButtonBar flex-1 rounded-input bg-gray-900 flex divide-x divide-gray-750-standaloneBorder">
 						<button 
 							class="flex-1 cursor-text" 
 							@click="() => notesStore.toggleCreateNoteModal({ isVisible: true })">
@@ -35,7 +35,7 @@
 						</Button>
 					</div>
 			
-					<div class="bg-gray-900 rounded-button">
+					<div class="bg-gray-1000 rounded-button">
 						<Button buttonType="secondary" @click="navigateToSearch">
 							<IconSearch />
 							Search for something
@@ -108,11 +108,11 @@
 		}
 
 		&::after {
-			@apply -top-5 h-14 backdrop-blur-xl bg-gray-900 bg-opacity-75;
+			@apply -top-5 h-14 backdrop-blur-xl bg-gray-1000 bg-opacity-75;
 		}
 
 		&::before {
-			@apply top-8 h-10 bg-gradient-to-b from-gray-900 to-transparent;
+			@apply top-8 h-10 bg-gradient-to-b from-gray-1000 to-transparent;
 		}
 	}
 
@@ -122,7 +122,7 @@
 		&::after {
 			@apply content pointer-events-none rounded-inherit;
 			@apply absolute left-0 top-0 w-full h-full z-1;
-			@apply border border-gray-700;
+			@apply border border-gray-750-standaloneBorder;
 		}
 	}
 </style>

@@ -10,9 +10,9 @@
 			:class="{
 				'pl-11': !isIconSlotEmpty,
 				'pl-5': isIconSlotEmpty,
-				'bg-gray-800': inputBgGray,
+				'bg-gray-900': inputBgGray,
 				'bg-transparent': !inputBgGray,
-				'border border-gray-700': !inputBorderHidden,
+				'border border-gray-750-standaloneBorder': !inputBorderHidden,
 				'border border-transparent': inputBorderHidden,
 			}"
 			ref="inputEl"
