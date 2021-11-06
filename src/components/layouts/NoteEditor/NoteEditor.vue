@@ -131,7 +131,7 @@
 		// Check if note is completely empty. If so, delete it.
 		const isEmpty = notesStore.checkIfNoteIsCompletelyEmpty({ note })
 		if (isEmpty)
-			notesStore.notesDeleteV2({ noteIds: [ note.id ], notifyUser: false })
+			notesStore.notesDelete({ noteIds: [ note.id ], notifyUser: false })
 		else
 			_handleDataChange({ updateState: true })
 	}

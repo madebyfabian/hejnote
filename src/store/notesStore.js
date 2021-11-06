@@ -23,6 +23,20 @@ export default {
     createNoteModalVisible: false,
 	}),
 
+  toggleNoteEditor({ editNoteId = null, isVisible = false } = {}) {
+    this.state.editNoteId = editNoteId
+		nextTick(() => this.state.editNoteModalVisible = isVisible)
+  },
+
+  toggleCreateNoteModal({ startWithNewLink = false, isVisible = true } = {}) {
+    this.state.createNoteStartWithNewLink = startWithNewLink
+    nextTick(() => this.state.createNoteModalVisible = isVisible)
+  },
+
+
+  /**
+   * Returns a new, empty note object.
+   */
   getNoteDefaultDataObject({ note } = {}) { return {
     id: 				    note?.id || undefined,
 		title: 			    note?.title || '',
@@ -34,23 +48,6 @@ export default {
     collection_id:  note?.collection_id || null,
   }},
 
-
-
-  toggleNoteEditor({ editNoteId = null, isVisible = false } = {}) {
-    this.state.editNoteId = editNoteId
-
-		nextTick(() => {
-      this.state.editNoteModalVisible = isVisible
-		})
-  },
-
-  toggleCreateNoteModal({ startWithNewLink = false, isVisible = true } = {}) {
-    this.state.createNoteStartWithNewLink = startWithNewLink
-
-    nextTick(() => {
-      this.state.createNoteModalVisible = isVisible
-    })
-  },
 
 	async notesFetch({ fetchHidden = false } = {}) {
     const { data, error } = await supabase.from('notes').select('*').eq('is_hidden', fetchHidden)
@@ -179,7 +176,7 @@ export default {
     }
   },
 
-  async notesDeleteV2({ noteIds, notifyUser = true }) {
+  async notesDelete({ noteIds, notifyUser = true }) {
     try {
       // Delete link joins and their links first.
       await linksStore.linksDeleteV2({ noteIds })

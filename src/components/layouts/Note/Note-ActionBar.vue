@@ -175,7 +175,7 @@
 
 		// no handling of the props.mode here, because we want to delete the note completely
 		
-		return notesStore.notesDeleteV2({ noteIds: [ props.note.id ] })
+		return notesStore.notesDelete({ noteIds: [ props.note.id ] })
 	}
 
 	const handleAddCollection = ({ collectionId }) => {
