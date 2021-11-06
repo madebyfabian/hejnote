@@ -99,7 +99,7 @@
 	.Note-contentWrap {
 		@apply relative overflow-hidden;
 
-		--max-height: 18rem;
+		--max-height: 15rem;
 		max-height: var(--max-height);
 
 		--gradient: linear-gradient(to bottom, black calc(var(--max-height) - 2.5rem), transparent var(--max-height));
