@@ -11,7 +11,7 @@
 			</TabNav-Item>
 
 			<!-- Collections -->
-			<ContextMenuCollections transformOrigin="36% bottom" isFixed isFullWidth verticalAlign="top" cssClass="w-[20%]">
+			<ContextMenuCollections isTypeNavigation transformOrigin="36% bottom" isFixed isFullWidth verticalAlign="top" cssClass="w-[20%]">
 				<template #button>
 					<TabNav-Item :isActive="isActiveTab('App-Collection')"  class="min-w-full">
 						<template #icon><component :is="IconCollectionMove" /></template>
