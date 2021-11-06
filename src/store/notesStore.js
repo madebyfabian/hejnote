@@ -92,14 +92,9 @@ export default {
 
       // Update local state
       const newData = res?.data?.[0] || note
-      if (updateState && newData?.id) {
-        const index = findIndexById({ id: newData?.id, data: this.state.notes })
-        if (index > -1)
-          this.state.notes[index] = { ...this.state.notes[index], ...newData }
-        else
-          this.state.notes.push(newData)
-      }
-
+      if (updateState && newData?.id) 
+        this._updateState({ notes: [ newData ] })
+ 
       return newData
 
     } catch (error) {
@@ -119,7 +114,7 @@ export default {
     const { data, error } = await supabase.from('notes').update({ collection_id: null }).in('collection_id', collectionIds)
     if (error) throw error
 
-    this.state.notes = data
+    this._updateState({ notes: data })
   },
 
   async notesUpdateSingleDeletedState({ noteId, deleted_at = new Date() }) {
@@ -281,5 +276,15 @@ export default {
 
   notesFilterForArchive() {
     return this.getNotes({ includeDeleted: false }).filter(note => note.is_archived)
-  }
+  },
+
+  _updateState({ notes }) {
+    for (const note of notes) {
+      const index = findIndexById({ id: note?.id, data: this.state.notes })
+      if (index > -1)
+        this.state.notes[index] = { ...this.state.notes[index], ...note }
+      else
+        this.state.notes.push(note)
+    }
+  },
 }
