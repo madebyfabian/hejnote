@@ -8,7 +8,9 @@
 				class="p-5 pr-20 pb-2 text-150 text-gray-300 font-semibold bg-transparent w-full placeholder-gray-500 outline-none ring-0"
 			/>
 
-			<RichtextEditor v-model="note.content" class="flex-1" :isReadonly="isLocked" isInEditMode />
+			<Note-Content :noteContent="isLocked ? note.content : undefined" isInEditMode class="flex-1">
+				<RichtextEditor v-model="note.content" />
+			</Note-Content>
 
 			<div class="px-5 pb-5" v-if="note.id">
 				<Note-ActionBar
@@ -43,7 +45,7 @@
 	import { throttle } from 'throttle-debounce'
 	import { joinNotesLinksStore, linksStore, notesStore } from '@/store'
 	import { Button, RichtextEditor } from '@/components/ui'
-	import { NoteActionBar, NoteLinkList } from '@/components/layouts'
+	import { NoteActionBar, NoteLinkList, NoteContent } from '@/components/layouts'
 	import { useRoute } from 'vue-router'
 
 	const props = defineProps({

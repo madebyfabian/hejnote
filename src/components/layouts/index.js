@@ -7,6 +7,7 @@ export { default as NoteEditor } from './NoteEditor/NoteEditor.vue';
 
 export { default as NoteActionBarCollection } from './Note/Note-ActionBar-Collection.vue';
 export { default as NoteActionBar } from './Note/Note-ActionBar.vue';
+export { default as NoteContent } from './Note/Note-Content.vue';
 export { default as NoteLinkList } from './Note/Note-LinkList.vue';
 export { default as NoteLinkListItem } from './Note/Note-LinkList-Item.vue';
 export { default as Note } from './Note/Note.vue';
