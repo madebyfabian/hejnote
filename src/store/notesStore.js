@@ -107,10 +107,17 @@ export default {
   },
 
   async notesUpdateSingleCollectionId({ noteId, collectionId = null }) {
+    const noteData = { ...this.noteFindById({ noteId }) } // Deep copy since it will be overriden by the upsert.
+    const noteOldCollectionId = noteData?.collection_id
+
     await this.notesUpsertSingle({ note: { id: noteId, collection_id: collectionId } })
 
     useSnackbar().createSnackbar({ 
-      message: collectionId ? 'Moved Note to collection' : 'Moved Note out of collection'
+      message: collectionId ? 'Moved Note to collection' : 'Moved Note out of collection',
+      buttonText: 'Undo',
+      onButtonClick: () => {
+        this.notesUpsertSingle({ note: { id: noteId, collection_id: noteOldCollectionId } })
+      }
     })
   },
 
