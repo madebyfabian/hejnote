@@ -50,11 +50,15 @@ export default {
 
 
 	async notesFetch({ fetchHidden = false } = {}) {
-    const { data, error } = await supabase.from('notes').select('*').eq('is_hidden', fetchHidden)
-    if (error) 
-      return console.error(error)
+    try {
+      const { data, error } = await supabase.from('notes').select('*').eq('is_hidden', fetchHidden)
+      if (error) throw error
 
-    this.state.notes = data
+      this.state.notes = data
+
+    } catch (error) {
+      handleError(error)
+    }
   },
 
   async notesUpsertSingle({ note, forceEvenWithoutChanges = false, updateDB = true, updateState = true }) {
