@@ -24,13 +24,13 @@
 				/>
 			</template>
 
-			<Button v-if="!isReadonly" buttonType="tertiary" isFullWidth customRoudedBorderClass="rounded-b-xl" @click="createLinkModalIsOpened = true">
+			<Button v-if="!isReadonly" buttonType="tertiary" isFullWidth customRoundedBorderClass="rounded-b-xl" @click="createLinkModalIsOpened = true">
 				<IconLinkAdd />
 				Add new link
 			</Button>
 
 			<template #expandButton="{ overflowAmount }">
-				<Button is="div" buttonType="tertiary" isFullWidth :customRoudedBorderClass="isInEditMode ? 'rounded-b-xl' : 'rounded-none'" :isDropdownOpened="!isTruncated">
+				<Button is="div" buttonType="tertiary" isFullWidth :customRoundedBorderClass="isInEditMode ? 'rounded-b-xl' : 'rounded-none'" :isDropdownOpened="!isTruncated">
 					{{ isTruncated ? 'Show' : 'Hide last' }}
 					{{ overflowAmount }}
 					{{ isTruncated ? 'more' : '' }} 

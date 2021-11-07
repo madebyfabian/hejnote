@@ -9,7 +9,7 @@
 			isLoading,
 			hasNegativeMargin,
 			isDisabled,
-			[ customRoudedBorderClass ]: customRoudedBorderClass,
+			[ customRoundedBorderClass ]: customRoundedBorderClass,
 			_isIconOnly
 		}"
 		class="Button">
@@ -55,7 +55,7 @@
 
 		// Custom props
 		buttonType:								{ type: String, default: 'primary', validate: val => [ 'primary', 'secondary', 'tertiary', 'inline' ].includes(val) },
-		customRoudedBorderClass: 	{ type: String, default: 'rounded-button' },
+		customRoundedBorderClass: 	{ type: String, default: 'rounded-button' },
 		isFullWidth: 							{ type: Boolean, default: false },
 		isLoading: 								{ type: Boolean, default: false },
 		hasNegativeMargin: 				{ type: Boolean, default: false },

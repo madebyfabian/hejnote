@@ -17,7 +17,7 @@
 			<Button 
 				v-if="snackbar.buttonText"
 				buttonType="tertiary"
-				customRoudedBorderClass="rounded-none rounded-r-xl"
+				customRoundedBorderClass="rounded-none rounded-r-xl"
 				@click="handleButtonClick"
 				class="!h-auto !w-auto !px-3">
 				

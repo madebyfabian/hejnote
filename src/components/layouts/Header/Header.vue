@@ -28,7 +28,7 @@
 						<Button
 							@click="() => notesStore.toggleCreateNoteModal({ isVisible: true, startWithNewLink: true })" 
 							buttonType="tertiary" 
-							customRoudedBorderClass="rounded-r-button">
+							customRoundedBorderClass="rounded-r-button">
 
 							<IconLinkAdd />
 							Create Linklist
