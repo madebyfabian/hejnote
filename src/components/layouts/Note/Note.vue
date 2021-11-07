@@ -49,7 +49,11 @@
 			v-if="noteLinks.length" 
 			ref="noteLinkListEl"
 			:class="noteContentIsEmpty ? 'order-2 -my-3' : 'order-3 -mb-4'"
-			class="-mx-4">
+			class="-mx-4 relative">
+
+			<span v-if="!noteContentIsEmpty" aria-hidden="true" class="h-4 w-full absolute left-0 -top-4 bg-gray-1000 pointer-events-none">
+				<span class="h-full w-full block bg-gray-900 rounded-b-2xl"></span>
+			</span>
 
 			<Note-LinkList 
 				:noteId="note.id" 
