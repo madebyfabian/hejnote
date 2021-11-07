@@ -153,7 +153,7 @@
 		}
 
 		&.isDisabled {
-			@apply opacity-25;
+			@apply opacity-25 select-none;
 		}
 
 		&._isIconOnly {
