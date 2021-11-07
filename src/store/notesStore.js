@@ -244,7 +244,7 @@ export default {
    * Checks if the note is completly empty.
    * This includes checking the note object isself, and also if there are any links.
    */
-  checkIfNoteIsCompletelyEmpty({ note }) {
+  isNoteObjEmpty({ note }) {
     if (!note)
       return true
 
@@ -265,7 +265,7 @@ export default {
     return false
   },
 
-  checkIfNoteContentIsCompletelyEmpty({ noteContent }) {
+  isNoteContentEmpty({ noteContent }) {
     return JSON.stringify(this.getNoteDefaultDataContentObject()) === JSON.stringify(noteContent)
   },
 

@@ -74,7 +74,7 @@
 		note: { required: true },
 	})
 
-	const noteContentIsEmpty = computed(() => notesStore.checkIfNoteContentIsCompletelyEmpty({ noteContent: props.note?.content }))
+	const noteContentIsEmpty = computed(() => notesStore.isNoteContentEmpty({ noteContent: props.note?.content }))
 	const noteTitleLabel = computed(() => `Edit note "${ props.note.title }"`)
 	const noteLinks = computed(() => linksStore._findLinksByNoteIdsV2({ noteIds: [ props.note.id ] }))
 	const isNoteBeingEdited = computed(() => notesStore.state.editNoteId === props.note.id)

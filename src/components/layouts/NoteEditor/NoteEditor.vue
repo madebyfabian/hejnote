@@ -79,7 +79,7 @@
 		} })
 	})
 	const isLocked = computed(() => note.is_locked)
-	const noteContentIsEmpty = computed(() => notesStore.checkIfNoteContentIsCompletelyEmpty({ noteContent: note.content }))
+	const noteContentIsEmpty = computed(() => notesStore.isNoteContentEmpty({ noteContent: note.content }))
 
 	// Setup note links
 	const noteLinks = computed(() => linksStore._findLinksByNoteIdsV2({ noteIds: [ note.id ] }))
@@ -135,7 +135,7 @@
 
 	const prepareEditorClose = () => {
 		// Check if note is completely empty. If so, delete it.
-		const isEmpty = notesStore.checkIfNoteIsCompletelyEmpty({ note })
+		const isEmpty = notesStore.isNoteObjEmpty({ note })
 		if (isEmpty)
 			notesStore.notesDelete({ noteIds: [ note.id ], notifyUser: false })
 		else
@@ -202,7 +202,7 @@
 
 	const handleActionBarUpdatedNote = newVal => {
 		// If note is being moved in trash, close the editor and update the note in real store state.
-		const noteIsEmpty = notesStore.checkIfNoteIsCompletelyEmpty({ note })
+		const noteIsEmpty = notesStore.isNoteObjEmpty({ note })
 
 		if (newVal.deleted_at !== undefined) {
 			if (!noteIsEmpty)
