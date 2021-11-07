@@ -45,7 +45,7 @@
         word-break: break-word;
 
 				p.is-editor-empty:first-child::before {
-					@apply float-left text-gray-500 pointer-events-none h-0;
+					@apply float-left text-gray-600 pointer-events-none h-0;
 					content: attr(data-placeholder);
 				}
       }
