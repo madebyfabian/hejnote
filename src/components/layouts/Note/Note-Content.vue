@@ -82,9 +82,21 @@
 				}
 
 				&[data-type="taskList"] {
-					li {
-						@apply flex relative transition-colors duration-100 line-through;
+					li, 
+					li * {
 						text-decoration-color: transparent;
+					}
+
+					li[data-checked="true"],
+					li[data-checked="true"] * {
+						text-decoration-color: theme('colors.gray.500');
+					}
+
+					li {
+						@apply transition-colors duration-100;
+						@apply flex relative;
+
+						text-decoration-line: line-through;
 
 						/* after/before is for displaying the checkbox, label is the action in the edit-mode. */
 						&::after, &::before, > label {
@@ -108,7 +120,6 @@
 
 						&[data-checked="true"] {
 							@apply text-gray-500;
-							text-decoration-color: theme('colors.gray.500');
 
 							&::after { @apply checkbox-checked; }
 							&::before { @apply checkbox-checked-icon; }
@@ -136,16 +147,15 @@
       }
 
 			a {
-				@apply break-all underline;
+				@apply break-all underline border-b border-gray-400 border-opacity-50;
 			}
 
 			&.isReadonly a {
-				@apply inline-flex items-center overflow-hidden;
-				display: -webkit-inline-box;
-				-webkit-box-orient: vertical;
-				-webkit-line-clamp: 1;
-				margin-bottom: -5px; /* hacky, but because of -webkit-inline-box */
+				@apply inline-block text-overflow-ellipsis;
+				
+				margin-bottom: -3px; /* hacky, but because of inline-block */
 				max-width: 160px;
+				line-height: normal;
 			}
 
 			p {
