@@ -23,7 +23,7 @@
 		<!-- Content -->
 		<div 
 			v-if="note.title || !noteContentIsEmpty" 
-			class="flex flex-col gap-2">
+			class="flex flex-col gap-2 z-10">
 			
 			<h3 v-if="note.title" @click="handleNoteEdit" v-text="note.title" />
 
@@ -35,6 +35,7 @@
 		<!-- ActionBar -->
 		<div 
 			ref="noteActionBarEl" 
+			class="z-10"
 			:class="noteContentIsEmpty ? 'order-3' : 'order-2'">
 
 			<Note-ActionBar
