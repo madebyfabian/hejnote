@@ -2,30 +2,32 @@
 	<Header isMinimal />
 
 	<div class="container">
-		<div class="mx-auto max-w-sm mt-16 rounded-2xl bg-gray-800 p-8 flex flex-col gap-8">
-			<div class="text-center">
-				<h1 class="mb-1">Welcome back 👋🏻</h1>
-				<p>We love to have you here!</p>
+		<div class="mx-auto max-w-sm mt-16 rounded-2xl bg-gray-900 divide-y-4 divide-gray-1000">
+			<div class="flex flex-col gap-8 p-8">
+				<div class="text-center">
+					<h1 class="mb-1">Welcome back 👋🏻</h1>
+					<p>We love to have you here!</p>
+				</div>
+
+				<div v-if="errorMsg" class="text-red-300 text-center font-bold">{{ errorMsg }}</div>
+
+				<form @submit.prevent="doAuthenticate">
+					<TextInput v-model="formData.email" :inputProps="{ type: 'email', placeholder: 'hej@your.email', required: true }" class="mb-4" />
+					<TextInput v-model="formData.password" :inputProps="{ type: 'password', placeholder: 'Your Secret (Password)', required: true }" class="mb-6" />
+
+					<Button isFullWidth type="submit">
+						<span>🚀</span>
+						Sign in
+					</Button>
+				</form>
 			</div>
 
-			<div v-if="errorMsg" class="text-red-300 text-center font-bold">{{ errorMsg }}</div>
-
-			<form @submit.prevent="doAuthenticate">
-				<TextInput v-model="formData.email" :inputProps="{ type: 'email', placeholder: 'hej@your.email', required: true }" class="mb-4" />
-				<TextInput v-model="formData.password" :inputProps="{ type: 'password', placeholder: 'Your Secret (Password)', required: true }" class="mb-6" />
-
-				<Button isFullWidth type="submit">
-					<span>🚀</span>
-					Sign in
+			<div class="p-8">
+				<Button buttonType="secondary" isFullWidth type="submit" @click="() => doAuthenticate({ provider: 'github' })">
+					<IconGitHub />
+					Sign in with GitHub
 				</Button>
-			</form>
-
-			<div class="h-1 bg-gray-1000 -mx-8" aria-hidden="true" />
-
-			<Button buttonType="secondary" isFullWidth type="submit" @click="() => doAuthenticate({ provider: 'github' })">
-				<IconGitHub />
-				Sign in with GitHub
-			</Button>
+			</div>
 		</div>
 	</div>
 </template>
