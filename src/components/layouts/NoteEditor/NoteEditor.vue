@@ -7,7 +7,7 @@
 				v-model="note.title" type="text" placeholder="New note" :disabled="isLocked"
 				class="p-5 pr-20 pb-2 text-150 text-gray-300 font-semibold bg-transparent w-full placeholder-gray-500 outline-none ring-0"
 			/>
-
+			
 			<Note-Content v-if="!noteContentIsEmpty || !isLocked && noteContentIsEmpty" :noteContent="isLocked ? note.content : undefined" isInEditMode class="flex-1">
 				<RichtextEditor v-model="note.content" />
 			</Note-Content>
@@ -75,7 +75,8 @@
 	const note = reactive({ 
 		...notesStore.getNoteDefaultDataObject({ note: {
 			...props.note,
-			is_archived: props.note?.is_archived || route?.name === 'App-Archive' || false
+			is_archived: props.note?.is_archived || route?.name === 'App-Archive' || false,
+			collection_id: props.note?.collection_id || route?.params?.collectionId || null,
 		} })
 	})
 	const isLocked = computed(() => note.is_locked)
@@ -93,7 +94,6 @@
 		const data = await notesStore.notesUpsertSingle({ 
 			note, 
 			forceEvenWithoutChanges, 
-			collectionId: route?.params?.collectionId, 
 			updateState
 		})
 		if (!note?.id && data?.id)
