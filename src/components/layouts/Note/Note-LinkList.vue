@@ -4,11 +4,14 @@
 			@truncatedChange="newVal => isTruncated = newVal"
 			:items="noteLinks" 
 			:disableTruncation="!isReadonly"
-			v-bind="{ isTruncated }"
-			class="Note-LinkList overflow-hidden divide-y-2 bg-gray-800 divide-gray-900"
+			v-bind="{ isTruncated, truncateAmount }"
+			class="Note-LinkList overflow-hidden divide-y divide-gray-800"
 			:class="{
+				'border border-gray-800': isInEditMode,
+				'bg-gray-1000': !isInEditMode,
+				'border-b border-gray-800': willTruncateLinks,
+				'mb-3': willTruncateLinks && !isInEditMode,
 				'rounded-xl': !displayAsLinkOnly,
-				isReadonly,
 			}"
 			wrapperIs="ul"
 			itemIs="li">
@@ -27,7 +30,7 @@
 			</Button>
 
 			<template #expandButton="{ overflowAmount }">
-				<Button is="div" buttonType="tertiary" isFullWidth customRoundedBorderClass="rounded-b-xl" :isDropdownOpened="!isTruncated">
+				<Button is="div" buttonType="tertiary" isFullWidth :customRoudedBorderClass="isInEditMode ? 'rounded-b-xl' : 'rounded-none'" :isDropdownOpened="!isTruncated">
 					{{ isTruncated ? 'Show' : 'Hide last' }}
 					{{ overflowAmount }}
 					{{ isTruncated ? 'more' : '' }} 
@@ -65,11 +68,13 @@
 		link: undefined,
 	})
 
-	const noteLinks = computed(() => linksStore._findLinksByNoteIdsV2({ noteIds: [ props.noteId ] }))
-
 	const isTruncated = ref(true)
 	const createLinkModalIsOpened = ref(false)
+	const truncateAmount = ref(3)
 
+	const noteLinks = computed(() => linksStore._findLinksByNoteIdsV2({ noteIds: [ props.noteId ] }))
+	const willTruncateLinks = computed(() => noteLinks.value.length > truncateAmount.value)
+	
 	watch(() => props.startWithNewLink, async newVal => {
 		if (!newVal)
 			return

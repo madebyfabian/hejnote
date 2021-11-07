@@ -1,7 +1,7 @@
 <template>
 	<div 
 		class="Note-LinkList-Item flex items-center group w-full gap-3"
-		:class="displayAsLinkOnly ? 'p-4' : 'p-3'">
+		:class="displayAsLinkOnly ? 'px-4 py-3' : 'p-3'">
 
 		<!-- Image -->
 		<div class="relative block rounded-lg overflow-hidden w-10 h-10 self-start">

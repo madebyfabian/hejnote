@@ -7,41 +7,54 @@
 		@mouseenter="handleFocusIn"
 		@mouseleave="handleFocusOut"
 		:aria-label="noteTitleLabel"
-		class="Note relative bg-gray-900 border border-gray-800 rounded-2xl p-4 cursor-default transition duration-225 mb-4 desktop:mb-6 overflow-hidden"
-		:class="{ 
-			'blur-md': isNoteBeingEdited,
-		}"
+		class="
+			Note relative rounded-2xl cursor-default transition duration-225 overflow-hidden
+			border border-gray-800 
+			p-4 mb-4 desktop:mb-6
+			flex flex-col gap-4
+		"
+		:class="[
+			isNoteBeingEdited ? 'blur-md': '',
+			noteContentIsEmpty ? 'bg-gray-1000': 'bg-gray-900',
+		]"
 		tabindex="0" 
 		ref="noteEl">
-		
-		<h3 
-			v-if="note.title" 
-			v-text="note.title" 
-			@click="handleNoteEdit"
-			class="mb-2"
-		/>
 
-		<div v-if="!noteContentIsEmpty" class="Note-contentWrap">
-			<Note-Content :noteContent="note.content" />
-		</div>
-
+		<!-- Content -->
 		<div 
-			v-if="noteLinks.length" 
-			ref="noteLinkListEl" 
-			:class="isLinkOnlyMode ? '-mx-4 -mt-4 mb-2' : '-mx-1 mt-2 mb-2'">
+			v-if="note.title || !noteContentIsEmpty" 
+			class="flex flex-col gap-2">
+			
+			<h3 v-if="note.title" @click="handleNoteEdit" v-text="note.title" />
 
-			<Note-LinkList 
-				:noteId="note.id" 
-				:displayAsLinkOnly="isLinkOnlyMode"
-				isReadonly 
-			/>
+			<div v-if="!noteContentIsEmpty" class="Note-contentWrap">
+				<Note-Content :noteContent="note.content" />
+			</div>
 		</div>
 
-		<div ref="noteActionBarEl">
+		<!-- ActionBar -->
+		<div 
+			ref="noteActionBarEl" 
+			:class="noteContentIsEmpty ? 'order-3' : 'order-2'">
+
 			<Note-ActionBar
 				:note="note" 
 				:displayButtons="displayActionBar"
 				@changedOpenState="newVal => actionBarContextMenuOpened = newVal" 
+			/>
+		</div>
+
+		<!-- LinkList -->
+		<div 
+			v-if="noteLinks.length" 
+			ref="noteLinkListEl"
+			:class="noteContentIsEmpty ? 'order-2 -my-3' : 'order-3 -mb-4'"
+			class="-mx-4">
+
+			<Note-LinkList 
+				:noteId="note.id" 
+				:displayAsLinkOnly="true"
+				isReadonly 
 			/>
 		</div>		
 	</article>
@@ -50,7 +63,6 @@
 <script setup>
 	import { computed, onBeforeUnmount, ref, watch } from 'vue'
 	import { linksStore, notesStore, collectionsStore } from '@/store'
-	import { noteEditorContentDefault } from '@/utils/constants'
 	import { Button } from '@/components/ui'
 	import { NoteActionBar, NoteLinkList, NoteContent } from '@/components/layouts'
 	
@@ -58,7 +70,7 @@
 		note: { required: true },
 	})
 
-	const noteContentIsEmpty = computed(() => JSON.stringify(noteEditorContentDefault) === JSON.stringify(props.note.content))
+	const noteContentIsEmpty = computed(() => notesStore.checkIfNoteContentIsCompletelyEmpty({ noteContent: props.note?.content }))
 	const noteTitleLabel = computed(() => `Edit note "${ props.note.title }"`)
 	const noteLinks = computed(() => linksStore._findLinksByNoteIdsV2({ noteIds: [ props.note.id ] }))
 	const isNoteBeingEdited = computed(() => notesStore.state.editNoteId === props.note.id)

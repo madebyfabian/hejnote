@@ -1,5 +1,5 @@
 <template>
-	<div class="Note-ActionBar flex items-center gap-2 justify-end pt-2">
+	<div class="Note-ActionBar flex items-center gap-2 justify-end">
 		<div class="flex items-center flex-1 -my-0.5">
 			<Note-ActionBar-Collection v-bind="{ collection, isReadonly: isLocked }" @removeCollection="() => handleRemoveCollection()" />
 		</div>
@@ -90,8 +90,7 @@
 	import { ButtonIconOnly } from '@/components/ui'
 	import { NoteActionBarCollection, ContextMenuCollections } from '@/components/layouts'
 
-	const supabase = useSupabase()
-	const route = useRoute()
+	const emit = defineEmits([ 'updatedNote', 'changedOpenState' ])
 
 	const props = defineProps({
 		note: 								{ required: true },
@@ -106,7 +105,8 @@
 		mode: { type: String, default: 'updateStore', validator: v => ['updateStore', 'emitChanges'].includes(v) },
 	})
 
-	const emit = defineEmits([ 'updatedNote', 'changedOpenState' ])
+	const supabase = useSupabase()
+	const route = useRoute()
 
 	const isEmitChangesMode = computed(() => props.mode === 'emitChanges')
 	const isLocked = computed(() => props.note.is_locked)

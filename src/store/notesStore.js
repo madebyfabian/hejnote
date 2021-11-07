@@ -2,7 +2,6 @@ import { reactive, computed, nextTick } from 'vue'
 import useSnackbar from '@/hooks/useSnackbar'
 import useSupabase from '@/hooks/useSupabase'
 import handleError from '@/utils/handleError'
-import { noteEditorContentDefault } from '@/utils/constants'
 import findIndexById from '@/utils/findIndexById'
 
 import generalStore from '@/store/generalStore'
@@ -35,12 +34,12 @@ export default {
 
 
   /**
-   * Returns a new, empty note object.
+   * @returns {Object} A new, empty note object.
    */
   getNoteDefaultDataObject({ note } = {}) { return {
     id: 				    note?.id || undefined,
 		title: 			    note?.title || '',
-		content: 		    note?.content || noteEditorContentDefault,
+		content: 		    note?.content || this.getNoteDefaultDataContentObject(),
 		is_pinned: 	    note?.is_pinned || false,
 		is_hidden: 	    note?.is_hidden || false,
 		is_archived:    note?.is_archived || false,
@@ -48,6 +47,12 @@ export default {
     collection_id:  note?.collection_id || null,
   }},
 
+  /**
+   * @returns {Object} A new, empty note.content object.
+   */
+  getNoteDefaultDataContentObject() { return {
+    type: 'doc', content: [{ type: 'paragraph' }]
+  }},
 
 	async notesFetch({ fetchHidden = false } = {}) {
     try {
@@ -258,6 +263,10 @@ export default {
       return true
 
     return false
+  },
+
+  checkIfNoteContentIsCompletelyEmpty({ noteContent }) {
+    return JSON.stringify(this.getNoteDefaultDataContentObject()) === JSON.stringify(noteContent)
   },
 
   /**

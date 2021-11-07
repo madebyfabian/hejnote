@@ -8,9 +8,12 @@
 				class="p-5 pr-20 pb-2 text-150 text-gray-300 font-semibold bg-transparent w-full placeholder-gray-500 outline-none ring-0"
 			/>
 
-			<Note-Content :noteContent="isLocked ? note.content : undefined" isInEditMode class="flex-1">
+			<Note-Content v-if="!noteContentIsEmpty || !isLocked && noteContentIsEmpty" :noteContent="isLocked ? note.content : undefined" isInEditMode class="flex-1">
 				<RichtextEditor v-model="note.content" />
 			</Note-Content>
+
+			<!-- No-content placeholder spacing -->
+			<div v-else class="pb-7" />
 
 			<div class="px-5 pb-5" v-if="note.id">
 				<Note-ActionBar
@@ -21,7 +24,7 @@
 				/>
 			</div>
 
-			<div v-if="note.id" class="m-2">
+			<div v-if="note.id && (!isLocked || noteLinks.length)" class="pt-2 px-5 pb-5">
 				<Note-LinkList 
 					:noteId="note.id" 
 					isInEditMode 
@@ -76,6 +79,7 @@
 		} })
 	})
 	const isLocked = computed(() => note.is_locked)
+	const noteContentIsEmpty = computed(() => notesStore.checkIfNoteContentIsCompletelyEmpty({ noteContent: note.content }))
 
 	// Setup note links
 	const noteLinks = computed(() => linksStore._findLinksByNoteIdsV2({ noteIds: [ note.id ] }))
