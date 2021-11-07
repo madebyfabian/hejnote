@@ -6,7 +6,7 @@
 		<!-- Image -->
 		<div class="relative block rounded-lg overflow-hidden w-10 h-10 self-start">
 			<div
-				class="bg-gray-600 w-full h-full bg-cover bg-center flex-shrink-0 flex items-center justify-center text-gray-500"
+				class="bg-gray-800 w-full h-full bg-cover bg-center flex-shrink-0 flex items-center justify-center text-gray-500"
 				:style="generateBannerStyle(link?.banner_url)">
 
 				<IconGlobe v-if="!link?.banner_url" />
