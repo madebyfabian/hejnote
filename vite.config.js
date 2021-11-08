@@ -29,8 +29,8 @@ export default defineConfig({
       manifest: {
         name: 'hejnote',
         description: 'hejnote',
-        theme_color: '#0A0E1A',
-        background_color: '#0A0E1A',
+        //theme_color: '#0A0E1A',
+       // background_color: '#0A0E1A',
         start_url: '/app',
         icons: [
           {
