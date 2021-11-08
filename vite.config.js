@@ -24,13 +24,12 @@ export default defineConfig({
     }),
     VitePWA({
       includeAssets: [ 
-        'favicons/favicon.svg', 'favicon.ico', 'robots.txt', 'favicons/apple-touch-icon.png' 
+        'favicons/favicon.svg', 'favicon.ico', 'robots.txt', 'favicons/apple-touch-icon.png', 'images/splash.png'
       ],  
       manifest: {
         name: 'hejnote',
         description: 'hejnote',
-        //theme_color: '#0A0E1A',
-       // background_color: '#0A0E1A',
+        theme_color: '#0A0E1A',
         start_url: '/app',
         icons: [
           {
