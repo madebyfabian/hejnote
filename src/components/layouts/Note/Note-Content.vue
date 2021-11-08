@@ -147,7 +147,7 @@
       }
 
 			a {
-				@apply break-all underline border-b border-gray-400 border-opacity-50;
+				@apply break-all border-b border-gray-400 border-opacity-50;
 			}
 
 			&.isReadonly a {
