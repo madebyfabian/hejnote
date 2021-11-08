@@ -5,7 +5,7 @@
 		</span>
 
 		<!-- Exeption: I didn't used <Button> here, but it's okay -->
-		<button v-if="!isReadonly" class="Note-ActionBar-Collection-badgeButton" @click="emit('removeCollection')">
+		<button v-if="!isReadonly" class="Note-ActionBar-Collection-badgeButton" @click.stop="emit('removeCollection')">
 			<span class="relative">
 				<IconClose />
 			</span>

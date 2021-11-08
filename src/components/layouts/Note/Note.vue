@@ -34,7 +34,6 @@
 
 		<!-- ActionBar -->
 		<div 
-			ref="noteActionBarEl" 
 			class="z-10"
 			:class="noteContentIsEmpty ? 'order-3' : 'order-2'">
 
@@ -48,7 +47,6 @@
 		<!-- LinkList -->
 		<div 
 			v-if="noteLinks.length" 
-			ref="noteLinkListEl"
 			:class="noteContentIsEmpty ? 'order-2 -my-3' : 'order-3 -mb-4'"
 			class="-mx-4 relative">
 
@@ -66,8 +64,8 @@
 </template>
 
 <script setup>
-	import { computed, onBeforeUnmount, ref, watch } from 'vue'
-	import { linksStore, notesStore, collectionsStore } from '@/store'
+	import { computed, ref } from 'vue'
+	import { linksStore, notesStore } from '@/store'
 	import { Button } from '@/components/ui'
 	import { NoteActionBar, NoteLinkList, NoteContent } from '@/components/layouts'
 	
@@ -79,20 +77,17 @@
 	const noteTitleLabel = computed(() => `Edit note "${ props.note.title }"`)
 	const noteLinks = computed(() => linksStore._findLinksByNoteIdsV2({ noteIds: [ props.note.id ] }))
 	const isNoteBeingEdited = computed(() => notesStore.state.editNoteId === props.note.id)
-	const collection = computed(() => collectionsStore.collectionFindById({ collectionId: props.note.collection_id }))
-	const isLinkOnlyMode = computed(() => !!(!props.note?.title?.length && noteContentIsEmpty.value && noteLinks.value?.length))
-	const noteActionBarEl = ref(null),
-				noteLinkListEl = ref(null),
-				actionBarContextMenuOpened = ref(false),
-				displayActionBar = ref(false),
-				noteEl = ref(null)
 
+	const noteEl = ref(null)
+
+	const	actionBarContextMenuOpened = ref(false),
+				displayActionBar = ref(false)
+				
 	const handleNoteEdit = e => {
-		const clickedActionBar = e.composedPath().includes(noteActionBarEl?.value),
-					selectedSomething = window.getSelection().type === 'Range',
+		const selectedSomething = window.getSelection().type === 'Range',
 					clickedLink = e.target.tagName === 'A'
 
-		if (clickedActionBar || selectedSomething || clickedLink)
+		if (selectedSomething || clickedLink)
 			return 
 
 		notesStore.toggleNoteEditor({ editNoteId: props.note.id, isVisible: true })

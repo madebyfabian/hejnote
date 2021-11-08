@@ -16,7 +16,7 @@
 			<template v-if="!note.deleted_at">
 				<!-- Lock: Inside Editor Only -->
 				<template v-if="isInEditMode || (!isInEditMode && isLocked)">
-					<ButtonIconOnly isInline :icon="isLocked ? IconLockSolid : IconLock" @click="handleNoteLockAction">
+					<ButtonIconOnly isInline :icon="isLocked ? IconLockSolid : IconLock" @click.stop="handleNoteLockAction">
 						Note is {{ isLocked ? 'locked' : 'unlocked' }}. Click to {{ isLocked ? 'unlock' : 'lock' }}
 					</ButtonIconOnly>
 
@@ -40,33 +40,33 @@
 					</ContextMenuCollections>
 
 					<!-- Hide -->
-					<ButtonIconOnly isInline :icon="note.is_hidden ? IconEyeOffSolid : IconEyeOff" @click="handleNoteHideAction" :isDisabled="isLocked">
+					<ButtonIconOnly isInline :icon="note.is_hidden ? IconEyeOffSolid : IconEyeOff" @click.stop="handleNoteHideAction" :isDisabled="isLocked">
 						Note is {{ note.is_hidden ? 'hidden' : 'visible' }}. Click to {{ note.is_hidden ? 'unhide' : 'hide' }}.
 					</ButtonIconOnly>
 
 					<!-- Pin -->
-					<ButtonIconOnly v-if="!isCurrentlyInArchiveRoute" isInline :icon="note.is_pinned ? IconPinSolid : IconPin" @click="handleNotePinAction" :isDisabled="isLocked">
+					<ButtonIconOnly v-if="!isCurrentlyInArchiveRoute" isInline :icon="note.is_pinned ? IconPinSolid : IconPin" @click.stop="handleNotePinAction" :isDisabled="isLocked">
 						Note is {{ note.is_pinned ? 'pinned' : 'not pinned' }}. Click to {{ note.is_pinned ? 'unpin' : 'pin' }}.
 					</ButtonIconOnly>
 
 					<!-- Archive -->
-					<ButtonIconOnly isInline :icon="note.is_archived ? IconArchiveUndo : IconArchive" @click="handleNoteArchiveAction" :isDisabled="isLocked">
+					<ButtonIconOnly isInline :icon="note.is_archived ? IconArchiveUndo : IconArchive" @click.stop="handleNoteArchiveAction" :isDisabled="isLocked">
 						Note is {{ note.is_archived ? 'archived' : 'not archived' }}. Click to {{ note.is_archived ? 'unarchive' : 'archive' }}.
 					</ButtonIconOnly>
 
 					<!-- Trash -->
-					<ButtonIconOnly isInline :icon="IconTrash" @click="handleNoteMoveToDeleted" :isDisabled="isLocked">
+					<ButtonIconOnly isInline :icon="IconTrash" @click.stop="handleNoteMoveToDeleted" :isDisabled="isLocked">
 						Click to move note to trash.
 					</ButtonIconOnly>
 				</template>
 			</template>
 			
 			<template v-else>
-				<ButtonIconOnly isInline :icon="IconTrashUndo" @click="handleNoteMoveOutOfDeleted">
+				<ButtonIconOnly isInline :icon="IconTrashUndo" @click.stop="handleNoteMoveOutOfDeleted">
 					Click to undo deletion
 				</ButtonIconOnly>
 
-				<ButtonIconOnly isInline :icon="IconTrashDelete" @click="handleNoteFullyDelete">
+				<ButtonIconOnly isInline :icon="IconTrashDelete" @click.stop="handleNoteFullyDelete">
 					Click to permanently delete note from trash
 				</ButtonIconOnly>
 			</template>
