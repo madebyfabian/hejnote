@@ -5,7 +5,7 @@ import BulletList from '@tiptap/extension-bullet-list'
 import OrderedList from '@tiptap/extension-ordered-list'
 import Placeholder from '@tiptap/extension-placeholder'
 import TaskList from '@tiptap/extension-task-list'
-import TaskItem from '@tiptap/extension-task-item'
+import { TaskItem } from '@/plugins/tiptap-extension-task-item.ts'
 import Link from '@tiptap/extension-link'
 import FloatingMenu from '@tiptap/extension-floating-menu'
 
