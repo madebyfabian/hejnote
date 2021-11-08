@@ -48,26 +48,31 @@
 				desktop:group-hover:opacity-100 
 				desktop:group-focus-within:opacity-100">
 
-			<AppLink v-bind="{ to: props.link.url, title: props.link.title, target: '_blank' }">
-				<ButtonIconOnly is="div" isInline :icon="IconLinkExternal">
-					Test
-				</ButtonIconOnly>
-			</AppLink>
+			<ButtonIconOnly v-if="isReadonly" isInline :icon="copyIcon" @click.stop="handleCopyLink">
+				Copy link <span v-if="link.title">"{{ link.title }}"</span>
+			</ButtonIconOnly>
 			
-			<ButtonIconOnly v-if="!isReadonly" isInline :icon="IconTrashDelete" @click="$emit('handleLinkDelete', { url: link.url })">
+			<ButtonIconOnly v-if="!isReadonly" isInline :icon="IconTrashDelete" @click.stop="$emit('handleLinkDelete', { url: link.url })">
 				Delete link <span v-if="link.title">"{{ link.title }}"</span>
 			</ButtonIconOnly>
+
+			<AppLink v-bind="{ to: props.link.url, title: props.link.title, target: '_blank' }" @click.stop="() => {}">
+				<ButtonIconOnly is="div" isInline :icon="IconLinkExternal">
+					Open "{{ props.link.url }}"
+				</ButtonIconOnly>
+			</AppLink>
 		</div>
 	</div>
 </template>
 
 <script setup>
-	import { computed } from 'vue'
+	import { computed, ref } from 'vue'
 	import { joinNotesLinksStore } from '@/store'
 	import { HostnameLabel, Button, ButtonIconOnly, AppLink } from '@/components/ui'
-	import { IconGlobe, IconLinkExternal, IconTrashDelete } from '@/assets/icons'
+	import { IconGlobe, IconLinkExternal, IconTrashDelete, IconCopy, IconCheck, IconMore } from '@/assets/icons'
+	import handleError from '@/utils/handleError'
 
-	defineEmits([ 'handleLinkDelete', 'handleKeepLinkAfterDeletingFromNote' ])
+	const emit = defineEmits([ 'handleLinkDelete', 'handleKeepLinkAfterDeletingFromNote' ])
 
 	const props = defineProps({
 		// Used together with parent.
@@ -83,6 +88,21 @@
 		const noteJoinLinks = joinNotesLinksStore.findJoinNotesLinksByNoteIds({ noteIds: [ props.noteId ] })
 		return noteJoinLinks.find(join => join.link_id === props.link?.id)
 	})
+
+	const copyIcon = ref(IconCopy)
+
+	const handleCopyLink = async () => {
+		try {
+			await navigator.clipboard.writeText(props.link.url)
+			copyIcon.value = IconCheck
+			setTimeout(() => {
+				copyIcon.value = IconCopy
+			}, 1500)
+
+		} catch (error) {
+			handleError(new Error('Error while trying to copy to clipboard.'))
+		}
+	}
 
 	const generateBannerStyle = ( banner_url ) => {
 		return banner_url ? `background-image: url('${ banner_url }')` : undefined
