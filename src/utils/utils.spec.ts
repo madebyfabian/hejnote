@@ -23,8 +23,7 @@ describe('"isImageValid": Check if image url loads and therefore is valid', () =
 
   it('Should return true with a valid image url that can be resolved', async () => {
     const results = await Promise.all([
-      await isImageValid({ url: 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_92x30dp.png' }),
-      await isImageValid({ url: 'https://supabase.io/new/brand-assets/supabase-logo-wordmark--dark.svg' }),
+      await isImageValid({ url: 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_92x30dp.png' })
     ])
 
     results.forEach(result => expect(result).to.equal(true))
