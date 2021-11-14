@@ -9,8 +9,8 @@
 			:class="{
 				'border border-gray-800': isInEditMode,
 				'bg-gray-1000': !isInEditMode,
-				'border-b border-gray-800': willTruncateLinks,
-				'mb-3': willTruncateLinks && !isInEditMode,
+				'desktop:border-b desktop:border-gray-800': willTruncateLinks,
+				'desktop:mb-3': willTruncateLinks && !isInEditMode,
 				'rounded-xl': !displayAsLinkOnly,
 			}"
 			wrapperIs="ul"

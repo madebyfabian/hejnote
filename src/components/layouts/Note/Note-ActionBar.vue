@@ -1,5 +1,5 @@
 <template>
-	<div class="Note-ActionBar flex items-center gap-2 justify-end">
+	<div v-if="!isMobileDevice || collection" class="Note-ActionBar flex items-center gap-2 justify-end">
 		<div class="flex items-center flex-1 -my-0.5">
 			<Note-ActionBar-Collection v-bind="{ collection, isReadonly: isLocked }" @removeCollection="() => handleRemoveCollection()" />
 		</div>
@@ -80,6 +80,7 @@
 	import { notesStore, collectionsStore } from '@/store' 
 	import useSupabase from '@/hooks/useSupabase'
 	import { useRoute } from 'vue-router'
+	import useIsMobileDevice from '@/hooks/useIsMobileDevice'
 	import { 
 		IconEyeOff, IconEyeOffSolid, IconPin, IconPinSolid, 
 		IconTrash, IconTrashDelete, IconTrashUndo, IconArchive, IconArchiveUndo,
@@ -107,6 +108,7 @@
 
 	const supabase = useSupabase()
 	const route = useRoute()
+	const isMobileDevice = useIsMobileDevice()
 
 	const isEmitChangesMode = computed(() => props.mode === 'emitChanges')
 	const isLocked = computed(() => props.note.is_locked)

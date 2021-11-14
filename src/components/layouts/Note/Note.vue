@@ -33,21 +33,18 @@
 		</div>
 
 		<!-- ActionBar -->
-		<div 
+		<Note-ActionBar
+			:note="note" 
+			:displayButtons="displayActionBar"
+			@changedOpenState="newVal => actionBarContextMenuOpened = newVal" 
 			class="z-10"
-			:class="noteContentIsEmpty ? 'order-3' : 'order-2'">
-
-			<Note-ActionBar
-				:note="note" 
-				:displayButtons="displayActionBar"
-				@changedOpenState="newVal => actionBarContextMenuOpened = newVal" 
-			/>
-		</div>
+			:class="noteContentIsEmpty ? 'order-3' : 'order-2'"
+		/>
 
 		<!-- LinkList -->
 		<div 
 			v-if="noteLinks.length" 
-			:class="noteContentIsEmpty ? 'order-2 -my-3' : 'order-3 -mb-4'"
+			:class="noteContentIsEmpty ? 'order-2 -my-4 desktop:-my-3' : 'order-3 -mb-4'"
 			class="-mx-4 relative">
 
 			<span v-if="!noteContentIsEmpty" aria-hidden="true" class="h-4 w-full absolute left-0 -top-4 bg-gray-1000 pointer-events-none">
