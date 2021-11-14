@@ -4,13 +4,19 @@
 		:class="displayAsLinkOnly ? 'px-4 py-3' : 'p-3'">
 
 		<!-- Image -->
-		<div class="relative block rounded-lg overflow-hidden w-10 h-10 self-start">
-			<div
-				class="bg-gray-800 w-full h-full bg-cover bg-center flex-shrink-0 flex items-center justify-center text-gray-500"
-				:style="generateBannerStyle(link?.banner_url)">
+		<div class="
+			relative rounded-lg overflow-hidden w-10 h-10 self-start bg-gray-800 text-gray-500 flex-shrink-0 
+			flex items-center justify-center" 
+			aria-hidden="true">
 
-				<IconGlobe v-if="!link?.banner_url" />
-			</div>
+			<img 
+				v-if="displayLinkImage" 
+				:src="link.banner_url" 
+				@error="handleImageLoadingError"
+				class="w-full h-full object-cover object-center"
+			/>
+
+			<IconGlobe v-else />
 		</div>
 
 		<!-- Content -->
@@ -67,7 +73,7 @@
 
 <script setup>
 	import { computed, ref } from 'vue'
-	import { joinNotesLinksStore } from '@/store'
+	import { joinNotesLinksStore, linksStore } from '@/store'
 	import { HostnameLabel, Button, ButtonIconOnly, AppLink } from '@/components/ui'
 	import { IconGlobe, IconLinkExternal, IconTrashDelete, IconCopy, IconCheck, IconMore } from '@/assets/icons'
 	import handleError from '@/utils/handleError'
@@ -90,6 +96,11 @@
 	})
 
 	const copyIcon = ref(IconCopy)
+	const displayLinkImage = ref(props.link?.banner_url)
+
+	const handleImageLoadingError = () => {
+		displayLinkImage.value = false
+	}
 
 	const handleCopyLink = async () => {
 		try {
@@ -102,9 +113,5 @@
 		} catch (error) {
 			handleError(new Error('Error while trying to copy to clipboard.'))
 		}
-	}
-
-	const generateBannerStyle = ( banner_url ) => {
-		return banner_url ? `background-image: url('${ banner_url }')` : undefined
 	}
 </script>
