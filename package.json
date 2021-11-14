@@ -42,7 +42,7 @@
     "@vitejs/plugin-vue": "^1.6.0",
     "@vue/compiler-sfc": "^3.2.18",
     "autoprefixer": "^10.3.3",
-    "cypress": "~8.5",
+    "cypress": "^9.0.0",
     "postcss-nested": "^5.0.6",
     "postcss-nested-ancestors": "^2.0.0",
     "tailwindcss": "^2.2.15",
