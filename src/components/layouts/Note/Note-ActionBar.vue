@@ -1,5 +1,5 @@
 <template>
-	<div v-if="!isMobileDevice || collection" class="Note-ActionBar flex items-center gap-2 justify-end">
+	<div v-if="showActionBar" class="Note-ActionBar flex items-center gap-2 justify-end">
 		<div class="flex items-center flex-1 -my-0.5">
 			<Note-ActionBar-Collection v-bind="{ collection, isReadonly: isLocked }" @removeCollection="() => handleRemoveCollection()" />
 		</div>
@@ -114,6 +114,7 @@
 	const isLocked = computed(() => props.note.is_locked)
 	const collection = computed(() => collectionsStore.collectionFindById({ collectionId: props.note.collection_id }))
 	const isCurrentlyInArchiveRoute = computed(() => route.name === 'App-Archive')
+	const showActionBar = computed(() => collection.value || (isMobileDevice.value && props.isInEditMode) || !isMobileDevice.value)
 
 
 	/** Actions */
