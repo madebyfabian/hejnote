@@ -18,15 +18,17 @@ describe('"isImageValid": Check if image url loads and therefore is valid', () =
       await isImageValid({ url: 'https://' }),
     ])
 
-    results.forEach(result => expect(result).to.equal(false))
+    results.forEach(result => expect(result).to.deep.equal({ validatedUrl: false }))
   })
 
-  it('Should return true with a valid image url that can be resolved', async () => {
-    const results = await Promise.all([
-      await isImageValid({ url: 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_92x30dp.png' })
-    ])
+  it('Should return false with a valid image url, but which only works in unsafe http, not https', async () => {
+    const result = await isImageValid({ url: 'http://unsafe-http-test.immowelt.design/test_img.png' })
+    expect(result).to.deep.equal({ validatedUrl: false })
+  })
 
-    results.forEach(result => expect(result).to.equal(true))
+  it('Should return string with a valid image url, but upgrades it to https', async () => {
+    const result = await isImageValid({ url: 'http://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_92x30dp.png' })
+    expect(result).to.deep.equal({ validatedUrl: 'https://www.google.com/images/branding/googlelogo/2x/googlelogo_light_color_92x30dp.png' })
   })
 })
 

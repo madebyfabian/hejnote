@@ -65,7 +65,11 @@ export default {
           // Link does not exist in store, so fetch metadata.
           const metadata = await fetchUrlMetadata({ url: linkObj.url })
           preparedLinkObj.title = metadata?.title || null
-          preparedLinkObj.banner_url = (await isImageValid({ url: metadata?.banner })) ? metadata.banner : null
+
+          // Check if the link is an image and get validated url
+          const { validatedUrl } = await isImageValid({ url: metadata?.banner })
+          preparedLinkObj.banner_url = validatedUrl || null
+          
         } else {
           preparedLinkObj.id = existingLink.id
         }
