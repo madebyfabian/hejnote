@@ -29,7 +29,7 @@
 </template>
 
 <script setup>
-	import { computed } from 'vue'
+	import { computed, ref, watch } from 'vue'
 	import { useRoute, useRouter } from 'vue-router'
 	import { TextInput, Button } from '@/components/ui'
 	import { IconSearch } from '@/assets/icons'
@@ -37,9 +37,10 @@
 	const route = useRoute(),
 				router = useRouter()
 
-	const searchNotesString = computed({
-		get() 			{ return route.query?.q || '' },
-		set(newVal)	{ router.replace({ query: { q: newVal } }) }
+	const searchNotesString = ref(route.query?.q || '')
+
+	watch(searchNotesString, newVal => {
+		router.replace({ query: { q: newVal } })
 	})
 
 	const doAutofocus = el => {
