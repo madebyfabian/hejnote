@@ -5,12 +5,9 @@
 		</div>
 
 		<div 
-			class="Note-ActionBar desktop:flex gap-5 transition-opacity" 
-			:class="{ 
-				'desktop:opacity-0': !displayButtons,
-				'flex': isInEditMode,
-				'hidden': !isInEditMode
-			}"
+			v-if="isLocked || !isMobileDevice || (isMobileDevice && isInEditMode)"
+			class="Note-ActionBar flex gap-5 transition-opacity" 
+			:class="{ 'desktop:opacity-0': !displayButtons }"
 			role="toolbar">
 
 			<template v-if="!note.deleted_at">
@@ -114,7 +111,14 @@
 	const isLocked = computed(() => props.note.is_locked)
 	const collection = computed(() => collectionsStore.collectionFindById({ collectionId: props.note.collection_id }))
 	const isCurrentlyInArchiveRoute = computed(() => route.name === 'App-Archive')
-	const showActionBar = computed(() => collection.value || (isMobileDevice.value && props.isInEditMode) || !isMobileDevice.value)
+	const showActionBar = computed(() => {
+		if (collection.value) return true
+		if (!isMobileDevice.value) return true
+		if (isMobileDevice.value) 
+			if (props.isInEditMode || isLocked.value) return true
+		
+		return false
+	})
 
 
 	/** Actions */
