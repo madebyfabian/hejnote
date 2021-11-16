@@ -32,12 +32,14 @@
 
 		&:not(.isReadonly) {
 			span {
-				--gradient: linear-gradient(to left, transparent 0px, black var(--mask-optical-size));
-				--size: calc(100% + var(--mask-optical-size)) 100%;
-				-webkit-mask-image: var(--gradient);
-				-webkit-mask-size: var(--size);
-				mask-image: var(--gradient);
-				mask-size: var(--size);
+				@screen desktop {
+					--gradient: linear-gradient(to left, transparent 0px, black var(--mask-optical-size));
+					--size: calc(100% + var(--mask-optical-size)) 100%;
+					-webkit-mask-image: var(--gradient);
+					-webkit-mask-size: var(--size);
+					mask-image: var(--gradient);
+					mask-size: var(--size);
+				}
 			}
 
 			&:hover,
@@ -56,7 +58,11 @@
 		}
 
 		&-badgeButton {
-			@apply absolute right-1.5 transition opacity-0 rounded;
+			@apply ml-1;
+
+			@screen desktop {
+				@apply ml-0 absolute right-1.5 transition opacity-0 rounded;
+			}
 		}
 
 		&:hover,

@@ -1,7 +1,13 @@
 <template>
 	<div v-if="showActionBar" class="Note-ActionBar flex items-center gap-2 justify-end">
 		<div class="flex items-center flex-1 -my-0.5">
-			<Note-ActionBar-Collection v-bind="{ collection, isReadonly: isLocked }" @removeCollection="() => handleRemoveCollection()" />
+			<Note-ActionBar-Collection 
+				v-bind="{ 
+					collection, 
+					isReadonly: isLocked || (isMobileDevice && !isInEditMode) 
+				}" 
+				@removeCollection="() => handleRemoveCollection()" 
+			/>
 		</div>
 
 		<div 
