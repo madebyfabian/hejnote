@@ -2,7 +2,7 @@
 	<FloatingMenu 
 		v-if="editor"
 		:editor="editor"
-		class="bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-sm px-2 py-2 rounded-xl flex gap-4">
+		class="bg-gray-800 bg-opacity-50 backdrop-blur-sm px-2 py-2 rounded-xl flex gap-4">
 
 		<ButtonIconOnly :icon="IconListUnordered" isInline @click="() => editor.chain().focus().toggleBulletList().run()" >
 			Unordered List

@@ -1,3 +1,4 @@
+const colors = require('tailwindcss/colors')
 const defaultTheme = require('tailwindcss/defaultTheme')
 const plugin = require('tailwindcss/plugin')
 const lineClampPlugin = require('@tailwindcss/line-clamp')
@@ -26,7 +27,7 @@ const customUtilitiesPlugin = plugin(function ({ addUtilities, theme }) {
      * These styles will then also be used for a component like Checkbox.vue 
      */
     '.checkbox': {
-      border: `${ defaultBorderWidth } solid ${ defaultTheme.colors.gray[600] }`,
+      border: `${ defaultBorderWidth } solid ${ colors.gray[600] }`,
       borderRadius: defaultTheme.borderRadius.DEFAULT,
       height: '1rem',
       width: '1rem',
@@ -39,15 +40,15 @@ const customUtilitiesPlugin = plugin(function ({ addUtilities, theme }) {
       transitionProperty: 'background-color',
 
       '&:hover': {
-        background: defaultTheme.colors.gray[700]
+        background: colors.gray[700]
       }
     },
     '.checkbox-checked': {
-      background: defaultTheme.colors.gray[600],
+      background: colors.gray[600],
       borderColor: 'transparent'
     },
     '.checkbox-checked-icon': {
-      background: defaultTheme.colors.gray[400], // Icon color
+      background: colors.gray[400], // Icon color
       mask: `url('@/assets/icons/special/check.svg') no-repeat center center`,
       '-webkit-mask': `url('@/assets/icons/special/check.svg') no-repeat center center`,
     },
@@ -60,7 +61,7 @@ const customUtilitiesPlugin = plugin(function ({ addUtilities, theme }) {
       height: '0.5rem',
       width: '0.5rem',
       borderRadius: '100%',
-      border: `${ defaultBorderWidth } solid ${ defaultTheme.colors.gray[600] }`,
+      border: `${ defaultBorderWidth } solid ${ colors.gray[600] }`,
     },
 
     '.focus-visible': {
@@ -73,10 +74,7 @@ const customUtilitiesPlugin = plugin(function ({ addUtilities, theme }) {
 
 /** @type {import("@types/tailwindcss/tailwind-config").TailwindConfig } */
 module.exports = {
-  mode: 'jit',
-  purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-
-  darkMode: false,
+  content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
 
   corePlugins: {
     letterSpacing: false,
@@ -133,7 +131,7 @@ module.exports = {
         '70': '70'
       },
       boxShadow: {
-        'border-inset': 'inset 0 0 0 1.5px ' + defaultTheme.colors.gray[700],
+        'border-inset': 'inset 0 0 0 1.5px ' + colors.gray[700],
       },
       maxHeight: {
         'none': 'none',
@@ -164,17 +162,12 @@ module.exports = {
         gray: {
           '750-standaloneBorder': '#2B3645',
           '1000': '#0A0E1A'
-        }
+        },
+        green: colors.emerald, // v2 to v3 upgrade
       },
       opacity: {
         '85': '.85'
       }
-    },
-  },
-
-  variants: {
-    extend: {
-      visibility: [ 'group-hover' ],
     },
   },
 

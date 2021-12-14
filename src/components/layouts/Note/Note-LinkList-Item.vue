@@ -5,7 +5,7 @@
 
 		<!-- Image -->
 		<div class="
-			relative rounded-lg overflow-hidden w-10 h-10 self-start bg-gray-800 text-gray-500 flex-shrink-0 
+			relative rounded-lg overflow-hidden w-10 h-10 self-start bg-gray-800 text-gray-500 shrink-0 
 			flex items-center justify-center" 
 			aria-hidden="true">
 
@@ -40,7 +40,7 @@
 						</Button>
 					</template>
 
-					<span class="flex-shrink-0" v-else>{{ currentLinkJoin?.is_added_from_text ? 'Found in note' : 'Added by you' }}</span>
+					<span class="shrink-0" v-else>{{ currentLinkJoin?.is_added_from_text ? 'Found in note' : 'Added by you' }}</span>
 				</template>
 			</div>
 

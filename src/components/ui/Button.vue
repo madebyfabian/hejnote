@@ -15,7 +15,7 @@
 		class="Button">
 
 		<span 
-			class="transition-opacity inline-flex items-center justify-center gap-2 flex-shrink-0"
+			class="transition-opacity inline-flex items-center justify-center gap-2 shrink-0"
 			:class="isLoading ? 'opacity-0' : 'opacity-100'"
 			:aria-hidden="isLoading ? true : false">
 
@@ -157,7 +157,7 @@
 		}
 
 		&._isIconOnly {
-			@apply flex justify-center items-center flex-shrink-0 text-gray-500; 
+			@apply flex justify-center items-center shrink-0 text-gray-500; 
 
 			@apply h-9 w-9 p-0;
 			&.hasNegativeMargin { @apply -m-2; }

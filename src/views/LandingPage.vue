@@ -17,7 +17,7 @@
 
 					<form @submit.prevent="handleFormSubmit" class="flex gap-3">
 						<TextInput v-model="formData.email" :inputProps="{ type: 'email', placeholder: 'hej@your.email', required: true }" class="rounded-r-none" />
-						<Button type="submit" class="flex-shrink-0">Join the list!</Button>
+						<Button type="submit" class="shrink-0">Join the list!</Button>
 					</form>
 				</div>
 
@@ -111,7 +111,7 @@
 			}
 
 			*:not(input):not(button):hover {
-				@apply transform translate-x-1 -translate-y-2 rotate-1 scale-105;
+				@apply translate-x-1 -translate-y-2 rotate-1 scale-105;
 			}
 		}
 

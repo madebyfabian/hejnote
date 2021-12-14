@@ -1,7 +1,7 @@
 <template>
 	<div class="Avatar" :class="{ isSmall, isActive }" :aria-label="name" role="img">
 		<img v-if="src" :src="src" aria-hidden="true" />
-		<span v-else :class="{ 'transform scale-60 origin-center': isSmall }" v-text="computedNameAbbr" aria-hidden="true" />
+		<span v-else :class="{ 'scale-60 origin-center': isSmall }" v-text="computedNameAbbr" aria-hidden="true" />
 	</div>
 </template>
 
@@ -47,7 +47,7 @@
 <style lang="postcss" scoped>
 	.Avatar {
 		@apply relative h-9 w-9 rounded-full bg-green-900 text-green-400;
-		@apply flex justify-center items-center flex-shrink-0 select-none;
+		@apply flex justify-center items-center shrink-0 select-none;
 		@apply font-bold;
 		@apply transition-shadow;
 
