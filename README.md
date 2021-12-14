@@ -35,6 +35,7 @@ Outside click: https://www.npmjs.com/package/click-outside-vue3
 ## Other notes
 - I didn't used vues syntactic sugar, since it looses types and seems not stable enough. https://github.com/vuejs/rfcs/discussions/369
 - I use `vue-window-size` instead of `@vueuse/core` useWindowSize() because the package does only regiester one event listner, while vueuse registers many (for each usage of the hook 1 listener).
+- The package `body-scroll-lock` is fine, but can't be used in the 4.0.0-beta-0, because it breaks ios safari. It scrolls to the whole top of the page all the time when opening a modal.
 
 
 ## Vue router routes as modals:
