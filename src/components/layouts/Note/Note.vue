@@ -108,8 +108,12 @@
 	.Note-contentWrap {
 		@apply relative overflow-hidden;
 
-		--max-height: 15rem;
+		--max-height: 10rem;
 		max-height: var(--max-height);
+
+		@screen desktop {
+			--max-height: 15rem;
+		}
 
 		--gradient: linear-gradient(to bottom, black calc(var(--max-height) - 2.5rem), transparent var(--max-height));
 		-webkit-mask-image: var(--gradient);
