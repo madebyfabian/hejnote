@@ -86,7 +86,7 @@
 		}
 
 		&-sectionTitle {
-			@apply my-4 mt-8;
+			@apply mt-5 pt-3 pb-4 sticky top-0 z-20 bg-gradient-to-b via-gray-1000 from-gray-1000;
 		}
 	}
 </style>
