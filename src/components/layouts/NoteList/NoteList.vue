@@ -16,12 +16,12 @@
 		</div>
 
 		<template v-if="pinnedNotes.length || otherNotes.length">
-			<section v-if="pinnedNotes.length">
+			<section v-if="pinnedNotes.length" class="first-of-type:mt-4">
 				<h2 class="NoteList-sectionTitle">Pinned</h2>
 				<NoteList-Grid :notes="pinnedNotes" />
 			</section>
 
-			<section v-if="otherNotes.length">
+			<section v-if="otherNotes.length" class="first-of-type:mt-6">
 				<h2 v-if="pinnedNotes.length" class="NoteList-sectionTitle">Others</h2>
 				<NoteList-Grid :notes="otherNotes" />
 			</section>
@@ -78,7 +78,7 @@
 <style lang="postcss" scoped>
 	.NoteList {
 		&-heading {
-			@apply flex items-center justify-between mb-8;
+			@apply flex items-center justify-between;
 
 			:deep(h1) {
 				@apply mr-3;
@@ -86,7 +86,7 @@
 		}
 
 		&-sectionTitle {
-			@apply mt-5 pt-3 pb-5 -mb-1 sticky top-0 z-20 bg-gradient-to-b via-gray-1000 from-gray-1000;
+			@apply mt-2 pt-3 pb-5 -mb-1 sticky top-0 z-20 bg-gradient-to-b via-gray-1000 from-gray-1000;
 			@apply pointer-events-none;
 		}
 	}
