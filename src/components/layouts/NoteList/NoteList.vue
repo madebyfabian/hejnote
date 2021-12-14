@@ -27,7 +27,7 @@
 			</section>
 		</template>	
 
-		<EmptyState v-else class="-mt-5">
+		<EmptyState v-else class="mt-4">
 			<slot name="empty-state">
 				No notes in here.
 			</slot>
