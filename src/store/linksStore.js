@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { reactive, computed } from 'vue'
 import useSupabase from '@/hooks/useSupabase'
 
 import generalStore from '@/store/generalStore'
@@ -8,6 +8,8 @@ import fetchUrlMetadata from '@/utils/fetchUrlMetadata'
 import handleError from '@/utils/handleError'
 
 const supabase = useSupabase()
+
+const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 
 
 export default {
@@ -30,10 +32,11 @@ export default {
     })
   },
 
-  async linksFetch() {
+  async linksFetch({ fetchHidden = false } = {}) {
     const { data, error } = await supabase
       .from('links')
       .select('*')
+      .eq('is_hidden', fetchHidden)
 
     if (error)
       console.error(error)
@@ -50,7 +53,7 @@ export default {
   async linksUpsert({ linkObjArr = [], noteId = null, joinNotesLinksObj = { annotation: null, is_added_from_text: true, is_in_text: false } } = {}) {
     try {
       // Update existing links
-      await this.linksFetch()
+      await this.linksFetch({ fetchHidden: isHiddenMode.value })
 
       // Filter out duplicates from the linkObjArr
       linkObjArr = linkObjArr.filter(( linkObj, key ) => linkObjArr.findIndex(t => (t.url === linkObj.url)) === key)
@@ -59,7 +62,7 @@ export default {
       const preparedLinkData = []
       for (const linkObj of linkObjArr) {
         const existingLink = this.state.links.find(link => link.url === linkObj.url)
-        const preparedLinkObj = { ...linkObj, owner_id: generalStore.state.user.id }
+        const preparedLinkObj = { ...linkObj, owner_id: generalStore.state.user.id, is_hidden: isHiddenMode.value }
 
         if (!existingLink) {
           // Link does not exist in store, so fetch metadata.

@@ -58,7 +58,7 @@
 			notesStore.notesFetch({ fetchHidden: isHiddenMode.value }),
 			joinNotesLinksStore.joinNotesLinksFetch(),
 			collectionsStore.collectionsFetch({ fetchHidden: isHiddenMode.value }),
-			linksStore.linksFetch(),
+			linksStore.linksFetch({ fetchHidden: isHiddenMode.value }),
 		])
 
 		generalStore.updateIsAppLoading(false)

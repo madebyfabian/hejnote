@@ -1,6 +1,6 @@
 import useConfirm from '@/hooks/useConfirm'
 import useSupabase from '@/hooks/useSupabase'
-import { collectionsStore, generalStore, notesStore } from '@/store'
+import { collectionsStore, generalStore, notesStore, linksStore } from '@/store'
 
 export const getRequiredAuthRedirect = ({ user, requiresAuth }) => {
 	if (requiresAuth && !user)
@@ -66,6 +66,7 @@ export default async ( to, from, next ) => {
 	if (fromIsHidden !== toIsHidden) {
 		await notesStore.notesFetch({ fetchHidden: toIsHidden })
 		await collectionsStore.collectionsFetch({ fetchHidden: toIsHidden })
+		await linksStore.linksFetch({ fetchHidden: toIsHidden })
 	}
 
 	_next({ to, next })
