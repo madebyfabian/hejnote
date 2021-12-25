@@ -8,8 +8,8 @@ const app = createApp(App)
 
 // Import router and routes
 import { routes } from '@/routes'
-import { createRouter, createWebHashHistory } from 'vue-router'
-const router = createRouter({ history: createWebHashHistory(), routes })
+import { createRouter, createWebHistory } from 'vue-router'
+const router = createRouter({ history: createWebHistory(), routes })
 
 // Router beforeEach
 import routeBeforeEach from '@/utils/routeBeforeEach'
