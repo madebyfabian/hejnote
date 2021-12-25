@@ -172,13 +172,26 @@ export default {
   async notesUpdateSingleHiddenState({ noteId, is_hidden }) {
     try {
       is_hidden = is_hidden ?? isHiddenMode.value ?? false
-      await this.notesUpsertSingle({ note: { id: noteId, is_hidden } })
+
+      await Promise.all([
+        // First, update note data.
+        this.notesUpsertSingle({ note: { id: noteId, is_hidden } }),
+
+        // Then, update links & joins data.
+        linksStore.linksUpdateHiddenState({ noteId, is_hidden })
+      ])
 
       useSnackbar().createSnackbar({ 
         message: `Moved note ${ is_hidden ? 'to hidden' : 'out of hidden' }.`,
         buttonText: 'Undo',
         onButtonClick: () => {
-          this.notesUpsertSingle({ note: { id: noteId, is_hidden: !is_hidden } })
+          Promise.all([
+            // First, update note data.
+            this.notesUpsertSingle({ note: { id: noteId, is_hidden: !is_hidden } }),
+    
+            // Then, update links & joins data.
+            linksStore.linksUpdateHiddenState({ noteId, is_hidden: !is_hidden })
+          ])
         }
       })
 

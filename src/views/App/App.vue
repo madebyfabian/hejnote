@@ -56,7 +56,7 @@
 		// Load all app data
 		await Promise.all([
 			notesStore.notesFetch({ fetchHidden: isHiddenMode.value }),
-			joinNotesLinksStore.joinNotesLinksFetch(),
+			joinNotesLinksStore.joinNotesLinksFetch({ fetchHidden: isHiddenMode.value }),
 			collectionsStore.collectionsFetch({ fetchHidden: isHiddenMode.value }),
 			linksStore.linksFetch({ fetchHidden: isHiddenMode.value }),
 		])

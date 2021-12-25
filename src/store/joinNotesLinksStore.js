@@ -1,4 +1,4 @@
-import { reactive } from 'vue'
+import { reactive, computed } from 'vue'
 import useSupabase from '@/hooks/useSupabase'
 import useSnackbar from '@/hooks/useSnackbar'
 import handleError from '@/utils/handleError'
@@ -6,6 +6,8 @@ import findIndexById from '@/utils/findIndexById'
 import generalStore from '@/store/generalStore'
 
 const supabase = useSupabase()
+
+const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 
 
 export default {
@@ -22,17 +24,20 @@ export default {
       .from('links')
       .select()
       .in('url', urlArray)
+      .eq('is_hidden', isHiddenMode.value)
 
-    if (error) 
-      throw error
+    if (error) throw error
 
     return data.map(dataItem => dataItem.id)
   },
 
-  async joinNotesLinksFetch() {
-    const { data, error } = await supabase.from('join_notes_links').select('*')
-    if (error) 
-      return console.error(error)
+  async joinNotesLinksFetch({ fetchHidden } = {}) {
+    const { data, error } = await supabase
+      .from('join_notes_links')
+      .select('*')
+      .eq('is_hidden', fetchHidden)
+
+    if (error) return console.error(error)
 
     this.state.joinNotesLinks = data
   },
@@ -47,13 +52,14 @@ export default {
       return useSnackbar().createSnackbar({ message: 'This link already exists.' })
     }
 
-    await this.joinNotesLinksFetch()
+    await this.joinNotesLinksFetch({ fetchHidden: isHiddenMode.value })
 
     const { data, error } = await supabase
       .from('join_notes_links')
       .insert(newVals.map(newVal => ({
         ...newVal,
-        owner_id: generalStore.state.user.id
+        owner_id: generalStore.state.user.id,
+        is_hidden: isHiddenMode.value,
       })))
 
     if (error)

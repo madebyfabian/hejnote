@@ -44,6 +44,29 @@ export default {
     this.state.links = data
   },
 
+  async linksUpdateHiddenState({ noteId, is_hidden }) {
+    // First, get all joins by noteId and update the is_hidden state of all
+    const joinNotesLinks = await joinNotesLinksStore.findJoinNotesLinksByNoteIds({ noteIds: [ noteId ] })
+    const joinIds = joinNotesLinks.map(join => join.id)
+
+    // Then, update each join's is_hidden state
+    joinNotesLinksStore.joinNotesLinksUpdate({ joinIds, noteId: noteId, newVal: { is_hidden }})
+
+    // Finally, update the is_hidden state of the links itself
+    const links = this._findLinksByNoteIdsV2({ noteIds: [ noteId ] })
+    const linkIds = links.map(link => link.id)
+
+    const { data, error } = await supabase
+      .from('links')
+      .update({ is_hidden })
+      .in('id', linkIds)
+
+    if (error)
+      console.error(error)
+
+    // Missing: Local state update, because hard to implement and not really needed.
+  },
+
   /**
    * This action does two things
    * - it upserts all the links given links that are not already stored in the DB.
