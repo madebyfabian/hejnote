@@ -13,6 +13,7 @@
 				v-if="displayLinkImage" 
 				:src="link.banner_url" 
 				@error="handleImageLoadingError"
+				loading="lazy"
 				class="w-full h-full object-cover object-center"
 			/>
 
