@@ -29,19 +29,14 @@
 </template>
 
 <script setup>
-	import { onMounted, computed } from 'vue'
+	import { onMounted, computed, onUnmounted } from 'vue'
 	import useIsMobileDevice from '@/hooks/useIsMobileDevice'
 	import handleCollectionsChanges from '@/utils/handleCollectionsChanges'
 	import { useRoute, useRouter } from 'vue-router'
 	import useGenerateRouterLink from '@/hooks/useGenerateRouterLink'
+	import initAppData, { removeAllSubscriptions } from '@/utils/initAppData'
 
-	import { 
-		notesStore, 
-		generalStore, 
-		collectionsStore, 
-		linksStore, 
-		joinNotesLinksStore 
-	} from '@/store'
+	import { generalStore } from '@/store'
 
 	const { generateRouterLink } = useGenerateRouterLink()
 	const isMobileDevice = useIsMobileDevice()
@@ -54,13 +49,8 @@
 
 	onMounted(async () => {
 		// Load all app data
-		await Promise.all([
-			notesStore.notesFetch({ fetchHidden: isHiddenMode.value }),
-			joinNotesLinksStore.joinNotesLinksFetch({ fetchHidden: isHiddenMode.value }),
-			collectionsStore.collectionsFetch({ fetchHidden: isHiddenMode.value }),
-			linksStore.linksFetch({ fetchHidden: isHiddenMode.value }),
-		])
-
+		await initAppData({ fetchHidden: isHiddenMode.value })
+		
 		generalStore.updateIsAppLoading(false)
 
 		handleCollectionsChanges({
@@ -73,7 +63,9 @@
 		})
 	})
 
-	
+	onUnmounted(() => {
+		removeAllSubscriptions()
+	})
 </script>
 
 <style lang="postcss">

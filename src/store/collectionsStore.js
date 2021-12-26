@@ -18,9 +18,12 @@ export default {
 	}),
 
 	async collectionsFetch({ fetchHidden = false } = {}) {
-    const { data, error } = await supabase.from('collections').select('*').eq('is_hidden', fetchHidden)
-    if (error) 
-      console.error(error)
+    const { data, error } = await supabase
+      .from('collections')
+      .select('*')
+      .eq('is_hidden', fetchHidden)
+    
+    if (error) console.error(error)
 
     this.state.collections = data
   },
@@ -31,26 +34,20 @@ export default {
 
   async collectionsInsertSingle({ newVal }) {
     try {
-      let res
-   
-      res = await supabase.from('collections').insert([{ 
-        ...newVal, 
-        owner_id: generalStore.state.user.id,
-        is_hidden: isHiddenMode.value,
-      }])
-      if (res.error) throw res.error
+      const { error } = await supabase
+        .from('collections')
+        .insert([{ 
+          ...newVal, 
+          owner_id: generalStore.state.user.id,
+          is_hidden: isHiddenMode.value,
+        }])
 
-      const newData = res?.data?.[0]
-      const isEmpty = !newData?.id
-      if (isEmpty) throw new Error('No data returned')
-
-      this.state.collections.push(newData)
+      if (error) throw error
 
       useSnackbar().createSnackbar({ 
         message: 'Successfully added new collection'
       })
 
-      return newData
     } catch (error) {
       handleError(error)
     }
@@ -63,14 +60,12 @@ export default {
       delete newVal?.id
 
       // Update database
-      const { data, error } = await supabase.from('collections').update(newVal).eq('id', collectionId)
+      const { error } = await supabase
+        .from('collections')
+        .update(newVal)
+        .eq('id', collectionId)
+        
       if (error) throw error
-      newVal = data[0]
-    
-      // Update local state
-      const index = findIndexById({ id: collectionId, data: this.state.collections })
-      const newData = { ...this.state.collections[index], ...newVal }
-      this.state.collections[index] = newData
     
     } catch (error) {
       handleError(error)
@@ -85,16 +80,46 @@ export default {
       } catch (_) {}
 
       // Delete from database
-      const { error } = await supabase.from('collections').delete().in('id', collectionIds)
+      const { error } = await supabase
+        .from('collections')
+        .delete()
+        .in('id', collectionIds)
+      
       if (error) throw error
 
-      // Delete from state
-      this.state.collections = this.state.collections.filter(note => !collectionIds.includes(note.id))
-
       useSnackbar().createSnackbar({ 
-        message: `Deleted ${ collectionIds.length } collection${ collectionIds.length === 1 ? '' : 's' }`
+        message: `Successfully deleted collection`
       })
     
+    } catch (error) {
+      handleError(error)
+    }
+  },
+
+  async handleRealtimeEvent( payload ) {
+    try {
+      if (payload.errors)
+        throw new Error(JSON.stringify(payload.errors))
+
+      switch (payload.eventType) {
+        case 'INSERT': {
+          this.state.collections.push(payload.new)
+          break
+        }
+
+        case 'UPDATE': {
+          const index = findIndexById({ id: payload.new.id, data: this.state.collections })
+          const newData = { ...this.state.collections[index], ...payload.new }
+          this.state.collections[index] = newData
+          break
+        }
+
+        case 'DELETE': {
+          this.state.collections = this.state.collections.filter(collection => collection.id !== payload.old.id)
+          break
+        }
+      }
+
     } catch (error) {
       handleError(error)
     }
