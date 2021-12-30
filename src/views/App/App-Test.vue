@@ -1,6 +1,6 @@
 <template>
 	<h1>Test</h1>
-	<button @click="getData"></button>
+	<button @click="getData">fire getData()</button>
 </template>
 
 <script lang="ts" setup>
