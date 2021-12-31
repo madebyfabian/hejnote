@@ -1,6 +1,7 @@
 <template>
 	<h1>Test</h1>
 	<button @click="getData">fire getData()</button>
+	<button @click="openSnackbar">open Snackbar</button>
 </template>
 
 <script lang="ts" setup>
@@ -10,6 +11,7 @@
 	import { IconSearch } from '@/assets/icons'
 	import useSupabase from '@/hooks/useSupabase'
 	import { definitions } from '@/../types/supabase'
+	import useSnackbar from '@/hooks/useSnackbar'
 
 	const promiseTimeout = ( ms: number ) => new Promise((resolve) => setTimeout(resolve, ms))
 	
@@ -33,4 +35,14 @@
       is_locked: false
     }
 	}
+
+	const openSnackbar = () => {
+		useSnackbar().createSnackbar({ message: 'test', timeout: 9999999, buttonText: 'haha' })
+	}
 </script>
+
+<style lang="postcss" scoped>
+	button {
+		@apply bg-green-400 text-gray-1000 rounded-xl p-4 my-4 block;
+	}
+</style>
