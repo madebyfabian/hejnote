@@ -18,6 +18,8 @@ export default function useSnackbar() {
 		state.snackbarInstances.unshift(newSnackbar)
 
 		setTimeout(() => removeSnackbar({ id: newSnackbar.id }), timeout || state.snackbarTimeout)
+
+		return { remove: () => removeSnackbar({ id: newSnackbar.id }) }
 	}
 
 	const removeSnackbar = ({ id }) => {
