@@ -1,6 +1,6 @@
 import useSnackbar from '@/hooks/useSnackbar'
 
-export default ( error ) => {
-	useSnackbar().createSnackbar({ message: error.message })
+export default ( error, { userMessage } = {} ) => {
+	useSnackbar().createSnackbar({ message: userMessage || error.message })
 	console.error(error)
 }
