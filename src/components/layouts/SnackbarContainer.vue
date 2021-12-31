@@ -1,5 +1,5 @@
 <template>
-	<teleport to="body">
+	<teleport to="#appTeleportRoot">
 		<div class="SnackbarContainer" aria-live="assertive">
 			<transition-group name="transition-snackbar" tag="div">
 				<SnackbarItem 
@@ -21,7 +21,7 @@
 
 <style lang="postcss" scoped>
 	.SnackbarContainer {
-		@apply flex flex-col-reverse items-center fixed w-full desktop:max-w-sm px-4 desktop:px-0 z-50;
+		@apply flex flex-col-reverse items-center fixed w-full desktop:max-w-sm px-4 desktop:px-0 z-60;
 		@apply left-0 desktop:left-6 top-0 desktop:top-initial desktop:bottom-6;
 
 		> div {

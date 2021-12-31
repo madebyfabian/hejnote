@@ -6,7 +6,7 @@
 			<slot name="button" v-bind="{ menuButtonEl }" />
 		</MenuButton>
 
-    <teleport to="body">
+    <teleport to="#appTeleportRoot">
 			<transition name="transition-menu">
 				<MenuItems 
 					v-if="open"

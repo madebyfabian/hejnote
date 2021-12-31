@@ -1,5 +1,5 @@
 <template>
-	<teleport to="body">
+	<teleport to="#appTeleportRoot">
 		<transition name="transition-modalSlideIn">
 			<Modal-Content 
 				v-if="isOpened" 
