@@ -4,7 +4,6 @@ import { SupabaseRealtimePayload } from '@supabase/supabase-js'
 import generalStore from '@/store/generalStore'
 // @ts-ignore
 import notesStore from '@/store/notesStore'
-// @ts-ignore
 import useSnackbar from '@/hooks/useSnackbar'
 import useSupabase, { formatTimeToSupabaseFormat, generateUUID } from '@/hooks/useSupabase'
 // @ts-ignore
@@ -75,7 +74,7 @@ export default {
       if (error) throw error
 
     } catch (error) {
-      snackbar.remove()
+      snackbar?.remove()
       handleError(error, { userMessage: 'There was an error while trying to add a new collection' })
     }
   },
@@ -122,7 +121,7 @@ export default {
       if (error) throw error
     
     } catch (error) {
-      snackbar.remove()
+      snackbar?.remove()
       handleError(error, { userMessage: 'There was an error while trying to delete the collection' })
     }
   },
