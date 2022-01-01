@@ -1,14 +1,13 @@
 import { reactive, computed } from 'vue'
-import useSnackbar from '@/hooks/useSnackbar'
-import handleError from '@/utils/handleError'
-import useSupabase from '@/hooks/useSupabase'
 import generalStore from '@/store/generalStore'
 import notesStore from '@/store/notesStore'
-import findIndexById from '@/utils/findIndexById'
+import useSnackbar from '@/hooks/useSnackbar'
+import useSupabase, { formatTimeToSupabaseFormat, generateUUID } from '@/hooks/useSupabase'
 import useConfirm from '@/hooks/useConfirm'
+import arrayUtils from '@/utils/arrayUtils'
+import handleError from '@/utils/handleError'
 
 const supabase = useSupabase()
-
 const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 
 
@@ -17,6 +16,14 @@ export default {
 		collections: [],
 	}),
 
+
+  // Helpers
+  collectionFindById({ collectionId }) {
+    return arrayUtils.findValueById({ id: collectionId, arr: this.state.collections })
+  },
+
+
+  // Network
 	async collectionsFetch({ fetchHidden = false } = {}) {
     const { data, error } = await supabase
       .from('collections')
@@ -28,38 +35,47 @@ export default {
     this.state.collections = data
   },
 
-  collectionFindById({ collectionId }) {
-    return this.state.collections.find(collection => collection.id === collectionId)
-  },
-
   async collectionsInsertSingle({ newVal }) {
+    let snackbar
     try {
-      const { error } = await supabase
-        .from('collections')
-        .insert([{ 
-          ...newVal, 
-          owner_id: generalStore.state.user.id,
-          is_hidden: isHiddenMode.value,
-        }])
+      newVal = {
+        ...newVal,
+        created_at: formatTimeToSupabaseFormat({ date: new Date() }),
+        updated_at: formatTimeToSupabaseFormat({ date: new Date() }),
+        id: generateUUID(),
+        owner_id: generalStore.state.user.id,
+        is_hidden: isHiddenMode.value,
+      }
 
-      if (error) throw error
-
-      useSnackbar().createSnackbar({ 
-        message: 'Successfully added new collection'
+      arrayUtils.insertValue({ arr: this.state.collections, newVal })
+      snackbar = useSnackbar().createSnackbar({ 
+        message: 'Successfully added a new collection'
       })
 
+      const { error } = await supabase
+        .from('collections')
+        .insert([ newVal ])
+        
+      if (error) throw error
+
     } catch (error) {
-      handleError(error)
+      snackbar.remove()
+      handleError(error, { userMessage: 'There was an error while trying to add a new collection' })
     }
   },
 
   async collectionsUpdateSingle({ collectionId, newVal }) {
     try {
+      newVal = { 
+        ...newVal,
+        updated_at: formatTimeToSupabaseFormat({ date: new Date() }),
+      }
+
       // Delete id column because it's not needed and supabase throws an error.
-      newVal = { ...newVal }
       delete newVal?.id
 
-      // Update database
+      arrayUtils.updateById({ id: collectionId, arr: this.state.collections, newVal })
+
       const { error } = await supabase
         .from('collections')
         .update(newVal)
@@ -68,31 +84,33 @@ export default {
       if (error) throw error
     
     } catch (error) {
-      handleError(error)
+      handleError(error, { userMessage: 'There was an error while trying to update the collection' })
     }
   },
 
   async collectionsDelete({ collectionIds }) {
+    let snackbar
     try {
-      // First unlink all collection_id from all notes
+      arrayUtils.deleteByIds({ arr: this.state.collections, ids: collectionIds })
+      snackbar = useSnackbar().createSnackbar({ 
+        message: `Successfully deleted collection`
+      })
+
+      // Unlink all collection_id from all notes
       try {
         await notesStore.notesUpdateUnlinkCollections({ collectionIds })
       } catch (_) {}
 
-      // Delete from database
       const { error } = await supabase
         .from('collections')
         .delete()
         .in('id', collectionIds)
       
       if (error) throw error
-
-      useSnackbar().createSnackbar({ 
-        message: `Successfully deleted collection`
-      })
     
     } catch (error) {
-      handleError(error)
+      snackbar.remove()
+      handleError(error, { userMessage: 'There was an error while trying to delete the collection' })
     }
   },
 
@@ -102,22 +120,9 @@ export default {
         throw new Error(JSON.stringify(payload.errors))
 
       switch (payload.eventType) {
-        case 'INSERT': {
-          this.state.collections.push(payload.new)
-          break
-        }
-
-        case 'UPDATE': {
-          const index = findIndexById({ id: payload.new.id, data: this.state.collections })
-          const newData = { ...this.state.collections[index], ...payload.new }
-          this.state.collections[index] = newData
-          break
-        }
-
-        case 'DELETE': {
-          this.state.collections = this.state.collections.filter(collection => collection.id !== payload.old.id)
-          break
-        }
+        case 'INSERT': return arrayUtils.insertValue({ arr: this.state.collections, newVal: payload.new })
+        case 'UPDATE': return arrayUtils.updateById({ arr: this.state.collections, id: payload.new.id, newVal: payload.new })
+        case 'DELETE': return arrayUtils.deleteByIds({ arr: this.state.collections, ids: [ payload.old.id ] })
       }
 
     } catch (error) {
@@ -126,9 +131,7 @@ export default {
   },
 
 
-  /**
-   * UI Actions
-   */
+  // UI Actions
   async handleAddNewCollection() {
     const answer = await useConfirm().doConfirm({ 
 			title: 'Add new collection',
