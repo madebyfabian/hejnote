@@ -37,13 +37,10 @@
 
 <script setup>
 	import { computed, watchEffect, ref } from 'vue'
-	import useDayjs from '@/hooks/useDayjs'
 	import { generalStore } from '@/store'
 	import useCurrentCollection from '@/hooks/useCurrentCollection'
 	import { Badge, EmptyState } from '@/components/ui'
 	import { NoteListGrid } from '@/components/layouts'
-	
-	const dayjs = useDayjs()
 
 	const props = defineProps({
 		notes: 					{ required: true },
@@ -56,8 +53,8 @@
 
 	const notesSortGiven = ( notes ) => {
     return (notes || []).sort(( a, b ) => {
-      return dayjs(b.created_at).valueOf() 
-           - dayjs(a.created_at).valueOf()
+			return Math.round(new Date(b.created_at).getTime() / 1000).toString()
+					 - Math.round(new Date(a.created_at).getTime() / 1000).toString()
     })
   }
 
