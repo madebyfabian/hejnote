@@ -21,7 +21,7 @@ export const insertValue = <T extends ObjectWithId>({ arr, newVal }: { arr: T[],
 	arr.push(newVal)
 }
 
-export const updateById = <T extends ObjectWithId>({ arr, id, newVal }: { arr: T[], id: string, newVal: T }) => {
+export const updateById = <T extends ObjectWithId, N extends Object>({ arr, id, newVal }: { arr: T[], id: string, newVal: N }) => {
 	const index = findIndexById({ id, arr })
 	const { result, newObject } = objectEntriesAreEqual(arr[index], newVal)
 	if (result)
