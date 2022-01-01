@@ -2,7 +2,7 @@ import { computed, ref } from 'vue'
 
 
 // Helpers
-const _ls_getItem = ({ key, defaultValue }) => {
+const _ls_getItem = ({ key, defaultValue }: { key: string, defaultValue: any }) => {
 	const val = localStorage.getItem(key)
 	if (val === null) {
 		_ls_setItem({ key, value: defaultValue })
@@ -16,8 +16,8 @@ const _ls_getItem = ({ key, defaultValue }) => {
 	}
 }
 
-const _ls_setItem = ({ key, value }) => {
-	let newVal 
+const _ls_setItem = ({ key, value }: { key: string, value: any }) => {
+	let newVal = ''
 
 	try {
 		newVal = JSON.stringify(value)
@@ -27,17 +27,17 @@ const _ls_setItem = ({ key, value }) => {
 }
 
 
-
-/**
- * @returns {import('vue').WritableComputedRef<any>}
- */
 export default function useLocalStorage({ 
 	key,
 	defaultValue = null,
 	validator = () => true,
+}: {
+	key: string,
+	defaultValue?: any,
+	validator?: (value: any) => boolean,
 }) {
 	if (!key)
-		return console.error('You must define a key for useLocalStorage.')
+		throw new TypeError('You must define a key for useLocalStorage.')
 		
 	const _lsValue = _ls_getItem({ key, defaultValue })
 	const _ref = ref(_lsValue)

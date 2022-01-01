@@ -1,9 +1,10 @@
 import { reactive } from 'vue'
+import { User } from '@supabase/gotrue-js/dist/main/lib/types'
 import useLocalStorage from '@/hooks/useLocalStorage'
 
 export default {
 	state: reactive({
-		user: undefined,
+		user: undefined as User | undefined,
     isAppLoading: true,
 		isHiddenMode: false,
 		updateCollectionsModalVisible: false,
@@ -25,19 +26,19 @@ export default {
 
 
 	// --- Mutations ---
-	updateUser({ user }) {
+	updateUser({ user }: { user: User }) {
 		this.state.user = user
 	},
 
-	updateIsAppLoading({ isAppLoading }) {
+	updateIsAppLoading({ isAppLoading }: { isAppLoading: boolean }) {
 		this.state.isAppLoading = isAppLoading
 	},
 
-	updateIsHiddenMode({ isHiddenMode }) {
+	updateIsHiddenMode({ isHiddenMode }: { isHiddenMode: boolean }) {
 		this.state.isHiddenMode = isHiddenMode
 	},
 
-	updateUpdateCollectionsModalVisible({ newVal }) {
+	updateUpdateCollectionsModalVisible({ newVal }: { newVal: boolean }) {
 		this.state.updateCollectionsModalVisible = newVal
 	}
 }
