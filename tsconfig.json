@@ -10,6 +10,7 @@
     "types": ["vite/client", "cypress"],
     "resolveJsonModule": true,
     "plugins": [{ "name": "@vuedx/typescript-plugin-vue" }],
+    "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     }
