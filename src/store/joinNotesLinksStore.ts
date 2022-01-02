@@ -1,48 +1,53 @@
 import { reactive, computed } from 'vue'
+import { definitions } from '@/../types/supabase'
 import useSupabase from '@/hooks/useSupabase'
 import useSnackbar from '@/hooks/useSnackbar'
 import handleError from '@/utils/handleError'
 import generalStore from '@/store/generalStore'
 import arrayUtils from '@/utils/arrayUtils'
 
-const supabase = useSupabase()
+type Note = definitions['notes']
+type Link = definitions['links']
+type JoinNotesLinks = definitions['join_notes_links']
+type JoinNotesLinksUpdateParams = Pick<JoinNotesLinks, 'annotation' | 'is_added_from_text' | 'is_in_text'>
 
+const supabase = useSupabase()
 const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
 
 
 export default {
   state: reactive({
-    joinNotesLinks: [],
+    joinNotesLinks: [] as JoinNotesLinks[],
   }),
 
-  findJoinNotesLinksByNoteIds({ noteIds }) {
+  findJoinNotesLinksByNoteIds({ noteIds }: { noteIds: Note['id'][] }) {
     return this.state.joinNotesLinks.filter(join => noteIds.includes(join.note_id))
   },
 
-  async _fetchLinkIdsByUrls({ urlArray }) {
+  async _fetchLinkIdsByUrls({ urlArray }: { urlArray: string[] }) {
     const { data, error } = await supabase
-      .from('links')
+      .from<Link>('links')
       .select()
       .in('url', urlArray)
       .eq('is_hidden', isHiddenMode.value)
 
-    if (error) throw error
+    if (error || data === null) throw error
 
     return data.map(dataItem => dataItem.id)
   },
 
-  async joinNotesLinksFetch({ fetchHidden } = {}) {
+  async joinNotesLinksFetch({ fetchHidden }: { fetchHidden: boolean }) {
     const { data, error } = await supabase
-      .from('join_notes_links')
+      .from<JoinNotesLinks>('join_notes_links')
       .select('*')
       .eq('is_hidden', fetchHidden)
 
-    if (error) return console.error(error)
+    if (error || data === null) return console.error(error)
 
     this.state.joinNotesLinks = data
   },
 
-  async joinNotesLinksInsert({ newVals }) {
+  async joinNotesLinksInsert({ newVals }: { newVals: JoinNotesLinks[] }) {
     // Filter out duplicates
     newVals = newVals.filter(newVal => !this.state.joinNotesLinks.find(join => 
       join.note_id === newVal.note_id && 
@@ -54,30 +59,30 @@ export default {
 
     await this.joinNotesLinksFetch({ fetchHidden: isHiddenMode.value })
 
+    if (!generalStore.state.user?.id)
+      return console.error('User is not logged in')
+
     const { data, error } = await supabase
-      .from('join_notes_links')
+      .from<JoinNotesLinks>('join_notes_links')
       .insert(newVals.map(newVal => ({
         ...newVal,
+        // @ts-ignore
         owner_id: generalStore.state.user.id,
         is_hidden: isHiddenMode.value,
       })))
 
-    if (error)
-      console.error(error)
+    if (error || data === null)
+      return console.error(error)
 
     this.state.joinNotesLinks.push(...data)
   },
 
-  async joinNotesLinksUpdate({ joinIds, urlArray = [], noteId, newVal }) {
+  async joinNotesLinksUpdate({ joinIds, urlArray = [], noteId, newVal }: { joinIds: JoinNotesLinks['id'][], urlArray?: string[], noteId: Note['id'], newVal: JoinNotesLinksUpdateParams }) {
     if (!newVal)
       return console.error('joinNotesLinksUpdate: Missing required parameter "newVal"')
 
-    // Delete id column because it's not needed and supabase throws an error.
-    newVal = { ...newVal }
-    delete newVal?.id
-
     try {
-      let newData
+      let newData: JoinNotesLinks[]
       
       // When no join ids are defined, we have to fetch the link ids
       if (!joinIds?.length) {
@@ -88,21 +93,21 @@ export default {
 
         // Update DB.
         const { data, error } = await supabase
-          .from('join_notes_links')
+          .from<JoinNotesLinks>('join_notes_links')
           .update(newVal)
           .eq('note_id', noteId)
           .in('link_id', linkIds)
-        if (error) throw error
+        if (error || !data) throw error
 
         newData = data
 
       } else {
         // Update DB.
         const { data, error } = await supabase
-          .from('join_notes_links')
+          .from<JoinNotesLinks>('join_notes_links')
           .update(newVal)
           .in('id', joinIds)
-        if (error) throw error
+        if (error || !data) throw error
 
         newData = data
       }
@@ -118,11 +123,11 @@ export default {
     }
   },
 
-  async joinNotesLinksDelete({ joinIds = [] } = {}) {
+  async joinNotesLinksDelete({ joinIds = [] } = {} as { joinIds: JoinNotesLinks['id'][] }) {
     // Delete all defined joins.
     const { error } = await supabase
-      .from('join_notes_links')
-      .delete()
+      .from<JoinNotesLinks>('join_notes_links')
+      .delete({ returning: 'minimal' })
       .in('id', joinIds)
     if (error) return console.error(error)
 
