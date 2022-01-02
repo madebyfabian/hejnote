@@ -1,5 +1,5 @@
 import { reactive } from 'vue'
-import { User } from '@supabase/gotrue-js/dist/main/lib/types'
+import { User } from '@supabase/supabase-js'
 import useLocalStorage from '@/hooks/useLocalStorage'
 
 export default {
