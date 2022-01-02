@@ -1,16 +1,18 @@
 import { reactive, computed } from 'vue'
 import { definitions } from '@/../types/supabase'
-import useSupabase from '@/hooks/useSupabase'
+import useSupabase, { generateUUID } from '@/hooks/useSupabase'
 
 import generalStore from '@/store/generalStore'
 import joinNotesLinksStore, { JoinNotesLinksInsertParams, JoinNotesLinksUpdateParams } from '@/store/joinNotesLinksStore'
 import isImageValid from '@/utils/isImageValid'
 import fetchUrlMetadata from '@/utils/fetchUrlMetadata'
 import handleError from '@/utils/handleError'
+import arrayUtils from '@/utils/arrayUtils'
 
 type Note = definitions['notes']
 type Link = definitions['links']
-type LinkOptional = Partial<Link>
+type LinkGeneratedByFunction = Link
+type LinkInsertParams = PartialBy<Link, 'url'>
 
 const supabase = useSupabase()
 const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
@@ -21,14 +23,14 @@ export default {
     links: [] as Link[],
   }),
 
-  getLinkDefaultDataObject({ link } = {} as { link: LinkOptional }) { return <Link>{
-    id: 				link?.id || undefined,
-    owner_id:   generalStore.getUserId(),
+  getLinkDefaultDataObject({ link }: { link: LinkInsertParams }) { return {
+    id: 				link?.id || generateUUID(),
     url:        link.url,
     title:      link?.title || undefined,
     banner_url: link?.banner_url || undefined,
-    is_hidden:  isHiddenMode.value,
-  }},
+    owner_id:   link?.owner_id || generalStore.getUserId(),
+    is_hidden:  link?.is_hidden || isHiddenMode.value,
+  } as LinkGeneratedByFunction },
 
   _findLinksByNoteIdsV2({ noteIds }: { noteIds: Note['id'][] }) {
     const joins = joinNotesLinksStore.findJoinNotesLinksByNoteIds({ noteIds })
@@ -88,7 +90,7 @@ export default {
     noteId = null, 
     joinNotesLinksObj = { annotation: undefined, is_added_from_text: true, is_in_text: false, is_hidden: false } 
   }: {
-    linkObjArr: Link[],
+    linkObjArr: LinkGeneratedByFunction[],
     noteId: Note['id'] | null,
     joinNotesLinksObj?: JoinNotesLinksUpdateParams
   }) {
@@ -125,19 +127,21 @@ export default {
         preparedLinkData.push(preparedLinkObj)
       }
 
-      const preparedLinkDataNewLinks = preparedLinkData.filter(link => !link.id)
-
       // Step 1: insert links data into DB.
       let linksUpsertResult: Link[] = []
-      if (preparedLinkDataNewLinks.length) {
+      if (preparedLinkData.length) {
+        console.log('insert into db', preparedLinkData);
+
         // insert into db.
         const { data, error } = await supabase
           .from<Link>('links')
-          .upsert(preparedLinkDataNewLinks, { onConflict: 'url' })
+          .upsert(preparedLinkData, { onConflict: 'url' })
         if (error || data === null) throw error
 
         // Update local state
-        this.state.links.push(...data)
+        for (const entry of data) {
+          arrayUtils.insertValue({ arr: this.state.links, newVal: entry })
+        }
 
         linksUpsertResult.push(...data)
       }
@@ -150,6 +154,7 @@ export default {
 
         return { ...joinNotesLinksObj, note_id: noteId, link_id: newLinkId } as JoinNotesLinksInsertParams
       })
+
       joinNotesLinksStore.joinNotesLinksInsert({ newVals: preparedJoinNotesLinksData })
 
     } catch (error) {
