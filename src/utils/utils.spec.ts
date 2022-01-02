@@ -31,7 +31,6 @@ describe('"isImageValid": Check if image url loads and therefore is valid', () =
 describe('"fetchUrlMetadata": Should return metadata obj if something was fetched', () => {
   it('Should return undefined with invalid param', async () => {
     const results = await Promise.all([
-      await fetchUrlMetadata(),
       await fetchUrlMetadata({}),
       await fetchUrlMetadata({ url: undefined }),
       await fetchUrlMetadata({ url: '' }),

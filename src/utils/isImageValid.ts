@@ -2,7 +2,7 @@
  * Helper to upgrade existing links like "www.xyz.de", "//link.org", "http://link.org" to "https://..."
  * @see https://stackoverflow.com/a/61934195/9899193 
  */
-const _withHttps = (url) => {
+const _withHttps = ( url: string ) => {
   return url.replace(/^(?:(.*:)?\/\/)?(.*)/i, ( match, schemma, nonSchemmaUrl ) => {
     return schemma 
       ? match.replace(/^(http:)/i, 'https:') // Matched string already includes "http://...", so manually upgrade to https.
@@ -12,10 +12,10 @@ const _withHttps = (url) => {
 
 
 /**
- * Takes in an url and returns true if it is a valid image url, undefined if not
- * @returns {{ validatedUrl: String | Boolean }} string of validated url if valid, null if not
+ * Takes in an url and returns...
+ * @returns `{ validatedUrl: string }` if it is a valid image url, otherwise `{ validatedUrl: false }`
  */
-export default async ({ url } = {}) => {
+export default async ({ url }: { url: string }): Promise<{ validatedUrl: string | boolean }> => {
   return new Promise(( resolve ) => {
     if (!url?.length || typeof url !== 'string')
       return resolve({ validatedUrl: false })
