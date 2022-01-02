@@ -32,7 +32,7 @@
 	</div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 	import { ref, reactive } from 'vue'
 	import { useRouter } from 'vue-router'
 	import useSupabase from '@/hooks/useSupabase'
@@ -49,16 +49,11 @@
 		password: ''
 	})
 
-	const errorMsg = ref(null)
+	const errorMsg = ref(null as string | null)
 
-	const _signIn = () => {
-		return supabase.auth.signIn({
-			email: formData.email,
-			password: formData.password
-		})
-	}
+	enum Provider { GITHUB = 'github' }
 
-	const doAuthenticate = async ({ provider = undefined }) => {
+	const doAuthenticate = async ({ provider = undefined }: { provider: Provider | undefined }) => {
 		try {
 			errorMsg.value = null
 
@@ -76,7 +71,10 @@
 					throw new Error('email or password not defined')
 
 					// Actually sign in
-					const { data: signInUser, error } = await _signIn()
+					const { error } = await supabase.auth.signIn({
+						email: formData.email,
+						password: formData.password
+					})
 					if (error) throw error
 
 					break
@@ -86,7 +84,7 @@
 			// User now will be redirected by global function in App.vue
 			
 		} catch (error) {
-			errorMsg.value = error?.message || error
+			errorMsg.value = (error as Error).message || error as any
 
 		}
 	}

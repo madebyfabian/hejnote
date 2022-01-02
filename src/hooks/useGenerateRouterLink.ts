@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { RouteLocationNormalized } from 'vue-router'
+import { LocationAsRelativeRaw } from 'vue-router'
 import { generalStore } from '@/store'
 
 export default function useGenerateRouterLink() {
@@ -10,15 +10,17 @@ export default function useGenerateRouterLink() {
 	 * @param to "to" object
 	 * @returns "to" object
 	 */
-	const generateRouterLink = ( to: RouteLocationNormalized ) => computed(() => {
-		const params = (isHiddenMode.value) 
-			? Object.assign({}, { ...to?.params, isHiddenMode: 'hidden' })
-			: Object.assign({}, { ...to?.params })
+	const generateRouterLink = ( to: LocationAsRelativeRaw ) => computed(() => {
+		let params
+		if (typeof to === 'object' && to.hasOwnProperty('params'))
+			params = (isHiddenMode.value) 
+				? Object.assign({}, { ...to?.params, isHiddenMode: 'hidden' })
+				: Object.assign({}, { ...to?.params })
 
 		return {
 			...to,
 			params,
-		}
+		} as LocationAsRelativeRaw
 	})
 
 	return {

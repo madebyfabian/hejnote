@@ -1,7 +1,6 @@
 <template>
 	<h1>Test</h1>
-	<button @click="getData">fire getData()</button>
-	<button @click="openSnackbar">open Snackbar</button>
+	<button @click="navigate">navigate</button>
 </template>
 
 <script lang="ts" setup>
@@ -12,32 +11,18 @@
 	import useSupabase from '@/hooks/useSupabase'
 	import { definitions } from '@/../types/supabase'
 	import useSnackbar from '@/hooks/useSnackbar'
+	import { RouteLocationRaw, useRoute, useRouter } from 'vue-router'
 
 	const promiseTimeout = ( ms: number ) => new Promise((resolve) => setTimeout(resolve, ms))
+	const route = useRoute()
+	const router = useRouter()
 	
-	const getData = async () => {
-		const { data, error } = await useSupabase()
-			.from<definitions['notes']>('notes')
-			.select('*')
+	const navigate = () => {
+		const newRouteObj: RouteLocationRaw = {
+			name: 'Home'
+		}
 
-		if (error || !data?.length)
-			return
-
-		const newObject: definitions['notes'] = {
-      id: data[0].id,
-      owner_id: '',
-      created_at: '',
-      updated_at: '',
-      is_pinned: false,
-      content: '',
-      is_hidden: false,
-      is_archived: false,
-      is_locked: false
-    }
-	}
-
-	const openSnackbar = () => {
-		useSnackbar().createSnackbar({ message: 'test', timeout: 9999999, buttonText: 'haha' })
+		router.push(newRouteObj)
 	}
 </script>
 

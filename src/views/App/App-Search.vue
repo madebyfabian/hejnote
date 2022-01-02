@@ -8,7 +8,7 @@
 	</NoteList>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 	import { ref, computed, onMounted } from 'vue'
 	import Fuse from 'fuse.js'
 	import { notesStore, linksStore, joinNotesLinksStore } from '@/store'
@@ -21,7 +21,7 @@
 	const route = useRoute()
 
 	const notesOriginalData = computed(() => notesStore.getNotes())
-	const searchNotesString = computed(() => route.query?.q || '' )
+	const searchNotesString = computed(() => typeof route.query?.q === 'string' ? route.query?.q : null || '' )
 	const isMobileDevice = useIsMobileDevice()
 	const title = computed(() => {
 		return `Search Results ${ searchNotesString.value.length ? `for \"${ searchNotesString.value }\"` : '' }`
@@ -47,7 +47,7 @@
 
 
 	// Setup fuse.js
-	let fuse 
+	let fuse: Fuse<any>
 	const fuseInited = ref(false)
 	onMounted(async () => {
 		const searchData = await getNotesTransformedData()

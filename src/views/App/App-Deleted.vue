@@ -6,7 +6,7 @@
   </NoteList>
 </template>
 
-<script setup>
+<script lang="ts" setup>
   import { computed } from 'vue'
   import { notesStore } from '@/store'
   import useConfirm from '@/hooks/useConfirm'

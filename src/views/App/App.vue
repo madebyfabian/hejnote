@@ -28,7 +28,7 @@
 	</router-view>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 	import { onMounted, computed, onUnmounted } from 'vue'
 	import useIsMobileDevice from '@/hooks/useIsMobileDevice'
 	import handleCollectionsChanges from '@/router/handleCollectionsChanges'
@@ -51,7 +51,7 @@
 		// Load all app data
 		await initAppData({ fetchHidden: isHiddenMode.value })
 		
-		generalStore.updateIsAppLoading(false)
+		generalStore.updateIsAppLoading({ isAppLoading: false })
 
 		handleCollectionsChanges({
 			route,

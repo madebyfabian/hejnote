@@ -36,7 +36,7 @@
 	
 </template>
 
-<script setup>
+<script lang="ts" setup>
 	import { Cell } from '@/components/ui'
 	import { SwitchHiddenMode } from '@/components/layouts'
 	import { IconArchive, IconTrash, IconMoreSolid, IconSearch } from '@/assets/icons'

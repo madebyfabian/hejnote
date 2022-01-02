@@ -23,7 +23,7 @@
 	</div>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 	import { ref, reactive } from 'vue'
 	import { useRouter } from 'vue-router'
 	import useSupabase from '@/hooks/useSupabase'
@@ -32,37 +32,33 @@
 				router = useRouter()
 
 	const formData = reactive({
-		email: null,
-		password: null
+		email: null as string | null,
+		password: null as string | null
 	})
 
-	const error = ref(null),
-				success = ref(null)
-
-	const _signUp = () => {
-		return supabase.auth.signUp({
-			email: formData.email,
-			password: formData.password
-		})
-	}
+	const error = ref(null as any),
+				success = ref(null as any)
 
 	const doSignUp = async () => {
 		try {
 			success.value = false
 			error.value = null
 
-			if (!formData.email || !formData.password)
+			if (typeof formData.email !== 'string' || typeof formData.password !== 'string') 
 				throw new Error('email or password not defined')
 
 			// Actually sign in
-			const { data: signInUser, error: signInError } = await _signUp()
+			const { error: signInError } = await supabase.auth.signUp({
+				email: formData.email,
+				password: formData.password
+			})
 			if (signInError)
 				throw signInError
 
 			// User now will be redirected by global function in App.vue
 			
-		} catch (error) {
-			error.value = error
+		} catch (err) {
+			error.value = (err as Error).message || err as any
 
 		}
 	}

@@ -30,7 +30,7 @@
 	</NoteList>
 </template>
 
-<script setup>
+<script lang="ts" setup>
   import { computed, ref } from 'vue'
 	import { notesStore, generalStore } from '@/store'
 	import useCurrentCollection from '@/hooks/useCurrentCollection'
@@ -49,7 +49,7 @@
 				displayModeContextMenuIsOpened = ref(false),
 				displayModeActiveOptionKey = generalStore.appOptions.displayMode
 
-	const handleDisplayModeApplyOption = ({ key }) => {
+	const handleDisplayModeApplyOption = ({ key }: { key: string }) => {
 		displayModeActiveOptionKey.value = key
 	}
 	// ---

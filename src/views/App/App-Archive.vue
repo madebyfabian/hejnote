@@ -2,7 +2,7 @@
   <NoteList :notes="notes" groupAllNotes title="Archive" />
 </template>
 
-<script setup>
+<script lang="ts" setup>
   import { computed } from 'vue'
   import { notesStore } from '@/store'
   import { NoteList } from '@/components/layouts'

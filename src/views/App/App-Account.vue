@@ -3,7 +3,7 @@
 	<Button @click="router.push({ name: 'Auth-SignOut' })">Sign out</Button>
 </template>
 
-<script setup>
+<script lang="ts" setup>
 	import { computed } from 'vue'
 	import { useRouter } from 'vue-router'
 	import { Button } from '@/components/ui'
