@@ -7,7 +7,7 @@ import '@/assets/styles/tailwind.css'
 const app = createApp(App)
 
 // Import router and routes
-import { routes } from '@/routes'
+import { routes } from '@/router/routes'
 import { createRouter, createWebHistory } from 'vue-router'
 const router = createRouter({ history: createWebHistory(), routes })
 

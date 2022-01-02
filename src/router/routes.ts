@@ -1,4 +1,5 @@
 import useSupabase from '@/hooks/useSupabase'
+import { RouterOptions } from 'vue-router'
 const supabase = useSupabase()
 
 // Import routes
@@ -9,8 +10,7 @@ import AppArchiveRoute from '@/views/App/App-Archive.vue'
 import AppSearchRoute from '@/views/App/App-Search.vue'
 import AppAccountRoute from '@/views/App/App-Account.vue'
 
-/** @type {import('vue-router').RouterOptions['routes']} */
-export const routes = [
+export const routes: RouterOptions['routes'] = [
   /**
    * Notes
    */
@@ -90,7 +90,7 @@ export const routes = [
    {
     path: '/auth',
     name: 'Auth',
-    component: () => import('./views/Auth/Auth.vue'),
+    component: () => import('@/views/Auth/Auth.vue'),
     redirect: { name: 'Auth-SignIn' },
     meta: { requiresAuth: false }, 
     children: [
@@ -98,14 +98,15 @@ export const routes = [
         path: 'sign-in',
         name: 'Auth-SignIn',
         meta: { requiresAuth: false, title: 'Sign In' }, 
-        component: () => import('./views/Auth/Auth-SignIn.vue'),
+        component: () => import('@/views/Auth/Auth-SignIn.vue'),
       },
       {
         path: 'sign-up',
         name: 'Auth-SignUp',
         meta: { requiresAuth: false, title: 'Sign Up' }, 
-        component: () => import('./views/Auth/Auth-SignUp.vue'),
+        component: () => import('@/views/Auth/Auth-SignUp.vue'),
       },
+      // @ts-ignore
       {
         path: 'sign-out',
         name: 'Auth-SignOut',
@@ -120,7 +121,7 @@ export const routes = [
 
   { 
     path: '/:path(.*)', 
-    component: () => import('./views/404.vue')
+    component: () => import('@/views/404.vue')
   },
 
   /**
@@ -130,6 +131,6 @@ export const routes = [
     path: '/',
     meta: { requiresAuth: false, title: 'Join the list!' }, 
     redirect: { name: 'App-Home' }
-    //component: () => import('./views/LandingPage.vue')
+    //component: () => import('@/views/LandingPage.vue')
   }
 ]
