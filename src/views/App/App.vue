@@ -31,7 +31,7 @@
 <script setup>
 	import { onMounted, computed, onUnmounted } from 'vue'
 	import useIsMobileDevice from '@/hooks/useIsMobileDevice'
-	import handleCollectionsChanges from '@/utils/handleCollectionsChanges'
+	import handleCollectionsChanges from '@/router/handleCollectionsChanges'
 	import { useRoute, useRouter } from 'vue-router'
 	import useGenerateRouterLink from '@/hooks/useGenerateRouterLink'
 	import initAppData, { removeAllSubscriptions } from '@/utils/initAppData'
