@@ -1,5 +1,6 @@
 import useSupabase from '@/hooks/useSupabase'
 import handleError from '@/utils/handleError'
+import { definitions } from '@/../types/supabase'
 import { 
 	notesStore, 
 	collectionsStore, 
@@ -7,10 +8,12 @@ import {
 	linksStore,
 } from '@/store'
 
+type Collection = definitions['collections']
+
 const supabase = useSupabase()
 
 
-export default async function initAppData({ fetchHidden }) {
+export default async function initAppData({ fetchHidden }: { fetchHidden: boolean }) {
 	try {
 		let reInitSubscriptions = true
 		const colSelectorString = `is_hidden=eq.${ fetchHidden }`
@@ -31,7 +34,7 @@ export default async function initAppData({ fetchHidden }) {
 		if (reInitSubscriptions) {
 			await supabase.removeAllSubscriptions()
 			await supabase
-				.from(`collections:${ colSelectorString }`)
+				.from<Collection>(`collections:${ colSelectorString }`)
 				.on('*', payload => collectionsStore.handleRealtimeEvent(payload))
 				.subscribe()
 		}
