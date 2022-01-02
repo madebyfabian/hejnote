@@ -76,7 +76,7 @@ export default {
       if (!forceEvenWithoutChanges && !this.noteObjectHasChanges({ compareToNoteId: noteId, newVal: note }))
         return
 
-      note.owner_id = generalStore.state.user.id
+      note.owner_id = generalStore.getUserId()
       if (isNewNote) {
         note.is_hidden = isHiddenMode.value
       }

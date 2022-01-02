@@ -49,15 +49,12 @@ export default {
   async collectionsInsertSingle({ newVal }: { newVal: CollectionInsertParams }) {
     let snackbar
     try {
-      if (!generalStore.state.user?.id)
-        throw new Error('User is not logged in')
-
       const finalVal: Collection = {
         title: newVal.title || 'New Collection',
         created_at: formatTimeToSupabaseFormat({ date: new Date() }),
         updated_at: formatTimeToSupabaseFormat({ date: new Date() }),
         id: generateUUID(),
-        owner_id: generalStore.state.user.id,
+        owner_id: generalStore.getUserId(),
         is_hidden: isHiddenMode.value,
       }
 

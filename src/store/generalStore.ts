@@ -26,7 +26,7 @@ export default {
 
 	getUserId() {
 		if (!this.state.user?.id)
-			return undefined
+			return ''
 
 		return this.state.user.id
 	},
