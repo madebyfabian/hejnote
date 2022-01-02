@@ -12,7 +12,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 const router = createRouter({ history: createWebHistory(), routes })
 
 // Router beforeEach
-import routeBeforeEach from '@/utils/routeBeforeEach'
+import routeBeforeEach from '@/router/routeBeforeEach'
 router.beforeEach(routeBeforeEach)
 
 app.use(router)

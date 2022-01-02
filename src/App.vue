@@ -10,7 +10,7 @@
 	import { useRoute, useRouter } from 'vue-router'
 	import useSupabase from '@/hooks/useSupabase'
 	import { generalStore } from '@/store'
-	import { getRequiredAuthRedirect } from '@/utils/routeBeforeEach'
+	import { getRequiredAuthRedirect } from '@/router/routeBeforeEach'
 
 	import { SnackbarContainer, ModalConfirm } from '@/components/layouts'
 

@@ -1,9 +1,13 @@
 import useConfirm from '@/hooks/useConfirm'
 import useSupabase from '@/hooks/useSupabase'
 import { collectionsStore, generalStore, notesStore, linksStore, joinNotesLinksStore } from '@/store'
+// @ts-ignore
 import initAppData from '@/utils/initAppData'
 
-export const getRequiredAuthRedirect = ({ user, requiresAuth }) => {
+import { User } from '@supabase/supabase-js'
+import { RouteLocationNormalized, NavigationGuardNext } from 'vue-router';
+
+export const getRequiredAuthRedirect = ({ user, requiresAuth }: { user: User | null, requiresAuth: boolean }) => {
 	if (requiresAuth && !user)
 		return { name: 'Auth' }
 
@@ -13,7 +17,7 @@ export const getRequiredAuthRedirect = ({ user, requiresAuth }) => {
 	return false
 }
 
-const _next = ({ to, next, options }) => {
+const _next = ({ to, next, options = {} }: { to: RouteLocationNormalized, next: NavigationGuardNext, options?: any }) => {
 	const hasOptions = options && typeof options === 'object' && Object.keys(options).length
 
 	const newIsHiddenModeState = hasOptions && options?.params?.isHiddenMode !== undefined
@@ -33,13 +37,13 @@ const _next = ({ to, next, options }) => {
 	return next(hasOptions ? options : undefined)
 }
 
-export default async ( to, from, next ) => {
+export default async ( to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext ) => {
 	const requiresAuth = to.matched.some(record => record.meta.requiresAuth)
 	const user = useSupabase().auth.user()
 
 	const requiredRedirect = getRequiredAuthRedirect({ user, requiresAuth })
 	if (requiredRedirect) 
-		return _next({ to, next, options: requiredRedirect, to })
+		return _next({ to, next, options: requiredRedirect })
 
 	const fromIsHidden = from.params.isHiddenMode === 'hidden',
 				toIsHidden = to.params.isHiddenMode === 'hidden'
