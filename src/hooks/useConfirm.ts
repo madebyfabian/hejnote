@@ -11,7 +11,7 @@ const _initalState = {
 const state = reactive({ ..._initalState })
 
 export default function useConfirm() {
-	const doConfirm = ({ question = null, title, inputProps }: { question?: string | null, title: string, inputProps: object }) => new Promise(resolve => {
+	const doConfirm = ({ question = null, title, inputProps = null }: { question?: string | null, title: string, inputProps?: object | null }) => new Promise(resolve => {
 		state.isVisible = true
 		state.question = question
 		state.title = title
