@@ -30,7 +30,7 @@ export default async ({ url }: { url: string }) => {
 		if (!json?.metadata)
 			return undefined
 
-		return <Metadata>json.metadata
+		return <Metadata['metadata']>json.metadata
 
 	} catch (error) {
 		console.error(error)
