@@ -9,7 +9,7 @@ import arrayUtils from '@/utils/arrayUtils'
 type Note = definitions['notes']
 type Link = definitions['links']
 type JoinNotesLinks = definitions['join_notes_links']
-type JoinNotesLinksUpdateParams = Pick<JoinNotesLinks, 'annotation' | 'is_added_from_text' | 'is_in_text' | 'is_hidden'>
+type JoinNotesLinksUpdateParams = Partial<Pick<JoinNotesLinks, 'annotation' | 'is_added_from_text' | 'is_in_text' | 'is_hidden'>>
 
 const supabase = useSupabase()
 const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
