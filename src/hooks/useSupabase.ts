@@ -1,8 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 import { uuid as generateUUID } from '@supabase/supabase-js/dist/module/lib/helpers'
 
-const supabaseUrl = <string>import.meta.env.VITE_SUPABASE_URL,
-			supabaseKey = <string>import.meta.env.VITE_SUPABASE_KEY
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL,
+			supabaseKey = import.meta.env.VITE_SUPABASE_KEY
 
 const supabase = createClient(supabaseUrl, supabaseKey)
 
