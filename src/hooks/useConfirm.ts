@@ -2,16 +2,16 @@ import { computed, reactive, watch } from 'vue'
 
 const _initalState = {
 	isVisible: false,
-  question: null,
-  title: null,
-	inputProps: null,
-  answer: null,
+  question: null as string | null,
+  title: null as string | null,
+	inputProps: null as object | null,
+  answer: null as any | null,
 }
 
-const state = reactive({..._initalState})
+const state = reactive({ ..._initalState })
 
 export default function useConfirm() {
-	const doConfirm = ({ question, title, inputProps }) => new Promise(resolve => {
+	const doConfirm = ({ question, title, inputProps }: { question: string, title: string, inputProps: object }) => new Promise(resolve => {
 		state.isVisible = true
 		state.question = question
 		state.title = title
@@ -27,7 +27,7 @@ export default function useConfirm() {
 		})
 	})
 
-	const doAnswer = answer => {
+	const doAnswer = ( answer: any ) => {
 		state.answer = answer
 	}
 

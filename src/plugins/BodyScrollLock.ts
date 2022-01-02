@@ -1,9 +1,10 @@
+import { Plugin } from 'vue'
 import { enableBodyScroll, disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 
 /**
  * Building our own plugin here because this one: https://github.com/phegman/v-scroll-lock doesn't work with vue 3
  */
-export default {
+const plugin: Plugin = {
   install: ( app, options ) => {
     app.directive('scroll-lock', {
       // On mount (inserted)
@@ -28,3 +29,5 @@ export default {
     })
   },
 }
+
+export default plugin
