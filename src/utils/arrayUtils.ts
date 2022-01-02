@@ -6,10 +6,16 @@ interface ObjectWithId extends Object {
 
 
 export const findValueById = <T extends ObjectWithId>({ arr, id }: { arr: T[], id: string }) => {
+	if (!Array.isArray(arr))
+		return undefined
+
 	return arr.find(item => item.id === id)
 }
 
 export const findIndexById = <T extends ObjectWithId>({ arr, id }: { arr: T[], id: string }) => {
+	if (!Array.isArray(arr))
+		return -1
+
 	return arr.findIndex(item => item.id === id)
 }
 

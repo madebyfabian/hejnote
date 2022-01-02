@@ -2,7 +2,7 @@ import { reactive, computed, nextTick } from 'vue'
 import useSnackbar from '@/hooks/useSnackbar'
 import useSupabase from '@/hooks/useSupabase'
 import handleError from '@/utils/handleError'
-import findIndexById from '@/utils/findIndexById'
+import arrayUtils from '@/utils/arrayUtils'
 
 import generalStore from '@/store/generalStore'
 import linksStore from '@/store/linksStore'
@@ -137,7 +137,7 @@ export default {
     try {
       await this.notesUpsertSingle({ note: { id: noteId, deleted_at: deleted_at } })
 
-      const index = findIndexById({ id: noteId, data: this.state.notes })
+      const index = arrayUtils.findIndexById({ id: noteId, arr: this.state.notes })
       const noteData = this.state.notes[index]
       useSnackbar().createSnackbar({ 
         message: `Moved note ${ noteData.title && `<b>"${ noteData.title }"</b>` } ${ deleted_at == null ? 'out of the' : 'to the' } Trash.`,
@@ -313,7 +313,7 @@ export default {
 
   _updateState({ notes }) {
     for (const note of notes) {
-      const index = findIndexById({ id: note?.id, data: this.state.notes })
+      const index = arrayUtils.findIndexById({ id: note?.id, arr: this.state.notes })
       if (index > -1)
         this.state.notes[index] = { ...this.state.notes[index], ...note }
       else

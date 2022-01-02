@@ -2,8 +2,8 @@ import { reactive, computed } from 'vue'
 import useSupabase from '@/hooks/useSupabase'
 import useSnackbar from '@/hooks/useSnackbar'
 import handleError from '@/utils/handleError'
-import findIndexById from '@/utils/findIndexById'
 import generalStore from '@/store/generalStore'
+import arrayUtils from '@/utils/arrayUtils'
 
 const supabase = useSupabase()
 
@@ -109,7 +109,7 @@ export default {
 
       // Update state
       newData.forEach(newDataItem => {
-        const index = findIndexById({ id: newDataItem.id, data: this.state.joinNotesLinks })
+        const index = arrayUtils.findIndexById({ id: newDataItem.id, arr: this.state.joinNotesLinks })
         this.state.joinNotesLinks[index] = newDataItem
       })
 
