@@ -24,6 +24,13 @@ export default {
 		return this.state.user?.user_metadata?.name || this.state.user?.email || 'Guest'
 	},
 
+	getUserId() {
+		if (!this.state.user?.id)
+			return undefined
+
+		return this.state.user.id
+	},
+
 
 	// --- Mutations ---
 	updateUser({ user }: { user: User }) {
