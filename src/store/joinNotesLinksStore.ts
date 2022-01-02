@@ -6,10 +6,11 @@ import handleError from '@/utils/handleError'
 import generalStore from '@/store/generalStore'
 import arrayUtils from '@/utils/arrayUtils'
 
-type Note = definitions['notes']
-type Link = definitions['links']
-type JoinNotesLinks = definitions['join_notes_links']
-type JoinNotesLinksUpdateParams = Partial<Pick<JoinNotesLinks, 'annotation' | 'is_added_from_text' | 'is_in_text' | 'is_hidden'>>
+export type Note = definitions['notes']
+export type Link = definitions['links']
+export type JoinNotesLinks = definitions['join_notes_links']
+export type JoinNotesLinksUpdateParams = Partial<Pick<JoinNotesLinks, 'annotation' | 'is_added_from_text' | 'is_in_text' | 'is_hidden'>>
+export type JoinNotesLinksInsertParams = Partial<Omit<JoinNotesLinks, 'id'>>
 
 const supabase = useSupabase()
 const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
@@ -47,7 +48,7 @@ export default {
     this.state.joinNotesLinks = data
   },
 
-  async joinNotesLinksInsert({ newVals }: { newVals: JoinNotesLinks[] }) {
+  async joinNotesLinksInsert({ newVals }: { newVals: JoinNotesLinksInsertParams[] }) {
     // Filter out duplicates
     newVals = newVals.filter(newVal => !this.state.joinNotesLinks.find(join => 
       join.note_id === newVal.note_id && 
@@ -57,17 +58,14 @@ export default {
       return useSnackbar().createSnackbar({ message: 'This link already exists.' })
     }
 
+    // remove when realtime is implemented
     await this.joinNotesLinksFetch({ fetchHidden: isHiddenMode.value })
-
-    if (!generalStore.state.user?.id)
-      return console.error('User is not logged in')
 
     const { data, error } = await supabase
       .from<JoinNotesLinks>('join_notes_links')
       .insert(newVals.map(newVal => ({
         ...newVal,
-        // @ts-ignore
-        owner_id: generalStore.state.user.id,
+        owner_id: generalStore.getUserId(),
         is_hidden: isHiddenMode.value,
       })))
 
