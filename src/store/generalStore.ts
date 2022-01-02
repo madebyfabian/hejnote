@@ -21,7 +21,7 @@ export default {
 
 	// --- Getters ---
 	getUserName() {
-		return this.state.user?.user_metadata?.name || this.state.user?.email || 'Guest'
+		return (this.state.user?.user_metadata?.name as string | undefined) || this.state.user?.email || 'Guest'
 	},
 
 	getUserId() {
