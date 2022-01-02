@@ -151,7 +151,7 @@ export default {
 				placeholder: 'Name'
 			}
 		})
-		if (!answer) 
+		if (!answer || typeof answer !== 'string')
       return
 
 		this.collectionsInsertSingle({ newVal: { title: answer } })

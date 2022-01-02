@@ -11,19 +11,19 @@ const _initalState = {
 const state = reactive({ ..._initalState })
 
 export default function useConfirm() {
-	const doConfirm = ({ question, title, inputProps }: { question: string, title: string, inputProps: object }) => new Promise(resolve => {
+	const doConfirm = ({ question = null, title, inputProps }: { question?: string | null, title: string, inputProps: object }) => new Promise(resolve => {
 		state.isVisible = true
 		state.question = question
 		state.title = title
 		state.inputProps = inputProps
 
 		const stopWatcher = watch(() => state.answer, ( newAnswer ) => {
-			if (newAnswer !== null) {
-				const answer = newAnswer
-				_reset()
-				stopWatcher()
-				resolve(answer)
-			}	
+			if (newAnswer === null)
+				return
+			
+			_reset()
+			stopWatcher()
+			resolve(newAnswer)
 		})
 	})
 
