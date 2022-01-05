@@ -1,5 +1,7 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, SupabaseRealtimePayload } from '@supabase/supabase-js'
 import { uuid as generateUUID } from '@supabase/supabase-js/dist/module/lib/helpers'
+import arrayUtils, { ObjectWithId } from '@/utils/arrayUtils'
+import handleError from '@/utils/handleError'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL,
 			supabaseKey = import.meta.env.VITE_SUPABASE_KEY
@@ -28,11 +30,28 @@ const formatTimeToSupabaseFormat = ({ date }: { date: Date }) => {
 	return arr.join(':')
 }
 
+const handleRealtimeEvent = async <T extends ObjectWithId>({ payload, stateArr }: { payload: SupabaseRealtimePayload<T>, stateArr: any[] }) => {
+	try {
+		if (payload.errors)
+			throw new Error(JSON.stringify(payload.errors))
+
+		switch (payload.eventType) {
+			case 'INSERT': return arrayUtils.insertValue({ arr: stateArr, newVal: payload.new })
+			case 'UPDATE': return arrayUtils.updateById({ arr: stateArr, id: payload.new.id, newVal: payload.new })
+			case 'DELETE': return arrayUtils.deleteByIds({ arr: stateArr, ids: [ payload.old.id ] })
+		}
+
+	} catch (error) {
+		handleError(error)
+	}
+}
+
 
 export default useSupabase
 
 export {
 	useSupabase,
 	generateUUID,
+	handleRealtimeEvent,
 	formatTimeToSupabaseFormat,
 }
