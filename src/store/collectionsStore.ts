@@ -5,11 +5,9 @@ import generalStore from '@/store/generalStore'
 // @ts-ignore
 import notesStore from '@/store/notesStore'
 import useSnackbar from '@/hooks/useSnackbar'
-import useSupabase, { formatTimeToSupabaseFormat, generateUUID } from '@/hooks/useSupabase'
-// @ts-ignore
+import useSupabase, { formatTimeToSupabaseFormat, generateUUID, handleRealtimeEvent } from '@/hooks/useSupabase'
 import useConfirm from '@/hooks/useConfirm'
 import arrayUtils from '@/utils/arrayUtils'
-// @ts-ignore
 import handleError from '@/utils/handleError'
 
 type Collection = definitions['collections']
@@ -124,19 +122,7 @@ export default {
   },
 
   async handleRealtimeEvent( payload: SupabaseRealtimePayload<Collection> ) {
-    try {
-      if (payload.errors)
-        throw new Error(JSON.stringify(payload.errors))
-
-      switch (payload.eventType) {
-        case 'INSERT': return arrayUtils.insertValue({ arr: this.state.collections, newVal: payload.new })
-        case 'UPDATE': return arrayUtils.updateById({ arr: this.state.collections, id: payload.new.id, newVal: payload.new })
-        case 'DELETE': return arrayUtils.deleteByIds({ arr: this.state.collections, ids: [ payload.old.id ] })
-      }
-
-    } catch (error) {
-      handleError(error)
-    }
+    handleRealtimeEvent({ payload, stateArr: this.state.collections })
   },
 
 
