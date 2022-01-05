@@ -1,6 +1,6 @@
 import objectEntriesAreEqual from '@/utils/objectEntriesAreEqual'
 
-interface ObjectWithId extends Object {
+export interface ObjectWithId extends Object {
 	id: string
 }
 
@@ -27,6 +27,20 @@ export const insertValue = <T extends ObjectWithId>({ arr, newVal }: { arr: T[],
 	arr.push(newVal)
 }
 
+export const upsertValues = <T extends ObjectWithId>({ arr, newValArr, conflictKey }: { arr: T[], newValArr: T[], conflictKey: keyof T }) => {
+	for (const newVal of newValArr) {
+		const valueWithSameId = findValueById({ arr, id: newVal.id })
+		if (valueWithSameId)
+			return // Value with this id already exists
+
+		const value = arr.find(item => item[conflictKey] === newVal[conflictKey])
+		if (value)
+			return updateById({ arr, id: newVal.id, newVal: { ...newVal, id: value.id } })
+		
+		insertValue({ arr, newVal })
+	}
+}
+
 export const updateById = <T extends ObjectWithId, N extends Object>({ arr, id, newVal }: { arr: T[], id: string, newVal: N }) => {
 	const index = findIndexById({ id, arr })
 	const { result, newObject } = objectEntriesAreEqual(arr[index], newVal)
@@ -51,6 +65,7 @@ export default {
 	findValueById,
 	findIndexById,
 	insertValue,
+	upsertValues,
 	updateById,
 	deleteByIds,
 }
