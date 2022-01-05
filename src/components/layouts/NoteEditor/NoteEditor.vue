@@ -171,7 +171,10 @@
 
 		const urlsNotInTextAnymore = oldVal.filter(url => !newVal.includes(url))
 		if (urlsNotInTextAnymore.length) {
-			joinNotesLinksStore.joinNotesLinksUpdate({ urlArray: urlsNotInTextAnymore, noteId: note.id, newVal: {
+			const foundLinks = linksStore.findLinksByUrls({ urlArray: urlsNotInTextAnymore })
+			const foundJoins = joinNotesLinksStore.findJoinNotesLinksInNoteByLinkIds({ linkIds: foundLinks.map(link => link.id), noteId: note.id })
+			
+			joinNotesLinksStore.joinNotesLinksUpdate({ joinIds: foundJoins.map(join => join.id), noteId: note.id, newVal: {
 				is_in_text: false
 			}})
 		}

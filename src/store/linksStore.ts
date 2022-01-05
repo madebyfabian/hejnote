@@ -1,16 +1,19 @@
 import { reactive, computed } from 'vue'
 import { definitions } from '@/../types/supabase'
-import useSupabase, { generateUUID } from '@/hooks/useSupabase'
+import { SupabaseRealtimePayload } from '@supabase/supabase-js'
+import useSupabase, { generateUUID, handleRealtimeEvent } from '@/hooks/useSupabase'
 
 import generalStore from '@/store/generalStore'
 import joinNotesLinksStore, { JoinNotesLinksInsertParams, JoinNotesLinksUpdateParams } from '@/store/joinNotesLinksStore'
 import isImageValid from '@/utils/isImageValid'
-import fetchUrlMetadata from '@/utils/fetchUrlMetadata'
 import handleError from '@/utils/handleError'
 import arrayUtils from '@/utils/arrayUtils'
 
 type Note = definitions['notes']
-type Link = definitions['links']
+type Link = Modify<definitions['links'], { 
+  title: string | null, 
+  banner_url: string | null 
+}>
 type LinkGeneratedByFunction = Link
 type LinkInsertParams = PartialBy<Link, 'url'>
 
@@ -23,14 +26,17 @@ export default {
     links: [] as Link[],
   }),
 
-  getLinkDefaultDataObject({ link }: { link: LinkInsertParams }) { return {
-    id: 				link?.id || generateUUID(),
-    url:        link.url,
-    title:      link?.title || undefined,
-    banner_url: link?.banner_url || undefined,
-    owner_id:   link?.owner_id || generalStore.getUserId(),
-    is_hidden:  link?.is_hidden || isHiddenMode.value,
-  } as LinkGeneratedByFunction },
+  getLinkDefaultDataObject({ link }: { link: LinkInsertParams }): LinkGeneratedByFunction {
+    const data: LinkGeneratedByFunction = {
+      id: 				link?.id || generateUUID(),
+      url:        link.url,
+      title:      link?.title || null,
+      banner_url: link?.banner_url || null,
+      owner_id:   link?.owner_id || generalStore.getUserId(),
+      is_hidden:  link?.is_hidden || isHiddenMode.value
+    }
+    return data
+  },
 
   _findLinksByNoteIdsV2({ noteIds }: { noteIds: Note['id'][] }) {
     const joins = joinNotesLinksStore.findJoinNotesLinksByNoteIds({ noteIds })
@@ -42,6 +48,10 @@ export default {
     }
 
     return links
+  },
+
+  findLinksByUrls({ urlArray }: { urlArray: string[] }) {
+    return this.state.links.filter(link => urlArray.includes(link.url))
   },
 
   async linksFetch({ fetchHidden = false } = {}) {
@@ -76,7 +86,7 @@ export default {
     if (error)
       console.error(error)
 
-    // Missing: Local state update, because hard to implement and not really needed.
+    // Local state is not updated here, since it will be covered by realtime updates.
   },
 
   /**
@@ -86,76 +96,49 @@ export default {
    * @param linkObjArr Use this only together with `getLinkDefaultDataObject`
    */
   async linksUpsert({ 
-    linkObjArr = [], 
-    noteId = null, 
+    linkObjArr, 
+    noteId, 
     joinNotesLinksObj = { annotation: undefined, is_added_from_text: true, is_in_text: false, is_hidden: false } 
   }: {
     linkObjArr: LinkGeneratedByFunction[],
-    noteId: Note['id'] | null,
+    noteId: Note['id'],
     joinNotesLinksObj?: JoinNotesLinksUpdateParams
   }) {
     try {
-      // Update existing links, remove this when realtime
-      await this.linksFetch({ fetchHidden: isHiddenMode.value })
-
       // Filter out duplicates from the linkObjArr
       linkObjArr = linkObjArr.filter(( linkObj, key ) => linkObjArr.findIndex(t => (t.url === linkObj.url)) === key)
+      if (!linkObjArr.length)
+        return 
 
       // Prepare the links data
-      const preparedLinkData = []
-      for (const linkObj of linkObjArr) {
+      const preparedData = linkObjArr.map(linkObj => {
         const existingLink = this.state.links.find(link => link.url === linkObj.url)
-        const preparedLinkObj = { ...linkObj }
-
-        if (!existingLink) {
-          // Link does not exist in store, so fetch metadata.
-          const metadata = await fetchUrlMetadata({ url: linkObj.url })
-          if (metadata?.title)
-            preparedLinkObj.title = metadata.title
-
-          // Check if the link is an image and get validated url
-          if (metadata?.banner) {
-            const { validatedUrl } = await isImageValid({ url: metadata.banner })
-            if (validatedUrl && typeof validatedUrl === 'string')
-              preparedLinkObj.banner_url = validatedUrl
-          }
-          
-        } else {
-          preparedLinkObj.id = existingLink.id
-        }
-
-        preparedLinkData.push(preparedLinkObj)
-      }
-
-      // Step 1: insert links data into DB.
-      let linksUpsertResult: Link[] = []
-      if (preparedLinkData.length) {
-        console.log('insert into db', preparedLinkData);
-
-        // insert into db.
-        const { data, error } = await supabase
-          .from<Link>('links')
-          .upsert(preparedLinkData, { onConflict: 'url' })
-        if (error || data === null) throw error
-
-        // Update local state
-        for (const entry of data) {
-          arrayUtils.insertValue({ arr: this.state.links, newVal: entry })
-        }
-
-        linksUpsertResult.push(...data)
-      }
-
-      // Step 2: insert/update joinNotesLinks data into DB.
-      const preparedJoinNotesLinksData = preparedLinkData.map(linkObj => {
-        const newLinkId = linkObj?.id || linksUpsertResult.find(link => link.url === linkObj.url)?.id
-        if (!newLinkId) 
-          throw new Error('Error adding links, please try again.')
-
-        return { ...joinNotesLinksObj, note_id: noteId, link_id: newLinkId } as JoinNotesLinksInsertParams
+        return existingLink || linkObj
       })
 
-      joinNotesLinksStore.joinNotesLinksInsert({ newVals: preparedJoinNotesLinksData })
+      // Links: Upsert store
+      arrayUtils.upsertValues({ arr: this.state.links, newValArr: preparedData, conflictKey: 'url' })
+
+      // Links: Upsert DB
+      const { error } = await supabase
+        .from<Link>('links')
+        .upsert(preparedData, { onConflict: 'url', returning: 'minimal' })
+      if (error) throw error;
+
+      // Start the metadata updates backend in database
+      for (const preparedDataItem of preparedData) {
+        supabase
+          .rpc('fetch_url_metadata', { link_id: preparedDataItem.id, url: preparedDataItem.url })
+          .then(metadataRes => { if (metadataRes.error) console.error(metadataRes.error) })
+      }
+
+      // JoinNotesLinks: Insert
+      joinNotesLinksStore.joinNotesLinksInsert({ newVals: preparedData.map(linkObj => {
+        const newLinkId = linkObj?.id || preparedData.find(link => link.url === linkObj.url)?.id
+        if (!newLinkId) throw new Error('Error adding links, please try again.')
+
+        return { ...joinNotesLinksObj, note_id: noteId, link_id: newLinkId } as JoinNotesLinksInsertParams
+      }) })
 
     } catch (error) {
       handleError(error)
@@ -182,6 +165,9 @@ export default {
       .map(join => join.link_id)
     linkIdsToDelete = linksToDelete.filter(linkId => !linkIdsNotToDelete.includes(linkId)).map(linkId => linkId)
 
+    // Delete links store
+    arrayUtils.deleteByIds({ arr: this.state.links, ids: linkIdsToDelete })
+
     // Delete all joins
     await joinNotesLinksStore.joinNotesLinksDelete({ joinIds: joinsToDelete.map(join => join.id) }) 
 
@@ -193,5 +179,9 @@ export default {
         .in('id', linkIdsToDelete)
       if (error) console.error(error)
     }
+  },
+
+  async handleRealtimeEvent(payload: SupabaseRealtimePayload<Link>) {
+    handleRealtimeEvent({ payload, stateArr: this.state.links })
   },
 }

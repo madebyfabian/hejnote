@@ -33,10 +33,23 @@ export default async function initAppData({ fetchHidden }: { fetchHidden: boolea
 		// Create realtime connections
 		if (reInitSubscriptions) {
 			await supabase.removeAllSubscriptions()
-			await supabase
-				.from<Collection>(`collections:${ colSelectorString }`)
-				.on('*', payload => collectionsStore.handleRealtimeEvent(payload))
-				.subscribe()
+			
+			await Promise.all([
+				supabase
+					.from<Collection>(`collections:${ colSelectorString }`)
+					.on('*', payload => collectionsStore.handleRealtimeEvent(payload))
+					.subscribe(),
+				
+				supabase
+					.from<definitions['links']>(`links:${ colSelectorString }`)
+					.on('*', payload => linksStore.handleRealtimeEvent(payload))
+					.subscribe(),
+
+				supabase
+					.from<definitions['join_notes_links']>(`join_notes_links:${ colSelectorString }`)
+					.on('*', payload => joinNotesLinksStore.handleRealtimeEvent(payload))
+					.subscribe(),
+			])
 		}
 
 		return res
