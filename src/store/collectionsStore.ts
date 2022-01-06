@@ -1,19 +1,16 @@
 import { reactive, computed } from 'vue'
-import { definitions } from '@/../types/supabase'
 import { SupabaseRealtimePayload } from '@supabase/supabase-js'
 import generalStore from '@/store/generalStore'
 // @ts-ignore
 import notesStore from '@/store/notesStore'
 import useSnackbar from '@/hooks/useSnackbar'
-import useSupabase, { formatTimeToSupabaseFormat, generateUUID, handleRealtimeEvent } from '@/hooks/useSupabase'
+import useSupabase, { 
+  formatTimeToSupabaseFormat, generateUUID, handleRealtimeEvent,
+  Collection, CollectionInsertParams, CollectionUpdateParams, CollectionUpdate
+} from '@/hooks/useSupabase'
 import useConfirm from '@/hooks/useConfirm'
 import arrayUtils from '@/utils/arrayUtils'
 import handleError from '@/utils/handleError'
-
-type Collection = definitions['collections']
-type CollectionUpdate = Pick<Collection, 'title' | 'updated_at'>
-type CollectionUpdateParams = Pick<Collection, 'title'>
-type CollectionInsertParams = Partial<Pick<Collection, 'title'>>
 
 const supabase = useSupabase()
 const isHiddenMode = computed(() => generalStore.state.isHiddenMode)

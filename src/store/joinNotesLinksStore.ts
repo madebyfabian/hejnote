@@ -1,20 +1,14 @@
 import { reactive, computed } from 'vue'
-import { definitions } from '@/../types/supabase'
 import { SupabaseRealtimePayload } from '@supabase/supabase-js'
-import useSupabase, { generateUUID, handleRealtimeEvent } from '@/hooks/useSupabase'
+import useSupabase, { 
+  generateUUID, handleRealtimeEvent, 
+  JoinNotesLinks, Note, Link, JoinNotesLinksInsertParams, JoinNotesLinksUpdateParams 
+} from '@/hooks/useSupabase'
 
 import useSnackbar from '@/hooks/useSnackbar'
 import handleError from '@/utils/handleError'
 import generalStore from '@/store/generalStore'
 import arrayUtils from '@/utils/arrayUtils'
-
-export type Note = definitions['notes']
-export type Link = definitions['links']
-export type JoinNotesLinks = Modify<definitions['join_notes_links'], { 
-  annotation: string | null
-}>
-export type JoinNotesLinksUpdateParams = Partial<Pick<JoinNotesLinks, 'annotation' | 'is_added_from_text' | 'is_in_text' | 'is_hidden'>>
-export type JoinNotesLinksInsertParams = PartialBy<JoinNotesLinks, 'link_id' | 'note_id'>
 
 const supabase = useSupabase()
 const isHiddenMode = computed(() => generalStore.state.isHiddenMode)

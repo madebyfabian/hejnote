@@ -2,11 +2,32 @@ import { createClient, SupabaseRealtimePayload } from '@supabase/supabase-js'
 import { uuid as generateUUID } from '@supabase/supabase-js/dist/module/lib/helpers'
 import arrayUtils, { ObjectWithId } from '@/utils/arrayUtils'
 import handleError from '@/utils/handleError'
+import { definitions } from '@/../types/supabase'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL,
 			supabaseKey = import.meta.env.VITE_SUPABASE_KEY
 
 const supabase = createClient(supabaseUrl, supabaseKey)
+
+
+export type Collection = definitions['collections']
+export type CollectionUpdate = Pick<Collection, 'title' | 'updated_at'>
+export type CollectionUpdateParams = Pick<Collection, 'title'>
+export type CollectionInsertParams = Partial<Pick<Collection, 'title'>>
+
+export type Note = definitions['notes']
+export type JoinNotesLinks = Modify<definitions['join_notes_links'], { 
+  annotation: string | null
+}>
+export type JoinNotesLinksUpdateParams = Partial<Pick<JoinNotesLinks, 'annotation' | 'is_added_from_text' | 'is_in_text' | 'is_hidden'>>
+export type JoinNotesLinksInsertParams = PartialBy<JoinNotesLinks, 'link_id' | 'note_id'>
+
+export type Link = Modify<definitions['links'], { 
+  title: string | null, 
+  banner_url: string | null 
+}>
+export type LinkGeneratedByFunction = Link
+export type LinkInsertParams = PartialBy<Link, 'url'>
 
 
 const useSupabase = () => {

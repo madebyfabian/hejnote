@@ -1,21 +1,15 @@
 import { reactive, computed } from 'vue'
-import { definitions } from '@/../types/supabase'
 import { SupabaseRealtimePayload } from '@supabase/supabase-js'
-import useSupabase, { generateUUID, handleRealtimeEvent } from '@/hooks/useSupabase'
+import useSupabase, { 
+  generateUUID, handleRealtimeEvent, 
+  JoinNotesLinksInsertParams, JoinNotesLinksUpdateParams, LinkInsertParams, LinkGeneratedByFunction, Note, Link 
+} from '@/hooks/useSupabase'
 
 import generalStore from '@/store/generalStore'
-import joinNotesLinksStore, { JoinNotesLinksInsertParams, JoinNotesLinksUpdateParams } from '@/store/joinNotesLinksStore'
+import joinNotesLinksStore from '@/store/joinNotesLinksStore'
 import isImageValid from '@/utils/isImageValid'
 import handleError from '@/utils/handleError'
 import arrayUtils from '@/utils/arrayUtils'
-
-type Note = definitions['notes']
-type Link = Modify<definitions['links'], { 
-  title: string | null, 
-  banner_url: string | null 
-}>
-type LinkGeneratedByFunction = Link
-type LinkInsertParams = PartialBy<Link, 'url'>
 
 const supabase = useSupabase()
 const isHiddenMode = computed(() => generalStore.state.isHiddenMode)
