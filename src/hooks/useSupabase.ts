@@ -57,7 +57,7 @@ const handleRealtimeEvent = async <T extends ObjectWithId>({ payload, stateArr }
 			throw new Error(JSON.stringify(payload.errors))
 
 		switch (payload.eventType) {
-			case 'INSERT': return arrayUtils.insertValue({ arr: stateArr, newVal: payload.new })
+			case 'INSERT': return arrayUtils.insertValues({ arr: stateArr, newValArr: [ payload.new ] })
 			case 'UPDATE': return arrayUtils.updateById({ arr: stateArr, id: payload.new.id, newVal: payload.new })
 			case 'DELETE': return arrayUtils.deleteByIds({ arr: stateArr, ids: [ payload.old.id ] })
 		}

@@ -75,9 +75,7 @@ export default {
         is_hidden: isHiddenMode.value,
       }})
 
-      for (const preparedDataItem of preparedData) {
-        arrayUtils.insertValue({ arr: this.state.joinNotesLinks, newVal: preparedDataItem })
-      }
+      arrayUtils.insertValues({ arr: this.state.joinNotesLinks, newValArr: preparedData })
 
       const { error } = await supabase
         .from<JoinNotesLinks>('join_notes_links')

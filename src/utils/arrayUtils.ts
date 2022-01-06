@@ -19,12 +19,14 @@ export const findIndexById = <T extends ObjectWithId>({ arr, id }: { arr: T[], i
 	return arr.findIndex(item => item.id === id)
 }
 
-export const insertValue = <T extends ObjectWithId>({ arr, newVal }: { arr: T[], newVal: T }) => {
-	const index = findIndexById({ arr, id: newVal.id })
-	if (index !== -1)
-		return
+export const insertValues = <T extends ObjectWithId>({ arr, newValArr }: { arr: T[], newValArr: T[] }) => {
+	for (const newVal of newValArr) {
+		const index = findIndexById({ arr, id: newVal.id })
+		if (index !== -1)
+			return
 
-	arr.push(newVal)
+		arr.push(newVal)
+	}
 }
 
 export const upsertValues = <T extends ObjectWithId>({ arr, newValArr, conflictKey }: { arr: T[], newValArr: T[], conflictKey: keyof T }) => {
@@ -37,7 +39,7 @@ export const upsertValues = <T extends ObjectWithId>({ arr, newValArr, conflictK
 		if (value)
 			return updateById({ arr, id: newVal.id, newVal: { ...newVal, id: value.id } })
 		
-		insertValue({ arr, newVal })
+		insertValues({ arr, newValArr: [ newVal ] })
 	}
 }
 
@@ -64,7 +66,7 @@ export const deleteByIds = <T extends ObjectWithId>({ arr, ids }: { arr: T[], id
 export default {
 	findValueById,
 	findIndexById,
-	insertValue,
+	insertValues,
 	upsertValues,
 	updateById,
 	deleteByIds,

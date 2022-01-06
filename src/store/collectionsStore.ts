@@ -53,7 +53,7 @@ export default {
         is_hidden: isHiddenMode.value,
       }
 
-      arrayUtils.insertValue({ arr: this.state.collections, newVal: finalVal })
+      arrayUtils.insertValues({ arr: this.state.collections, newValArr: [ finalVal ] })
 
       snackbar = useSnackbar().createSnackbar({
         message: 'Successfully added a new collection'
