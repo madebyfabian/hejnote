@@ -1,13 +1,16 @@
 <template>
+  <SkipNavigation to="#main" label="Skip to main content" />
+
   <SnackbarContainer />
   <ModalConfirm />
-  
-  <router-view/>
+
+	<router-view />
 </template>
 
 <script setup>
   import { computed } from 'vue'
 	import { useRoute, useRouter } from 'vue-router'
+	import SkipNavigation from 'headless-utils/src/vue3/skip-navigation'
 	import useSupabase from '@/hooks/useSupabase'
 	import { generalStore } from '@/store'
 	import { getRequiredAuthRedirect } from '@/router/routeBeforeEach'
@@ -35,3 +38,13 @@
 			return router.push(requiredRedirect)
 	})
 </script>
+
+<style lang="postcss" scoped>
+	.SkipNavigation {
+		@apply fixed z-70 bg-gray-900 p-6 top-4 left-4 rounded-xl font-bold;
+
+		&:not([data-is-focused=true]) {
+			@apply sr-only;
+		}
+	}
+</style>

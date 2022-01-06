@@ -13,7 +13,7 @@
 						<SwitchHiddenMode />
 					</div>
 
-					<main class="container px-6 pb-24 desktop:pb-0 desktop:px-10 willMove" :class="{ 'isMoved': isHiddenMode }">
+					<main id="main" class="container px-6 pb-24 desktop:pb-0 desktop:px-10 willMove" :class="{ 'isMoved': isHiddenMode }">
 						<component :is="Component" />
 					</main>
 				</div>
