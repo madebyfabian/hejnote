@@ -2,6 +2,8 @@
 	<div class="LandingPage pb-11 desktop:pb-14 flex flex-col items-start desktop:items-center min-h-screen font-landingPage text-gray-100 overflow-hidden">
 		<Header isMinimal />
 
+		<router-link class="absolute left-0 top-0 opacity-[0.01]" :to="{ name: 'Auth' }">Sign in</router-link>
+
 		<div class="container relative flex-1 flex flex-col desktop:flex-row desktop:justify-between my-14">
 			<IllustrationLandingPage class="max-w-full desktop:w-10/12 h-auto order-2 desktop:order-1 mt-9 desktop:mt-0" aria-label="Illustration of a person with notes around" />
 
@@ -35,7 +37,7 @@
 		<div class="flex flex-col desktop:flex-row justify-center items-center gap-6 desktop:gap-10 relative z-10 desktop:p-8 desktop:-m-8 w-full">
 			<a class="h-9 flex items-center gap-3 bg-gray-800 rounded-full px-5 order-2 desktop:order-1" href="https://supabase.io" target="_blank" rel="noreferrer" >
 				Made with
-				<img src="https://supabase.io/new/brand-assets/supabase-logo-wordmark--dark.svg" alt="Supabase logo" class="h-auto w-24" />
+				<img src="/images/supabase-logo-wordmark--dark.svg" alt="Supabase logo" class="h-auto w-24" />
 			</a>
 
 			<a class="text-green-400 relative p-8 -m-8 order-1 desktop:order-2" href="https://twitter.com/madebyfabian" target="_blank" rel="noreferrer">
