@@ -1,5 +1,7 @@
+![Cover Art](.github/cover.jpg?raw=true "Cover Art")
 # hejnote. app
-A Supabase-powered Vue.js app which aims to replace Google Keep. Open Source. Free. Currently in Closed Alpha.<br>
+![Beta](https://img.shields.io/badge/status-beta-34D399)<br>
+A Supabase-powered Vue.js app which aims to replace Google Keep. Open Source. Free. Currently in Closed Beta.<br>
 A personal project of mine to finally use Vue 3, TypeScript, Supabase, Tailwind and other Technologies in a Production-ready app.
 <br>
 
