@@ -1,6 +1,18 @@
 # hejnote. app
+A Supabase-powered Vue.js app which aims to replace Google Keep. Open Source. Free. Currently in Closed Alpha.<br>
+A personal project of mine to finally use Vue 3, TypeScript, Supabase, Tailwind and other Technologies in a Production-ready app.
+<br>
 
-## Project setup
+## Here is what you get
+✅ A richtext markdown note-editor that allows you to create and edit notes, add to-do items, etc<br>
+✅ Manually creating and updating linklists<br>
+✅ Creating collections where you can move notes inside<br>
+✅ Choose between displaying all notes from all collections or just the ones that aren't in one<br>
+✅ Features a hidden mode, where you can save your private stuff<br>
+✅ Open Source and Free to use<br>
+✅ Built on Supabase, a modern PostgreSQL database that is easy to use, safe (with features like RLS) and fast<br>
+
+## Dev Project setup
 Add new file `.env.local`
 ```
 VUE_APP_SUPABASE_URL=YOUR_SUPABASE_URL_WITH_HTTPS_IN_FRONT
