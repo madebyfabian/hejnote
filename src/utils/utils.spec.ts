@@ -18,7 +18,7 @@ describe('"isImageValid": Check if image url loads and therefore is valid', () =
   })
 
   it('Should return false with a valid image url, but which only works in unsafe http, not https', async () => {
-    const result = await isImageValid({ url: 'http://unsafe-http-test.immowelt.design/test_img.png' })
+    const result = await isImageValid({ url: 'http://bla.com/iis-85.png' })
     expect(result).to.deep.equal({ validatedUrl: false })
   })
 
