@@ -47,6 +47,7 @@ export default {
       .from<JoinNotesLinks>('join_notes_links')
       .select('*')
       .eq('is_hidden', fetchHidden)
+      .order('created_at')
 
     if (error || data === null) return console.error(error)
 

@@ -126,6 +126,8 @@ export interface paths {
           annotation?: parameters["rowFilter.join_notes_links.annotation"];
           is_in_text?: parameters["rowFilter.join_notes_links.is_in_text"];
           is_hidden?: parameters["rowFilter.join_notes_links.is_hidden"];
+          created_at?: parameters["rowFilter.join_notes_links.created_at"];
+          updated_at?: parameters["rowFilter.join_notes_links.updated_at"];
           /** Filtering Columns */
           select?: parameters["select"];
           /** Ordering */
@@ -184,6 +186,8 @@ export interface paths {
           annotation?: parameters["rowFilter.join_notes_links.annotation"];
           is_in_text?: parameters["rowFilter.join_notes_links.is_in_text"];
           is_hidden?: parameters["rowFilter.join_notes_links.is_hidden"];
+          created_at?: parameters["rowFilter.join_notes_links.created_at"];
+          updated_at?: parameters["rowFilter.join_notes_links.updated_at"];
         };
         header: {
           /** Preference */
@@ -206,6 +210,8 @@ export interface paths {
           annotation?: parameters["rowFilter.join_notes_links.annotation"];
           is_in_text?: parameters["rowFilter.join_notes_links.is_in_text"];
           is_hidden?: parameters["rowFilter.join_notes_links.is_hidden"];
+          created_at?: parameters["rowFilter.join_notes_links.created_at"];
+          updated_at?: parameters["rowFilter.join_notes_links.updated_at"];
         };
         body: {
           /** join_notes_links */
@@ -540,6 +546,28 @@ export interface paths {
       };
     };
   };
+  "/rpc/fetch_url_metadata": {
+    post: {
+      parameters: {
+        body: {
+          args: {
+            /** Format: uuid */
+            link_id: string;
+            /** Format: text */
+            url: string;
+          };
+        };
+        header: {
+          /** Preference */
+          Prefer?: parameters["preferParams"];
+        };
+      };
+      responses: {
+        /** OK */
+        200: unknown;
+      };
+    };
+  };
 }
 
 export interface definitions {
@@ -604,6 +632,16 @@ export interface definitions {
     is_in_text: boolean;
     /** Format: boolean */
     is_hidden: boolean;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    created_at: string;
+    /**
+     * Format: timestamp with time zone
+     * @default now()
+     */
+    updated_at: string;
   };
   links: {
     /**
@@ -744,6 +782,10 @@ export interface parameters {
   "rowFilter.join_notes_links.is_in_text": string;
   /** Format: boolean */
   "rowFilter.join_notes_links.is_hidden": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.join_notes_links.created_at": string;
+  /** Format: timestamp with time zone */
+  "rowFilter.join_notes_links.updated_at": string;
   /** @description links */
   "body.links": definitions["links"];
   /** Format: uuid */
