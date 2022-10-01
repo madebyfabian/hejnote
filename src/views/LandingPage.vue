@@ -35,10 +35,10 @@
 		</div>
 
 		<div class="flex flex-col desktop:flex-row justify-center items-center gap-6 desktop:gap-10 relative z-10 desktop:p-8 desktop:-m-8 w-full">
-			<a class="h-9 flex items-center gap-3 bg-gray-800 rounded-full px-5 order-2 desktop:order-1" href="https://supabase.io" target="_blank" rel="noreferrer" >
+			<!--<a class="h-9 flex items-center gap-3 bg-gray-800 rounded-full px-5 order-2 desktop:order-1" href="https://supabase.io" target="_blank" rel="noreferrer" >
 				Made with
 				<img src="/images/supabase-logo-wordmark--dark.svg" alt="Supabase logo" class="h-auto w-24" />
-			</a>
+			</a>-->
 
 			<a class="text-green-400 relative p-8 -m-8 order-1 desktop:order-2" href="https://twitter.com/madebyfabian" target="_blank" rel="noreferrer">
 				@madebyfabian
