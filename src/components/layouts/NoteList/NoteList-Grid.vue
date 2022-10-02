@@ -1,12 +1,10 @@
 <template>
 	<section class="NoteList-Grid">
-		<masonry v-bind="masonryOptions">
-			<Note 
-				v-for="note of notes"
-				:key="note.id" 
-				:note="note"
-			/>
-		</masonry>
+		<Note 
+			v-for="note of notes"
+			:key="note.id" 
+			:note="note"
+		/>
 	</section>
 </template>
 
@@ -17,15 +15,10 @@
 		notes: 				{ type: Array, required: true },
 		showIsPinned: { type: Boolean, default: false },
 	})
-
-	const desktopWidth = 1064 - 2
-
-	const masonryOptions = {
-		cols: {
-			default: 3,
-			[ desktopWidth ]: 2,
-			768: 1,
-		},
-		gutter: 24,
-	}
 </script>
+
+<style lang="postcss" scoped>
+	.NoteList-Grid {
+		@apply grid grid-cols-1 desktop:grid-cols-3 gap-x-6 items-start;
+	}
+</style>

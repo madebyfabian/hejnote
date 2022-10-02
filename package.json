@@ -31,7 +31,6 @@
     "register-service-worker": "^1.7.1",
     "throttle-debounce": "^3.0.1",
     "vue": "^3.2.18",
-    "vue-next-masonry": "^1.1.3",
     "vue-router": "^4.0.11",
     "vue-window-size": "^1.1.2"
   },
